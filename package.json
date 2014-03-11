@@ -1,0 +1,21 @@
+{
+    "version": "3.0.0",
+    "name": "com.adjust.cordova",
+    "cordova_name": "Adjust SDK Cordova Plugin",
+    "description": "Cordova plugin for the Adjust SDK 3.0.0",
+    "license": "MIT License",
+    "platforms": [
+        "ios",
+        "android"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        },
+        {
+            "name": "cordova-android",
+            "version": ">=3.1.0"
+        }
+    ]
+}

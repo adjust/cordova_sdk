@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.adjust.sdk"
+    version="3.0.0">
+
+    <name>Adjust</name>
+    <description>Adjust plugin for Cordova</description>
+    <license>MIT License</license>
+    <keywords>adjust</keywords>
+    <author>adjust</author>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/adjust.js" name="AdjustCordova">
+        <clobbers target="AdjustCordova" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AdjustCordova">
+                <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
+            target-dir="src/com/adjust/sdk" />
+    </platform>
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="widget">
+          <feature name="AdjustCordova">
+            <param name="ios-package" value="AdjustCordova"/>
+            <param name="onload" value="true" />
+          </feature>
+        </config-file>
+
+        <header-file src="src/ios/AdjustCordova.h" />
+        <source-file src="src/ios/AdjustCordova.m" />
+
+    </platform>
+</plugin>
