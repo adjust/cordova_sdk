@@ -21,10 +21,7 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
 	@Override
 	public boolean execute(String action, JSONArray args,
 			CallbackContext callbackContext) throws JSONException {
-		if (action.equals("echo")) {
-            callbackContext.success(args.getString(0)); 
-            return true;
-        } else if (action.equals("appDidLaunch")) {
+        if (action.equals("appDidLaunch") || action.equals("onResume")) {
         	Adjust.onResume(this.cordova.getActivity());
         	return true;
         } else if (action.equals("trackEvent")) {
@@ -57,14 +54,23 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
         	Adjust.setOnFinishedListener(this);
         	
         	return true;
-        } 
+        } else if (action.equals("onPause")) {
+        	Adjust.onPause();
+        	return true;
+        }
+        Logger logger = AdjustFactory.getLogger();
+        String errorMessage = String.format("Invalid call (%s)", action);
+        
+        logger.error(errorMessage);
+        callbackContext.error(errorMessage);
 		return false;
 	}
 
 	@Override
 	public void onFinishedTracking(ResponseData responseData) {
 		// TODO Auto-generated method stub
-    	PluginResult pluginResult = new PluginResult(Status.OK);
+		JSONObject responseJsonData = new JSONObject(responseData.toDic());
+    	PluginResult pluginResult = new PluginResult(Status.OK, responseJsonData);
     	pluginResult.setKeepCallback(true);
     	
     	CallbackContext callbackResponseData = new CallbackContext(AdjustCordova.callbackId, AdjustCordova.cordovaWebView);
@@ -81,4 +87,5 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
     	}
     	return map;
 	}
+	
 }

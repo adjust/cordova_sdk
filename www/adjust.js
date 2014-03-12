@@ -37,18 +37,12 @@ var AdjustCordova = {
                      []
                      );
     },
-    echo: function (message) {
-              this.callCordova('echo', message);
-          },
-    echoBak: function (message) {
-        cordova.exec(function (data) { alert('echo ' + data); },
-                     function (err) { alert('error ' + err); },
-                     'AdjustCordova',
-                     'echo',
-                     [ message ]
-        );
+    onPause: function() {
+        this.callCordova('onPause');
+    },
+    onResume: function() {
+        this.callCordova('onResume');
     }
-
 };
 
 module.exports = AdjustCordova;
