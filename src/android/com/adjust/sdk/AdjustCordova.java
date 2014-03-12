@@ -23,6 +23,7 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
 			CallbackContext callbackContext) throws JSONException {
         if (action.equals("appDidLaunch") || action.equals("onResume")) {
         	Adjust.onResume(this.cordova.getActivity());
+        	
         	return true;
         } else if (action.equals("trackEvent")) {
         	String eventToken = args.getString(0);
@@ -56,13 +57,15 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
         	return true;
         } else if (action.equals("onPause")) {
         	Adjust.onPause();
+        	
         	return true;
         }
-        Logger logger = AdjustFactory.getLogger();
         String errorMessage = String.format("Invalid call (%s)", action);
         
+        Logger logger = AdjustFactory.getLogger();
         logger.error(errorMessage);
         callbackContext.error(errorMessage);
+        
 		return false;
 	}
 

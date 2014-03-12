@@ -14,14 +14,14 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
-    <js-module src="www/adjust.js" name="AdjustCordova">
-        <clobbers target="AdjustCordova" />
+    <js-module src="www/adjust.js" name="Adjust">
+        <clobbers target="Adjust" />
     </js-module>
 
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="AdjustCordova">
+            <feature name="Adjust">
                 <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
                 <param name="onload" value="true" />
             </feature>
@@ -32,9 +32,9 @@
     <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
-            <feature name="AdjustCordova">
+            <feature name="Adjust">
                 <param name="ios-package" value="AdjustCordova"/>
-            <param name="onload" value="true" />
+                <param name="onload" value="true" />
           </feature>
         </config-file>
 

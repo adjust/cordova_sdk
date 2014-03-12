@@ -13,6 +13,8 @@
 
 @implementation AdjustCordova
 
+static NSString *callbackId = nil;
+
 - (void)appDidLaunch:(CDVInvokedUrlCommand *)command {
     NSString *appToken = [command.arguments objectAtIndex:0];
 
@@ -91,7 +93,7 @@
 }
 
 - (void)setFinishedTrackingCallback:(CDVInvokedUrlCommand *)command {
-    [Adjust setCallbackId:command.callbackId];
+    callbackId = command.callbackId;
     [Adjust setDelegate:self];
 }
 
@@ -105,7 +107,7 @@
 
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:responseData.callBackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 
