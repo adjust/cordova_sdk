@@ -1,0 +1,3 @@
+[submodule "src/ios/Adjust"]
+	path = src/ios/Adjust
+	url = https://github.com/adjust/ios_sdk.git
