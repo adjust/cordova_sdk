@@ -23,6 +23,7 @@
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AdjustCordova">
                 <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
         <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
@@ -30,15 +31,15 @@
     </platform>
     <!-- ios -->
     <platform name="ios">
-        <config-file target="config.xml" parent="widget">
-          <feature name="AdjustCordova">
-            <param name="ios-package" value="AdjustCordova"/>
+        <config-file target="config.xml" parent="/*">
+            <feature name="AdjustCordova">
+                <param name="ios-package" value="AdjustCordova"/>
             <param name="onload" value="true" />
           </feature>
         </config-file>
 
-        <header-file src="src/ios/AdjustCordova.h" />
-        <source-file src="src/ios/AdjustCordova.m" />
+        <header-file src="src/ios/AdjustCordova.h" target-dir=".." />
+        <source-file src="src/ios/AdjustCordova.m" target-dir=".." /> 
 
     </platform>
 </plugin>
