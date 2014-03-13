@@ -8,8 +8,9 @@ var Adjust= {
                      args
                      );
     },
-    appDidLaunch: function (appToken) {
-        this.callCordova('appDidLaunch', appToken);
+    appDidLaunch: function (appToken, environment, logLevel, eventBuffering) {
+        this.callCordova('appDidLaunch', appToken, environment,
+            logLevel, eventBuffering);
     },
     trackEvent: function (eventToken, parameters) {
         this.callCordova('trackEvent', eventToken, parameters);

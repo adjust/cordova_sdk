@@ -20,12 +20,19 @@
 
     <!-- android -->
     <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        </config-file>
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Adjust">
                 <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
                 <param name="onload" value="true" />
-            </feature>
-        </config-file>
+            </feature>
+        </config-file>
+        <source-file src="src/android/Adjust/Adjust/src/com/adjust/sdk"
+            target-dir="src/com/adjust" />
         <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
             target-dir="src/com/adjust/sdk" />
     </platform>

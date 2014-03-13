@@ -1,9 +1,9 @@
 //
 //  AdjustCordova.m
-//  HelloWorld
+//  Adjust
 //
 //  Created by Pedro Filipe on 04/03/14.
-//
+//  Copyright (c) 2012-2014 adeven. All rights reserved.
 //
 
 #import "AdjustCordova.h"
@@ -17,8 +17,31 @@ static NSString *callbackId = nil;
 
 - (void)appDidLaunch:(CDVInvokedUrlCommand *)command {
     NSString *appToken = [command.arguments objectAtIndex:0];
-
     [Adjust appDidLaunch:appToken];
+
+    NSString *environment = [command.arguments objectAtIndex:1];
+    [Adjust setEnvironment:environment];
+
+    NSString *logLevelString = [command.arguments objectAtIndex:2];
+    NSDictionary *logLevelMap = @{
+                                  @"verbose" : [NSNumber numberWithInt:AILogLevelVerbose],
+                                  @"debug" : [NSNumber numberWithInt:AILogLevelDebug],
+                                  @"info" : [NSNumber numberWithInt:AILogLevelInfo],
+                                  @"warn" : [NSNumber numberWithInt:AILogLevelWarn],
+                                  @"error" : [NSNumber numberWithInt:AILogLevelError],
+                                  @"assert" : [NSNumber numberWithInt:AILogLevelAssert],
+                                  };
+
+    NSNumber* logLevelNumber = [logLevelMap objectForKey:logLevelString];
+    if (logLevelNumber == nil) {
+        logLevelNumber = [NSNumber numberWithInt:AILogLevelInfo];
+    }
+    AILogLevel logLevel = [logLevelNumber intValue];
+    [Adjust setLogLevel:logLevel];
+
+    NSNumber *enabledNumber = [command.arguments objectAtIndex:3];
+    BOOL enabled = [enabledNumber boolValue];
+    [Adjust setEventBufferingEnabled:enabled];
 }
 
 - (void)trackEvent:(CDVInvokedUrlCommand *)command {
