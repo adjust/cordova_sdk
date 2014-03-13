@@ -28,7 +28,6 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
 			String logLevel = args.getString(2);
 			boolean eventBuffering = args.getBoolean(3);
 
-
 			Adjust.appDidLaunch(this.cordova.getActivity(), appToken,
 					environment, logLevel, eventBuffering);
 

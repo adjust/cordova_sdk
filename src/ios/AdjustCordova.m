@@ -72,49 +72,6 @@ static NSString *callbackId = nil;
     }
 }
 
-- (void)setLogLevel:(CDVInvokedUrlCommand *)command {
-    NSString *logLevelString = [command.arguments objectAtIndex:0];
-
-    NSDictionary *logLevelMap = @{
-                                  @"verbose" : [NSNumber numberWithInt:AILogLevelVerbose],
-                                  @"debug" : [NSNumber numberWithInt:AILogLevelDebug],
-                                  @"info" : [NSNumber numberWithInt:AILogLevelInfo],
-                                  @"warn" : [NSNumber numberWithInt:AILogLevelWarn],
-                                  @"error" : [NSNumber numberWithInt:AILogLevelError],
-                                  @"assert" : [NSNumber numberWithInt:AILogLevelAssert],
-    };
-
-    NSNumber* logLevelNumber = [logLevelMap objectForKey:logLevelString];
-    if (logLevelNumber == nil) {
-        logLevelNumber = [NSNumber numberWithInt:AILogLevelInfo];
-    }
-
-    AILogLevel logLevel = [logLevelNumber intValue];
-
-    [Adjust setLogLevel:logLevel];
-}
-
-- (void)setEnvironment:(CDVInvokedUrlCommand *)command {
-    NSString *environment = [command.arguments objectAtIndex:0];
-
-    [Adjust setEnvironment:environment];
-}
-
-- (void)setEventBufferingEnabled:(CDVInvokedUrlCommand *)command {
-    NSNumber *enabledNumber = [command.arguments objectAtIndex:0];
-    BOOL enabled = [enabledNumber boolValue];
-
-    [Adjust setEventBufferingEnabled:enabled];
-}
-
-- (void)setMacMd5TrackingEnabled:(CDVInvokedUrlCommand *)command {
-    NSNumber *enabledNumber = [command.arguments objectAtIndex:0];
-    BOOL enabled = [enabledNumber boolValue];
-
-    [Adjust setEventBufferingEnabled:enabled];
-
-}
-
 - (void)setFinishedTrackingCallback:(CDVInvokedUrlCommand *)command {
     callbackId = command.callbackId;
     [Adjust setDelegate:self];
@@ -132,7 +89,6 @@ static NSString *callbackId = nil;
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
-
 
 - (void)onPause:(CDVInvokedUrlCommand *)command {
     [Adjust trackSubsessionEnd];

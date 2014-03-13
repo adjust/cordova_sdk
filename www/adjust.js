@@ -18,18 +18,6 @@ var Adjust= {
     trackRevenue: function (amountInCents, eventToken, parameters) {
         this.callCordova('trackRevenue', amountInCents, eventToken, parameters);
     },
-    setLogLevel: function (logLevel) {
-        this.callCordova('setLogLevel', logLevel);
-    },
-    setEnvironment: function (environment) {
-        this.callCordova('setEnvironment', environment);
-    },
-    setEventBufferingEnabled: function (enabled) {
-        this.callCordova('setEventBufferingEnabled', enabled);
-    },
-    setMacMd5TrackingEnabled: function (enabled) {
-        this.callCordova('setMacMd5TrackingEnabled', enabled);
-    },
     setFinishedTrackingCallback: function (callback) {
         cordova.exec(callback,
                      function errorHandler(err) { },

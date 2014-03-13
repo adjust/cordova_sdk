@@ -14,10 +14,6 @@
 - (void)appDidLaunch:(CDVInvokedUrlCommand *)command;
 - (void)trackEvent:(CDVInvokedUrlCommand *)command;
 - (void)trackRevenue:(CDVInvokedUrlCommand *)command;
-- (void)setLogLevel:(CDVInvokedUrlCommand *)command;
-- (void)setEnvironment:(CDVInvokedUrlCommand *)command;
-- (void)setEventBufferingEnabled:(CDVInvokedUrlCommand *)command;
-- (void)setMacMd5TrackingEnabled:(CDVInvokedUrlCommand *)command;
 - (void)setFinishedTrackingCallback:(CDVInvokedUrlCommand *)command;
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
