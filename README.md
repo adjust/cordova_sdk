@@ -1,23 +1,28 @@
 ## Summary
 
-This is the Cordova SDK of adjust.io™. You can read more about adjust.io™ at [adjust.io].
+This is the Cordova SDK of adjust.io™. You can read more about adjust.io™ at
+[adjust.io].
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the adjust SDK into your Cordova/PhoneGap project. The distinction between Cordova and PhoneGap is in the name of the commands. The differences will get pointed out. We are going to assume the command line interface is used.
+These are the minimal steps required to integrate the adjust SDK into your
+Cordova/PhoneGap project. The distinction between Cordova and PhoneGap is in
+the name of the commands. The differences will get pointed out. We are going to
+assume the command line interface is used.
 
 ### 1. Add the SDK to your project
 
-After you added iOS and/or android as a platform for your project, enter the following command in your project folder:
+After you added iOS and/or Android as a platform for your project, enter the
+following command in your project folder:
 
-#### With the cordova interface
+#### With the Cordova interface
 ```
 > cordova plugin add https://github.com/adjust/cordova_sdk.git
 Installing com.adjust.sdk (android)
 Installing com.adjust.sdk (ios)
 ```
 
-#### With the phonegap interface
+#### With the PhoneGap interface
 ```
 > phonegap local plugin add https://github.com/adjust/cordova_sdk.git
 [phonegap] adding the plugin: ...
@@ -26,7 +31,11 @@ Installing com.adjust.sdk (ios)
 
 ### 2. Integrate with your app
 
-You can call the adjust plugin when the `'deviceready'` javascript event from Cordova is called. You can use the binding for this event in the initial file `www\js\index.js` or create your own. Inside this fuction you can call the `appDidLaunch` function. This tells adjust about the launch of your Application:
+You can call the adjust plugin when the `'deviceready'` javascript event from
+Cordova is called. You can use the binding for this event in the initial file
+`www/js/index.js` or create your own. Inside this fuction you can call the
+`appDidLaunch` function. This tells adjust about the launch of your
+Application:
 
 ```javascript
 document.addEventListener('deviceready', function () {
@@ -34,7 +43,7 @@ document.addEventListener('deviceready', function () {
     var environment = 'sandbox';
     var logLevel = 'info';
     var enableEventBuffering = false;
-    
+
     Adjust.appDidLaunch(appToken, environment, logLevel, enableEventBuffering);
 });
 ```
@@ -49,8 +58,8 @@ you must set the var `var environment` with one of these values:
     var environment = 'production';
 ```
 
-You can increase or decrease the amount of logs you see by setting the
-`var logLevel` with one of the following values:
+You can increase or decrease the amount of logs you see by setting the `var
+logLevel` with one of the following values:
 
 ```javascript
     var logLevel = 'verbose'; // enable all logging
@@ -66,8 +75,8 @@ HTTP requests in order to send them in one batch every minute. You can enable
 event buffering by setting the `var enableEventBuffering` to `true`.
 
 To provide proper session tracking it is required to call certain Adjust
-function every time the app resumes or pauses. Otherwise the SDK might miss
-a session start or session end. In order to do so you should add these binding
+function every time the app resumes or pauses. Otherwise the SDK might miss a
+session start or session end. In order to do so you should add these binding
 for the Cordova events:
 
 ```javascript
@@ -77,15 +86,15 @@ document.addEventListener('resume', function() { Adjust.onResume(); });
 
 ## Additional Features
 
-Once you integrated the adjust SDK into your project, you can take advantage
-of the following features.
+Once you integrated the adjust SDK into your project, you can take advantage of
+the following features.
 
 ### 3. Add tracking of custom events.
 
-You can tell adjust about every event you want. Suppose you want to track
-every tap on a button. You would have to create a new Event Token in your
-[dashboard]. Let's say that Event Token is `abc123`. In your button's
-`click` event function you could then add the following line to track the click:
+You can tell adjust about every event you want. Suppose you want to track every
+tap on a button. You would have to create a new Event Token in your
+[dashboard]. Let's say that Event Token is `abc123`. In your button's `click`
+event function you could then add the following line to track the click:
 
 ```javascript
 Adjust.trackEvent('abc123');
@@ -97,7 +106,6 @@ case you can also put some key-value-pairs in a dictionary and pass it to the
 `trackEvent` function. We will then append these named parameters to your
 callback URL.
 
-
 For example, suppose you have registered the URL
 `http://www.adjust.com/callback` for your event with Event Token `abc123` and
 execute the following lines:
@@ -108,16 +116,19 @@ Adjust.trackEvent('abc1234', parameters);
 ```
 
 In that case we would track the event and send a request to:
+
 ```
-    http://www.adjust.com/callback?key=value&foo=bar
+http://www.adjust.com/callback?key=value&foo=bar
 ```
-It should be mentioned that we support a variety of placeholders like `{idfa}` 
-for iOS or `{android_id}` for android that can be used as parameter values. 
-In the resulting callback the `{idfa}` placeholder would be replaced with the ID 
-for Advertisers of the current device for iOS and the `{android_id}` would be 
-replaced with the AndroidID of the current device for android. Also note that 
-we don't store any of your custom parameters, but only append them to your callbacks.
-If you haven't registered a callback for an event, these parameters won't even be read.
+
+It should be mentioned that we support a variety of placeholders like `{idfa}`
+for iOS or `{android_id}` for Android that can be used as parameter values.  In
+the resulting callback the `{idfa}` placeholder would be replaced with the ID
+for Advertisers of the current device for iOS and the `{android_id}` would be
+replaced with the AndroidID of the current device for Android. Also note that
+we don't store any of your custom parameters, but only append them to your
+callbacks.  If you haven't registered a callback for an event, these parameters
+won't even be read.
 
 ### 4. Add tracking of revenue
 
@@ -150,8 +161,10 @@ Adjust.trackRevenue(1.0, 'abc1234', parameters);
 
 Every time your app tries to track a session, an event or some revenue, you can
 be notified about the success of that operation and receive additional
-information about the current install. For that you can pass a javascript callback 
-function that receives one argument to the `setFinishedTrackingCallback`, such as:
+information about the current install. For that you can pass a javascript
+callback function that receives one argument to the
+`setFinishedTrackingCallback`, such as:
+
 ```javascript
 Adjust.setFinishedTrackingCallback(function (responseData) { });
 ```
@@ -160,7 +173,7 @@ The callback function will get called every time any activity was tracked or
 failed to track. Within the callback function you have access to the
 `responseData` object parameter. Here is a quick summary of its attributes:
 
-- `activityKind` indicates what kind of activity was tracked. 
+- `activityKind` indicates what kind of activity was tracked.
   Returns one of these values:
 
     ```
@@ -168,12 +181,13 @@ failed to track. Within the callback function you have access to the
     event
     revenue
     ```
-- `success` indicates whether or not the tracking attempt was
-  successful. Possible values `'true'` or `'false'`.
-- `willRetry` is true when the request failed, but will be
-  retried. Possible values `'true'` or `'false'`.
-- `error` an error message when the activity failed to track or
-  the response could not be parsed. Is `undefined` otherwise.
+
+- `success` indicates whether or not the tracking attempt was successful.
+  Possible values `'true'` or `'false'`.
+- `willRetry` is true when the request failed, but will be retried. Possible
+  values `'true'` or `'false'`.
+- `error` an error message when the activity failed to track or the response
+  could not be parsed. Is `undefined` otherwise.
 - `trackerToken` the tracker token of the current install. Is `undefined` if
   request failed or response could not be parsed.
 - `trackerName` the tracker name of the current install. Is `undefined` if
