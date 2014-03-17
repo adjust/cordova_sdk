@@ -58,6 +58,15 @@ you must set the var `var environment` with one of these values:
     var environment = 'production';
 ```
 
+**Important:** This value should be set to `sandbox` if and only if you or
+someone else is testing your app. Make sure to set the environment to
+`production` just before you publish the app. Set it back to `sandbox` when you
+start testing it again.
+
+We use this environment to distinguish between real traffic and artificial
+traffic from test devices. It is very important that you keep this value
+meaningful at all times! Especially if you are tracking revenue.
+
 You can increase or decrease the amount of logs you see by setting the `var
 logLevel` with one of the following values:
 
