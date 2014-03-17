@@ -43,7 +43,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
-@property (nonatomic, copy) NSString *callbackId;
 
 @end
 

@@ -23,21 +23,21 @@ import android.app.Activity;
  */
 public class Adjust {
 
-	/**
-	 * Tell Adjust that an activity did resume.
-	 * <p/>
-	 * This is used to initialize Adjust and keep track of the current session state.
-	 * Call this in the onResume method of every activity of your app.
-	 *
-	 * @param activity The activity that has just resumed.
-	 */
-	public static void onResume(Activity activity) {
-		if (null == activityHandler) {
-			activityHandler = new ActivityHandler(activity);
-		}
-		logger = AdjustFactory.getLogger();
-		activityHandler.trackSubsessionStart();
-	}
+    /**
+     * Tell Adjust that an activity did resume.
+     * <p/>
+     * This is used to initialize Adjust and keep track of the current session state.
+     * Call this in the onResume method of every activity of your app.
+     *
+     * @param activity The activity that has just resumed.
+     */
+    public static void onResume(Activity activity) {
+        if (null == activityHandler) {
+            activityHandler = new ActivityHandler(activity);
+        }
+        logger = AdjustFactory.getLogger();
+        activityHandler.trackSubsessionStart();
+    }
 
     /**
      * Tell Adjust that an activity will pause.
@@ -64,22 +64,22 @@ public class Adjust {
         }
     }
 
-	/**
-	 * Tell Adjust that a particular event has happened.
-	 * <p/>
-	 * In your dashboard at http://adjust.io you can assign a callback URL to each
-	 * event type. That URL will get called every time the event is triggered. On
-	 * top of that you can pass a set of parameters to the following method that
-	 * will be forwarded to these callbacks.
-	 *
-	 * @param eventToken The Event Token for this kind of event. They are created
-	 *                   in the dashboard at http://adjust.io and should be six characters long.
-	 * @param parameters An optional dictionary containing the callback parameters.
-	 *                   Provide key-value-pairs to be forwarded to your callbacks.
-	 */
-	public static void trackEvent(String eventToken) {
-		trackEvent(eventToken, null);
-	}
+    /**
+     * Tell Adjust that a particular event has happened.
+     * <p/>
+     * In your dashboard at http://adjust.io you can assign a callback URL to each
+     * event type. That URL will get called every time the event is triggered. On
+     * top of that you can pass a set of parameters to the following method that
+     * will be forwarded to these callbacks.
+     *
+     * @param eventToken The Event Token for this kind of event. They are created
+     *                   in the dashboard at http://adjust.io and should be six characters long.
+     * @param parameters An optional dictionary containing the callback parameters.
+     *                   Provide key-value-pairs to be forwarded to your callbacks.
+     */
+    public static void trackEvent(String eventToken) {
+        trackEvent(eventToken, null);
+    }
 
     public static void trackEvent(String eventToken, Map<String, String> parameters) {
         try {
@@ -91,26 +91,26 @@ public class Adjust {
     }
 
 
-	/**
-	 * Tell Adjust that a user generated some revenue.
-	 * <p/>
-	 * The amount is measured in cents and rounded to on digit after the
-	 * decimal point. If you want to differentiate between several revenue
-	 * types, you can do so by using different event tokens. If your revenue
-	 * events have callbacks, you can also pass in parameters that will be
-	 * forwarded to your end point.
-	 *
-	 * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
-	 * @param eventToken The token for this revenue event (optional, see above)
-	 * @param parameters Parameters for this revenue event (optional, see above)
-	 */
-	public static void trackRevenue(double amountInCents) {
-		Adjust.trackRevenue(amountInCents, null);
-	}
+    /**
+     * Tell Adjust that a user generated some revenue.
+     * <p/>
+     * The amount is measured in cents and rounded to on digit after the
+     * decimal point. If you want to differentiate between several revenue
+     * types, you can do so by using different event tokens. If your revenue
+     * events have callbacks, you can also pass in parameters that will be
+     * forwarded to your end point.
+     *
+     * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
+     * @param eventToken The token for this revenue event (optional, see above)
+     * @param parameters Parameters for this revenue event (optional, see above)
+     */
+    public static void trackRevenue(double amountInCents) {
+        Adjust.trackRevenue(amountInCents, null);
+    }
 
-	public static void trackRevenue(double amountInCents, String eventToken) {
-		Adjust.trackRevenue(amountInCents, eventToken, null);
-	}
+    public static void trackRevenue(double amountInCents, String eventToken) {
+        Adjust.trackRevenue(amountInCents, eventToken, null);
+    }
 
     public static void trackRevenue(double amountInCents, String eventToken, Map<String, String> parameters) {
         try {
@@ -121,22 +121,20 @@ public class Adjust {
         }
     }
 
-	// Special appDidLaunch method used by SDK wrappers such as our Adobe Air SDK.
-	protected static void appDidLaunch(Activity activity, String appToken,
-			String environment, String logLevel, boolean eventBuffering) {
-		activityHandler = new ActivityHandler(activity, appToken, environment,
-				logLevel, eventBuffering);
+    // Special appDidLaunch method used by SDK wrappers such as our Adobe Air SDK.
+    protected static void appDidLaunch(Activity activity, String appToken, String environment, String logLevel, boolean eventBuffering) {
+        activityHandler = new ActivityHandler(activity, appToken, environment, logLevel, eventBuffering);
 	}
 
-	// Special method used by SDK wrappers such as our Adobe Air SDK.
-	protected static void setSdkPrefix(String sdkPrefix) {
-		activityHandler.setSdkPrefix(sdkPrefix);
-	}
+    // Special method used by SDK wrappers such as our Adobe Air SDK.
+    protected static void setSdkPrefix(String sdkPrefix) {
+        activityHandler.setSdkPrefix(sdkPrefix);
+    }
 
-	/**
-	 * Every activity will get forwarded to this handler to be processed in the background.
-	 */
-	private static ActivityHandler activityHandler;
-	private static Logger logger;
+    /**
+     * Every activity will get forwarded to this handler to be processed in the background.
+     */
+    private static ActivityHandler activityHandler;
+    private static Logger logger;
 
 }
