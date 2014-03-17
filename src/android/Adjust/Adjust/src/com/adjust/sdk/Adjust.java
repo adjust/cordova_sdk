@@ -39,28 +39,30 @@ public class Adjust {
 		activityHandler.trackSubsessionStart();
 	}
 
-	/**
-	 * Tell Adjust that an activity will pause.
-	 * <p/>
-	 * This is used to calculate session attributes like session length and subsession count.
-	 * Call this in the onPause method of every activity of your app.
-	 */
-	public static void onPause() {
-		try {
-			logger.debug("onPause");
-			activityHandler.trackSubsessionEnd();
-		} catch (NullPointerException e) {
-			logger.error(NO_ACTIVITY_HANDLER_FOUND);
-		}
-	}
+    /**
+     * Tell Adjust that an activity will pause.
+     * <p/>
+     * This is used to calculate session attributes like session length and subsession count.
+     * Call this in the onPause method of every activity of your app.
+     */
+    public static void onPause() {
+        try {
+            logger.debug("onPause");
+            activityHandler.trackSubsessionEnd();
+        } catch (NullPointerException e) {
+            if(logger != null)
+                logger.error(NO_ACTIVITY_HANDLER_FOUND);
+        }
+    }
 
-	public static void setOnFinishedListener(OnFinishedListener listener) {
-		try {
-			activityHandler.setOnFinishedListener(listener);
-		} catch (NullPointerException e) {
-			logger.error(NO_ACTIVITY_HANDLER_FOUND);
-		}
-	}
+    public static void setOnFinishedListener(OnFinishedListener listener) {
+        try {
+            activityHandler.setOnFinishedListener(listener);
+        } catch (NullPointerException e) {
+            if(logger != null)
+                logger.error(NO_ACTIVITY_HANDLER_FOUND);
+        }
+    }
 
 	/**
 	 * Tell Adjust that a particular event has happened.
@@ -79,13 +81,14 @@ public class Adjust {
 		trackEvent(eventToken, null);
 	}
 
-	public static void trackEvent(String eventToken, Map<String, String> parameters) {
-		try {
-			activityHandler.trackEvent(eventToken, parameters);
-		} catch (NullPointerException e) {
-			logger.error(NO_ACTIVITY_HANDLER_FOUND);
-		}
-	}
+    public static void trackEvent(String eventToken, Map<String, String> parameters) {
+        try {
+            activityHandler.trackEvent(eventToken, parameters);
+        } catch (NullPointerException e) {
+            if(logger != null)
+                logger.error(NO_ACTIVITY_HANDLER_FOUND);
+        }
+    }
 
 
 	/**
@@ -109,13 +112,14 @@ public class Adjust {
 		Adjust.trackRevenue(amountInCents, eventToken, null);
 	}
 
-	public static void trackRevenue(double amountInCents, String eventToken, Map<String, String> parameters) {
-		try {
-			activityHandler.trackRevenue(amountInCents, eventToken, parameters);
-		} catch (NullPointerException e) {
-			logger.error(NO_ACTIVITY_HANDLER_FOUND);
-		}
-	}
+    public static void trackRevenue(double amountInCents, String eventToken, Map<String, String> parameters) {
+        try {
+            activityHandler.trackRevenue(amountInCents, eventToken, parameters);
+        } catch (NullPointerException e) {
+            if(logger != null)
+                logger.error(NO_ACTIVITY_HANDLER_FOUND);
+        }
+    }
 
 	// Special appDidLaunch method used by SDK wrappers such as our Adobe Air SDK.
 	protected static void appDidLaunch(Activity activity, String appToken,
