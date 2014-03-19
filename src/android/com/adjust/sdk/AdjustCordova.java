@@ -31,8 +31,7 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
 			Adjust.appDidLaunch(this.cordova.getActivity(), appToken,
 					environment, logLevel, eventBuffering);
 
-			// Adjust.onResume(this.cordova.getActivity());
-
+			Adjust.setSdkPrefix("cordova3.0.0");
 			return true;
 		} else if (action.equals("trackEvent")) {
 			String eventToken = args.getString(0);

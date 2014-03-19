@@ -19,6 +19,8 @@ static NSString *callbackId = nil;
     NSString *appToken = [command.arguments objectAtIndex:0];
     [Adjust appDidLaunch:appToken];
 
+    [Adjust setSdkPrefix:@"cordova3.0.0"];
+
     NSString *environment = [command.arguments objectAtIndex:1];
     [Adjust setEnvironment:environment];
 
