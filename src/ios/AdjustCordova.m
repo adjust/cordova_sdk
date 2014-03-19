@@ -78,7 +78,7 @@ static NSString *callbackId = nil;
 }
 
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
-    NSDictionary *responseDataDic = [responseData toDic];
+    NSDictionary *responseDataDic = [responseData dictionary];
 
     CDVPluginResult *pluginResult = [ CDVPluginResult
                                      resultWithStatus: CDVCommandStatus_OK
