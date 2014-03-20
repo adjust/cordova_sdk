@@ -35,24 +35,26 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
 			return true;
 		} else if (action.equals("trackEvent")) {
 			String eventToken = args.getString(0);
-			if (args.length() == 1) {
+			JSONObject jsonParameters = args.optJSONObject(1);
+			if (jsonParameters == null) {
 				Adjust.trackEvent(eventToken);
 			} else {
-				JSONObject jsonParameters = args.getJSONObject(1);
 				Map<String, String> parameters = jsonObjectToMap(jsonParameters);
 				Adjust.trackEvent(eventToken, parameters);
 			}
 			return true;
 		} else if (action.equals("trackRevenue")) {
 			double amountInCents = args.getDouble(0);
-			if (args.length() == 1) {
+			String eventToken = args.optString(1);
+			JSONObject jsonParameters = args.optJSONObject(2);
+
+			if (eventToken == "null" ||
+				eventToken == null)
+			{
 				Adjust.trackRevenue(amountInCents);
-			} else if (args.length() == 2) {
-				String eventToken = args.getString(1);
+			} else if (jsonParameters == null) {
 				Adjust.trackRevenue(amountInCents, eventToken);
 			} else {
-				String eventToken = args.getString(1);
-				JSONObject jsonParameters = args.getJSONObject(2);
 				Map<String, String> parameters = jsonObjectToMap(jsonParameters);
 				Adjust.trackRevenue(amountInCents, eventToken, parameters);
 			}
