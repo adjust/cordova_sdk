@@ -1,7 +1,7 @@
 var Adjust= {
     callCordova: function (action) {
         var args = Array.prototype.slice.call(arguments, 1);
-        cordova.exec(function callback(data) { alert(action + ' ' + data); },
+        cordova.exec(function callback(data) { },
                      function errorHandler(err) { },
                      'Adjust',
                      action,
