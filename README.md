@@ -6,30 +6,25 @@ This is the Cordova SDK of adjust.io™. You can read more about adjust.io™ at
 ## Basic Installation
 
 These are the minimal steps required to integrate the adjust SDK into your
-Cordova/PhoneGap project. The distinction between Cordova and PhoneGap is in
-the name of the commands. The differences will get pointed out. We are going to
-assume the command line interface is used.
+Cordova project. We are going to assume the command line interface is used.
 
-### 1. Add the SDK to your project
+### 1. Get the SDK
+
+Download the latest version from our [releases page][releases]. Extract the
+zip file in a folder of your choice.
+
+### 2. Add the SDK to your project
 
 After you added iOS and/or Android as a platform for your project, enter the
 following command in your project folder:
 
-#### With the Cordova interface
 ```
-> cordova plugin add https://github.com/adjust/cordova_sdk.git
+> cordova plugin add path_to_folder/cordova_sdk
 Installing com.adjust.sdk (android)
 Installing com.adjust.sdk (ios)
 ```
 
-#### With the PhoneGap interface
-```
-> phonegap local plugin add https://github.com/adjust/cordova_sdk.git
-[phonegap] adding the plugin: ...
-[phonegap] successfully added the plugin
-```
-
-### 2. Integrate with your app
+### 3. Integrate with your app
 
 You can call the adjust plugin when the `'deviceready'` javascript event from
 Cordova is called. You can use the binding for this event in the initial file
@@ -98,7 +93,7 @@ document.addEventListener('resume', function() { Adjust.onResume(); });
 Once you integrated the adjust SDK into your project, you can take advantage of
 the following features.
 
-### 3. Add tracking of custom events.
+### 4. Add tracking of custom events.
 
 You can tell adjust about every event you want. Suppose you want to track every
 tap on a button. You would have to create a new Event Token in your
@@ -139,7 +134,7 @@ we don't store any of your custom parameters, but only append them to your
 callbacks.  If you haven't registered a callback for an event, these parameters
 won't even be read.
 
-### 4. Add tracking of revenue
+### 5. Add tracking of revenue
 
 If your users can generate revenue by clicking on advertisements or making
 in-app purchases you can track those revenues. If, for example, a click is
@@ -166,7 +161,7 @@ var parameters = { 'key' : 'value', 'foo' : 'bar' };
 Adjust.trackRevenue(1.0, 'abc1234', parameters);
 ```
 
-### 5. Receive delegate callbacks
+### 6. Receive delegate callbacks
 
 Every time your app tries to track a session, an event or some revenue, you can
 be notified about the success of that operation and receive additional
@@ -202,6 +197,7 @@ failed to track. Within the callback function you have access to the
 - `trackerName` the tracker name of the current install. Is `undefined` if
   request failed or response could not be parsed.
 
+[releases]: https://github.com/adjust/cordova_sdk/releases
 [adjust.io]: http://adjust.io
 [dashboard]: http://adjust.io
 
