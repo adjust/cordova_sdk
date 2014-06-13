@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Pedro Filipe on 04/03/14.
-//  Copyright (c) 2012-2014 adeven. All rights reserved.
+//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
 
 #import "AdjustCordova.h"

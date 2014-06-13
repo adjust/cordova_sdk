@@ -1,7 +1,7 @@
 ## Summary
 
-This is the Cordova SDK of adjust.io™. You can read more about adjust.io™ at
-[adjust.io].
+This is the Cordova SDK of adjust™. You can read more about adjust™ at
+[adjust.com].
 
 ## Basic Installation
 
@@ -199,17 +199,17 @@ failed to track. Within the callback function you have access to the
 
 Please make sure to consider [applicable attribution data policies.][attribution-data]
 
+[adjust.com]: http://adjust.com
+[dashboard]: http://adjust.com
 [releases]: https://github.com/adjust/cordova_sdk/releases
-[adjust.io]: http://adjust.io
-[dashboard]: http://adjust.io
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 
 ## License
 
 The adjust-sdk is licensed under the MIT License.
 
-Copyright (c) 2012-2013 adeven GmbH,
-http://www.adeven.com
+Copyright (c) 2012-2014 adjust GmbH,
+http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
