@@ -197,9 +197,12 @@ failed to track. Within the callback function you have access to the
 - `trackerName` the tracker name of the current install. Is `undefined` if
   request failed or response could not be parsed.
 
+Please make sure to consider [applicable attribution data policies.][attribution-data]
+
 [releases]: https://github.com/adjust/cordova_sdk/releases
 [adjust.io]: http://adjust.io
 [dashboard]: http://adjust.io
+[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 
 ## License
 
