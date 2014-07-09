@@ -22,7 +22,6 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
     public boolean execute(String action, JSONArray args,
             CallbackContext callbackContext) throws JSONException {
         if (action.equals("appDidLaunch")) {
-
             String appToken = args.getString(0);
             String environment = args.getString(1);
             String logLevel = args.getString(2);
@@ -110,5 +109,4 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
         }
         return map;
     }
-
 }

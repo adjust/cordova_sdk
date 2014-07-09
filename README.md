@@ -26,31 +26,19 @@ Installing com.adjust.sdk (ios)
 
 ### 3. Integrate with your app
 
-You can call the adjust plugin when the `'deviceready'` javascript event from
-Cordova is called. You can use the binding for this event in the initial file
-`www/js/index.js` or create your own. Inside this fuction you can call the
-`appDidLaunch` function. This tells adjust about the launch of your
-Application:
+The adjust plugin automatically registers with the cordova events `deviceready`, `resume` and `pause`.
+To configure the parameters of your app to adjust, follow these steps:
 
-```javascript
-document.addEventListener('deviceready', function () {
-    var appToken = '{YourAppToken}';
-    var environment = 'sandbox';
-    var logLevel = 'info';
-    var enableEventBuffering = false;
-
-    Adjust.appDidLaunch(appToken, environment, logLevel, enableEventBuffering);
-});
-```
-
-Replace `{YourAppToken}` with your App Token. You can find in your [dashboard].
+1. Open the file `plugins/com.adjust.sdk/config/adjust.json`.
+2. Replace the  `appToken` value with  the App Token that you can find in your [dashboard].
+3. Copy the the adjust hook folder `plugins/com.adjust.sdk/hooks` to the root of your project. It contains the script to replace the configuration values from the `adjust.json` file.
 
 Depending on whether or not you build your app for testing or for production
-you must set the var `var environment` with one of these values:
+you must set the key `environment` with one of these values:
 
 ```javascript
-    var environment = 'sandbox';
-    var environment = 'production';
+    "environment" : "sandbox"
+    "environment" : "production"
 ```
 
 **Important:** This value should be set to `sandbox` if and only if you or
@@ -62,31 +50,21 @@ We use this environment to distinguish between real traffic and artificial
 traffic from test devices. It is very important that you keep this value
 meaningful at all times! Especially if you are tracking revenue.
 
-You can increase or decrease the amount of logs you see by setting the `var
-logLevel` with one of the following values:
+You can increase or decrease the amount of logs you see by setting the key
+`logLevel` with one of the following values:
 
 ```javascript
-    var logLevel = 'verbose'; // enable all logging
-    var logLevel = 'debug';   // enable more logging
-    var logLevel = 'info';    // the default
-    var logLevel = 'warn';    // disable info logging
-    var logLevel = 'error';   // disable warnings as well
-    var logLevel = 'assert';  // disable errors as well
+    "logLevel" : "verbose" // enable all logging
+    "logLevel" : "debug"   // enable more logging
+    "logLevel" : "info"    // the default
+    "logLevel" : "warn"    // disable info logging
+    "logLevel" : "error"   // disable warnings as well
+    "logLevel" : "assert"  // disable errors as well
 ```
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
-event buffering by setting the `var enableEventBuffering` to `true`.
-
-To provide proper session tracking it is required to call certain Adjust
-function every time the app resumes or pauses. Otherwise the SDK might miss a
-session start or session end. In order to do so you should add these binding
-for the Cordova events:
-
-```javascript
-document.addEventListener('pause', function () { Adjust.onPause(); });
-document.addEventListener('resume', function() { Adjust.onResume(); });
-```
+event buffering by setting the key `enableEventBuffering` to `true`.
 
 ## Additional Features
 
@@ -184,6 +162,7 @@ failed to track. Within the callback function you have access to the
     session
     event
     revenue
+    reattribution
     ```
 
 - `success` indicates whether or not the tracking attempt was successful.
@@ -195,6 +174,14 @@ failed to track. Within the callback function you have access to the
 - `trackerToken` the tracker token of the current install. Is `undefined` if
   request failed or response could not be parsed.
 - `trackerName` the tracker name of the current install. Is `undefined` if
+  request failed or response could not be parsed.
+- `network` the first grouping level of the tracker name. Is `undefined` if
+  request failed or response could not be parsed.
+- `campaign` the second grouping level of the tracker name. Is `undefined` if
+  request failed or response could not be parsed.
+- `adgroup` the third grouping level of the tracker name. Is `undefined` if
+  request failed or response could not be parsed.
+- `creative` the fourth grouping level of the tracker name. Is `undefined` if
   request failed or response could not be parsed.
 
 Please make sure to consider [applicable attribution data policies.][attribution-data]
