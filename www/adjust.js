@@ -28,6 +28,12 @@ var Adjust= {
     setFinishedTrackingCallback: function (callback) {
         callCordovaCallback('setFinishedTrackingCallback',callback);
     },
+    setEnabled: function (enabled) {
+        callCordova('setEnabled', enabled);
+    },
+    isEnabled: function (callback) {
+        callCordovaCallback('isEnabled', callback);
+    }
 };
 
 function startAdjust() {

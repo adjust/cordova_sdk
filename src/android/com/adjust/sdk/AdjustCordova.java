@@ -74,7 +74,20 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
             Adjust.onResume(this.cordova.getActivity());
 
             return true;
+        } else if (action.equals("setEnabled")) {
+            Boolean enabled = args.getBoolean(0);
+            Adjust.setEnabled(enabled);
+
+            return true;
+        } else if (action.equals("isEnabled")) {
+            Boolean isEnabled = Adjust.isEnabled();
+            PluginResult pluginResult = new PluginResult(Status.OK,
+                    isEnabled);
+            callbackContext.sendPluginResult(pluginResult);
+
+            return true;
         }
+
         String errorMessage = String.format("Invalid call (%s)", action);
 
         Logger logger = AdjustFactory.getLogger();
