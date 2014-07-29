@@ -1,0 +1,6 @@
+{
+    "appToken" : "{yourAppToken}",
+    "environment" : "sandbox",
+    "logLevel" : "info",
+    "enableEventBuffering" : "false"
+}

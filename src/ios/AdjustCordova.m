@@ -19,7 +19,7 @@ static NSString *callbackId = nil;
     NSString *appToken = [command.arguments objectAtIndex:0];
     [Adjust appDidLaunch:appToken];
 
-    [Adjust setSdkPrefix:@"cordova3.0.0"];
+    [Adjust setSdkPrefix:@"cordova3.4.0"];
 
     NSString *environment = [command.arguments objectAtIndex:1];
     [Adjust setEnvironment:environment];
@@ -100,4 +100,24 @@ static NSString *callbackId = nil;
     [Adjust trackSubsessionStart];
 }
 
+- (void)setEnabled:(CDVInvokedUrlCommand *)command {
+    NSNumber * isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
+
+    if (isEnabledNumber == nil) return;
+
+    BOOL isEnabled = [isEnabledNumber boolValue];
+
+    [Adjust setEnabled:isEnabled];
+}
+
+- (void)isEnabled:(CDVInvokedUrlCommand *)command {
+    BOOL isEnabled = [Adjust isEnabled];
+
+    CDVPluginResult *pluginResult = [ CDVPluginResult
+                                     resultWithStatus: CDVCommandStatus_OK
+                                     messageAsBool: isEnabled
+                                     ];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 @end

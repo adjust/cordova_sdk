@@ -16,9 +16,9 @@
 - (void)trackRevenue:(CDVInvokedUrlCommand *)command;
 - (void)setFinishedTrackingCallback:(CDVInvokedUrlCommand *)command;
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
-
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
-
+- (void)setEnabled:(CDVInvokedUrlCommand *)command;
+- (void)isEnabled:(CDVInvokedUrlCommand *)command;
 
 @end

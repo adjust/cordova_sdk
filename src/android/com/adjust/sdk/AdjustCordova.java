@@ -22,7 +22,6 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
     public boolean execute(String action, JSONArray args,
             CallbackContext callbackContext) throws JSONException {
         if (action.equals("appDidLaunch")) {
-
             String appToken = args.getString(0);
             String environment = args.getString(1);
             String logLevel = args.getString(2);
@@ -31,7 +30,9 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
             Adjust.appDidLaunch(this.cordova.getActivity(), appToken,
                     environment, logLevel, eventBuffering);
 
-            Adjust.setSdkPrefix("cordova3.0.0");
+            Adjust.setSdkPrefix("cordova3.4.0");
+            Adjust.onResume(this.cordova.getActivity());
+
             return true;
         } else if (action.equals("trackEvent")) {
             String eventToken = args.getString(0);
@@ -73,7 +74,20 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
             Adjust.onResume(this.cordova.getActivity());
 
             return true;
+        } else if (action.equals("setEnabled")) {
+            Boolean enabled = args.getBoolean(0);
+            Adjust.setEnabled(enabled);
+
+            return true;
+        } else if (action.equals("isEnabled")) {
+            Boolean isEnabled = Adjust.isEnabled();
+            PluginResult pluginResult = new PluginResult(Status.OK,
+                    isEnabled);
+            callbackContext.sendPluginResult(pluginResult);
+
+            return true;
         }
+
         String errorMessage = String.format("Invalid call (%s)", action);
 
         Logger logger = AdjustFactory.getLogger();
@@ -108,5 +122,4 @@ public class AdjustCordova extends CordovaPlugin implements OnFinishedListener {
         }
         return map;
     }
-
 }
