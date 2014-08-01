@@ -14,6 +14,8 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
+    <dependency id="com.google.playservices" />
+
     <js-module src="www/adjust.js" name="Adjust">
         <clobbers target="Adjust" />
     </js-module>
