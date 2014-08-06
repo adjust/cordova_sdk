@@ -32,6 +32,7 @@ To configure the parameters of your app to adjust, follow these steps:
 1. Open the file `plugins/com.adjust.sdk/config/adjust.json`.
 2. Replace the  `appToken` value with  the App Token that you can find in your [dashboard].
 3. Copy the the adjust hook folder `plugins/com.adjust.sdk/hooks` to the root of your project. It contains the script to replace the configuration values from the `adjust.json` file.
+4. There should be a new file `hooks/after_prepare/replace_adjust.js` located at the root of your project. Check if this file has execute permission and add the permission if needed.
 
 Depending on whether or not you build your app for testing or for production
 you must set the key `environment` with one of these values:
