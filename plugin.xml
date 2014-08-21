@@ -80,5 +80,8 @@
         <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.m" /> 
         <header-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.h" />
         <source-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.m" /> 
+
+        <framework src="AdSupport.framework" weak="true" />
+        <framework src="iAd.framework" weak="true" />
     </platform>
 </plugin>
