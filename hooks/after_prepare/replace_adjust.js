@@ -45,24 +45,35 @@ function main() {
     var configJson = getConfigJson(rootDir);
     if (!configJson) { return; }
 
-    var filePaths= [
-        // android
-        "platforms/android/assets/www/plugins/com.adjust.sdk/www/adjust.js",
-        // ios
-        "platforms/ios/www/plugins/com.adjust.sdk/www/adjust.js"
-    ];
+    var androidPath = "platforms/android/assets/www/plugins/com.adjust.sdk/www/adjust.js";
+    var iOsPath = "platforms/ios/www/plugins/com.adjust.sdk/www/adjust.js";
 
-    filePaths.forEach(function(val, index, array) {
-        var fullFilename = path.join(rootDir, val);
+    replaceFiles([androidPath], configJson, rootDir, "_android");
+    replaceFiles([iOsPath], configJson, rootDir, "_ios");
+    replaceFiles([androidPath, iOsPath], configJson, rootDir);
+}
+
+function replaceFiles(filePaths, configJson, rootDir, suffix) {
+    for (var i_path = 0; i_path < filePaths.length; i_path++) {
+        var fullFilename = path.join(rootDir, filePaths[i_path]);
         if (fs.existsSync(fullFilename)) {
-            for(key in configJson) {
-                var adjust_key = "{adjust_" + key + "}";
-                replaceStringInFile(fullFilename, adjust_key, configJson[key]);
+            for (key in  configJson) {
+                if (suffix) {
+                    if (key.match(suffix + "$") == suffix) {
+                        var suffix_regex = new RegExp(suffix + "$");
+                        var key_no_suffix = key.replace(suffix_regex, "");
+                        var adjust_key = "{adjust_" + key_no_suffix + "}";
+                        replaceStringInFile(fullFilename, adjust_key, configJson[key]);
+                    }
+                } else {
+                    var adjust_key = "{adjust_" + key + "}";
+                    replaceStringInFile(fullFilename, adjust_key, configJson[key]);
+                }
             }
         } else {
             console.log("replace_adjust missing target file: " + fullFilename);
         }
-    });
+    }
 }
 
 main();
