@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="3.4.0">
+    version="3.4.1">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -13,6 +13,8 @@
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
+
+    <dependency id="com.google.playservices" />
 
     <js-module src="www/adjust.js" name="Adjust">
         <clobbers target="Adjust" />
@@ -80,5 +82,8 @@
         <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.m" /> 
         <header-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.h" />
         <source-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.m" /> 
+
+        <framework src="AdSupport.framework" weak="true" />
+        <framework src="iAd.framework" weak="true" />
     </platform>
 </plugin>
