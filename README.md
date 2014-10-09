@@ -30,8 +30,9 @@ The adjust plugin automatically registers with the cordova events `deviceready`,
 To configure the parameters of your app to adjust, follow these steps:
 
 1. Open the file `plugins/com.adjust.sdk/config/adjust.json`.
-2. Replace the  `appToken` value with  the App Token that you can find in your [dashboard].
+2. Replace the `appToken` value with  the App Token that you can find in your [dashboard].
 3. Copy the the adjust hook folder `plugins/com.adjust.sdk/hooks` to the root of your project. It contains the script to replace the configuration values from the `adjust.json` file.
+4. There should be a new file `hooks/after_prepare/replace_adjust.js` located at the root of your project. Check if this file has execute permission and add the permission if needed.
 
 Depending on whether or not you build your app for testing or for production
 you must set the key `environment` with one of these values:
@@ -65,6 +66,20 @@ You can increase or decrease the amount of logs you see by setting the key
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
 event buffering by setting the key `enableEventBuffering` to `true`.
+
+#### Google Play Store
+
+Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google_play_services].
+
+You can integrate Google Play Services into a Cordova project by installing a corresponding [plugin][google_play_services_plugin].
+
+If you are using Proguard, add these lines to your Proguard file:
+
+````
+-keep class com.adjust.sdk.** { *; }
+-keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+```
 
 ## Additional Features
 
@@ -190,6 +205,9 @@ Please make sure to consider [applicable attribution data policies.][attribution
 [dashboard]: http://adjust.com
 [releases]: https://github.com/adjust/cordova_sdk/releases
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[google_play_services]: http://developer.android.com/google/play-services/index.html
+[google_ad_id]: https://developer.android.com/google/play-services/id.html
+[google_play_services_plugin]: https://github.com/MobileChromeApps/google-play-services
 
 ## License
 
