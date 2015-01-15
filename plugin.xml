@@ -47,8 +47,8 @@
           </feature>
         </config-file>
 
-        <header-file src="src/ios/Adjust/AdjustCordova.h" />
-        <source-file src="src/ios/Adjust/AdjustCordova.m" /> 
+        <header-file src="src/ios/AdjustCordova.h" />
+        <source-file src="src/ios/AdjustCordova.m" /> 
 
         <header-file src="lib/ios/Adjust/Adjust.h" />
         <source-file src="lib/ios/Adjust/Adjust.m" /> 
