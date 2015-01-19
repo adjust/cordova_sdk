@@ -20,6 +20,8 @@
 
     <!-- android -->
     <platform name="android">
+        <dependency id="com.google.playservices"/>
+
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -31,7 +33,7 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-        <source-file src="src/android/Adjust/Adjust/src/com/adjust/sdk"
+        <source-file src="lib/android/sdk"
             target-dir="src/com/adjust" />
         <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
             target-dir="src/com/adjust/sdk" />
@@ -47,39 +49,39 @@
 
         <header-file src="src/ios/AdjustCordova.h" />
         <source-file src="src/ios/AdjustCordova.m" /> 
-        
-        <header-file src="src/ios/Adjust/Adjust/Adjust.h" />
-        <source-file src="src/ios/Adjust/Adjust/Adjust.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityKind.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityKind.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityPackage.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityPackage.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityState.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityState.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdjustFactory.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdjustFactory.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AILogger.h" />
-        <source-file src="src/ios/Adjust/Adjust/AILogger.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIPackageBuilder.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIPackageBuilder.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIPackageHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIPackageHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIRequestHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIRequestHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIResponseData.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIResponseData.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AITimer.h" />
-        <source-file src="src/ios/Adjust/Adjust/AITimer.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIUtil.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIUtil.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/NSData+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSData+AIAdditions.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.m" /> 
+
+        <header-file src="lib/ios/Adjust/Adjust.h" />
+        <source-file src="lib/ios/Adjust/Adjust.m" /> 
+        <header-file src="lib/ios/Adjust/AIActivityHandler.h" />
+        <source-file src="lib/ios/Adjust/AIActivityHandler.m" /> 
+        <header-file src="lib/ios/Adjust/AIActivityKind.h" />
+        <source-file src="lib/ios/Adjust/AIActivityKind.m" /> 
+        <header-file src="lib/ios/Adjust/AIActivityPackage.h" />
+        <source-file src="lib/ios/Adjust/AIActivityPackage.m" /> 
+        <header-file src="lib/ios/Adjust/AIActivityState.h" />
+        <source-file src="lib/ios/Adjust/AIActivityState.m" /> 
+        <header-file src="lib/ios/Adjust/AIAdjustFactory.h" />
+        <source-file src="lib/ios/Adjust/AIAdjustFactory.m" /> 
+        <header-file src="lib/ios/Adjust/AILogger.h" />
+        <source-file src="lib/ios/Adjust/AILogger.m" /> 
+        <header-file src="lib/ios/Adjust/AIPackageBuilder.h" />
+        <source-file src="lib/ios/Adjust/AIPackageBuilder.m" /> 
+        <header-file src="lib/ios/Adjust/AIPackageHandler.h" />
+        <source-file src="lib/ios/Adjust/AIPackageHandler.m" /> 
+        <header-file src="lib/ios/Adjust/AIRequestHandler.h" />
+        <source-file src="lib/ios/Adjust/AIRequestHandler.m" /> 
+        <header-file src="lib/ios/Adjust/AIResponseData.h" />
+        <source-file src="lib/ios/Adjust/AIResponseData.m" /> 
+        <header-file src="lib/ios/Adjust/AITimer.h" />
+        <source-file src="lib/ios/Adjust/AITimer.m" /> 
+        <header-file src="lib/ios/Adjust/AIUtil.h" />
+        <source-file src="lib/ios/Adjust/AIUtil.m" /> 
+        <header-file src="lib/ios/Adjust/AIAdditions/NSData+AIAdditions.h" />
+        <source-file src="lib/ios/Adjust/AIAdditions/NSData+AIAdditions.m" /> 
+        <header-file src="lib/ios/Adjust/AIAdditions/NSString+AIAdditions.h" />
+        <source-file src="lib/ios/Adjust/AIAdditions/NSString+AIAdditions.m" /> 
+        <header-file src="lib/ios/Adjust/AIAdditions/UIDevice+AIAdditions.h" />
+        <source-file src="lib/ios/Adjust/AIAdditions/UIDevice+AIAdditions.m" /> 
 
         <framework src="AdSupport.framework" weak="true" />
         <framework src="iAd.framework" weak="true" />

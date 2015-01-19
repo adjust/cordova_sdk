@@ -1,38 +1,38 @@
 ## Summary
 
 This is the Cordova SDK of adjust™. You can read more about adjust™ at
-[adjust.com].
+[adjust.com]. 
+
+This repo is a fork of the original under https://github.com/adjust/cordova_sdk. 
+This repo can be installed directly from github.
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the adjust SDK into your
-Cordova project. We are going to assume the command line interface is used.
+Install via cordova from repository ( if using ionic: replace cordova by ionic ).
 
-### 1. Get the SDK
-
-Download the latest version from our [releases page][releases]. Extract the
-zip file in a folder of your choice.
-
-### 2. Add the SDK to your project
-
-After you added iOS and/or Android as a platform for your project, enter the
-following command in your project folder:
-
-```
-> cordova plugin add path_to_folder/cordova_sdk
-Installing com.adjust.sdk (android)
-Installing com.adjust.sdk (ios)
+```bash
+    cordova plugin add https://github.com/truffls/cordova_sdk.git
 ```
 
-### 3. Integrate with your app
+**Hin:t** The plugin is not registered in cordova plugin registry because this is just 
+the fork. It was forked to adapt the way to configure the plugin to our needs and
+for automated install support.
 
-The adjust plugin automatically registers with the cordova events `deviceready`, `resume` and `pause`.
-To configure the parameters of your app to adjust, follow these steps:
 
-1. Open the file `plugins/com.adjust.sdk/config/adjust.json`.
-2. Replace the `appToken` value with  the App Token that you can find in your [dashboard].
-3. Copy the the adjust hook folder `plugins/com.adjust.sdk/hooks` to the root of your project. It contains the script to replace the configuration values from the `adjust.json` file.
-4. There should be a new file `hooks/after_prepare/replace_adjust.js` located at the root of your project. Check if this file has execute permission and add the permission if needed.
+
+The adjust plugin automatically registers with the cordova events `resume` and `pause`.
+To use Adjust, add these lines to your code:
+
+```javascript
+    document.addEventListener( 'deviceready', function ready () {
+
+        Adjust.configure( '{appToken}', '{environment}', '{logLevel}', {enableEventBuffering} );
+        Adjust.start();
+
+    }, false );
+
+```
+
 
 Depending on whether or not you build your app for testing or for production
 you must set the key `environment` with one of these values:
@@ -67,26 +67,28 @@ If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
 event buffering by setting the key `enableEventBuffering` to `true`.
 
-#### Google Play Store
+### Google Play Store
 
-Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google_play_services].
+Is now added as dependency an will be installed automatically.
 
-You can integrate Google Play Services into a Cordova project by installing a corresponding [plugin][google_play_services_plugin].
+### Build vor Release
 
-If you are using Proguard, add these lines to your Proguard file:
+Call build_release.sh get all submodules and copy the dependencies into lib folder,
+where plugin.xml references the files.
 
-````
--keep class com.adjust.sdk.** { *; }
--keep class com.google.android.gms.common.** { *; }
--keep class com.google.android.gms.ads.identifier.** { *; }
+```bash
+    ./build_release.sh
 ```
+
+After that check updated files in lib folder into repository and commit changes.
+
 
 ## Additional Features
 
 Once you integrated the adjust SDK into your project, you can take advantage of
 the following features.
 
-### 4. Add tracking of custom events.
+### Add tracking of custom events.
 
 You can tell adjust about every event you want. Suppose you want to track every
 tap on a button. You would have to create a new Event Token in your
@@ -127,7 +129,7 @@ we don't store any of your custom parameters, but only append them to your
 callbacks.  If you haven't registered a callback for an event, these parameters
 won't even be read.
 
-### 5. Add tracking of revenue
+### Add tracking of revenue
 
 If your users can generate revenue by clicking on advertisements or making
 in-app purchases you can track those revenues. If, for example, a click is
@@ -154,7 +156,7 @@ var parameters = { 'key' : 'value', 'foo' : 'bar' };
 Adjust.trackRevenue(1.0, 'abc1234', parameters);
 ```
 
-### 6. Receive delegate callbacks
+### Receive delegate callbacks
 
 Every time your app tries to track a session, an event or some revenue, you can
 be notified about the success of that operation and receive additional

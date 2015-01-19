@@ -18,40 +18,78 @@ function callCordovaCallback (action, callback) {
     );
 }
 
-var Adjust= {
+
+var adjustStarted = false;
+var config = {
+    appToken: '',
+    environment: '',
+    logLevel: '',
+    enableEventBuffering: '',
+};
+
+var Adjust = {
+
+    configure: function ( appToken, environment, logLevel, enableEventBuffering ) {
+
+        config.appToken = appToken;
+        config.environment = environment;
+        config.logLevel = logLevel;
+        config.enableEventBuffering = enableEventBuffering;
+
+    },
+
+    getConfiguration: function () {
+        return config;
+    },
+
+    start: function() {
+
+        if ( config.appToken === '' ) {
+            console.error( 'Adjust not configured propperly: appToken is not set!' );
+            return;
+        }
+
+        if ( !adjustStarted ) {
+            callCordova('appDidLaunch', config.appToken, config.environment,
+                config.logLevel, config.enableEventBuffering);
+            console.log( 'Ajdust started' );
+            adjustStarted = true;
+        } else {
+            console.error( 'Adjust has been started before.' );
+        }
+
+    },
+
     trackEvent: function (eventToken, parameters) {
         callCordova('trackEvent', eventToken, parameters);
     },
+
     trackRevenue: function (amountInCents, eventToken, parameters) {
         callCordova('trackRevenue', amountInCents, eventToken, parameters);
     },
+
     setFinishedTrackingCallback: function (callback) {
         callCordovaCallback('setFinishedTrackingCallback',callback);
     },
+
     setEnabled: function (enabled) {
         callCordova('setEnabled', enabled);
     },
+
     isEnabled: function (callback) {
         callCordovaCallback('isEnabled', callback);
     }
+
 };
 
-function startAdjust() {
-    var appToken = '{adjust_appToken}';
-    var environment = '{adjust_environment}';
-    var logLevel = '{adjust_logLevel}';
-    var enableEventBuffering = '{adjust_enableEventBuffering}';
-    callCordova('appDidLaunch', appToken, environment,
-            logLevel, enableEventBuffering);
-}
 function onPause () {
     callCordova('onPause');
 }
+
 function onResume () {
     callCordova('onResume');
 }
 
-document.addEventListener('deviceready', startAdjust ,false);
 document.addEventListener('resume', onResume, false);
 document.addEventListener('pause', onPause, false);
 
