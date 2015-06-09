@@ -71,7 +71,7 @@ event buffering by setting the key `enableEventBuffering` to `true`.
 
 Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google_play_services].
 
-You can integrate Google Play Services into a Cordova project by installing a corresponding [plugin][google_play_services_plugin].
+Assuming you have the appropriate repositories available, this plugin will install the necessary Google services frameworks for that.
 
 If you are using Proguard, add these lines to your Proguard file:
 

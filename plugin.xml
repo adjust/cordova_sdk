@@ -35,6 +35,8 @@
             target-dir="src/com/adjust" />
         <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
             target-dir="src/com/adjust/sdk" />
+        <framework src="com.google.android.gms:play-services-identity:+" />
+        <framework src="com.google.android.gms:play-services-ads:+" />
     </platform>
     <!-- ios -->
     <platform name="ios">
@@ -47,7 +49,7 @@
 
         <header-file src="src/ios/AdjustCordova.h" />
         <source-file src="src/ios/AdjustCordova.m" /> 
-        
+
         <header-file src="src/ios/Adjust/Adjust/Adjust.h" />
         <source-file src="src/ios/Adjust/Adjust/Adjust.m" /> 
         <header-file src="src/ios/Adjust/Adjust/AIActivityHandler.h" />
