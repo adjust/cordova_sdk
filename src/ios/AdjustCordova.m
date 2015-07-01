@@ -166,6 +166,16 @@ static BOOL isAttributionCallbackSet = NO;
     }
 }
 
+- (void)setOfflineMode:(CDVInvokedUrlCommand *)command {
+    NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
+
+    if (isEnabledNumber == nil) {
+        return;
+    }
+
+    [Adjust setOfflineMode:[isEnabledNumber boolValue]];
+}
+
 - (void)setEnabled:(CDVInvokedUrlCommand *)command {
     NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
 
