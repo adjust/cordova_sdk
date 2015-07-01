@@ -43,6 +43,10 @@ var Adjust = {
         callCordova('trackEvent', adjustEvent);
     },
 
+    setOfflineMode: function(enabled) {
+        callCordova('setOfflineMode', enabled);
+    },
+
     setEnabled: function (enabled) {
         callCordova('setEnabled', enabled);
     },
