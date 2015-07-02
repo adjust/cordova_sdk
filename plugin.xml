@@ -11,7 +11,6 @@
     <author>adjust</author>
 
     <engines>
-        <!-- As of cordova-android@4.0.0 Gradle is used -->
         <engine name="cordova-android" version=">=4.0.0" />
         <engine name="cordova-ios" version=">=3.0.0" />
     </engines>
