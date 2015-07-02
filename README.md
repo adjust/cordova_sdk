@@ -20,85 +20,115 @@ following command in your project folder:
 
 ```
 > cordova plugin add path_to_folder/cordova_sdk
-Installing com.adjust.sdk (android)
-Installing com.adjust.sdk (ios)
+Installing "com.adjust.sdk" for android
+Installing "com.adjust.sdk" for ios
 ```
 
 ### 3. Integrate with your app
 
 The adjust plugin automatically registers with the cordova events `deviceready`, `resume` and `pause`.
-To configure the parameters of your app to adjust, follow these steps:
 
-1. Open the file `plugins/com.adjust.sdk/config/adjust.json`.
-2. Replace the `appToken` value with  the App Token that you can find in your [dashboard].
-3. Copy the the adjust hook folder `plugins/com.adjust.sdk/hooks` to the root of your project. It contains the script to replace the configuration values from the `adjust.json` file.
-4. There should be a new file `hooks/after_prepare/replace_adjust.js` located at the root of your project. Check if this file has execute permission and add the permission if needed.
+#### Basic setup
 
-Depending on whether or not you build your app for testing or for production
-you must set the key `environment` with one of these values:
+In your `index.js` file after you have received `deviceready` event, add the following code to initialize the adjust SDK:
 
-```javascript
-    "environment" : "sandbox"
-    "environment" : "production"
+```js
+var adjustConfig = new AdjustConfig("{YourAppToken}", Adjust.EnvironmentSandbox);
+
+Adjust.create(adjustConfig);
 ```
 
-**Important:** This value should be set to `sandbox` if and only if you or
-someone else is testing your app. Make sure to set the environment to
-`production` just before you publish the app. Set it back to `sandbox` when you
-start testing it again.
+Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
 
-We use this environment to distinguish between real traffic and artificial
-traffic from test devices. It is very important that you keep this value
-meaningful at all times! Especially if you are tracking revenue.
+Depending on whether you build your app for testing or for production, you must
+set `environment` with one of these values:
 
-You can increase or decrease the amount of logs you see by setting the key
-`logLevel` with one of the following values:
-
-```javascript
-    "logLevel" : "verbose" // enable all logging
-    "logLevel" : "debug"   // enable more logging
-    "logLevel" : "info"    // the default
-    "logLevel" : "warn"    // disable info logging
-    "logLevel" : "error"   // disable warnings as well
-    "logLevel" : "assert"  // disable errors as well
+```js
+Adjust.EnvironmentSandbox
+Adjust.EnvironmentProduction
 ```
 
-If your app makes heavy use of event tracking, you might want to delay some
-HTTP requests in order to send them in one batch every minute. You can enable
-event buffering by setting the key `enableEventBuffering` to `true`.
+**Important:** This value should be set to `Adjust.EnvironmentSandbox`
+if and only if you or someone else is testing your app. Make sure to set the
+environment to `Adjust.EnvironmentProduction` just before you publish
+the app. Set it back to `Adjust.EnvironmentSandbox` when you start
+developing and testing it again.
 
-It's possible to have different configuration values in the `adjust.json` file depending on the target platform. Just add the suffix `_ios` or `_android` to the key for the target platform iOS or Android respectively.
-For example, it's possible to have `appToken_android` for Android and `appToken_ios` for the iOs target.
+We use this environment to distinguish between real traffic and test traffic
+from test devices. It is very important that you keep this value meaningful at
+all times! This is especially important if you are tracking revenue.
+
+#### Adjust Logging
+
+You can increase or decrease the amount of logs you see in tests by calling
+`setLogLevel` on your `AdjustConfig` instance with one of the following
+parameters:
+
+```js
+adjustConfig.setLogLevel(Adjust.LogLevelVerbose);   // enable all logging
+adjustConfig.setLogLevel(Adjust.LogLevelDebug);     // enable more logging
+adjustConfig.setLogLevel(Adjust.LogLevelInfo);      // the default
+adjustConfig.setLogLevel(Adjust.LogLevelWarn);      // disable info logging
+adjustConfig.setLogLevel(Adjust.LogLevelError);     // disable warnings as well
+adjustConfig.setLogLevel(Adjust.LogLevelAssert);    // disable errors as well
+```
 
 ## Additional Features
 
-Once you integrated the adjust SDK into your project, you can take advantage of
-the following features.
+Once you have integrated the adjust SDK into your project, you can take
+advantage of the following features.
 
-### 4. Add tracking of custom events.
+### 4. Add tracking of custom events
 
-You can tell adjust about every event you want. Suppose you want to track every
-tap on a button. You would have to create a new Event Token in your
-[dashboard]. Let's say that Event Token is `abc123`. In your button's `click`
-event function you could then add the following line to track the click:
+You can use adjust to track events. You should create a new event token in your dashboard, 
+which has an associated event token - looking something like `abc123`. In your app you would 
+then add the following lines to track the event you are interested in:
 
-```javascript
-Adjust.trackEvent('abc123');
+```js
+var adjustEvent = new AdjustEvent("abc123");
+Adjust.trackEvent(adjustEvent);
 ```
 
-You can also register a callback URL for that event in your [dashboard] and we
-will send a GET request to that URL whenever the event gets tracked. In that
-case you can also put some key-value-pairs in a dictionary and pass it to the
-`trackEvent` function. We will then append these named parameters to your
+The event instance can be used to configure the event even more before tracking
+it.
+
+### 5. Add tracking of revenue
+
+If your users can generate revenue by tapping on advertisements or making
+in-app purchases you can track those revenues with events. Lets say a tap is
+worth one Euro cent. You could then track the revenue event like this:
+
+```js
+var adjustEvent = new AdjustEvent("abc123");
+adjustEvent.setRevenue(0.01, "EUR");
+Adjust.trackEvent(adjustEvent);
+```
+
+This can be combined with callback parameters of course.
+
+When you set a currency token, adjust will automatically convert the incoming revenues into a reporting revenue of your choice. Read more about [currency conversion here.][currency-conversion]
+
+You can read more about revenue and event tracking in the [event tracking
+guide.][event-tracking]
+
+### 6. Add callback parameters
+
+You can register a callback URL for your events in your [dashboard]. We will
+send a GET request to that URL whenever the event gets tracked. You can add
+callback parameters to that event by calling `addCallbackParameter` on the
+event instance before tracking it. We will then append these parameters to your
 callback URL.
 
 For example, suppose you have registered the URL
-`http://www.adjust.com/callback` for your event with Event Token `abc123` and
-execute the following lines:
+`http://www.adjust.com/callback` then track an event like this:
 
-```javascript
-var parameters = { 'key' : 'value', 'foo' : 'bar' };
-Adjust.trackEvent('abc1234', parameters);
+```js
+var adjustEvent = new AdjustEvent("abc123");
+
+adjustEvent.addCallbackParameter("key", "value");
+adjustEvent.addCallbackParameter("foo", "bar");
+
+Adjust.trackEvent(adjustEvent);
 ```
 
 In that case we would track the event and send a request to:
@@ -107,99 +137,173 @@ In that case we would track the event and send a request to:
 http://www.adjust.com/callback?key=value&foo=bar
 ```
 
-It should be mentioned that we support a variety of placeholders like `{idfa}`
-for iOS or `{android_id}` for Android that can be used as parameter values.  In
-the resulting callback the `{idfa}` placeholder would be replaced with the ID
-for Advertisers of the current device for iOS and the `{android_id}` would be
-replaced with the AndroidID of the current device for Android. Also note that
-we don't store any of your custom parameters, but only append them to your
-callbacks.  If you haven't registered a callback for an event, these parameters
-won't even be read.
+It should be mentioned that we support a variety of placeholders like
+`{android_id}` that can be used as parameter values. In the resulting callback
+this placeholder would be replaced with the AndroidID of the current device.
+Also note that we don't store any of your custom parameters, but only append
+them to your callbacks. If you haven't registered a callback for an event,
+these parameters won't even be read.
 
-### 5. Add tracking of revenue
+You can read more about using URL callbacks, including a full list of available
+values, in our [callbacks guide][callbacks-guide].
 
-If your users can generate revenue by clicking on advertisements or making
-in-app purchases you can track those revenues. If, for example, a click is
-worth one cent, you could make the following call to track that revenue:
+### 7. Partner parameters
 
-```javascript
-Adjust.trackRevenue(1.0);
+You can also add parameters to be transmitted to network partners, for the
+integrations that have been activated in your adjust dashboard.
+
+This works similarly to the callback parameters mentioned above, but can be
+added by calling the `addPartnerParameter` method on your `AdjustEvent` instance.
+
+```js
+var adjustEvent = new AdjustEvent("9s4lqn");
+
+adjustEvent.addPartnerParameter("key", "value");
+adjustEvent.addPartnerParameter("foo", "bar");
+
+Adjust.trackEvent(adjustEvent);
 ```
 
-The parameter is supposed to be in cents and will get rounded to one decimal
-point. If you want to differentiate between different kinds of revenue you can
-get different Event Tokens for each kind. Again, you need to create those Event
-Tokens in your [dashboard]. In that case you would make a call like this:
+You can read more about special partners and these integrations in our [guide
+to special partners.][special-partners]
 
-```javascript
-Adjust.trackRevenue(1.0, 'abc123');
+### 8. Set up deep link reattributions
+
+You can set up the adjust SDK to handle deep links that are used to open your
+app. We will only read certain adjust specific parameters. This is essential if
+you are planning to run retargeting or re-engagement campaigns with deep links.
+
+For each activity that accepts deep links, find the `onCreate` or `onNewIntent` 
+method and add the folowing call to adjust:
+
+#### For activities with `standard` launch mode
+
+```java
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+    Adjust.appWillOpenUrl(data);
+    //...
+}
 ```
 
-Again, you can register a callback and provide a dictionary of named
-parameters, just like it worked with normal events.
+#### For activities with `singleTop` launch mode
 
-```javascript
-var parameters = { 'key' : 'value', 'foo' : 'bar' };
-Adjust.trackRevenue(1.0, 'abc1234', parameters);
+```java
+protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+
+    Uri data = intent.getData();
+    Adjust.appWillOpenUrl(data);
+}
 ```
 
-### 6. Receive delegate callbacks
+### 9. Enable event buffering
 
-Every time your app tries to track a session, an event or some revenue, you can
-be notified about the success of that operation and receive additional
-information about the current install. For that you can pass a javascript
-callback function that receives one argument to the
-`setFinishedTrackingCallback`, such as:
+If your app makes heavy use of event tracking, you might want to delay some
+HTTP requests in order to send them in one batch every minute. You can enable
+event buffering with your `AdjustConfig` instance:
 
-```javascript
-Adjust.setFinishedTrackingCallback(function (responseData) { });
+```js
+var adjustConfig = new AdjustConfig(appToken, environment);
+
+adjustConfig.setEventBufferingEnabled(true);
+
+Adjust.create(adjustConfig);
 ```
 
-The callback function will get called every time any activity was tracked or
-failed to track. Within the callback function you have access to the
-`responseData` object parameter. Here is a quick summary of its attributes:
+### 10. Set listener for attribution changes
 
-- `activityKind` indicates what kind of activity was tracked.
-  Returns one of these values:
+You can register a listener to be notified of tracker attribution changes. Due
+to the different sources considered for attribution, this information can not
+by provided synchronously. The simplest way is to create a single anonymous
+listener:
 
-    ```
-    session
-    event
-    revenue
-    reattribution
-    ```
+Please make sure to consider our [applicable attribution data
+policies][attribution-data].
 
-- `success` indicates whether or not the tracking attempt was successful.
-  Possible values `'true'` or `'false'`.
-- `willRetry` is true when the request failed, but will be retried. Possible
-  values `'true'` or `'false'`.
-- `error` an error message when the activity failed to track or the response
-  could not be parsed. Is `undefined` otherwise.
-- `trackerToken` the tracker token of the current install. Is `undefined` if
-  request failed or response could not be parsed.
-- `trackerName` the tracker name of the current install. Is `undefined` if
-  request failed or response could not be parsed.
-- `network` the first grouping level of the tracker name. Is `undefined` if
-  request failed or response could not be parsed.
-- `campaign` the second grouping level of the tracker name. Is `undefined` if
-  request failed or response could not be parsed.
-- `adgroup` the third grouping level of the tracker name. Is `undefined` if
-  request failed or response could not be parsed.
-- `creative` the fourth grouping level of the tracker name. Is `undefined` if
-  request failed or response could not be parsed.
+With the `AdjustConfig` instance, before starting the SDK, add the anonymous listener:
 
-Please make sure to consider [applicable attribution data policies.][attribution-data]
+```js
+var adjustConfig = new AdjustConfig(appToken, environment);
 
-[adjust.com]: http://adjust.com
-[dashboard]: http://adjust.com
-[releases]: https://github.com/adjust/cordova_sdk/releases
-[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+adjustConfig.setCallbackListener(function(attribution) {
+});
+
+Adjust.create(adjustConfig);
+```
+
+The listener function will be called when the SDK receives the final attribution
+information. Within the listener function you have access to the `attribution`
+parameter. Here is a quick summary of its properties:
+
+- `trackerToken` the tracker token of the current install.
+- `trackerName` the tracker name of the current install.
+- `network` the network grouping level of the current install.
+- `campaign` the campaign grouping level of the current install.
+- `adgroup` the ad group grouping level of the current install.
+- `creative` the creative grouping level of the current install.
+- `clickLabel` the click label of the current install.
+
+### 11. Disable tracking
+
+You can disable the adjust SDK from tracking any activities of the current
+device by calling `setEnabled` with parameter `false`. This setting is
+remembered between sessions.
+
+```javascript
+Adjust.setEnabled(false);
+```
+
+You can check if the adjust SDK is currently enabled by calling the function
+`isEnabled`. It is always possible to activate the adjust SDK by invoking
+`setEnabled` with the enabled parameter as `true`.
+
+You must invoke `isEnabled` by passing a function to it which will receive
+boolean which indicates is SDK enabled or disabled.
+
+```javascript
+Adjust.isEnabled(function(isEnabled) {
+}
+```
+
+### 12. Offline mode
+
+You can put the adjust SDK in offline mode to suspend transmission to our servers, 
+while retaining tracked data to be sent later. While in offline mode, all information is saved
+in a file, so be careful not to trigger too many events while in offline mode.
+
+You can activate offline mode by calling `setOfflineMode` with the parameter `true`.
+
+```javascript
+Adjust.setOfflineMode(true);
+```
+
+Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`.
+When the adjust SDK is put back in online mode, all saved information is send to our servers 
+with the correct time information.
+
+Unlike disabling tracking, this setting is *not remembered* bettween sessions. 
+This means that the SDK is in online mode whenever it is started,
+even if the app was terminated in offline mode.
+
+[adjust.com]:           http://adjust.com
+[dashboard]:            http://adjust.com
+[releases]:             https://github.com/adjust/cordova_sdk/releases
+[attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[callbacks-guide]:      https://docs.adjust.com/en/callbacks
+[event-tracking]:       https://docs.adjust.com/en/event-tracking
+[special-partners]:     https://docs.adjust.com/en/special-partners
+[currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+
 
 ## License
 
 The adjust-sdk is licensed under the MIT License.
 
-Copyright (c) 2012-2014 adjust GmbH,
+Copyright (c) 2012-2015 adjust GmbH, 
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
