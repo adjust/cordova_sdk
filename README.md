@@ -32,7 +32,7 @@ The adjust plugin automatically registers with the cordova events `deviceready`,
 
 In your `index.js` file after you have received `deviceready` event, add the following code to initialize the adjust SDK:
 
-```js
+```javascript
 var adjustConfig = new AdjustConfig("{YourAppToken}", Adjust.EnvironmentSandbox);
 
 Adjust.create(adjustConfig);
@@ -43,7 +43,7 @@ Replace `{YourAppToken}` with your app token. You can find this in your [dashboa
 Depending on whether you build your app for testing or for production, you must
 set `environment` with one of these values:
 
-```js
+```javascript
 Adjust.EnvironmentSandbox
 Adjust.EnvironmentProduction
 ```
@@ -64,7 +64,7 @@ You can increase or decrease the amount of logs you see in tests by calling
 `setLogLevel` on your `AdjustConfig` instance with one of the following
 parameters:
 
-```js
+```javascript
 adjustConfig.setLogLevel(Adjust.LogLevelVerbose);   // enable all logging
 adjustConfig.setLogLevel(Adjust.LogLevelDebug);     // enable more logging
 adjustConfig.setLogLevel(Adjust.LogLevelInfo);      // the default
@@ -84,7 +84,7 @@ You can use adjust to track events. You should create a new event token in your 
 which has an associated event token - looking something like `abc123`. In your app you would 
 then add the following lines to track the event you are interested in:
 
-```js
+```javascript
 var adjustEvent = new AdjustEvent("abc123");
 Adjust.trackEvent(adjustEvent);
 ```
@@ -98,7 +98,7 @@ If your users can generate revenue by tapping on advertisements or making
 in-app purchases you can track those revenues with events. Lets say a tap is
 worth one Euro cent. You could then track the revenue event like this:
 
-```js
+```javascript
 var adjustEvent = new AdjustEvent("abc123");
 adjustEvent.setRevenue(0.01, "EUR");
 Adjust.trackEvent(adjustEvent);
@@ -122,7 +122,7 @@ callback URL.
 For example, suppose you have registered the URL
 `http://www.adjust.com/callback` then track an event like this:
 
-```js
+```javascript
 var adjustEvent = new AdjustEvent("abc123");
 
 adjustEvent.addCallbackParameter("key", "value");
@@ -155,8 +155,8 @@ integrations that have been activated in your adjust dashboard.
 This works similarly to the callback parameters mentioned above, but can be
 added by calling the `addPartnerParameter` method on your `AdjustEvent` instance.
 
-```js
-var adjustEvent = new AdjustEvent("9s4lqn");
+```javascript
+var adjustEvent = new AdjustEvent("abc123");
 
 adjustEvent.addPartnerParameter("key", "value");
 adjustEvent.addPartnerParameter("foo", "bar");
@@ -173,10 +173,27 @@ You can set up the adjust SDK to handle deep links that are used to open your
 app. We will only read certain adjust specific parameters. This is essential if
 you are planning to run retargeting or re-engagement campaigns with deep links.
 
+#### iOS
+
+In the Project Navigator open the source file your Application Delegate. Find
+or add the method `openURL` and add the following call to adjust:
+
+```objc
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [Adjust appWillOpenUrl:url];
+    Bool canHandle = [self someLogic:url];
+    return canHandle;
+}
+```
+
+#### Android
+
 For each activity that accepts deep links, find the `onCreate` or `onNewIntent` 
 method and add the folowing call to adjust:
 
-#### For activities with `standard` launch mode
+###### For activities with `standard` launch mode
 
 ```java
 protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +206,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-#### For activities with `singleTop` launch mode
+###### For activities with `singleTop` launch mode
 
 ```java
 protected void onNewIntent(Intent intent) {
@@ -200,13 +217,15 @@ protected void onNewIntent(Intent intent) {
 }
 ```
 
+You can read more about activity launch mode on this [page][google-launch-modes].
+
 ### 9. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
 event buffering with your `AdjustConfig` instance:
 
-```js
+```javascript
 var adjustConfig = new AdjustConfig(appToken, environment);
 
 adjustConfig.setEventBufferingEnabled(true);
@@ -239,13 +258,13 @@ The listener function will be called when the SDK receives the final attribution
 information. Within the listener function you have access to the `attribution`
 parameter. Here is a quick summary of its properties:
 
-- `trackerToken` the tracker token of the current install.
-- `trackerName` the tracker name of the current install.
-- `network` the network grouping level of the current install.
-- `campaign` the campaign grouping level of the current install.
-- `adgroup` the ad group grouping level of the current install.
-- `creative` the creative grouping level of the current install.
-- `clickLabel` the click label of the current install.
+- `trackerToken`    the tracker token of the current install.
+- `trackerName`     the tracker name of the current install.
+- `network`         the network grouping level of the current install.
+- `campaign`        the campaign grouping level of the current install.
+- `adgroup`         the ad group grouping level of the current install.
+- `creative`        the creative grouping level of the current install.
+- `clickLabel`      the click label of the current install.
 
 ### 11. Disable tracking
 
@@ -266,7 +285,7 @@ boolean which indicates is SDK enabled or disabled.
 
 ```javascript
 Adjust.isEnabled(function(isEnabled) {
-}
+});
 ```
 
 ### 12. Offline mode
@@ -297,11 +316,12 @@ even if the app was terminated in offline mode.
 [event-tracking]:       https://docs.adjust.com/en/event-tracking
 [special-partners]:     https://docs.adjust.com/en/special-partners
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[google-launch-modes]:   http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
 
 
 ## License
 
-The adjust-sdk is licensed under the MIT License.
+The adjust SDK is licensed under the MIT License.
 
 Copyright (c) 2012-2015 adjust GmbH, 
 http://www.adjust.com
