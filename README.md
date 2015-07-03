@@ -26,14 +26,16 @@ Installing "com.adjust.sdk" for ios
 
 ### 3. Integrate with your app
 
-The adjust plugin automatically registers with the cordova events `deviceready`, `resume` and `pause`.
+The adjust plugin automatically registers with the cordova events `deviceready`, 
+`resume` and `pause`.
 
 #### Basic setup
 
-In your `index.js` file after you have received `deviceready` event, add the following code to initialize the adjust SDK:
+In your `index.js` file after you have received `deviceready` event, add the 
+following code to initialize the adjust SDK:
 
 ```javascript
-var adjustConfig = new AdjustConfig("{YourAppToken}", Adjust.EnvironmentSandbox);
+var adjustConfig = new AdjustConfig("{YourAppToken}", AdjustConfig.EnvironmentSandbox);
 
 Adjust.create(adjustConfig);
 ```
@@ -44,14 +46,14 @@ Depending on whether you build your app for testing or for production, you must
 set `environment` with one of these values:
 
 ```javascript
-Adjust.EnvironmentSandbox
-Adjust.EnvironmentProduction
+AdjustConfig.EnvironmentSandbox
+AdjustConfig.EnvironmentProduction
 ```
 
-**Important:** This value should be set to `Adjust.EnvironmentSandbox`
+**Important:** This value should be set to `AdjustConfig.EnvironmentSandbox`
 if and only if you or someone else is testing your app. Make sure to set the
-environment to `Adjust.EnvironmentProduction` just before you publish
-the app. Set it back to `Adjust.EnvironmentSandbox` when you start
+environment to `AdjustConfig.EnvironmentProduction` just before you publish
+the app. Set it back to `AdjustConfig.EnvironmentSandbox` when you start
 developing and testing it again.
 
 We use this environment to distinguish between real traffic and test traffic
@@ -65,12 +67,12 @@ You can increase or decrease the amount of logs you see in tests by calling
 parameters:
 
 ```javascript
-adjustConfig.setLogLevel(Adjust.LogLevelVerbose);   // enable all logging
-adjustConfig.setLogLevel(Adjust.LogLevelDebug);     // enable more logging
-adjustConfig.setLogLevel(Adjust.LogLevelInfo);      // the default
-adjustConfig.setLogLevel(Adjust.LogLevelWarn);      // disable info logging
-adjustConfig.setLogLevel(Adjust.LogLevelError);     // disable warnings as well
-adjustConfig.setLogLevel(Adjust.LogLevelAssert);    // disable errors as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);   // enable all logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelDebug);     // enable more logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelInfo);      // the default
+adjustConfig.setLogLevel(AdjustConfig.LogLevelWarn);      // disable info logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelError);     // disable warnings as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert);    // disable errors as well
 ```
 
 ## Additional Features
@@ -80,9 +82,10 @@ advantage of the following features.
 
 ### 4. Add tracking of custom events
 
-You can use adjust to track events. You should create a new event token in your dashboard, 
-which has an associated event token - looking something like `abc123`. In your app you would 
-then add the following lines to track the event you are interested in:
+You can use adjust to track events. You should create a new event token in your 
+dashboard, which has an associated event token - looking something like `abc123`. 
+In your app you would  then add the following lines to track the event you are 
+interested in:
 
 ```javascript
 var adjustEvent = new AdjustEvent("abc123");
@@ -106,18 +109,18 @@ Adjust.trackEvent(adjustEvent);
 
 This can be combined with callback parameters of course.
 
-When you set a currency token, adjust will automatically convert the incoming revenues into a reporting revenue of your choice. Read more about [currency conversion here.][currency-conversion]
+When you set a currency token, adjust will automatically convert the incoming revenues 
+into a reporting revenue of your choice. Read more about [currency conversion here.][currency-conversion]
 
-You can read more about revenue and event tracking in the [event tracking
-guide.][event-tracking]
+You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
 
 ### 6. Add callback parameters
 
 You can register a callback URL for your events in your [dashboard]. We will
 send a GET request to that URL whenever the event gets tracked. You can add
 callback parameters to that event by calling `addCallbackParameter` on the
-event instance before tracking it. We will then append these parameters to your
-callback URL.
+event instance before tracking it. We will then append these parameters to 
+your callback URL.
 
 For example, suppose you have registered the URL
 `http://www.adjust.com/callback` then track an event like this:
