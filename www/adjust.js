@@ -21,16 +21,6 @@ function callCordovaCallback (action, callback) {
 }
 
 var Adjust = {
-    EnvironmentSandbox      : "sandbox",
-    EnvironmentProduction   : "production",
-
-    LogLevelVerbose         : "VERBOSE",
-    LogLevelDebug           : "DEBUG",
-    LogLevelInfo            : "INFO",
-    LogLevelWarn            : "WARN",
-    LogLevelError           : "ERROR",
-    LogLevelAssert          : "ASSERT",
-
     create: function (adjustConfig) {
         if (adjustConfig.hasListener()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());

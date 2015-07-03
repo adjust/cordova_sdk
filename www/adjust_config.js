@@ -18,6 +18,16 @@ function AdjustConfig(appToken, environment) {
     this.processName = null;
 }
 
+AdjustConfig.EnvironmentSandbox     = "sandbox";
+AdjustConfig.EnvironmentProduction  = "production";
+
+AdjustConfig.LogLevelVerbose        = "VERBOSE",
+AdjustConfig.LogLevelDebug          = "DEBUG",
+AdjustConfig.LogLevelInfo           = "INFO",
+AdjustConfig.LogLevelWarn           = "WARN",
+AdjustConfig.LogLevelError          = "ERROR",
+AdjustConfig.LogLevelAssert         = "ASSERT",
+
 AdjustConfig.prototype.getAttributionCallback = function() {
     return this.callbackListener;
 };
