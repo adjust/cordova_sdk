@@ -9,10 +9,10 @@ function AdjustConfig(appToken, environment) {
     this.defaultTracker = null;
     this.callbackListener = null;
 
-    this.eventBufferingEnabled = "NO";
+    this.eventBufferingEnabled = false;
 
     // iOS only
-    this.macMd5TrackingEnabled = "NO";
+    this.macMd5TrackingEnabled = false;
 
     // Android only
     this.processName = null;
@@ -33,19 +33,11 @@ AdjustConfig.prototype.getAttributionCallback = function() {
 };
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
-    if (isEnabled) {
-        this.eventBufferingEnabled = "YES";
-    } else {
-        this.eventBufferingEnabled = "NO";
-    }
+    this.eventBufferingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setMacMd5TrackingEnabled = function(isEnabled) {
-    if (isEnabled) {
-        this.macMd5TrackingEnabled = "YES";
-    } else {
-        this.macMd5TrackingEnabled = "NO";
-    }
+    this.macMd5TrackingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
@@ -66,10 +58,6 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     this.callbackListener = callbackListener;
-};
-
-AdjustConfig.prototype.isValid = function() {
-    return this.appToken != null;
 };
 
 AdjustConfig.prototype.hasListener = function() {
