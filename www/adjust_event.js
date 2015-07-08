@@ -5,8 +5,8 @@ function AdjustEvent(eventToken) {
     this.revenue = null;
     this.currency = null;
 
-    this.callbackParameters = {};
-    this.partnerParameters = {}
+    this.callbackParameters = [];
+    this.partnerParameters = [];
 
     // iOS only
     this.receipt = null;
@@ -19,11 +19,13 @@ AdjustEvent.prototype.setRevenue = function(revenue, currency) {
 };
 
 AdjustEvent.prototype.addCallbackParameter = function(key, value) {
-    this.callbackParameters[key] = value;
+    var keyValuePair = key + ":" + value;
+    this.callbackParameters.push(keyValuePair);
 };
 
 AdjustEvent.prototype.addPartnerParameter = function(key, value) {
-    this.partnerParameters[key] = value;
+    var keyValuePair = key + ":" + value;
+    this.partnerParameters.push(keyValuePair);
 };
 
 AdjustEvent.prototype.setTransactionId = function(transactionId) {
