@@ -10,11 +10,10 @@
 #import <Adjust/ADJLogger.h>
 #import "AdjustCordova.h"
 
-#define SDK_PREFIX                      @"cordova4.0.0"
-
 #define KEY_APP_TOKEN                   @"appToken"
 #define KEY_ENVIRONMENT                 @"environment"
 #define KEY_LOG_LEVEL                   @"logLevel"
+#define KEY_SDK_PREFIX                  @"sdkPrefix"
 #define KEY_DEFAULT_TRACKER             @"defaultTracker"
 #define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
 #define KEY_MAC_MD5_TRACKING_ENABLED    @"macMd5TrackingEnabled"
@@ -25,6 +24,7 @@
 #define KEY_TRANSACTION_ID              @"transactionId"
 #define KEY_CALLBACK_PARAMETERS         @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS          @"partnerParameters"
+#define KEY_IS_RECEIPT_SET              @"isReceiptSet"
 
 @implementation AdjustCordova {
     NSString *callbackId;
@@ -58,6 +58,7 @@
     NSString *appToken = [[command.arguments objectAtIndex:0] objectForKey:KEY_APP_TOKEN];
     NSString *environment = [[command.arguments objectAtIndex:0] objectForKey:KEY_ENVIRONMENT];
     NSString *logLevel = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
+    NSString *sdkPrefix = [[command.arguments objectAtIndex:0] objectForKey:KEY_SDK_PREFIX];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
     NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
     NSNumber *macMd5TrackingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_MAC_MD5_TRACKING_ENABLED];
@@ -71,16 +72,17 @@
         }
 
         // Event buffering
-        if (eventBufferingEnabled != nil) {
+        if ([self isFieldValid:eventBufferingEnabled]) {
             [adjustConfig setMacMd5TrackingEnabled:[eventBufferingEnabled boolValue]];
         }
 
-        // SDK Prefix
-        // No matter what is maybe set, we're setting it in here.
-        [adjustConfig setSdkPrefix:SDK_PREFIX];
+        // SDK prefix
+        if ([self isFieldValid:sdkPrefix]) {
+            [adjustConfig setSdkPrefix:sdkPrefix];
+        }
 
         // MAC MD5 tracking
-        if (macMd5TrackingEnabled != nil) {
+        if ([self isFieldValid:macMd5TrackingEnabled]) {
             [adjustConfig setMacMd5TrackingEnabled:[macMd5TrackingEnabled boolValue]];
         }
 
@@ -104,6 +106,7 @@
     NSString *currency = [[command.arguments objectAtIndex:0] objectForKey:KEY_CURRENCY];
     NSString *receipt = [[command.arguments objectAtIndex:0] objectForKey:KEY_RECEIPT];
     NSString *transactionId = [[command.arguments objectAtIndex:0] objectForKey:KEY_TRANSACTION_ID];
+    NSNumber *isReceiptSet = [[command.arguments objectAtIndex:0] objectForKey:KEY_IS_RECEIPT_SET];
 
     NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
     NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
@@ -125,27 +128,35 @@
             [adjustEvent setRevenue:revenueValue currency:currency];
         }
 
-        for (id item in callbackParameters) {
-            NSRange range = [item rangeOfString:@":"];
-            NSString *key = [item substringToIndex:range.location];
-            NSString *value = [item substringFromIndex:range.location + 1];
+        for (int i = 0; i < [callbackParameters count]; i += 2) {
+            NSString *key = [callbackParameters objectAtIndex:i];
+            NSString *value = [callbackParameters objectAtIndex:(i+1)];
 
             [adjustEvent addCallbackParameter:key value:value];
         }
 
-        for (id item in partnerParameters) {
-            NSRange range = [item rangeOfString:@":"];
-            NSString *key = [item substringToIndex:range.location];
-            NSString *value = [item substringFromIndex:range.location + 1];
+        for (int i = 0; i < [partnerParameters count]; i += 2) {
+            NSString *key = [partnerParameters objectAtIndex:i];
+            NSString *value = [partnerParameters objectAtIndex:(i+1)];
 
             [adjustEvent addPartnerParameter:key value:value];
         }
 
-        if ([self isFieldValid:receipt]) {
-            if ([self isFieldValid:transactionId]) {
+        BOOL isTransactionIdSet = false;
+
+        if ([self isFieldValid:isReceiptSet]) {
+            if ([isReceiptSet boolValue]) {
                 [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding] transactionId:transactionId];
+            } else {
+                if ([self isFieldValid:transactionId]) {
+                    [adjustEvent setTransactionId:transactionId];
+
+                    isTransactionIdSet = YES;
+                }
             }
-        } else {
+        }
+
+        if (NO == isTransactionIdSet) {
             if ([self isFieldValid:transactionId]) {
                 [adjustEvent setTransactionId:transactionId];
             }
@@ -195,7 +206,7 @@
     callbackId = command.callbackId;
 }
 
-- (BOOL)isFieldValid:(NSString *)field {
+- (BOOL)isFieldValid:(NSObject *)field {
     if (![field isKindOfClass:[NSNull class]]) {
         if (field != nil) {
             return YES;
