@@ -9,10 +9,10 @@ function AdjustConfig(appToken, environment) {
     this.defaultTracker = null;
     this.callbackListener = null;
 
-    this.eventBufferingEnabled = false;
+    this.eventBufferingEnabled = null;
 
     // iOS only
-    this.macMd5TrackingEnabled = false;
+    this.macMd5TrackingEnabled = null;
 
     // Android only
     this.processName = null;
@@ -42,10 +42,6 @@ AdjustConfig.prototype.setMacMd5TrackingEnabled = function(isEnabled) {
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
     this.logLevel = logLevel;
-};
-
-AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
-    this.sdkPrefix = sdkPrefix;
 };
 
 AdjustConfig.prototype.setProcessName = function(processName) {
