@@ -11,6 +11,8 @@ function AdjustEvent(eventToken) {
     // iOS only
     this.receipt = null;
     this.transactionId = null;
+
+    this.isReceiptSet = false;
 }
 
 AdjustEvent.prototype.setRevenue = function(revenue, currency) {
@@ -19,13 +21,13 @@ AdjustEvent.prototype.setRevenue = function(revenue, currency) {
 };
 
 AdjustEvent.prototype.addCallbackParameter = function(key, value) {
-    var keyValuePair = key + ":" + value;
-    this.callbackParameters.push(keyValuePair);
+    this.callbackParameters.push(key);
+    this.callbackParameters.push(value);
 };
 
 AdjustEvent.prototype.addPartnerParameter = function(key, value) {
-    var keyValuePair = key + ":" + value;
-    this.partnerParameters.push(keyValuePair);
+    this.partnerParameters.push(key);
+    this.partnerParameters.push(value);
 };
 
 AdjustEvent.prototype.setTransactionId = function(transactionId) {
@@ -35,6 +37,7 @@ AdjustEvent.prototype.setTransactionId = function(transactionId) {
 AdjustEvent.prototype.setReceiptForTransactionId = function(receipt, transactionId) {
     this.receipt = receipt;
     this.transactionId = transactionId;
+    this.isReceiptSet = true;
 }
 
 module.exports = AdjustEvent;
