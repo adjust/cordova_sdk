@@ -10,9 +10,6 @@
 #import <Adjust/ADJLogger.h>
 #import "AdjustCordova.h"
 
-#define BOOL_TRUE                       @"true"
-#define BOOL_FALSE                      @"false"
-
 #define SDK_PREFIX                      @"cordova4.0.0"
 
 #define KEY_APP_TOKEN                   @"appToken"
@@ -29,15 +26,15 @@
 #define KEY_CALLBACK_PARAMETERS         @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS          @"partnerParameters"
 
-@implementation AdjustCordova
-
-static NSString *callbackId = nil;
-static BOOL isAttributionCallbackSet = NO;
+@implementation AdjustCordova {
+    NSString *callbackId;
+}
 
 - (CDVPlugin *)initWithWebView:(UIWebView *)theWebView {
     self = [super initWithWebView:theWebView];
 
     if (self) {
+        callbackId = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleOpenUrl:) name:CDVPluginHandleOpenURLNotification object:nil];
     }
 
@@ -62,8 +59,8 @@ static BOOL isAttributionCallbackSet = NO;
     NSString *environment = [[command.arguments objectAtIndex:0] objectForKey:KEY_ENVIRONMENT];
     NSString *logLevel = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
-    NSString *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
-    NSString *macMd5TrackingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_MAC_MD5_TRACKING_ENABLED];
+    NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
+    NSNumber *macMd5TrackingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_MAC_MD5_TRACKING_ENABLED];
 
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
 
@@ -74,12 +71,8 @@ static BOOL isAttributionCallbackSet = NO;
         }
 
         // Event buffering
-        if ([self isFieldValid:eventBufferingEnabled]) {
-            if ([eventBufferingEnabled isEqualToString:BOOL_TRUE]) {
-                [adjustConfig setEventBufferingEnabled:YES];
-            } else {
-                [adjustConfig setEventBufferingEnabled:NO];
-            }
+        if (eventBufferingEnabled != nil) {
+            [adjustConfig setMacMd5TrackingEnabled:[eventBufferingEnabled boolValue]];
         }
 
         // SDK Prefix
@@ -87,12 +80,8 @@ static BOOL isAttributionCallbackSet = NO;
         [adjustConfig setSdkPrefix:SDK_PREFIX];
 
         // MAC MD5 tracking
-        if ([self isFieldValid:macMd5TrackingEnabled]) {
-            if ([macMd5TrackingEnabled isEqualToString:BOOL_TRUE]) {
-                [adjustConfig setMacMd5TrackingEnabled:YES];
-            } else {
-                [adjustConfig setMacMd5TrackingEnabled:NO];
-            }
+        if (macMd5TrackingEnabled != nil) {
+            [adjustConfig setMacMd5TrackingEnabled:[macMd5TrackingEnabled boolValue]];
         }
 
         // Default tracker
@@ -101,7 +90,7 @@ static BOOL isAttributionCallbackSet = NO;
         }
 
         // Attribution delegate
-        if (isAttributionCallbackSet) {
+        if (callbackId != nil) {
             [adjustConfig setDelegate:self];
         }
 
@@ -116,19 +105,15 @@ static BOOL isAttributionCallbackSet = NO;
     NSString *receipt = [[command.arguments objectAtIndex:0] objectForKey:KEY_RECEIPT];
     NSString *transactionId = [[command.arguments objectAtIndex:0] objectForKey:KEY_TRANSACTION_ID];
 
-    NSMutableDictionary *callbackParameters = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *partnerParameters = [[NSMutableDictionary alloc] init];
+    NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
+    NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
 
-    for (id key in [[command.arguments objectAtIndex:0] objectForKey:KEY_CALLBACK_PARAMETERS]) {
-        id value = [[[command.arguments objectAtIndex:0] objectForKey:KEY_CALLBACK_PARAMETERS] objectForKey:key];
-
-        [callbackParameters setObject:value forKey:key];
+    for (id item in [[command.arguments objectAtIndex:0] objectForKey:KEY_CALLBACK_PARAMETERS]) {
+        [callbackParameters addObject:item];
     }
 
-    for (id key in [[command.arguments objectAtIndex:0] objectForKey:KEY_PARTNER_PARAMETERS]) {
-        id value = [[[command.arguments objectAtIndex:0] objectForKey:KEY_PARTNER_PARAMETERS] objectForKey:key];
-
-        [partnerParameters setObject:value forKey:key];
+    for (id item in [[command.arguments objectAtIndex:0] objectForKey:KEY_PARTNER_PARAMETERS]) {
+        [partnerParameters addObject:item];
     }
 
     ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
@@ -140,14 +125,18 @@ static BOOL isAttributionCallbackSet = NO;
             [adjustEvent setRevenue:revenueValue currency:currency];
         }
 
-        for (id key in callbackParameters) {
-            id value = [callbackParameters objectForKey:key];
+        for (id item in callbackParameters) {
+            NSRange range = [item rangeOfString:@":"];
+            NSString *key = [item substringToIndex:range.location];
+            NSString *value = [item substringFromIndex:range.location + 1];
 
             [adjustEvent addCallbackParameter:key value:value];
         }
 
-        for (id key in partnerParameters) {
-            id value = [partnerParameters objectForKey:key];
+        for (id item in partnerParameters) {
+            NSRange range = [item rangeOfString:@":"];
+            NSString *key = [item substringToIndex:range.location];
+            NSString *value = [item substringFromIndex:range.location + 1];
 
             [adjustEvent addPartnerParameter:key value:value];
         }
@@ -204,7 +193,6 @@ static BOOL isAttributionCallbackSet = NO;
 
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     callbackId = command.callbackId;
-    isAttributionCallbackSet = YES;
 }
 
 - (BOOL)isFieldValid:(NSString *)field {
