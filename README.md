@@ -178,7 +178,7 @@ you are planning to run retargeting or re-engagement campaigns with deep links.
 
 #### iOS
 
-In the Project Navigator open the source file your Application Delegate. Find
+In the XCode Project Navigator open the source file your Application Delegate. Find
 or add the method `openURL` and add the following call to adjust:
 
 ```objc
@@ -205,7 +205,7 @@ protected void onCreate(Bundle savedInstanceState) {
     Intent intent = getIntent();
     Uri data = intent.getData();
     Adjust.appWillOpenUrl(data);
-    //...
+    // ...
 }
 ```
 
@@ -217,6 +217,7 @@ protected void onNewIntent(Intent intent) {
 
     Uri data = intent.getData();
     Adjust.appWillOpenUrl(data);
+    // ...
 }
 ```
 
@@ -230,9 +231,7 @@ event buffering with your `AdjustConfig` instance:
 
 ```javascript
 var adjustConfig = new AdjustConfig(appToken, environment);
-
 adjustConfig.setEventBufferingEnabled(true);
-
 Adjust.create(adjustConfig);
 ```
 
@@ -288,6 +287,11 @@ boolean which indicates is SDK enabled or disabled.
 
 ```javascript
 Adjust.isEnabled(function(isEnabled) {
+    if (isEnabled) {
+        // SDK is enabled.
+    } else {
+        // SDK is disabled.
+    }
 });
 ```
 
