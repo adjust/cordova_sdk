@@ -78,12 +78,40 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelError);     // disable warnings as
 adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert);    // disable errors as well
 ```
 
+### 4. Google Play Services
+
+Since the 1st of August of 2014, apps in the Google Play Store must use the 
+[Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow the adjust SDK 
+to use the Google Advertising ID, you must integrate the [Google Play Services][google_play_services].
+
+The adjust SDK plugin adds Google Play Services by default to your app.
+
+If you are using Proguard, add these lines to your Proguard file:
+
+````
+-keep class com.adjust.sdk.** { *; }
+-keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+```
+
+If you don't want to use Google Play Services in your app, you can remove them by editing `plugin.xml`
+file of the adjust SDK plugin. Go to `plugins/com.adjust.sdk` folder and open `plugin.xml` file.
+As part of the `<platform name="android">`, you can find following line which adds Google Play Services
+dependency:
+
+```xml
+<framework src="com.google.android.gms:play-services-ads:+" />
+```
+
+If you want to remove Google Play Services, simply remove this line, save your changes and rebuild
+your app.
+
 ## Additional Features
 
 Once you have integrated the adjust SDK into your project, you can take
 advantage of the following features.
 
-### 4. Add tracking of custom events
+### 5. Add tracking of custom events
 
 You can use adjust to track events. You should create a new event token in your 
 dashboard, which has an associated event token - looking something like `abc123`. 
@@ -98,7 +126,7 @@ Adjust.trackEvent(adjustEvent);
 The event instance can be used to configure the event even more before tracking
 it.
 
-### 5. Add tracking of revenue
+### 6. Add tracking of revenue
 
 If your users can generate revenue by tapping on advertisements or making
 in-app purchases you can track those revenues with events. Lets say a tap is
@@ -117,7 +145,7 @@ into a reporting revenue of your choice. Read more about [currency conversion he
 
 You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
 
-### 6. Add callback parameters
+### 7. Add callback parameters
 
 You can register a callback URL for your events in your [dashboard]. We will
 send a GET request to that URL whenever the event gets tracked. You can add
@@ -153,7 +181,7 @@ these parameters won't even be read.
 You can read more about using URL callbacks, including a full list of available
 values, in our [callbacks guide][callbacks-guide].
 
-### 7. Partner parameters
+### 8. Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the
 integrations that have been activated in your adjust dashboard.
@@ -173,7 +201,7 @@ Adjust.trackEvent(adjustEvent);
 You can read more about special partners and these integrations in our [guide
 to special partners.][special-partners]
 
-### 8. Set up deep link reattributions
+### 9. Set up deep link reattributions
 
 You can set up the adjust SDK to handle deep links that are used to open your
 app. We will only read certain adjust specific parameters. This is essential if
@@ -226,7 +254,7 @@ protected void onNewIntent(Intent intent) {
 
 You can read more about activity launch mode on this [page][google-launch-modes].
 
-### 9. Enable event buffering
+### 10. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
@@ -238,7 +266,7 @@ adjustConfig.setEventBufferingEnabled(true);
 Adjust.create(adjustConfig);
 ```
 
-### 10. Set listener for attribution changes
+### 11. Set listener for attribution changes
 
 You can register a listener to be notified of tracker attribution changes. Due
 to the different sources considered for attribution, this information can not
@@ -271,7 +299,7 @@ parameter. Here is a quick summary of its properties:
 - `creative`        the creative grouping level of the current install.
 - `clickLabel`      the click label of the current install.
 
-### 11. Disable tracking
+### 12. Disable tracking
 
 You can disable the adjust SDK from tracking any activities of the current
 device by calling `setEnabled` with parameter `false`. This setting is
@@ -298,7 +326,7 @@ Adjust.isEnabled(function(isEnabled) {
 });
 ```
 
-### 12. Offline mode
+### 13. Offline mode
 
 You can put the adjust SDK in offline mode to suspend transmission to our servers, 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
@@ -327,6 +355,8 @@ even if the app was terminated in offline mode.
 [special-partners]:     https://docs.adjust.com/en/special-partners
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 [google-launch-modes]:   http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
+[google_play_services]: http://developer.android.com/google/play-services/index.html
+[google_ad_id]: https://developer.android.com/google/play-services/id.html
 
 
 ## License
