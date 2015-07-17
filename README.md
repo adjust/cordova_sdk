@@ -29,7 +29,7 @@ Installing "com.adjust.sdk" for ios
 
 ### 3. Integrate with your app
 
-The adjust plugin automatically registers with the cordova events `deviceready`, 
+The adjust plugin automatically registers with the Cordova events `deviceready`, 
 `resume` and `pause`.
 
 #### Basic setup
@@ -115,7 +115,7 @@ advantage of the following features.
 
 You can use adjust to track events. You should create a new event token in your 
 dashboard, which has an associated event token - looking something like `abc123`. 
-In your app you would  then add the following lines to track the event you are 
+In your app you would then add the following lines to track the event you are 
 interested in:
 
 ```javascript
@@ -209,7 +209,7 @@ you are planning to run retargeting or re-engagement campaigns with deep links.
 
 #### iOS
 
-In the XCode Project Navigator open the source file your Application Delegate. Find
+In the XCode Project Navigator, open the source file of your Application Delegate. Find
 or add the method `openURL` and add the following call to adjust:
 
 ```objc
@@ -225,7 +225,7 @@ or add the method `openURL` and add the following call to adjust:
 #### Android
 
 For each activity that accepts deep links, find the `onCreate` or `onNewIntent` 
-method and add the folowing call to adjust:
+method and add the following call to adjust:
 
 ###### For activities with `standard` launch mode
 
