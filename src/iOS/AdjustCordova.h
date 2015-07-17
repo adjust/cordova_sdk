@@ -7,18 +7,17 @@
 //
 
 #import <Cordova/CDV.h>
-#import "Adjust.h"
+#import <Adjust/Adjust.h>
 
 @interface AdjustCordova : CDVPlugin<AdjustDelegate>
 
-- (void)appDidLaunch:(CDVInvokedUrlCommand *)command;
-- (void)trackEvent:(CDVInvokedUrlCommand *)command;
-- (void)trackRevenue:(CDVInvokedUrlCommand *)command;
-- (void)setFinishedTrackingCallback:(CDVInvokedUrlCommand *)command;
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
+- (void)create:(CDVInvokedUrlCommand *)command;
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
-- (void)setEnabled:(CDVInvokedUrlCommand *)command;
 - (void)isEnabled:(CDVInvokedUrlCommand *)command;
+- (void)setEnabled:(CDVInvokedUrlCommand *)command;
+- (void)trackEvent:(CDVInvokedUrlCommand *)command;
+- (void)setOfflineMode:(CDVInvokedUrlCommand *)command;
+- (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 
 @end

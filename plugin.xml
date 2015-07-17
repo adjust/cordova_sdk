@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="3.4.1">
+    version="4.0.0">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -11,18 +11,35 @@
     <author>adjust</author>
 
     <engines>
-        <engine name="cordova" version=">=3.0.0" />
+        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-ios" version=">=3.0.0" />
     </engines>
 
     <js-module src="www/adjust.js" name="Adjust">
         <clobbers target="Adjust" />
     </js-module>
+    <js-module src="www/adjust_config.js" name="AdjustConfig">
+        <clobbers target="AdjustConfig" />
+    </js-module>
+    <js-module src="www/adjust_event.js" name="AdjustEvent">
+        <clobbers target="AdjustEvent" />
+    </js-module>
 
-    <!-- android -->
+    <!-- Android -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver
+                android:name="com.adjust.sdk.AdjustReferrerReceiver"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="com.android.vending.INSTALL_REFERRER" />
+                </intent-filter>
+            </receiver>
         </config-file>
 
         <config-file target="res/xml/config.xml" parent="/*">
@@ -31,12 +48,13 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-        <source-file src="src/android/Adjust/Adjust/src/com/adjust/sdk"
-            target-dir="src/com/adjust" />
-        <source-file src="src/android/com/adjust/sdk/AdjustCordova.java"
-            target-dir="src/com/adjust/sdk" />
+
+        <source-file src="src/android/adjust-android.jar" target-dir="libs" />
+
+        <framework src="com.google.android.gms:play-services-ads:+" />
     </platform>
-    <!-- ios -->
+
+    <!-- iOS -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="Adjust">
@@ -47,40 +65,8 @@
 
         <header-file src="src/ios/AdjustCordova.h" />
         <source-file src="src/ios/AdjustCordova.m" /> 
-        
-        <header-file src="src/ios/Adjust/Adjust/Adjust.h" />
-        <source-file src="src/ios/Adjust/Adjust/Adjust.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityKind.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityKind.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityPackage.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityPackage.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIActivityState.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIActivityState.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdjustFactory.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdjustFactory.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AILogger.h" />
-        <source-file src="src/ios/Adjust/Adjust/AILogger.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIPackageBuilder.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIPackageBuilder.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIPackageHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIPackageHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIRequestHandler.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIRequestHandler.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIResponseData.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIResponseData.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AITimer.h" />
-        <source-file src="src/ios/Adjust/Adjust/AITimer.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIUtil.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIUtil.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/NSData+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSData+AIAdditions.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/NSString+AIAdditions.m" /> 
-        <header-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.h" />
-        <source-file src="src/ios/Adjust/Adjust/AIAdditions/UIDevice+AIAdditions.m" /> 
 
+        <framework src="src/ios/Adjust.framework" custom="true" />
         <framework src="AdSupport.framework" weak="true" />
         <framework src="iAd.framework" weak="true" />
     </platform>
