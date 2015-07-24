@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.0.0">
+    version="4.0.1">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -49,7 +49,7 @@
             </feature>
         </config-file>
 
-        <source-file src="src/android/adjust-android.jar" target-dir="libs" />
+        <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-ads:+" />
     </platform>
@@ -63,10 +63,10 @@
           </feature>
         </config-file>
 
-        <header-file src="src/ios/AdjustCordova.h" />
-        <source-file src="src/ios/AdjustCordova.m" /> 
+        <header-file src="src/iOS/AdjustCordova.h" />
+        <source-file src="src/iOS/AdjustCordova.m" />
 
-        <framework src="src/ios/Adjust.framework" custom="true" />
+        <framework src="src/iOS/Adjust.framework" custom="true" />
         <framework src="AdSupport.framework" weak="true" />
         <framework src="iAd.framework" weak="true" />
     </platform>
