@@ -25,6 +25,9 @@
         <clobbers target="AdjustEvent" />
     </js-module>
 
+    <!-- Hooks -->
+    <hook type="before_plugin_install" src="scripts/symlink_fix.sh" />
+
     <!-- Android -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest">
