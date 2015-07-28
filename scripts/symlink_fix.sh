@@ -1,6 +1,9 @@
 
 #!/usr/bin/env bash
 
+# End script if one of the lines fails
+set -e
+
 # Go to framework folder
 cd plugins/com.adjust.sdk/src/iOS/Adjust.framework
 
