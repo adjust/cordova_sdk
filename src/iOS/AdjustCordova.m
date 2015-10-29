@@ -35,14 +35,9 @@
 
     if (self) {
         callbackId = nil;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleOpenUrl:) name:CDVPluginHandleOpenURLNotification object:nil];
     }
 
     return self;
-}
-
-- (void)handleOpenUrl:(NSNotification *)notification {
-    [Adjust appWillOpenUrl:[notification object]];
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
