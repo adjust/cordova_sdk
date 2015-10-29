@@ -18,6 +18,7 @@
 - (void)setEnabled:(CDVInvokedUrlCommand *)command;
 - (void)trackEvent:(CDVInvokedUrlCommand *)command;
 - (void)setOfflineMode:(CDVInvokedUrlCommand *)command;
+- (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 
 @end

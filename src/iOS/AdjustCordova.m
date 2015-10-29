@@ -176,6 +176,18 @@
     [Adjust setOfflineMode:[isEnabledNumber boolValue]];
 }
 
+- (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command {
+    NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
+
+    if (urlString == nil) {
+        return;
+    }
+
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+    [Adjust appWillOpenUrl:url];
+}
+
 - (void)setEnabled:(CDVInvokedUrlCommand *)command {
     NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
 
