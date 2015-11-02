@@ -5,12 +5,15 @@
 set -e
 
 # Go to framework folder
-cd plugins/com.adjust.sdk/src/iOS/Adjust.framework
+cd ../../src/iOS/Adjust.framework
 
 # Remove any existing symlinks
 rm -rf Adjust
 rm -rf Headers
 
-# Make new symlinks
-ln -s Versions/A/Adjust Adjust
-ln -s Versions/A/Headers Headers
+# Move library and headers
+mv Versions/A/Adjust .
+mv Versions/A/Headers .
+
+# Remove Versions folder
+rm -rf Versions

@@ -63,9 +63,6 @@
           </feature>
         </config-file>
 
-        <!-- Hooks -->
-        <hook type="before_plugin_install" src="scripts/symlink_fix.sh" />
-
         <header-file src="src/iOS/AdjustCordova.h" />
         <source-file src="src/iOS/AdjustCordova.m" />
 
