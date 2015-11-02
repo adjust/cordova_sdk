@@ -100,7 +100,7 @@ As part of the `<platform name="android">`, you can find following line which ad
 dependency:
 
 ```xml
-<framework src="com.google.android.gms:play-services-ads:+" />
+<framework src="com.google.android.gms:play-services-analytics:+" />
 ```
 
 If you want to remove Google Play Services, simply remove this line, save your changes and rebuild
@@ -201,11 +201,63 @@ Adjust.trackEvent(adjustEvent);
 You can read more about special partners and these integrations in our [guide
 to special partners.][special-partners]
 
-### 9. Set up deep link reattributions
+### 9. Set listener for attribution changes
+
+You can register a listener to be notified of tracker attribution changes. Due
+to the different sources considered for attribution, this information can not
+by provided synchronously. The simplest way is to create a single anonymous
+listener:
+
+Please make sure to consider our [applicable attribution data
+policies][attribution-data].
+
+With the `AdjustConfig` instance, before starting the SDK, add the anonymous listener:
+
+```javascript
+var adjustConfig = new AdjustConfig(appToken, environment);
+
+adjustConfig.setCallbackListener(function(attribution) {
+});
+
+Adjust.create(adjustConfig);
+```
+
+The listener function will be called when the SDK receives the final attribution
+information. Within the listener function you have access to the `attribution`
+parameter. Here is a quick summary of its properties:
+
+- `trackerToken`    the tracker token of the current install.
+- `trackerName`     the tracker name of the current install.
+- `network`         the network grouping level of the current install.
+- `campaign`        the campaign grouping level of the current install.
+- `adgroup`         the ad group grouping level of the current install.
+- `creative`        the creative grouping level of the current install.
+- `clickLabel`      the click label of the current install.
+
+### 10. Set up deep link reattributions
 
 You can set up the adjust SDK to handle deep links that are used to open your
 app. We will only read certain adjust specific parameters. This is essential if
 you are planning to run retargeting or re-engagement campaigns with deep links.
+
+To set up your app scheme name, you can use `Custom URL Scheme` plugin which can
+be found in [here][custom-url-scheme].
+
+After you successfully integrate this plugin, in callback method used with this
+plugin which is described in this [section][custom-url-scheme-usage], add a call
+to `appWillOpenUrl` method on `Adjust` instance and pass `url` as parameter:
+
+```javascript
+function handleOpenURL(url) {
+    setTimeout(function () {
+        Adjust.appWillOpenUrl(url);
+    }, 300);
+};
+
+```
+
+If you want to enable deep linking reattributions directly from generated native
+projects, please perform following steps:
 
 #### iOS
 
@@ -254,7 +306,7 @@ protected void onNewIntent(Intent intent) {
 
 You can read more about activity launch mode on this [page][google-launch-modes].
 
-### 10. Enable event buffering
+### 11. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
@@ -265,39 +317,6 @@ var adjustConfig = new AdjustConfig(appToken, environment);
 adjustConfig.setEventBufferingEnabled(true);
 Adjust.create(adjustConfig);
 ```
-
-### 11. Set listener for attribution changes
-
-You can register a listener to be notified of tracker attribution changes. Due
-to the different sources considered for attribution, this information can not
-by provided synchronously. The simplest way is to create a single anonymous
-listener:
-
-Please make sure to consider our [applicable attribution data
-policies][attribution-data].
-
-With the `AdjustConfig` instance, before starting the SDK, add the anonymous listener:
-
-```js
-var adjustConfig = new AdjustConfig(appToken, environment);
-
-adjustConfig.setCallbackListener(function(attribution) {
-});
-
-Adjust.create(adjustConfig);
-```
-
-The listener function will be called when the SDK receives the final attribution
-information. Within the listener function you have access to the `attribution`
-parameter. Here is a quick summary of its properties:
-
-- `trackerToken`    the tracker token of the current install.
-- `trackerName`     the tracker name of the current install.
-- `network`         the network grouping level of the current install.
-- `campaign`        the campaign grouping level of the current install.
-- `adgroup`         the ad group grouping level of the current install.
-- `creative`        the creative grouping level of the current install.
-- `clickLabel`      the click label of the current install.
 
 ### 12. Disable tracking
 
@@ -346,18 +365,19 @@ Unlike disabling tracking, this setting is *not remembered* bettween sessions.
 This means that the SDK is in online mode whenever it is started,
 even if the app was terminated in offline mode.
 
-[adjust.com]:           http://adjust.com
-[dashboard]:            http://adjust.com
-[releases]:             https://github.com/adjust/cordova_sdk/releases
-[attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[callbacks-guide]:      https://docs.adjust.com/en/callbacks
-[event-tracking]:       https://docs.adjust.com/en/event-tracking
-[special-partners]:     https://docs.adjust.com/en/special-partners
-[currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
-[google-launch-modes]:   http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
-[google_play_services]: http://developer.android.com/google/play-services/index.html
-[google_ad_id]: https://developer.android.com/google/play-services/id.html
-
+[adjust.com]:               http://adjust.com
+[dashboard]:                http://adjust.com
+[releases]:                 https://github.com/adjust/cordova_sdk/releases
+[attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[callbacks-guide]:          https://docs.adjust.com/en/callbacks
+[event-tracking]:           https://docs.adjust.com/en/event-tracking
+[special-partners]:         https://docs.adjust.com/en/special-partners
+[currency-conversion]:      https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[google-launch-modes]:      http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
+[google_play_services]:     http://developer.android.com/google/play-services/index.html
+[google_ad_id]:             https://developer.android.com/google/play-services/id.html
+[custom-url-scheme]:        https://github.com/EddyVerbruggen/Custom-URL-scheme
+[custom-url-scheme-usage]:  https://github.com/EddyVerbruggen/Custom-URL-scheme#3-usage
 
 ## License
 
