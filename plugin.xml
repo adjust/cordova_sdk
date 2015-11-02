@@ -51,7 +51,7 @@
 
         <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
 
-        <framework src="com.google.android.gms:play-services-ads:+" />
+        <framework src="com.google.android.gms:play-services-analytics:+" />
     </platform>
 
     <!-- iOS -->
