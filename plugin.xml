@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.0.2">
+    version="4.1.0">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -51,7 +51,7 @@
 
         <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
 
-        <framework src="com.google.android.gms:play-services-ads:+" />
+        <framework src="com.google.android.gms:play-services-analytics:+" />
     </platform>
 
     <!-- iOS -->
@@ -62,9 +62,6 @@
                 <param name="onload" value="true" />
           </feature>
         </config-file>
-
-        <!-- Hooks -->
-        <hook type="before_plugin_install" src="scripts/symlink_fix.sh" />
 
         <header-file src="src/iOS/AdjustCordova.h" />
         <source-file src="src/iOS/AdjustCordova.m" />

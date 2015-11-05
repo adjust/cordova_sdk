@@ -37,6 +37,10 @@ var Adjust = {
         callCordova('setOfflineMode', enabled);
     },
 
+    appWillOpenUrl: function(url) {
+        callCordova('appWillOpenUrl', url);
+    },
+
     setEnabled: function (enabled) {
         callCordova('setEnabled', enabled);
     },

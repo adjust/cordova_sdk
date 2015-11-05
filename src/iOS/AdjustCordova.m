@@ -35,14 +35,9 @@
 
     if (self) {
         callbackId = nil;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleOpenUrl:) name:CDVPluginHandleOpenURLNotification object:nil];
     }
 
     return self;
-}
-
-- (void)handleOpenUrl:(NSNotification *)notification {
-    [Adjust appWillOpenUrl:[notification object]];
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
@@ -174,6 +169,18 @@
     }
 
     [Adjust setOfflineMode:[isEnabledNumber boolValue]];
+}
+
+- (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command {
+    NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
+
+    if (urlString == nil) {
+        return;
+    }
+
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+    [Adjust appWillOpenUrl:url];
 }
 
 - (void)setEnabled:(CDVInvokedUrlCommand *)command {

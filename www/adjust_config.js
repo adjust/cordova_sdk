@@ -3,7 +3,7 @@ function AdjustConfig(appToken, environment) {
     this.appToken = appToken;
     this.environment = environment;
 
-    this.sdkPrefix = "cordova4.0.2";
+    this.sdkPrefix = "cordova4.1.0";
 
     this.logLevel = null;
     this.defaultTracker = null;
