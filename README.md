@@ -240,12 +240,12 @@ You can set up the adjust SDK to handle deep links that are used to open your
 app. We will only read certain adjust specific parameters. This is essential if
 you are planning to run retargeting or re-engagement campaigns with deep links.
 
-To set up your app scheme name, you can use `Custom URL Scheme` plugin which can
-be found in [here][custom-url-scheme].
+To set up your app scheme name, you can use the `Custom URL Scheme` plugin which can
+be found [here][custom-url-scheme].
 
-After you successfully integrate this plugin, in callback method used with this
-plugin which is described in this [section][custom-url-scheme-usage], add a call
-to `appWillOpenUrl` method on `Adjust` instance and pass `url` as parameter:
+After you successfully integrate this plugin, in the callback method used with the
+plugin  described in this [section][custom-url-scheme-usage], add a call
+to `appWillOpenUrl` method on the `Adjust` instance and pass `url` as parameter:
 
 ```javascript
 function handleOpenURL(url) {
