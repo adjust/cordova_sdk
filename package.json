@@ -21,5 +21,10 @@
             "name": "cordova-android",
             "version": ">=4.0.0"
         }
-    ]
+    ],
+    "keywords": [
+        "adjust",
+        "sdk",
+        "ecosystem:cordova"
+    ],
 }
