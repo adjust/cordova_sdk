@@ -27,6 +27,17 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
+Alternatively, you can download our SDK directly as the plugin from `npm` 
+[repository][npm-repo]. In order to do that, just execute this command in 
+your project folder:
+
+```
+> cordova plugin add com.adjust.sdk
+Fetching plugin "com.adjust.sdk" via npm
+Installing "com.adjust.sdk" for android
+Installing "com.adjust.sdk" for ios
+```
+
 ### 3. Integrate with your app
 
 The adjust plugin automatically registers with the Cordova events `deviceready`, 
@@ -368,6 +379,7 @@ even if the app was terminated in offline mode.
 [adjust.com]:               http://adjust.com
 [dashboard]:                http://adjust.com
 [releases]:                 https://github.com/adjust/cordova_sdk/releases
+[npm-repo]:                 https://www.npmjs.com/package/com.adjust.sdk
 [attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [callbacks-guide]:          https://docs.adjust.com/en/callbacks
 [event-tracking]:           https://docs.adjust.com/en/event-tracking
