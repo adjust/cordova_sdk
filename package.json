@@ -1,8 +1,8 @@
 {
-    "version": "4.1.1",
+    "version": "4.1.2",
     "name": "com.adjust.sdk",
     "cordova_name": "Adjust SDK Cordova Plugin",
-    "description": "Cordova plugin for the Adjust SDK 4.1.1",
+    "description": "Cordova plugin for the Adjust SDK 4.1.2",
     "license": "MIT License",
     "platforms": [
         "ios",
