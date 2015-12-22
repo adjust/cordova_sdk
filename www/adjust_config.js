@@ -11,9 +11,6 @@ function AdjustConfig(appToken, environment) {
 
     this.eventBufferingEnabled = null;
 
-    // iOS only
-    this.macMd5TrackingEnabled = null;
-
     // Android only
     this.processName = null;
 }
@@ -34,10 +31,6 @@ AdjustConfig.prototype.getAttributionCallback = function() {
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
-};
-
-AdjustConfig.prototype.setMacMd5TrackingEnabled = function(isEnabled) {
-    this.macMd5TrackingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {

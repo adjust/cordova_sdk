@@ -7,7 +7,7 @@
 //
 
 #import <Cordova/CDV.h>
-#import <Adjust/Adjust.h>
+#import <AdjustSdk/Adjust.h>
 
 @interface AdjustCordova : CDVPlugin<AdjustDelegate>
 

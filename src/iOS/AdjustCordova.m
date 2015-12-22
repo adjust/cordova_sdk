@@ -7,7 +7,6 @@
 //
 
 #import <Cordova/CDVPluginResult.h>
-#import <Adjust/ADJLogger.h>
 #import "AdjustCordova.h"
 
 #define KEY_APP_TOKEN                   @"appToken"
@@ -16,7 +15,6 @@
 #define KEY_SDK_PREFIX                  @"sdkPrefix"
 #define KEY_DEFAULT_TRACKER             @"defaultTracker"
 #define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
-#define KEY_MAC_MD5_TRACKING_ENABLED    @"macMd5TrackingEnabled"
 #define KEY_EVENT_TOKEN                 @"eventToken"
 #define KEY_REVENUE                     @"revenue"
 #define KEY_CURRENCY                    @"currency"
@@ -50,7 +48,6 @@
     NSString *sdkPrefix = [[command.arguments objectAtIndex:0] objectForKey:KEY_SDK_PREFIX];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
     NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
-    NSNumber *macMd5TrackingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_MAC_MD5_TRACKING_ENABLED];
 
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
 
@@ -62,17 +59,12 @@
 
         // Event buffering
         if ([self isFieldValid:eventBufferingEnabled]) {
-            [adjustConfig setMacMd5TrackingEnabled:[eventBufferingEnabled boolValue]];
+            [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
         }
 
         // SDK prefix
         if ([self isFieldValid:sdkPrefix]) {
             [adjustConfig setSdkPrefix:sdkPrefix];
-        }
-
-        // MAC MD5 tracking
-        if ([self isFieldValid:macMd5TrackingEnabled]) {
-            [adjustConfig setMacMd5TrackingEnabled:[macMd5TrackingEnabled boolValue]];
         }
 
         // Default tracker
