@@ -30,14 +30,8 @@
     NSString *callbackId;
 }
 
-- (CDVPlugin *)initWithWebView:(UIWebView *)theWebView {
-    self = [super initWithWebView:theWebView];
-
-    if (self) {
-        callbackId = nil;
-    }
-
-    return self;
+- (void)pluginInitialize {
+    callbackId = nil;
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
