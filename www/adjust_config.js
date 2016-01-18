@@ -3,16 +3,13 @@ function AdjustConfig(appToken, environment) {
     this.appToken = appToken;
     this.environment = environment;
 
-    this.sdkPrefix = "cordova4.1.3";
+    this.sdkPrefix = "cordova4.2.0";
 
     this.logLevel = null;
     this.defaultTracker = null;
     this.callbackListener = null;
 
     this.eventBufferingEnabled = null;
-
-    // iOS only
-    this.macMd5TrackingEnabled = null;
 
     // Android only
     this.processName = null;
@@ -34,10 +31,6 @@ AdjustConfig.prototype.getAttributionCallback = function() {
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
-};
-
-AdjustConfig.prototype.setMacMd5TrackingEnabled = function(isEnabled) {
-    this.macMd5TrackingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
