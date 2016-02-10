@@ -10,6 +10,5 @@ build:
 
 copy: build
 	rm -rf $(LIBOUTDIR)/AdjustSdk.framework; \
-	cp -R $(SRCDIR)/AdjustSdk.framework $(LIBOUTDIR); \
-	rm -rf $(SRCDIR)/AdjustSdk.framework; \
+	cp -R $(SRCDIR)/Frameworks/Static/AdjustSdk.framework $(LIBOUTDIR); \
         sh $(SCRIPTDIR)/symlink_fix.sh
