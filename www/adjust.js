@@ -47,6 +47,15 @@ var Adjust = {
 
     isEnabled: function (callback) {
         callCordovaCallback('isEnabled', callback);
+    },
+
+    getGoogleAdId: function (callback) {
+        callCordovaCallback('setGoogleAdIdCallback', callback);
+        callCordova('getGoogleAdId', callback);
+    },
+
+    getIdfa: function (callback) {
+        callCordovaCallback('getIdfa', callback);
     }
 };
 
