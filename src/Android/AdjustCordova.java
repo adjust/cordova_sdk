@@ -8,7 +8,6 @@ import android.net.Uri;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
@@ -49,9 +48,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private static final String ATTRIBUTION_CREATIVE                = "creative";
     private static final String ATTRIBUTION_CLICK_LABEL             = "clickLabel";
 
-    private static String googleAdIdCallbackId;
-    private static String attributionCallbackId;
-    private static CordovaWebView cordovaWebView;
+    private static CallbackContext googleAdIdCallbackContext;
+    private static CallbackContext attributionCallbackContext;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -114,7 +112,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 }
 
                 // Attribution callback
-                if (attributionCallbackId != null) {
+                if (attributionCallbackContext != null) {
                     adjustConfig.setOnAttributionChangedListener(this);
                 }
 
@@ -127,13 +125,11 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
             return true;
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
-            AdjustCordova.attributionCallbackId = callbackContext.getCallbackId();
-            AdjustCordova.cordovaWebView = this.webView;
+            AdjustCordova.attributionCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_GOOGLE_AD_ID_CALLBACK)) {
-            AdjustCordova.googleAdIdCallbackId = callbackContext.getCallbackId();
-            AdjustCordova.cordovaWebView = this.webView;
+            AdjustCordova.googleAdIdCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
@@ -214,7 +210,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             return true;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             // Google ad id callback
-            if (googleAdIdCallbackId != null) {
+            if (googleAdIdCallbackContext != null) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
 
@@ -234,8 +230,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
         pluginResult.setKeepCallback(true);
 
-        CallbackContext callbackResponseData = new CallbackContext(AdjustCordova.googleAdIdCallbackId, AdjustCordova.cordovaWebView);
-        callbackResponseData.sendPluginResult(pluginResult);
+        googleAdIdCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
@@ -244,8 +239,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
         pluginResult.setKeepCallback(true);
 
-        CallbackContext callbackResponseData = new CallbackContext(AdjustCordova.attributionCallbackId, AdjustCordova.cordovaWebView);
-        callbackResponseData.sendPluginResult(pluginResult);
+        attributionCallbackContext.sendPluginResult(pluginResult);
     }
 
     boolean isFieldValid(String field) {
