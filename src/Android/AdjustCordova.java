@@ -68,7 +68,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
             String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
 
-            AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity(), appToken, environment);
+            AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(),
+                appToken, environment);
 
             if (adjustConfig.isValid()) {
                 // Log level
@@ -214,7 +215,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             // Google ad id callback
             if (googleAdIdCallbackId != null) {
-                Adjust.getGoogleAdId(this.cordova.getActivity(), this);
+                Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
 
             return true;
