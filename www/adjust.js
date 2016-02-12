@@ -6,7 +6,7 @@ function callCordova (action) {
                  'Adjust',
                  action,
                  args
-                 );
+    );
 }
 
 function callCordovaCallback (action, callback) {
