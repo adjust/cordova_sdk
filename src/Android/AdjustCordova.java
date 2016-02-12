@@ -54,7 +54,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
-            JSONObject jsonParameters = args.optJSONObject(0);
+            String params = args.getString(0).substring(1, args.getString(0).length() - 1);
+            JSONObject jsonParameters = new JSONObject(params);
             Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
             String appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -133,7 +134,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
-            JSONObject jsonParameters = args.optJSONObject(0);
+            String params = args.getString(0).substring(1, args.getString(0).length() - 1);
+            JSONObject jsonParameters = new JSONObject(params);
             Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
             String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
