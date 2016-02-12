@@ -49,6 +49,7 @@
             </feature>
         </config-file>
 
+        <source-file src="src/Android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
