@@ -9,6 +9,17 @@ function callCordova (action) {
     );
 }
 
+function callCordovaStringify (action) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    cordova.exec(function callback(data) { },
+                 function errorHandler(err) { },
+                 'Adjust',
+                 action,
+                 [JSON.stringify(args)]
+    );
+}
+
 function callCordovaCallback (action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
 
@@ -26,11 +37,11 @@ var Adjust = {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
 
-        callCordova('create', adjustConfig);
+        callCordovaStringify('create', adjustConfig);
     },
 
     trackEvent: function (adjustEvent) {
-        callCordova('trackEvent', adjustEvent);
+        callCordovaStringify('trackEvent', adjustEvent);
     },
 
     setOfflineMode: function(enabled) {
