@@ -38,7 +38,6 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private static final String COMMAND_SET_ENABLED                 = "setEnabled";
     private static final String COMMAND_APP_WILL_OPEN_URL           = "appWillOpenUrl";
     private static final String COMMAND_GET_GOOGLE_AD_ID            = "getGoogleAdId";
-    private static final String COMMAND_SET_GOOGLE_AD_ID_CALLBACK   = "setGoogleAdIdCallback";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN           = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME            = "trackerName";
@@ -128,8 +127,13 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             AdjustCordova.attributionCallbackContext = callbackContext;
 
             return true;
-        } else if (action.equals(COMMAND_SET_GOOGLE_AD_ID_CALLBACK)) {
+        } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             AdjustCordova.googleAdIdCallbackContext = callbackContext;
+
+            // Google ad id callback
+            if (googleAdIdCallbackContext != null) {
+                Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
+            }
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
@@ -206,13 +210,6 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             Uri uri = Uri.parse(url);
 
             Adjust.appWillOpenUrl(uri);
-
-            return true;
-        } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
-            // Google ad id callback
-            if (googleAdIdCallbackContext != null) {
-                Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
-            }
 
             return true;
         }

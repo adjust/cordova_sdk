@@ -50,8 +50,7 @@ var Adjust = {
     },
 
     getGoogleAdId: function (callback) {
-        callCordovaCallback('setGoogleAdIdCallback', callback);
-        callCordova('getGoogleAdId', callback);
+        callCordovaCallback('getGoogleAdId', callback);
     },
 
     getIdfa: function (callback) {
