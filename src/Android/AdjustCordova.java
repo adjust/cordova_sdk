@@ -37,6 +37,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private static final String COMMAND_IS_ENABLED                  = "isEnabled";
     private static final String COMMAND_SET_ENABLED                 = "setEnabled";
     private static final String COMMAND_APP_WILL_OPEN_URL           = "appWillOpenUrl";
+    private static final String COMMAND_GET_IDFA                    = "getIdfa";
     private static final String COMMAND_GET_GOOGLE_AD_ID            = "getGoogleAdId";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN           = "trackerToken";
@@ -211,6 +212,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
             Adjust.appWillOpenUrl(uri);
 
+            return true;
+        } else if (action.equals(COMMAND_GET_IDFA)) {
             return true;
         }
 

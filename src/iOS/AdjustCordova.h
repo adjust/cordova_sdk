@@ -20,7 +20,7 @@
 - (void)setOfflineMode:(CDVInvokedUrlCommand *)command;
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
-
 
 @end

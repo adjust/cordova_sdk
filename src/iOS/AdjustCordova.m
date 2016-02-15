@@ -203,6 +203,10 @@
 
 }
 
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
+    
+}
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     callbackId = command.callbackId;
 }
