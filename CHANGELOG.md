@@ -1,4 +1,4 @@
-### Version 4.3.0 (xxth February 2016)
+### Version 4.3.0 (26th February 2016)
 ### Added
 - `CHANGELOG.md` is now added to the repository.
 - `Bitcode` support for iOS framework.
