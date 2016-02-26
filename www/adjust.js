@@ -6,7 +6,7 @@ function callCordova (action) {
                  'Adjust',
                  action,
                  args
-                 );
+    );
 }
 
 function callCordovaCallback (action, callback) {
@@ -47,6 +47,14 @@ var Adjust = {
 
     isEnabled: function (callback) {
         callCordovaCallback('isEnabled', callback);
+    },
+
+    getGoogleAdId: function (callback) {
+        callCordovaCallback('getGoogleAdId', callback);
+    },
+
+    getIdfa: function (callback) {
+        callCordovaCallback('getIdfa', callback);
     }
 };
 

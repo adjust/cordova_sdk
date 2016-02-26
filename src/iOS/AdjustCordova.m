@@ -169,6 +169,14 @@
     [Adjust appWillOpenUrl:url];
 }
 
+- (void)getIdfa:(CDVInvokedUrlCommand *)command {
+    NSString *idfa = [Adjust idfa];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)setEnabled:(CDVInvokedUrlCommand *)command {
     NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
 
@@ -193,6 +201,10 @@
 
 - (void)onResume:(CDVInvokedUrlCommand *)command {
 
+}
+
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
+    
 }
 
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {

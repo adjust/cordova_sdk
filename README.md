@@ -3,7 +3,7 @@
 This is the Cordova SDK of adjust™. You can read more about adjust™ at
 [adjust.com].
 
-N.B. At the moment, SDK 4.2.0 for Cordova supports Android platform version `4.0.0 and higher`
+N.B. At the moment, SDK 4.3.0 for Cordova supports Android platform version `4.0.0 and higher`
 and iOS platform version `3.0.0 and higher`.
 
 ## Basic Installation
