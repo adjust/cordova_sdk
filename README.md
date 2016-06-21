@@ -3,8 +3,20 @@
 This is the Cordova SDK of adjust™. You can read more about adjust™ at
 [adjust.com].
 
-N.B. At the moment, SDK 4.3.0 for Cordova supports Android platform version `4.0.0 and higher`
-and iOS platform version `3.0.0 and higher`.
+N.B. At the moment, SDK 4.3.0 for Cordova supports Android platform version 
+`4.0.0 and higher` and iOS platform version `3.0.0 and higher`.
+
+## Example app
+
+There is example inside the [`example` directory][example]. In there you
+can check how to integrate the adjust SDK into your app. Example app is
+uploaded without platforms being added due to size considerations, so after
+downloading the app, go to app folder and run:
+
+```
+cordova platform add ios
+cordova platform add android
+```
 
 ## Basic Installation
 
@@ -267,55 +279,102 @@ function handleOpenURL(url) {
 
 ```
 
-If you want to enable deep linking reattributions directly from generated native
-projects, please perform following steps:
+By completing integration of this plugin, you should be able to hande deep link
+reattributions in Android and iOS 8 and lower.
 
-#### iOS
+Starting from `iOS 9`, Apple has introduced suppressed support for old style deep linking
+with custom URL schemes like described above in favour of `universal links`. If you want
+to support deep linking in your app for iOS 9 and higher, you need to add support for
+universal links handling.
 
-In the XCode Project Navigator, open the source file of your Application Delegate. Find
-or add the method `openURL` and add the following call to adjust:
+First thing you need to do is to enable universal links for your app in the adjust dashboard.
+Instructions how to do that can be found in our native iOS SDK [README][enable-ulinks].
 
-```objc
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+After you have enabled universal links handling for your app in your dashboard, you need to
+add support for it in your app as well. You can achieve this by adding this [plugin][plugin-ulinks]
+to your cordova app. Please, read README of this plugin, because it precisely describes what
+should be done in order to properly integrate it.
+
+**Note**: What ever you see in README which assumes that you need to have domain and website
+or to upload file to root of your domain - don't worry about that. Adjust is taking care of 
+that instead of you and you can skip these parts of readme. Also, you don't need to follow 
+instructions  of this plugin for Android platform, because deep linking in android is still 
+being handled well with `Custom URL scheme` plugin.
+
+To sum up the integration of `Cordova Universal Links Plugin` after successfully enabling
+universal links for your app in the adjust dashboard:
+
+##### Edit your `config.xml` file
+
+You need to add following entry to your `config.xml` file:
+
+```xml
+<universal-links>
+    <host name="[hash].ulink.adjust.com" scheme="https">
+        <path event="adjustDeepLinking" url="/ulink/*" />
+    </host>
+</universal-links>
+```
+
+You should replace `[hash]` value with the value you got generated on the adjust
+dashboard. You can name the event also how ever you like.
+
+##### Check `ul_web_hooks/ios/` content of the plugin
+
+Go to `Cordova Universal Links Plugin` install directory in your app and check
+`ul_web_hooks/ios/` folder content. In there, you should see generated file with
+name `[hash].ulink.adjust.com#apple-app-site-association`. Content of that file
+should look like this:
+
+```
 {
-    [Adjust appWillOpenUrl:url];
-    Bool canHandle = [self someLogic:url];
-    return canHandle;
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "<YOUR_TEAM_ID_FROM_MEMBER_CENTER>.com.adjust.example",
+        "paths": [
+          "/ulink/*"
+        ]
+      }
+    ]
+  }
 }
 ```
 
-#### Android
+##### Integrate plugin to your `index.js` file
 
-For each activity that accepts deep links, find the `onCreate` or `onNewIntent` 
-method and add the following call to adjust:
+After `deviceready` event gets fired, you should subscribe to event you have defined
+in your `config.xml` file and define callback method which gets fired once event is 
+triggered. Because you don't need this plugin to handle deep linking in Android, you 
+can decide to subscribe to it only if your app is running on iOS device.
 
-###### For activities with `standard` launch mode
+In callback methd, you need to add call to `Adjust.appWillOpenUrl` method.
 
-```java
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+```js
+// ...
 
-    Intent intent = getIntent();
-    Uri data = intent.getData();
-    Adjust.appWillOpenUrl(data);
-    // ...
+var app = {
+    initialize: function() {
+        this.bindEvents();
+    },
+
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+
+    onDeviceReady: function() {
+        if (device.platform == "iOS") {
+            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+        }
+    },
+
+    didLaunchAppFromLink: function(eventData) {
+        Adjust.appWillOpenUrl(eventData.url);
+    }
 }
+// ...
 ```
-
-###### For activities with `singleTop` launch mode
-
-```java
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-
-    Uri data = intent.getData();
-    Adjust.appWillOpenUrl(data);
-    // ...
-}
-```
-
-You can read more about activity launch mode on this [page][google-launch-modes].
 
 ### 11. Enable event buffering
 
@@ -376,8 +435,39 @@ Unlike disabling tracking, this setting is *not remembered* bettween sessions.
 This means that the SDK is in online mode whenever it is started,
 even if the app was terminated in offline mode.
 
+### 14. Device IDs
+
+Certain services (such as Google Analytics) require you to coordinate Device and Client 
+IDs in order to prevent duplicate reporting. 
+
+#### Android
+
+If you need to obtain the Google Advertising ID, you can call the function 
+`getGoogleAdId` and get it in callback method you pass to the call:
+
+```js
+Adjust.getGoogleAdId(function(googleAdId) {
+    // ...
+});
+```
+
+Inside the callback method you will have access to the Google Advertising ID 
+as the variable `googleAdId`.
+
+#### iOS
+
+To obtain the IDFA, call the function `getIdfa` in the same way like the method
+`getGoogleAdId`:
+
+```js
+Adjust.getIdfa(function(idfa) {
+    // ...
+});
+```
+
 [adjust.com]:               http://adjust.com
 [dashboard]:                http://adjust.com
+[example]:                  http://github.com/adjust/ios_sdk/tree/master/examples
 [releases]:                 https://github.com/adjust/cordova_sdk/releases
 [npm-repo]:                 https://www.npmjs.com/package/com.adjust.sdk
 [attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
@@ -390,12 +480,15 @@ even if the app was terminated in offline mode.
 [google_ad_id]:             https://developer.android.com/google/play-services/id.html
 [custom-url-scheme]:        https://github.com/EddyVerbruggen/Custom-URL-scheme
 [custom-url-scheme-usage]:  https://github.com/EddyVerbruggen/Custom-URL-scheme#3-usage
+[enable-ulinks]:            https://github.com/adjust/ios_sdk/#ulinks-dashboard
+[plugin-ulinks]:            https://github.com/nordnet/cordova-universal-links-plugin
+
 
 ## License
 
 The adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2015 adjust GmbH, 
+Copyright (c) 2012-2016 adjust GmbH, 
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
