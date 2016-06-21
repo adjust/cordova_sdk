@@ -104,8 +104,9 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert);    // disable errors as w
 ### 4. Google Play Services
 
 Since the 1st of August of 2014, apps in the Google Play Store must use the 
-[Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow the adjust SDK 
-to use the Google Advertising ID, you must integrate the [Google Play Services][google_play_services].
+[Google Advertising ID][google_ad_id] to uniquely identify the devices. To allow 
+the adjust SDK to use the Google Advertising ID, you must integrate the 
+[Google Play Services][google_play_services].
 
 The adjust SDK plugin adds Google Play Services by default to your app.
 
@@ -117,17 +118,17 @@ If you are using Proguard, add these lines to your Proguard file:
 -keep class com.google.android.gms.ads.identifier.** { *; }
 ```
 
-If you don't want to use Google Play Services in your app, you can remove them by editing `plugin.xml`
-file of the adjust SDK plugin. Go to `plugins/com.adjust.sdk` folder and open `plugin.xml` file.
-As part of the `<platform name="android">`, you can find following line which adds Google Play Services
-dependency:
+If you don't want to use Google Play Services in your app, you can remove them 
+by editing `plugin.xml` file of the adjust SDK plugin. Go to `plugins/com.adjust.sdk` 
+folder and open `plugin.xml` file. As part of the `<platform name="android">`, you 
+can find following line which adds Google Play Services dependency:
 
 ```xml
 <framework src="com.google.android.gms:play-services-analytics:+" />
 ```
 
-If you want to remove Google Play Services, simply remove this line, save your changes and rebuild
-your app.
+If you want to remove Google Play Services, simply remove this line, save your 
+changes and rebuild your app.
 
 ## Additional Features
 
@@ -163,10 +164,12 @@ Adjust.trackEvent(adjustEvent);
 
 This can be combined with callback parameters of course.
 
-When you set a currency token, adjust will automatically convert the incoming revenues 
-into a reporting revenue of your choice. Read more about [currency conversion here.][currency-conversion]
+When you set a currency token, adjust will automatically convert the incoming 
+revenues  into a reporting revenue of your choice. Read more about 
+[currency conversion here.][currency-conversion]
 
-You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
+You can read more about revenue and event tracking in the 
+[event tracking guide.][event-tracking]
 
 ### 7. Add callback parameters
 
@@ -263,8 +266,8 @@ You can set up the adjust SDK to handle deep links that are used to open your
 app. We will only read certain adjust specific parameters. This is essential if
 you are planning to run retargeting or re-engagement campaigns with deep links.
 
-To set up your app scheme name, you can use the `Custom URL Scheme` plugin which can
-be found [here][custom-url-scheme].
+To set up your app scheme name, you can use the `Custom URL Scheme` plugin which 
+can be found [here][custom-url-scheme].
 
 After you successfully integrate this plugin, in the callback method used with the
 plugin  described in this [section][custom-url-scheme-usage], add a call
@@ -280,29 +283,31 @@ function handleOpenURL(url) {
 ```
 
 By completing integration of this plugin, you should be able to hande deep link
-reattributions in Android and iOS 8 and lower.
+reattributions in `Android` and `iOS 8 and lower`.
 
-Starting from `iOS 9`, Apple has introduced suppressed support for old style deep linking
-with custom URL schemes like described above in favour of `universal links`. If you want
-to support deep linking in your app for iOS 9 and higher, you need to add support for
-universal links handling.
+Starting from `iOS 9`, Apple has introduced suppressed support for old style deep 
+linking with custom URL schemes like described above in favour of `universal links`. 
+If you want to support deep linking in your app for iOS 9 and higher, you need to 
+add support for universal links handling.
 
-First thing you need to do is to enable universal links for your app in the adjust dashboard.
-Instructions how to do that can be found in our native iOS SDK [README][enable-ulinks].
+First thing you need to do is to enable universal links for your app in the adjust 
+dashboard. Instructions how to do that can be found in our native iOS SDK 
+[README][enable-ulinks].
 
-After you have enabled universal links handling for your app in your dashboard, you need to
-add support for it in your app as well. You can achieve this by adding this [plugin][plugin-ulinks]
-to your cordova app. Please, read README of this plugin, because it precisely describes what
-should be done in order to properly integrate it.
+After you have enabled universal links handling for your app in your dashboard, you 
+need to add support for it in your app as well. You can achieve this by adding this 
+[plugin][plugin-ulinks] to your cordova app. Please, read README of this plugin, 
+because it precisely describes what should be done in order to properly integrate it.
 
-**Note**: What ever you see in README which assumes that you need to have domain and website
-or to upload file to root of your domain - don't worry about that. Adjust is taking care of 
-that instead of you and you can skip these parts of readme. Also, you don't need to follow 
-instructions  of this plugin for Android platform, because deep linking in android is still 
-being handled well with `Custom URL scheme` plugin.
+**Note**: What ever you see in README which assumes that you need to have domain 
+and website or to upload file to root of your domain - don't worry about that. 
+Adjust is taking care of that instead of you and you can skip these parts of README. 
+Also, you don't need to follow instructions of this plugin for Android platform, 
+because deep linking in Android is still being handled well with `Custom URL scheme` 
+plugin.
 
-To sum up the integration of `Cordova Universal Links Plugin` after successfully enabling
-universal links for your app in the adjust dashboard:
+To sum up the integration of `Cordova Universal Links Plugin` after successfully 
+enabling universal links for your app in the adjust dashboard:
 
 ##### Edit your `config.xml` file
 
