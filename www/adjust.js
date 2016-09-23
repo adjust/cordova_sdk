@@ -2,10 +2,10 @@ function callCordova (action) {
     var args = Array.prototype.slice.call(arguments, 1);
 
     cordova.exec(function callback(data) { },
-                 function errorHandler(err) { },
-                 'Adjust',
-                 action,
-                 args
+        function errorHandler(err) { },
+        'Adjust',
+        action,
+        args
     );
 }
 
@@ -22,8 +22,34 @@ function callCordovaCallback (action, callback) {
 
 var Adjust = {
     create: function (adjustConfig) {
-        if (adjustConfig.hasListener()) {
-            callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
+        if (adjustConfig.hasAttributionListener()) {
+            callCordovaCallback('setAttributionCallback', 
+                adjustConfig.getAttributionCallback());
+        }
+
+        if (adjustConfig.hasEventTrackingSuccessfulListener()) {
+            callCordovaCallback('setEventTrackingSuccessfulCallback', 
+                adjustConfig.getEventTrackingSuccessfulCallback());
+        }
+
+        if (adjustConfig.hasEventTrackingFailedListener()) {
+            callCordovaCallback('setEventTrackingFailedlCallback', 
+                adjustConfig.getEventTrackingFailedCallback());
+        }
+
+        if (adjustConfig.hasSessionTrackingSuccessfulListener()) {
+            callCordovaCallback('setSessionTrackingSuccessfulCallback', 
+                adjustConfig.getSessionTrackingSuccessfulCallback());
+        }
+
+        if (adjustConfig.hasSessionTrackingFailedListener()) {
+            callCordovaCallback('setSessionTrackingFailedlCallback', 
+                adjustConfig.getSessionTrackingFailedCallback());
+        }
+
+        if (adjustConfig.hasDeeplinkCallbackListener()) {
+            callCordovaCallback('setDeeplinklCallback', 
+                adjustConfig.getDeeplinkCallback());
         }
 
         callCordova('create', adjustConfig);
@@ -43,6 +69,10 @@ var Adjust = {
 
     setEnabled: function (enabled) {
         callCordova('setEnabled', enabled);
+    },
+
+    setPushToken: function (pushToken) {
+        callCordova('setPushToken', pushToken);
     },
 
     isEnabled: function (callback) {
