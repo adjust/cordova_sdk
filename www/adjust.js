@@ -33,7 +33,7 @@ var Adjust = {
         }
 
         if (adjustConfig.hasEventTrackingFailedListener()) {
-            callCordovaCallback('setEventTrackingFailedlCallback', 
+            callCordovaCallback('setEventTrackingFailedCallback', 
                 adjustConfig.getEventTrackingFailedCallback());
         }
 
@@ -43,12 +43,12 @@ var Adjust = {
         }
 
         if (adjustConfig.hasSessionTrackingFailedListener()) {
-            callCordovaCallback('setSessionTrackingFailedlCallback', 
+            callCordovaCallback('setSessionTrackingFailedCallback', 
                 adjustConfig.getSessionTrackingFailedCallback());
         }
 
         if (adjustConfig.hasDeeplinkCallbackListener()) {
-            callCordovaCallback('setDeeplinklCallback', 
+            callCordovaCallback('setDeeplinkCallback', 
                 adjustConfig.getDeeplinkCallback());
         }
 

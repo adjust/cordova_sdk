@@ -85,6 +85,8 @@ public class AdjustCordova extends CordovaPlugin
     private static final String SESSION_FAILED_WILL_RETRY = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE = "jsonResponse";
 
+    private static final String DEEPLINK_URI = "deeplink_uri";
+
     private static CallbackContext googleAdIdCallbackContext;
     private static CallbackContext attributionCallbackContext;
     private static CallbackContext eventTrackingSuccessfulCallbackContext;
@@ -371,12 +373,15 @@ public class AdjustCordova extends CordovaPlugin
     }
 
     @Override
-    boolean launchReceivedDeeplink(Uri deeplink) {
+    public boolean launchReceivedDeeplink(Uri deeplink) {
         JSONObject jsonData = new JSONObject(getDeeplinkDictionary(deeplink));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
         deeplinkCallbackContext.sendPluginResult(pluginResult);
+
+        //TODO: FIX THIS
+        return true;
     }
 
     boolean isFieldValid(String field) {
@@ -458,7 +463,7 @@ public class AdjustCordova extends CordovaPlugin
         return dict;
     }
 
-    private Map<String, String> getEventTrackingFailedDictionary(AdjustEventFailed event) {
+    private Map<String, String> getEventTrackingFailedDictionary(AdjustEventFailure event) {
         Map<String, String> dict = new HashMap<String, String>();
 
         // Message
@@ -490,10 +495,10 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // willRetry
-        if (event.willRetry != null) {
-            dict.put(EVENT_FAILED_WILL_RETRY, event.willRetry);
+        if (event.willRetry) {
+            dict.put(EVENT_FAILED_WILL_RETRY, "true");
         } else {
-            dict.put(EVENT_FAILED_WILL_RETRY, "");
+            dict.put(EVENT_FAILED_WILL_RETRY, "false");
         }
 
         // jsonResponse
@@ -501,6 +506,61 @@ public class AdjustCordova extends CordovaPlugin
             dict.put(EVENT_FAILED_JSON_RESPONSE, event.jsonResponse.toString());
         } else {
             dict.put(EVENT_FAILED_JSON_RESPONSE, "");
+        }
+
+        return dict;
+    }
+
+    private Map<String, String> getAttributionDictionary(AdjustAttribution attribution) {
+        Map<String, String> dict = new HashMap<String, String>();
+
+        // Tracker token
+        if (attribution.trackerToken != null) {
+            dict.put(ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
+        } else {
+            dict.put(ATTRIBUTION_TRACKER_TOKEN, "");
+        }
+
+        // Tracker name
+        if (attribution.trackerName != null) {
+            dict.put(ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
+        } else {
+            dict.put(ATTRIBUTION_TRACKER_NAME, "");
+        }
+
+        // Network
+        if (attribution.network != null) {
+            dict.put(ATTRIBUTION_NETWORK, attribution.network);
+        } else {
+            dict.put(ATTRIBUTION_NETWORK, "");
+        }
+
+        // Campaign
+        if (attribution.campaign != null) {
+            dict.put(ATTRIBUTION_CAMPAIGN, attribution.campaign);
+        } else {
+            dict.put(ATTRIBUTION_CAMPAIGN, "");
+        }
+
+        // Adgroup
+        if (attribution.adgroup != null) {
+            dict.put(ATTRIBUTION_ADGROUP, attribution.adgroup);
+        } else {
+            dict.put(ATTRIBUTION_ADGROUP, "");
+        }
+
+        // Creative
+        if (attribution.creative != null) {
+            dict.put(ATTRIBUTION_CREATIVE, attribution.creative);
+        } else {
+            dict.put(ATTRIBUTION_CREATIVE, "");
+        }
+
+        // Click label
+        if (attribution.clickLabel != null) {
+            dict.put(ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
+        } else {
+            dict.put(ATTRIBUTION_CLICK_LABEL, "");
         }
 
         return dict;
@@ -540,7 +600,7 @@ public class AdjustCordova extends CordovaPlugin
         return dict;
     }
 
-    private Map<String, String> getSessionTrackingFailedDictionary(AdjustSessionFailed session) {
+    private Map<String, String> getSessionTrackingFailedDictionary(AdjustSessionFailure session) {
         Map<String, String> dict = new HashMap<String, String>();
 
         // Message
@@ -565,10 +625,10 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // willRetry
-        if (session.willRetry != null) {
-            dict.put(SESSION_FAILED_WILL_RETRY, session.willRetry);
+        if (session.willRetry) {
+            dict.put(SESSION_FAILED_WILL_RETRY, "true");
         } else {
-            dict.put(SESSION_FAILED_WILL_RETRY, "");
+            dict.put(SESSION_FAILED_WILL_RETRY, "false");
         }
 
         // jsonResponse
@@ -582,6 +642,8 @@ public class AdjustCordova extends CordovaPlugin
     }
 
     private Map<String, String> getDeeplinkDictionary(Uri deeplink) {
+        Map<String, String> dict = new HashMap<String, String>();
+
         if (deeplink != null) {
             dict.put(DEEPLINK_URI, deeplink.toString());
         } else {

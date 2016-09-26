@@ -1,5 +1,8 @@
 function AdjustConfig(appToken, environment) {
     // iOS & Android
+    console.log("appToken: " + appToken);
+    console.log("environment: " + environment);
+
     this.appToken = appToken;
     this.environment = environment;
 
