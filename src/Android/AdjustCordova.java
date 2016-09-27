@@ -110,8 +110,12 @@ public class AdjustCordova extends CordovaPlugin
             String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
             String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
 
-            AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(),
-                    appToken, environment);
+            boolean isLogLevelSuppress = false;
+            if(isFieldValid(logLevel) && logLevel.equals("SUPPRESS") ) {
+                isLogLevelSuppress = true;
+            }
+
+            AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(), appToken, environment, isLogLevelSuppress);
 
             if (adjustConfig.isValid()) {
                 // Log level
@@ -128,6 +132,8 @@ public class AdjustCordova extends CordovaPlugin
                         adjustConfig.setLogLevel(LogLevel.ERROR);
                     } else if (logLevel.equals("ASSERT")) {
                         adjustConfig.setLogLevel(LogLevel.ASSERT);
+                    } else if (logLevel.equals("SUPPRESS")) {
+                        adjustConfig.setLogLevel(LogLevel.SUPPRESS);
                     } else {
                         adjustConfig.setLogLevel(LogLevel.INFO);
                     }
