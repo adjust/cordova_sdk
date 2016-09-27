@@ -52,6 +52,12 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
     private static final String COMMAND_GET_IDFA                                 = "getIdfa";
     private static final String COMMAND_GET_GOOGLE_AD_ID                         = "getGoogleAdId";
+    private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER                         = "addSessionCallbackParameter";
+    private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER                         = "removeSessionCallbackParameter";
+    private static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS                         = "resetSessionCallbackParameters";
+    private static final String COMMAND_ADD_SESSION_PARTNER_PARAMETER                         = "addSessionPartnerParameter";
+    private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER                         = "removeSessionPartnerParameter";
+    private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS                         = "resetSessionPartnerParameters";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN                        = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME                         = "trackerName";
@@ -315,7 +321,42 @@ public class AdjustCordova extends CordovaPlugin
             return true;
         } else if (action.equals(COMMAND_GET_IDFA)) {
             return true;
+        } else if (action.equals(COMMAND_ADD_SESSION_CALLBACK_PARAMETER)) {
+            String key = args.getString(0);
+            String value = args.getString(1);
+
+            Adjust.addSessionCallbackParameter(key, value);
+
+            return true;
+        } else if (action.equals(COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER)) {
+            String key = args.getString(0);
+
+            Adjust.removeSessionCallbackParameter(key);
+
+            return true;
+        } else if (action.equals(COMMAND_RESET_SESSION_CALLBACK_PARAMETERS)) {
+            Adjust.resetSessionCallbackParameters();
+
+            return true;
+        } else if (action.equals(COMMAND_ADD_SESSION_PARTNER_PARAMETER)) {
+            String key = args.getString(0);
+            String value = args.getString(1);
+
+            Adjust.addSessionPartnerParameter(key, value);
+
+            return true;
+        } else if (action.equals(COMMAND_REMOVE_SESSION_PARTNER_PARAMETER)) {
+            String key = args.getString(0);
+
+            Adjust.removeSessionPartnerParameter(key);
+
+            return true;
+        } else if (action.equals(COMMAND_RESET_SESSION_PARTNER_PARAMETERS)) {
+            Adjust.resetSessionPartnerParameters();
+
+            return true;
         }
+
 
         String errorMessage = String.format("Invalid call (%s)", action);
 

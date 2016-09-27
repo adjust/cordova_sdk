@@ -85,7 +85,31 @@ var Adjust = {
 
     getIdfa: function (callback) {
         callCordovaCallback('getIdfa', callback);
-    }
+    },
+
+    addSessionCallbackParameter: function (key, value) {
+        callCordova('addSessionCallbackParameter', key, value);
+    },
+
+    removeSessionCallbackParameter: function (key) {
+        callCordova('removeSessionCallbackParameter', key);
+    },
+
+    resetSessionCallbackParameters: function () {
+        callCordova('resetSessionCallbackParameters');
+    },
+
+    addSessionPartnerParameter: function (key, value) {
+        callCordova('addSessionPartnerParameter', key, value);
+    },
+
+    removeSessionPartnerParameter: function (key) {
+        callCordova('removeSessionPartnerParameter', key);
+    },
+
+    resetSessionPartnerParameters: function () {
+        callCordova('resetSessionPartnerParameters');
+    },
 };
 
 function onPause () {
