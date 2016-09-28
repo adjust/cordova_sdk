@@ -19,9 +19,50 @@
 /**
  * Optional delegate method that gets called when the attribution information changed
  *
- * @param attribution The attribution information. See ADJAttribution for details.
+ * @param attribution   The attribution information.
+ *                      See ADJAttribution for details
  */
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution;
+
+/**
+ * Optional delegate method that gets called when an event is tracked with success
+ *
+ * @param eventSuccessResponseData  The response information from tracking with success
+ *                                  See ADJEventSuccess for details
+ */
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData;
+
+/**
+ * Optional delegate method that gets called when an event is tracked with failure
+ *
+ * @param eventFailureResponseData  The response information from tracking with failure
+ *                                  See ADJEventFailure for details
+ */
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with success
+ *
+ * @param sessionSuccessResponseData    The response information from tracking with success
+ *                                      See ADJSessionSuccess for details
+ */
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with failure
+ *
+ * @param sessionFailureResponseData    The response information from tracking with failure
+ *                                      See ADJSessionFailure for details
+ */
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData;
+
+/**
+ * Optional delegate method that gets called when a deeplink is about to be opened by the adjust SDK
+ *
+ * @param   deeplink    The deeplink url that was received by the adjust SDK to be opened
+ * @return  boolean     Value that indicates whether the deeplink should be opened by the adjust SDK
+ */
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink;
 
 @end
 

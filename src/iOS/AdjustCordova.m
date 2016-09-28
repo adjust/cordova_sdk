@@ -41,6 +41,53 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+    NSDictionary *dict = [eventSuccessResponseData dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    NSDictionary *dict = [eventFailureResponseData dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+    NSDictionary *dict = [sessionSuccessResponseData dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    NSDictionary *dict = [sessionFailureResponseData dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    NSString *path = [[NSString alloc] initWithString:[deeplink path]];
+    [dict setObject:path forKey:@"deeplink"];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 - (void)create:(CDVInvokedUrlCommand *)command {
     NSString *appToken = [[command.arguments objectAtIndex:0] objectForKey:KEY_APP_TOKEN];
     NSString *environment = [[command.arguments objectAtIndex:0] objectForKey:KEY_ENVIRONMENT];
@@ -209,6 +256,76 @@
 
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     callbackId = command.callbackId;
+}
+
+- (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command {
+    callbackId = command.callbackId;
+}
+
+- (void)setEventTrackingFailureCallback:(CDVInvokedUrlCommand *)command {
+    callbackId = command.callbackId;
+}
+
+- (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command {
+    callbackId = command.callbackId;
+}
+
+- (void)setSessionTrackingFailureCallback:(CDVInvokedUrlCommand *)command {
+    callbackId = command.callbackId;
+}
+
+- (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command {
+    callbackId = command.callbackId;
+}
+
+- (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command {
+    NSString *key = [command argumentAtIndex:0 withDefault:nil];
+    NSString *value = [command argumentAtIndex:1 withDefault:nil];
+
+    if (!([self isFieldValid:key]) || !([self isFieldValid:value]) ) {
+        return;
+    }
+    
+    [Adjust addSessionCallbackParameter:key, value:value];
+}
+
+- (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command {
+    NSString *key = [command argumentAtIndex:0 withDefault:nil];
+
+    if (!([self isFieldValid:key])) {
+        return;
+    }
+    
+    [Adjust removeSessionCallbackParameter:key];
+}
+
+- (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command {
+    [Adjust resetSessionCallbackParameter:key];
+}
+
+- (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command {
+    NSString *key = [command argumentAtIndex:0 withDefault:nil];
+    NSString *value = [command argumentAtIndex:1 withDefault:nil];
+
+    if (!([self isFieldValid:key]) || !([self isFieldValid:value]) ) {
+        return;
+    }
+    
+    [Adjust addSessionPartnerParameter:key, value:value];
+}
+
+- (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command {
+    NSString *key = [command argumentAtIndex:0 withDefault:nil];
+
+    if (!([self isFieldValid:key])) {
+        return;
+    }
+    
+    [Adjust removeSessionPartnerParameter:key];
+}
+
+- (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command {
+    [Adjust resetSessionPartnerParameter:key];
 }
 
 - (BOOL)isFieldValid:(NSObject *)field {

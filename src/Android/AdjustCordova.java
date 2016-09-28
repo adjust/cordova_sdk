@@ -52,12 +52,13 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
     private static final String COMMAND_GET_IDFA                                 = "getIdfa";
     private static final String COMMAND_GET_GOOGLE_AD_ID                         = "getGoogleAdId";
-    private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER                         = "addSessionCallbackParameter";
-    private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER                         = "removeSessionCallbackParameter";
-    private static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS                         = "resetSessionCallbackParameters";
-    private static final String COMMAND_ADD_SESSION_PARTNER_PARAMETER                         = "addSessionPartnerParameter";
-    private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER                         = "removeSessionPartnerParameter";
-    private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS                         = "resetSessionPartnerParameters";
+    private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER           = "addSessionCallbackParameter";
+    private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER        = "removeSessionCallbackParameter";
+    private static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS        = "resetSessionCallbackParameters";
+    private static final String COMMAND_ADD_SESSION_PARTNER_PARAMETER            = "addSessionPartnerParameter";
+    private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER         = "removeSessionPartnerParameter";
+    private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
+    private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN                        = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME                         = "trackerName";
@@ -355,7 +356,12 @@ public class AdjustCordova extends CordovaPlugin
             Adjust.resetSessionPartnerParameters();
 
             return true;
+        } else if (action.equals(COMMAND_SEND_FIRST_PACKAGES)) {
+            Adjust.sendFirstPackages();
+
+            return true;
         }
+
 
 
         String errorMessage = String.format("Invalid call (%s)", action);

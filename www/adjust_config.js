@@ -20,6 +20,9 @@ function AdjustConfig(appToken, environment) {
 
     this.eventBufferingEnabled = null;
 
+    this.userAgent = null;
+    this.delayStart = 0.0;
+
     // Android only
     this.processName = null;
 }
@@ -61,6 +64,14 @@ AdjustConfig.prototype.getDeeplinkCallback = function() {
     return this.deeplinkCallbackListener;
 };
 
+AdjustConfig.prototype.getUserAgent = function() {
+    return this.userAgent;
+}
+
+AdjustConfig.prototype.getDelayStart = function() {
+    return this.delayStart;
+}
+
 //SETTERS
 //===========================
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
@@ -84,6 +95,14 @@ AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     //TODO: LOG ERROR/WARNING
     return false;
 };
+
+AdjustConfig.prototype.setUserAgent = function(userAgent) {
+    this.userAgent = userAgent;
+}
+
+AdjustConfig.prototype.setDelayStart = function(delayStart) {
+    this.delayStart = delayStart;
+}
 
 AdjustConfig.prototype.setAttributionCallbackListener = function(attributionCallbackListener) {
     this.attributionCallbackListener = attributionCallbackListener;

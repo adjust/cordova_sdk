@@ -110,6 +110,10 @@ var Adjust = {
     resetSessionPartnerParameters: function () {
         callCordova('resetSessionPartnerParameters');
     },
+
+    sendFirstPackages: function () {
+        callCordova('sendFirstPackages');
+    },
 };
 
 function onPause () {
