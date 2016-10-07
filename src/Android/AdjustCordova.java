@@ -135,7 +135,7 @@ public class AdjustCordova extends CordovaPlugin
                 isLogLevelSuppress = true;
             }
 
-            AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(), appToken, environment, isLogLevelSuppress);
+            final AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(), appToken, environment, isLogLevelSuppress);
 
             if (adjustConfig.isValid()) {
                 // Log level
@@ -225,11 +225,17 @@ public class AdjustCordova extends CordovaPlugin
                     adjustConfig.setOnDeeplinkResponseListener(this);
                 }
 
-                Adjust.onCreate(adjustConfig);
 
-                // Needed because Cordova doesn't launch 'resume' event on app start.
-                // It initializes it only when app comes back from the background.
-                Adjust.onResume();
+                cordova.getThreadPool().execute(new Runnable() {
+                    @Override 
+                    public void run() { 
+                        Adjust.onCreate(adjustConfig);
+
+                        // Needed because Cordova doesn't launch 'resume' event on app start.
+                        // It initializes it only when app comes back from the background.
+                        Adjust.onResume();
+                    }
+                });
             }
 
             return true;
@@ -318,26 +324,54 @@ public class AdjustCordova extends CordovaPlugin
             }
             return true;
         } else if (action.equals(COMMAND_SET_OFFLINE_MODE)) {
-            Boolean enabled = args.getBoolean(0);
-            Adjust.setOfflineMode(enabled);
+            final Boolean enabled = args.getBoolean(0);
+
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.setOfflineMode(enabled);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
-            String token = args.getString(0);
-            Adjust.setPushToken(token);
+            final String token = args.getString(0);
+
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.setPushToken(token);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_ON_PAUSE)) {
-            Adjust.onPause();
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.onPause();
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_ON_RESUME)) {
-            Adjust.onResume();
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.onResume();
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_SET_ENABLED)) {
-            Boolean enabled = args.getBoolean(0);
-            Adjust.setEnabled(enabled);
+            final Boolean enabled = args.getBoolean(0);
+
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.setEnabled(enabled);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_IS_ENABLED)) {
@@ -348,55 +382,100 @@ public class AdjustCordova extends CordovaPlugin
             return true;
         } else if (action.equals(COMMAND_APP_WILL_OPEN_URL)) {
             String url = args.getString(0);
-            Uri uri = Uri.parse(url);
+            final Uri uri = Uri.parse(url);
 
-            Adjust.appWillOpenUrl(uri);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.appWillOpenUrl(uri);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_GET_IDFA)) {
             return true;
         } else if (action.equals(COMMAND_ADD_SESSION_CALLBACK_PARAMETER)) {
-            String key = args.getString(0);
-            String value = args.getString(1);
+            final String key = args.getString(0);
+            final String value = args.getString(1);
 
-            Adjust.addSessionCallbackParameter(key, value);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.addSessionCallbackParameter(key, value);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER)) {
-            String key = args.getString(0);
+            final String key = args.getString(0);
 
-            Adjust.removeSessionCallbackParameter(key);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.removeSessionCallbackParameter(key);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_RESET_SESSION_CALLBACK_PARAMETERS)) {
-            Adjust.resetSessionCallbackParameters();
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.resetSessionCallbackParameters();
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_ADD_SESSION_PARTNER_PARAMETER)) {
-            String key = args.getString(0);
-            String value = args.getString(1);
+            final String key = args.getString(0);
+            final String value = args.getString(1);
 
-            Adjust.addSessionPartnerParameter(key, value);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.addSessionPartnerParameter(key, value);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_REMOVE_SESSION_PARTNER_PARAMETER)) {
-            String key = args.getString(0);
+            final String key = args.getString(0);
 
-            Adjust.removeSessionPartnerParameter(key);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.removeSessionPartnerParameter(key);
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_RESET_SESSION_PARTNER_PARAMETERS)) {
-            Adjust.resetSessionPartnerParameters();
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.resetSessionPartnerParameters();
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_SEND_FIRST_PACKAGES)) {
-            Adjust.sendFirstPackages();
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.sendFirstPackages();
+                }
+            });
 
             return true;
         } else if (action.equals(COMMAND_REFERRER)) {
-            String referrer = args.getString(0);
+            final String referrer = args.getString(0);
 
-            Adjust.setReferrer(referrer);
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override 
+                public void run() { 
+                    Adjust.setReferrer(referrer);
+                }
+            });
             return true;
         }
 

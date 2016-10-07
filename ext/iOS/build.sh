@@ -3,35 +3,27 @@
 # End script if one of the lines fails
 set -e
 
-# Get absolute path
-pushd `dirname $0` > /dev/null
-ABS_ROOT_DIR=`cd ../..; pwd`
-popd > /dev/null
 
-# Relative directories
+SDK_DIR=~/Dev/cordova_sdk
 SRC_DIR=ext/iOS/sdk
 LIB_OUT_DIR=src/iOS
 SCRIPT_DIR=scripts
 
-cd ${ABS_ROOT_DIR}
-echo ">>><<<"
-echo ">>> Removing old framework"
-echo ">>><<<"
+RED='\033[0;31m' # Red color
+GREEN='\033[0;32m' # Green color
+NC='\033[0m' # No Color
+
+cd ${SDK_DIR}
+echo -e "${GREEN}>>> Removing old framework ${NC}"
 rm -rfv ${LIB_OUT_DIR}/AdjustSdk.framework
 
-echo ">>><<<"
-echo ">>> building new framework"
-echo ">>><<<"
-cd ${ABS_ROOT_DIR}/${SRC_DIR}
+echo -e "${GREEN}>>> building new framework ${NC}"
+cd ${SDK_DIR}/${SRC_DIR}
 xcodebuild -target AdjustStatic -configuration Release
 
-echo ">>><<<"
-echo ">>> Copy built framework to designated location"
-echo ">>><<<"
-cd ${ABS_ROOT_DIR}
+echo -e "${GREEN}>>> Copy built framework to designated location ${NC}"
+cd ${SDK_DIR}
 \cp -Rv ${SRC_DIR}/Frameworks/Static/AdjustSdk.framework ${LIB_OUT_DIR}
 
-echo ">>><<<"
-echo ">>> Running symlink fix"
-echo ">>><<<"
+echo -e "${GREEN}>>> Running symlink fix ${NC}"
 ${SCRIPT_DIR}/symlink_fix.sh
