@@ -34,6 +34,10 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_CURRENCY                                     = "currency";
     private static final String KEY_CALLBACK_PARAMETERS                          = "callbackParameters";
     private static final String KEY_PARTNER_PARAMETERS                           = "partnerParameters";
+    private static final String KEY_SEND_IN_BACKGROUND                           = "sendInBackground";
+    private static final String KEY_SHOULD_LAUNCH_DEEPLINK                           = "shouldLaunchDeeplink";
+    private static final String KEY_USER_AGENT                           = "userAgent";
+    private static final String KEY_DELAY_START                           = "delayStart";
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
@@ -59,6 +63,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER         = "removeSessionPartnerParameter";
     private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
     private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
+    private static final String COMMAND_REFERRER                      = "setReferrer";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN                        = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME                         = "trackerName";
@@ -102,10 +107,12 @@ public class AdjustCordova extends CordovaPlugin
     private static CallbackContext sessionTrackingFailedCallbackContext;
     private static CallbackContext deeplinkCallbackContext;
 
+    private boolean shouldLaunchDeeplink = false;
+
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
-            JSONObject jsonParameters = args.optJSONObject(0);
+            final JSONObject jsonParameters = args.optJSONObject(0);
             Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
             String appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -116,6 +123,12 @@ public class AdjustCordova extends CordovaPlugin
 
             String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
             String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
+
+            String userAgent = parameters.get(KEY_USER_AGENT).toString();
+            boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
+
+            boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+            double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
 
             boolean isLogLevelSuppress = false;
             if(isFieldValid(logLevel) && logLevel.equals("SUPPRESS") ) {
@@ -167,6 +180,20 @@ public class AdjustCordova extends CordovaPlugin
                 if (isFieldValid(defaultTracker)) {
                     adjustConfig.setDefaultTracker(defaultTracker);
                 }
+
+                // user agent
+                if (isFieldValid(userAgent)) {
+                    adjustConfig.setUserAgent(userAgent);
+                }
+
+                // sendInBackground
+                adjustConfig.setSendInBackground(sendInBackground);
+
+                // shouldLaunchDeeplink
+                this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+
+                // delayStart
+                adjustConfig.setDelayStart(delayStart);
 
                 // Attribution callback
                 if (attributionCallbackContext != null) {
@@ -240,6 +267,7 @@ public class AdjustCordova extends CordovaPlugin
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
+
             JSONObject jsonParameters = args.optJSONObject(0);
             Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
@@ -252,7 +280,7 @@ public class AdjustCordova extends CordovaPlugin
             String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
             String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
 
-            AdjustEvent adjustEvent = new AdjustEvent(eventToken);
+            final AdjustEvent adjustEvent = new AdjustEvent(eventToken);
 
             if (adjustEvent.isValid()) {
                 if (isFieldValid(revenue)) {
@@ -280,9 +308,14 @@ public class AdjustCordova extends CordovaPlugin
                     adjustEvent.addPartnerParameter(key, value);
                 }
 
-                Adjust.trackEvent(adjustEvent);
-            }
+                cordova.getThreadPool().execute(new Runnable() {
+                    @Override 
+                    public void run() { 
+                        Adjust.trackEvent(adjustEvent);
+                    }
+                });
 
+            }
             return true;
         } else if (action.equals(COMMAND_SET_OFFLINE_MODE)) {
             Boolean enabled = args.getBoolean(0);
@@ -360,9 +393,12 @@ public class AdjustCordova extends CordovaPlugin
             Adjust.sendFirstPackages();
 
             return true;
+        } else if (action.equals(COMMAND_REFERRER)) {
+            String referrer = args.getString(0);
+
+            Adjust.setReferrer(referrer);
+            return true;
         }
-
-
 
         String errorMessage = String.format("Invalid call (%s)", action);
 
@@ -433,8 +469,7 @@ public class AdjustCordova extends CordovaPlugin
 
         deeplinkCallbackContext.sendPluginResult(pluginResult);
 
-        //TODO: FIX THIS
-        return true;
+        return shouldLaunchDeeplink;
     }
 
     boolean isFieldValid(String field) {

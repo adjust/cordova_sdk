@@ -21,6 +21,8 @@
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
+- (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailureCallback:(CDVInvokedUrlCommand *)command;

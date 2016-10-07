@@ -19,6 +19,9 @@ function AdjustConfig(appToken, environment) {
     this.deeplinkCallbackListener = null;
 
     this.eventBufferingEnabled = null;
+    this.shouldLaunchDeeplink = null;
+    this.referrer = null;
+    this.sendInBackground = null;
 
     this.userAgent = null;
     this.delayStart = 0.0;
@@ -72,6 +75,18 @@ AdjustConfig.prototype.getDelayStart = function() {
     return this.delayStart;
 }
 
+AdjustConfig.prototype.getReferrer = function() {
+    return this.referrer;
+}
+
+AdjustConfig.prototype.getSendInBackground = function() {
+    return this.sendInBackground;
+}
+
+AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
+    return this.shouldLaunchDeeplink;
+}
+
 //SETTERS
 //===========================
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
@@ -90,9 +105,9 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
     this.defaultTracker = defaultTracker;
 };
 
-//DEPRECATED
+//@deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
-    //TODO: LOG ERROR/WARNING
+    console.warn("Calling deprecated function! Use a dedicated setCallbackListener for the specific callback you need. Check adjust_config.js for more info");
     return false;
 };
 
@@ -133,12 +148,24 @@ AdjustConfig.prototype.setDeeplinkCallbackListener
         this.deeplinkCallbackListener = deeplinkCallbackListener;
     };
 
+AdjustConfig.prototype.setReferrer = function(referrer) {
+    this.referrer = referrer;
+}
+
+AdjustConfig.prototype.setSendInBackground = function(sendInBackground) {
+    this.sendInBackground = sendInBackground;
+}
+
+AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
+    this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+}
+
 //HAS
 //=================================
 
-//@DEPRECATED
+//@deprecated
 AdjustConfig.prototype.hasListener = function() {
-    //TODO LOG ERROR/WARNING
+    console.warn("Calling deprecated function! Use a dedicated hasListener for the specific callback you need. Check adjust_config.js for more info");
     return false;
 };
 
