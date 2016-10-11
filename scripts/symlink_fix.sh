@@ -3,10 +3,10 @@
 # End script if one of the lines fails
 set -e
 
-# get Absolute root path
-pushd `dirname $0` > /dev/null
-ABS_ROOT_DIR=`cd ..; pwd`
-popd > /dev/null
+# Get the current directory (/scripts/ directory)
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Traverse up to get to the root directory
+SDK_DIR="$(dirname "$SCRIPTS_DIR")"
 
 # Relative directories
 SRC_DIR=src/iOS
@@ -16,7 +16,7 @@ echo ">>> Symlink_fix started"
 echo ">>><<<"
 
 # Go to framework folder
-cd ${ABS_ROOT_DIR}/${SRC_DIR}/AdjustSdk.framework
+cd ${SDK_DIR}/${SRC_DIR}/AdjustSdk.framework
 
 # Remove any existing symlinks
 rm -rfv AdjustSdk

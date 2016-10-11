@@ -3,9 +3,12 @@
 # Exit if any errors occur
 set -e
 
+# Get the current directory (/scripts/ directory)
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Traverse up to get to the root directory
+SDK_DIR="$(dirname "$SCRIPTS_DIR")"
+SAMPLE_DIR=sample
 SDK_NAME=com.adjust.sdk
-SDK_DIR=~/Dev/cordova_sdk
-SAMPLE_DIR=~/Dev/MyApp
 
 RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color
@@ -16,7 +19,7 @@ cd ${SDK_DIR}
 ext/Android/build.sh; \cp -v ext/Android/adjust*.jar src/Android/adjust-android.jar
 
 echo -e "${GREEN}>>> Re-installing cordova plugin ${NC}"
-cd ${SAMPLE_DIR}
+cd ${SDK_DIR}/${SAMPLE_DIR}
 cordova plugin rm ${SDK_NAME}
 cordova plugin add ${SDK_DIR}
 
