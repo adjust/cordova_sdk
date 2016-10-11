@@ -2,38 +2,71 @@
 
 # Adjust Cordova SDK
 
-adjust is the business intelligence platform mobile app marketers love: we combine attribution for advertising sources with advanced in-app analytics and store statistics for unbeatable marketing insights.
+adjust is the business intelligence platform mobile app marketers love: we combine attribution for advertising sources with 
+advanced in-app analytics and store statistics for unbeatable marketing insights.
 
 ## Version
 
-4.3.0
+4.10.0
 
 ## Full Documentation
 
-See the [Wiki](https://github.com/adjust/cordova_sdk/wiki/) for full documentation, examples, operational details and other information.
+See the [Wiki](https://github.com/adjust/cordova_sdk/wiki/) for full documentation, examples, operational details and other 
+information.
 
 ## Summary
 
-This is the Cordova SDK of adjust™. You can read more about adjust™ at
-[adjust.com].
+At the moment, adjust SDK for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version `3.0.0 and 
+higher`.
 
-N.B. At the moment, SDK 4.3.0 for Cordova supports Android platform version 
-`4.0.0 and higher` and iOS platform version `3.0.0 and higher`.
+## Example app
 
-There is example inside the [`example` directory][example]. In there you
-can check how to integrate the adjust SDK into your app. The example app has been
-uploaded without platforms being added due to size considerations, so after
-downloading the app, go to app folder and run:
+There is example inside the [`example` directory][example]. In there you can check how to integrate the adjust SDK into your 
+app.
+
+## Integration
+
+Adjust Cordova SDK can simply be added from `npm` repository by running following command in your app's directory:
+
+```
+cordova plugin add com.adjust.sdk
+```
+
+For more information about possible ways to add the adjust SDK to your app, check our [Wiki][] page.
+
+## Initialisation
+
+Adjust SDK can be simply initialised by passing your app token and desired environment value:
+
+```js
+var adjustConfig = new AdjustConfig("{YourAppToken}", "{YourEnvironment}");
+
+Adjust.create(adjustConfig);
+```
+
+After this, SDK is intialised and ready to be used for some advanced features.
+
+## Event tracking
+
+Tracking event with the adjust SDK can be easily done in just couple of lines of code:
+
+```js
+var adjustEvent = new AdjustEvent("{YourEventToken}");
+
+Adjust.trackEvent(adjustEvent);
+```
+
+To check all other features which the adjust SDK provides you, please check our [Wiki][] page.
 
 ## Communication
 
+- Adjust Support: support@adjust.com
 - Twitter: [@adjustcom](http://twitter.com/adjustcom)
 - [GitHub Issues](https://github.com/adjust/cordova_sdk/issues)
 
 ## Bugs and Feedback
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/Netfadjustlix/cordova_sdk/issues).
-
+For bugs, questions and discussions please use the [Github Issues](https://github.com/adjust/cordova_sdk/issues).
 
 ## License
 
