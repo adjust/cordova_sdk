@@ -32,7 +32,7 @@ Adjust Cordova SDK can simply be added from `npm` repository by running followin
 cordova plugin add com.adjust.sdk
 ```
 
-For more information about possible ways to add the adjust SDK to your app, check our [Wiki][] page.
+For more information about possible ways to add the adjust SDK to your app, check our [Wiki][wiki] page.
 
 ## Initialisation
 
@@ -56,7 +56,7 @@ var adjustEvent = new AdjustEvent("{YourEventToken}");
 Adjust.trackEvent(adjustEvent);
 ```
 
-To check all other features which the adjust SDK provides you, please check our [Wiki][] page.
+To check all other features which the adjust SDK provides you, please check our [Wiki][wiki] page.
 
 ## Communication
 
@@ -93,7 +93,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-[example]:                  http://github.com/adjust/ios_sdk/tree/master/examples
-[dashboard]:                http://adjust.com
-[adjust.com]:               http://adjust.com
+[wiki]:         https://github.com/adjust/cordova_sdk/wiki
+[example]:      http://github.com/adjust/ios_sdk/tree/master/examples
+[dashboard]:    http://adjust.com
+[adjust.com]:   http://adjust.com
 
