@@ -1,16 +1,19 @@
 var isOffline = false;
 
 function handleOpenURL(url) {
-    setTimeout(function () {
+    console.log("hello 1");
+    setTimeout(function() {
+        navigator.notification.alert('received url: ' + url, null, 'Notification', 'OK');
         Adjust.appWillOpenUrl(url);
-    }, 300);
-};
+    }, 0);
+}
 
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
     },
+
     // Bind Event Listeners
     //
     bindEvents: function() {
@@ -83,6 +86,7 @@ var app = {
         });
 
         adjustConfig.setShouldLaunchDeeplink(true);
+        //adjustConfig.setEventBufferingEnabled(true);
 
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");

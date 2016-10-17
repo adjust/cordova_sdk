@@ -18,6 +18,9 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
     <feature name="Adjust">
         <param name="ios-package" value="AdjustCordova" />
         <param name="onload" value="true" />

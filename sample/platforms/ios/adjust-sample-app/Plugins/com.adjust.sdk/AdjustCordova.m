@@ -9,32 +9,32 @@
 #import <Cordova/CDVPluginResult.h>
 #import "AdjustCordova.h"
 
-#define KEY_APP_TOKEN               @ "appToken"
-#define KEY_ENVIRONMENT             @ "environment"
-#define KEY_LOG_LEVEL               @ "logLevel"
-#define KEY_SDK_PREFIX              @ "sdkPrefix"
-#define KEY_DEFAULT_TRACKER         @ "defaultTracker"
-#define KEY_EVENT_BUFFERING_ENABLED @ "eventBufferingEnabled"
-#define KEY_EVENT_TOKEN             @ "eventToken"
-#define KEY_REVENUE                 @ "revenue"
-#define KEY_CURRENCY                @ "currency"
-#define KEY_RECEIPT                 @ "receipt"
-#define KEY_TRANSACTION_ID          @ "transactionId"
-#define KEY_CALLBACK_PARAMETERS     @ "callbackParameters"
-#define KEY_PARTNER_PARAMETERS      @ "partnerParameters"
-#define KEY_IS_RECEIPT_SET          @ "isReceiptSet"
-#define KEY_USER_AGENT              @ "userAgent"
-#define KEY_REFERRER                @ "referrer"
-#define KEY_SHOULD_LAUNCH_DEEPLINK  @ "shouldLaunchDeeplink"
-#define KEY_SEND_IN_BACKGROUND      @ "sendInBackground"
-#define KEY_DELAY_START             @ "delayStart"
+#define KEY_APP_TOKEN               @"appToken"
+#define KEY_ENVIRONMENT             @"environment"
+#define KEY_LOG_LEVEL               @"logLevel"
+#define KEY_SDK_PREFIX              @"sdkPrefix"
+#define KEY_DEFAULT_TRACKER         @"defaultTracker"
+#define KEY_EVENT_BUFFERING_ENABLED @"eventBufferingEnabled"
+#define KEY_EVENT_TOKEN             @"eventToken"
+#define KEY_REVENUE                 @"revenue"
+#define KEY_CURRENCY                @"currency"
+#define KEY_RECEIPT                 @"receipt"
+#define KEY_TRANSACTION_ID          @"transactionId"
+#define KEY_CALLBACK_PARAMETERS     @"callbackParameters"
+#define KEY_PARTNER_PARAMETERS      @"partnerParameters"
+#define KEY_IS_RECEIPT_SET          @"isReceiptSet"
+#define KEY_USER_AGENT              @"userAgent"
+#define KEY_REFERRER                @"referrer"
+#define KEY_SHOULD_LAUNCH_DEEPLINK  @"shouldLaunchDeeplink"
+#define KEY_SEND_IN_BACKGROUND      @"sendInBackground"
+#define KEY_DELAY_START             @"delayStart"
 
 @implementation AdjustCordova {
 NSString *attributionCallbackId;
 NSString *eventSuccessfulCallbackId;
-NSString *eventFailureCallbackId;
+NSString *eventFailedCallbackId;
 NSString *sessionSuccessfulCallbackId;
-NSString *sessionFailureCallbackId;
+NSString *sessionFailedCallbackId;
 NSString *deeplinkCallbackId;
 BOOL _shouldLaunchDeeplink;
 }
@@ -42,13 +42,14 @@ BOOL _shouldLaunchDeeplink;
 - (void)pluginInitialize {
     attributionCallbackId = nil;
     eventSuccessfulCallbackId = nil;
-    eventFailureCallbackId = nil;
+    eventFailedCallbackId = nil;
     sessionSuccessfulCallbackId = nil;
-    sessionFailureCallbackId = nil;
+    sessionFailedCallbackId = nil;
     deeplinkCallbackId = nil;
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@">>> HERE: attribution changed");
     NSDictionary *attributionDictionary = [attribution dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:attributionDictionary];
@@ -58,6 +59,7 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+    NSLog(@">>> HERE: event tracking succeeded");
     NSDictionary *dict = [eventSuccessResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
@@ -67,15 +69,17 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    NSLog(@">>> HERE: event tracking failed");
     NSDictionary *dict = [eventFailureResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:eventFailureCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:eventFailedCallbackId];
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+    NSLog(@">>> HERE: session succeeded 3");
     NSDictionary *dict = [sessionSuccessResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
@@ -85,24 +89,23 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    NSLog(@">>> HERE: session failed");
     NSDictionary *dict = [sessionFailureResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionFailureCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionFailedCallbackId];
 }
 
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
-    //TODO: UNTESTED
-    //NSMutableDictionary *dict = [NSMutableDictionary new];
-    //NSString *path = [[NSString alloc] initWithString:[deeplink path]];
-    //[dict setObject:path forKey:@"deeplink"];
+    NSLog(@">>> HERE: deeplink worked");
+    NSString *path = [[NSString alloc] initWithString:[deeplink path]];
 
-    //CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
-    //pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    //[self.commandDelegate sendPluginResult:pluginResult callbackId:attributionCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:attributionCallbackId];
     return _shouldLaunchDeeplink;
 }
 
@@ -113,12 +116,10 @@ BOOL _shouldLaunchDeeplink;
     NSString *sdkPrefix = [[command.arguments objectAtIndex:0] objectForKey:KEY_SDK_PREFIX];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
     NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
-
-    BOOL sendInBackground = [[[command.arguments objectAtIndex:0] objectForKey:KEY_SEND_IN_BACKGROUND] boolValue];
-    BOOL shouldLaunchDeeplink = [[[command.arguments objectAtIndex:0] objectForKey:KEY_SHOULD_LAUNCH_DEEPLINK] boolValue];
-
+    NSNumber *sendInBackground = [[command.arguments objectAtIndex:0] objectForKey:KEY_SEND_IN_BACKGROUND];
+    NSNumber *shouldLaunchDeeplink = [[command.arguments objectAtIndex:0] objectForKey:KEY_SHOULD_LAUNCH_DEEPLINK];
     NSString *userAgent = [[command.arguments objectAtIndex:0] objectForKey:KEY_USER_AGENT];
-    double delayStart = [[[command.arguments objectAtIndex:0] objectForKey:KEY_DELAY_START] doubleValue];
+    NSNumber *delayStart = [[command.arguments objectAtIndex:0] objectForKey:KEY_DELAY_START];
 
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
 
@@ -150,34 +151,38 @@ BOOL _shouldLaunchDeeplink;
 
         // event successful delegate
         if (eventSuccessfulCallbackId != nil) {
-            [adjustConfig setDelegate:self];
+        [adjustConfig setDelegate:self];
         }
 
         // event failure delegate
-        if (eventFailureCallbackId != nil) {
-            [adjustConfig setDelegate:self];
+        if (eventFailedCallbackId != nil) {
+        [adjustConfig setDelegate:self];
         }
 
         // session successful delegate
         if (sessionSuccessfulCallbackId != nil) {
-            [adjustConfig setDelegate:self];
+        [adjustConfig setDelegate:self];
         }
 
         // session failure delegate
-        if (sessionFailureCallbackId != nil) {
-            [adjustConfig setDelegate:self];
+        if (sessionFailedCallbackId != nil) {
+        [adjustConfig setDelegate:self];
         }
 
         // deeplink delegate
         if (deeplinkCallbackId != nil) {
-            [adjustConfig setDelegate:self];
+        [adjustConfig setDelegate:self];
         }
 
-        // send in background
-        [adjustConfig setSendInBackground:sendInBackground];
+         //send in background
+        if ([self isFieldValid:sendInBackground]) {
+            [adjustConfig setSendInBackground:[sendInBackground boolValue]];
+        }
 
         // should launch deeplink
-        _shouldLaunchDeeplink = shouldLaunchDeeplink;
+        if ([self isFieldValid:shouldLaunchDeeplink]) {
+            _shouldLaunchDeeplink = [shouldLaunchDeeplink boolValue];
+        }
 
         // User agent
         if ([self isFieldValid:userAgent]) {
@@ -185,7 +190,9 @@ BOOL _shouldLaunchDeeplink;
         }
 
         // delayStart
-        [adjustConfig setDelayStart:delayStart];
+        if ([self isFieldValid:delayStart]) {
+            [adjustConfig setDelayStart:[delayStart doubleValue]];
+        }
 
         [Adjust appDidLaunch:adjustConfig];
     }
@@ -329,16 +336,16 @@ BOOL _shouldLaunchDeeplink;
     eventSuccessfulCallbackId = command.callbackId;
 }
 
-- (void)setEventTrackingFailureCallback:(CDVInvokedUrlCommand *)command {
-    eventFailureCallbackId = command.callbackId;
+- (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
+    eventFailedCallbackId = command.callbackId;
 }
 
 - (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command {
     sessionSuccessfulCallbackId = command.callbackId;
 }
 
-- (void)setSessionTrackingFailureCallback:(CDVInvokedUrlCommand *)command {
-    sessionFailureCallbackId = command.callbackId;
+- (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
+    sessionFailedCallbackId = command.callbackId;
 }
 
 - (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command {

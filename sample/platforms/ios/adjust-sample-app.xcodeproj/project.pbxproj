@@ -7,21 +7,19 @@
 	objects = {
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
+		029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49223E30FDE4431CBF704374 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		06E4E23E04054199854D0A79 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		301BF552109A68D80062928A /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BF535109A57CC0062928A /* libCordova.a */; };
 		302D95F114D2391D003F00A1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 302D95EF14D2391D003F00A1 /* MainViewController.m */; };
 		302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302D95F014D2391D003F00A1 /* MainViewController.xib */; };
-		3047A5121AB8059700498E2A /* build-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A50F1AB8059700498E2A /* build-debug.xcconfig */; };
-		3047A5131AB8059700498E2A /* build-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5101AB8059700498E2A /* build-release.xcconfig */; };
-		3047A5141AB8059700498E2A /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5111AB8059700498E2A /* build.xcconfig */; };
+		697D8D52902D4ECF8AF08D2F /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D0971623D38947FD93514CC6 /* CDVNotification.bundle */; };
 		6A506717B868452995DDDB4A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5151C6188946B2999D2333 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CF06CB30508D463CB5E8BA7C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C804599745784B90A62775D5 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49223E30FDE4431CBF704374 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		06E4E23E04054199854D0A79 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */; };
-		697D8D52902D4ECF8AF08D2F /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D0971623D38947FD93514CC6 /* CDVNotification.bundle */; };
-		D1C0DF248C8F430BB2047A23 /* AdjustCordova.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD5CD860E5546B1B851536C /* AdjustCordova.m */; };
-		B8F3BEB54EE24F2895372274 /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */; };
+		A37B140575EB420AA9D78EB1 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 78056705F4F94453A034C029 /* CDVLogger.m */; };
+		2B97020DBA864CA7832F355D /* AdjustCordova.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DE12484AA3A4260BC73B20F /* AdjustCordova.m */; };
+		187E01923FE24B198A4457F0 /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2734E5CC83A4868A38FAFEB /* AdjustSdk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,33 +41,35 @@
 
 /* Begin PBXFileReference section */
 		0207DA571B56EA530066E2B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "adjust-sample-app/Images.xcassets"; sourceTree = SOURCE_ROOT; };
+		18FEC66BD46E440F860BFD55 /* CDVNotification.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = CDVNotification.h; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* adjust-sample-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "adjust-sample-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F5151C6188946B2999D2333 /* AdSupport.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		301BF56E109A69640062928A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		302D95EE14D2391D003F00A1 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		302D95EF14D2391D003F00A1 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		302D95F014D2391D003F00A1 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
-		3047A50F1AB8059700498E2A /* build-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-debug.xcconfig"; path = cordova/build-debug.xcconfig; sourceTree = SOURCE_ROOT; };
-		3047A5101AB8059700498E2A /* build-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-release.xcconfig"; path = cordova/build-release.xcconfig; sourceTree = SOURCE_ROOT; };
+		3047A50F1AB8059700498E2A /* build-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-debug.xcconfig"; path = "cordova/build-debug.xcconfig"; sourceTree = SOURCE_ROOT; };
+		3047A5101AB8059700498E2A /* build-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-release.xcconfig"; path = "cordova/build-release.xcconfig"; sourceTree = SOURCE_ROOT; };
 		3047A5111AB8059700498E2A /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = build.xcconfig; path = cordova/build.xcconfig; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* adjust-sample-app-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "adjust-sample-app-Prefix.pch"; sourceTree = "<group>"; };
+		49223E30FDE4431CBF704374 /* AudioToolbox.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* adjust-sample-app-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "adjust-sample-app-Info.plist"; path = "adjust-sample-app/adjust-sample-app-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = SOURCE_ROOT; };
+		A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = CDVNotification.m; path = "cordova-plugin-dialogs/CDVNotification.m"; sourceTree = "<group>"; };
+		C804599745784B90A62775D5 /* iAd.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		D0971623D38947FD93514CC6 /* CDVNotification.bundle */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.plug-in"; path = CDVNotification.bundle; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
+		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "adjust-sample-app/config.xml"; sourceTree = "<group>"; };
-		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridging-Header.h"; sourceTree = "<group>"; };
-		1F5151C6188946B2999D2333 /* AdSupport.framework */ = {isa = PBXFileReference; name = "AdSupport.framework"; path = "System/Library/Frameworks/AdSupport.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		C804599745784B90A62775D5 /* iAd.framework */ = {isa = PBXFileReference; name = "iAd.framework"; path = "System/Library/Frameworks/iAd.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		49223E30FDE4431CBF704374 /* AudioToolbox.framework */ = {isa = PBXFileReference; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */ = {isa = PBXFileReference; name = "CDVNotification.m"; path = "cordova-plugin-dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		18FEC66BD46E440F860BFD55 /* CDVNotification.h */ = {isa = PBXFileReference; name = "CDVNotification.h"; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		D0971623D38947FD93514CC6 /* CDVNotification.bundle */ = {isa = PBXFileReference; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.plug-in; explicitFileType = undefined; includeInIndex = 0; };
-		CFD5CD860E5546B1B851536C /* AdjustCordova.m */ = {isa = PBXFileReference; name = "AdjustCordova.m"; path = "com.adjust.sdk/AdjustCordova.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		3FA0F6AFC1D0405690B2BB4B /* AdjustCordova.h */ = {isa = PBXFileReference; name = "AdjustCordova.h"; path = "com.adjust.sdk/AdjustCordova.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */ = {isa = PBXFileReference; name = "AdjustSdk.framework"; path = "adjust-sample-app/Plugins/com.adjust.sdk/AdjustSdk.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		78056705F4F94453A034C029 /* CDVLogger.m */ = {isa = PBXFileReference; name = "CDVLogger.m"; path = "cordova-plugin-console/CDVLogger.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		5465D97E9589426CB3DC550F /* CDVLogger.h */ = {isa = PBXFileReference; name = "CDVLogger.h"; path = "cordova-plugin-console/CDVLogger.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		4DE12484AA3A4260BC73B20F /* AdjustCordova.m */ = {isa = PBXFileReference; name = "AdjustCordova.m"; path = "com.adjust.sdk/AdjustCordova.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		ECE565FE24144207BA824A16 /* AdjustCordova.h */ = {isa = PBXFileReference; name = "AdjustCordova.h"; path = "com.adjust.sdk/AdjustCordova.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		F2734E5CC83A4868A38FAFEB /* AdjustSdk.framework */ = {isa = PBXFileReference; name = "AdjustSdk.framework"; path = "adjust-sample-app/Plugins/com.adjust.sdk/AdjustSdk.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +81,7 @@
 				6A506717B868452995DDDB4A /* AdSupport.framework in Frameworks */,
 				CF06CB30508D463CB5E8BA7C /* iAd.framework in Frameworks */,
 				029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */,
-				B8F3BEB54EE24F2895372274 /* AdjustSdk.framework in Frameworks */,
+				187E01923FE24B198A4457F0 /* AdjustSdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +155,7 @@
 				1F5151C6188946B2999D2333 /* AdSupport.framework */,
 				C804599745784B90A62775D5 /* iAd.framework */,
 				49223E30FDE4431CBF704374 /* AudioToolbox.framework */,
-				2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */,
+				F2734E5CC83A4868A38FAFEB /* AdjustSdk.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -183,8 +183,10 @@
 			children = (
 				A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */,
 				18FEC66BD46E440F860BFD55 /* CDVNotification.h */,
-				CFD5CD860E5546B1B851536C /* AdjustCordova.m */,
-				3FA0F6AFC1D0405690B2BB4B /* AdjustCordova.h */,
+				78056705F4F94453A034C029 /* CDVLogger.m */,
+				5465D97E9589426CB3DC550F /* CDVLogger.h */,
+				4DE12484AA3A4260BC73B20F /* AdjustCordova.m */,
+				ECE565FE24144207BA824A16 /* AdjustCordova.h */,
 			);
 			name = Plugins;
 			path = "adjust-sample-app/Plugins";
@@ -228,11 +230,19 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 510;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = QGUGW9AUMK;
+					};
+				};
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "__NON-CLI__" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "adjust-sample-app" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectReferences = (
@@ -298,7 +308,8 @@
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				06E4E23E04054199854D0A79 /* CDVNotification.m in Sources */,
-				D1C0DF248C8F430BB2047A23 /* AdjustCordova.m in Sources */,
+				A37B140575EB420AA9D78EB1 /* CDVLogger.m in Sources */,
+				2B97020DBA864CA7832F355D /* AdjustCordova.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,15 +334,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "adjust-sample-app/adjust-sample-app-Prefix.pch";
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = "";
-				INFOPLIST_FILE = "adjust-sample-app/adjust-sample-app-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				PRODUCT_NAME = "adjust-sample-app";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
@@ -369,7 +372,47 @@
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "adjust-sample-app/adjust-sample-app-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
+				INFOPLIST_FILE = "adjust-sample-app/adjust-sample-app-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				PRODUCT_NAME = "adjust-sample-app";
 			};
 			name = Debug;
 		};
@@ -383,12 +426,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "adjust-sample-app/adjust-sample-app-Prefix.pch";
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = "";
-				INFOPLIST_FILE = "adjust-sample-app/adjust-sample-app-Info.plist";
-				PRODUCT_NAME = "adjust-sample-app";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
@@ -426,7 +464,44 @@
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "adjust-sample-app/adjust-sample-app-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
+				INFOPLIST_FILE = "adjust-sample-app/adjust-sample-app-Info.plist";
+				PRODUCT_NAME = "adjust-sample-app";
 			};
 			name = Release;
 		};
@@ -493,7 +568,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "__NON-CLI__" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "adjust-sample-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

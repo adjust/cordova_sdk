@@ -9,6 +9,22 @@ module.exports = [
         ]
     },
     {
+        "id": "cordova-plugin-console.console",
+        "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "console"
+        ]
+    },
+    {
+        "id": "cordova-plugin-console.logger",
+        "file": "plugins/cordova-plugin-console/www/logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "cordova.logger"
+        ]
+    },
+    {
         "id": "cordova-plugin-customurlscheme.LaunchMyApp",
         "file": "plugins/cordova-plugin-customurlscheme/www/ios/LaunchMyApp.js",
         "pluginId": "cordova-plugin-customurlscheme",
@@ -46,8 +62,9 @@ module.exports.metadata =
 {
     "cordova-plugin-dialogs": "1.3.0",
     "cordova-plugin-whitelist": "1.3.0",
+    "cordova-plugin-console": "1.0.4",
     "cordova-plugin-customurlscheme": "4.2.0",
-    "com.adjust.sdk": "4.3.0"
+    "com.adjust.sdk": "4.10.0"
 };
 // BOTTOM OF METADATA
 });

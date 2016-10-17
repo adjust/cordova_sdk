@@ -54,11 +54,11 @@ AdjustConfig.prototype.getEventTrackingFailedCallback = function() {
 };
 
 AdjustConfig.prototype.getSessionTrackingSuccessfulCallback = function() {
-    return this.eventTrackingSuccessfulCallbackListener;
+    return this.sessionTrackingSuccessfulCallbackListener;
 };
 
 AdjustConfig.prototype.getSessionTrackingFailedCallback = function() {
-    return this.eventTrackingFailedCallbackListener;
+    return this.sessionTrackingFailedCallbackListener;
 };
 
 AdjustConfig.prototype.getDeeplinkCallback = function() {
@@ -132,13 +132,13 @@ AdjustConfig.prototype.setEventTrackingFailedCallbackListener
     };
 
 AdjustConfig.prototype.setSessionTrackingSuccessfulCallbackListener 
-    = function(eventTrackingSuccessfulCallbackListener) {
-        this.eventTrackingSuccessfulCallbackListener = eventTrackingSuccessfulCallbackListener;
+    = function(sessionTrackingSuccessfulCallbackListener) {
+        this.sessionTrackingSuccessfulCallbackListener = sessionTrackingSuccessfulCallbackListener;
     };
 
 AdjustConfig.prototype.setSessionTrackingFailedCallbackListener 
-    = function(eventTrackingFailedCallbackListener) {
-        this.eventTrackingFailedCallbackListener = eventTrackingFailedCallbackListener;
+    = function(sessionTrackingFailedCallbackListener) {
+        this.sessionTrackingFailedCallbackListener = sessionTrackingFailedCallbackListener;
     };
 
 AdjustConfig.prototype.setDeeplinkCallbackListener 
@@ -180,11 +180,11 @@ AdjustConfig.prototype.hasEventTrackingFailedListener = function() {
 };
 
 AdjustConfig.prototype.hasSessionTrackingSuccessfulListener = function() {
-    return this.eventTrackingSuccessfulCallbackListener != null;
+    return this.sessionTrackingSuccessfulCallbackListener != null;
 };
 
 AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
-    return this.eventTrackingFailedCallbackListener != null;
+    return this.sessionTrackingFailedCallbackListener != null;
 };
 
 AdjustConfig.prototype.hasDeeplinkCallbackListener = function() {

@@ -13,6 +13,9 @@
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.adjust.example"
         },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.adjust.example"
+        },
         "cordova-plugin-customurlscheme": {
             "URL_SCHEME": "adjustExample",
             "ANDROID_SCHEME": " ",

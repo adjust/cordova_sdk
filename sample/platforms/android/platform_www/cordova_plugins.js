@@ -54,8 +54,9 @@ module.exports.metadata =
 {
     "cordova-plugin-whitelist": "1.3.0",
     "cordova-plugin-dialogs": "1.3.0",
+    "cordova-plugin-console": "1.0.4",
     "cordova-plugin-customurlscheme": "4.2.0",
-    "com.adjust.sdk": "4.3.0"
+    "com.adjust.sdk": "4.10.0"
 };
 // BOTTOM OF METADATA
 });

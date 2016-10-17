@@ -13,6 +13,9 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.adjust.example"
         },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.adjust.example"
+        },
         "cordova-plugin-customurlscheme": {
             "URL_SCHEME": "adjustExample",
             "PACKAGE_NAME": "com.adjust.example"
