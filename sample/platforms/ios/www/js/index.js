@@ -1,5 +1,11 @@
 var isOffline = false;
 
+function handleOpenURL(url) {
+    setTimeout(function () {
+        Adjust.appWillOpenUrl(url);
+    }, 300);
+};
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -76,6 +82,8 @@ var app = {
             console.log("uri: " + uri);
         });
 
+        adjustConfig.setShouldLaunchDeeplink(true);
+
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
 
@@ -96,7 +104,7 @@ var app = {
         Adjust.create(adjustConfig);
 
         Adjust.setDeviceToken("bunny_foo_foo");
-        Adjust.sendFirstPackages();
+        //Adjust.sendFirstPackages();
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

@@ -3,8 +3,12 @@
 # End script if one of the lines fails
 set -e
 
+# Get the current directory
+SDK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Traverse up to get to the root directory
+SDK_DIR="$(dirname "$SDK_DIR")"
+SDK_DIR="$(dirname "$SDK_DIR")"
 
-SDK_DIR=~/Dev/cordova_sdk
 SRC_DIR=ext/iOS/sdk
 LIB_OUT_DIR=src/iOS
 SCRIPT_DIR=scripts

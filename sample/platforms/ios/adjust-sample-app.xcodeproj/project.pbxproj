@@ -20,8 +20,8 @@
 		029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49223E30FDE4431CBF704374 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		06E4E23E04054199854D0A79 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */; };
 		697D8D52902D4ECF8AF08D2F /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D0971623D38947FD93514CC6 /* CDVNotification.bundle */; };
-		953330842F574901993B6C1F /* AdjustCordova.m in Sources */ = {isa = PBXBuildFile; fileRef = 252DD572BCC744C1A004A015 /* AdjustCordova.m */; };
-		8C9EB662C360451F87684D41 /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879DD66B35C94F238F9C3E5F /* AdjustSdk.framework */; };
+		D1C0DF248C8F430BB2047A23 /* AdjustCordova.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD5CD860E5546B1B851536C /* AdjustCordova.m */; };
+		B8F3BEB54EE24F2895372274 /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,9 +67,9 @@
 		A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */ = {isa = PBXFileReference; name = "CDVNotification.m"; path = "cordova-plugin-dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		18FEC66BD46E440F860BFD55 /* CDVNotification.h */ = {isa = PBXFileReference; name = "CDVNotification.h"; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		D0971623D38947FD93514CC6 /* CDVNotification.bundle */ = {isa = PBXFileReference; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.plug-in; explicitFileType = undefined; includeInIndex = 0; };
-		252DD572BCC744C1A004A015 /* AdjustCordova.m */ = {isa = PBXFileReference; name = "AdjustCordova.m"; path = "com.adjust.sdk/AdjustCordova.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		F00E3CC9723B467E852A7DDF /* AdjustCordova.h */ = {isa = PBXFileReference; name = "AdjustCordova.h"; path = "com.adjust.sdk/AdjustCordova.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		879DD66B35C94F238F9C3E5F /* AdjustSdk.framework */ = {isa = PBXFileReference; name = "AdjustSdk.framework"; path = "adjust-sample-app/Plugins/com.adjust.sdk/AdjustSdk.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		CFD5CD860E5546B1B851536C /* AdjustCordova.m */ = {isa = PBXFileReference; name = "AdjustCordova.m"; path = "com.adjust.sdk/AdjustCordova.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		3FA0F6AFC1D0405690B2BB4B /* AdjustCordova.h */ = {isa = PBXFileReference; name = "AdjustCordova.h"; path = "com.adjust.sdk/AdjustCordova.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */ = {isa = PBXFileReference; name = "AdjustSdk.framework"; path = "adjust-sample-app/Plugins/com.adjust.sdk/AdjustSdk.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +81,7 @@
 				6A506717B868452995DDDB4A /* AdSupport.framework in Frameworks */,
 				CF06CB30508D463CB5E8BA7C /* iAd.framework in Frameworks */,
 				029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */,
-				8C9EB662C360451F87684D41 /* AdjustSdk.framework in Frameworks */,
+				B8F3BEB54EE24F2895372274 /* AdjustSdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +155,7 @@
 				1F5151C6188946B2999D2333 /* AdSupport.framework */,
 				C804599745784B90A62775D5 /* iAd.framework */,
 				49223E30FDE4431CBF704374 /* AudioToolbox.framework */,
-				879DD66B35C94F238F9C3E5F /* AdjustSdk.framework */,
+				2F570BF813A74DE7866ACFAE /* AdjustSdk.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -183,8 +183,8 @@
 			children = (
 				A61CFFC4D8AE4631BA278B32 /* CDVNotification.m */,
 				18FEC66BD46E440F860BFD55 /* CDVNotification.h */,
-				252DD572BCC744C1A004A015 /* AdjustCordova.m */,
-				F00E3CC9723B467E852A7DDF /* AdjustCordova.h */,
+				CFD5CD860E5546B1B851536C /* AdjustCordova.m */,
+				3FA0F6AFC1D0405690B2BB4B /* AdjustCordova.h */,
 			);
 			name = Plugins;
 			path = "adjust-sample-app/Plugins";
@@ -298,7 +298,7 @@
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				06E4E23E04054199854D0A79 /* CDVNotification.m in Sources */,
-				953330842F574901993B6C1F /* AdjustCordova.m in Sources */,
+				D1C0DF248C8F430BB2047A23 /* AdjustCordova.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +367,8 @@
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 				);
 			};
 			name = Debug;
@@ -389,6 +391,8 @@
 				PRODUCT_NAME = "adjust-sample-app";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",

@@ -18,6 +18,10 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
+    <feature name="Adjust">
+        <param name="ios-package" value="AdjustCordova" />
+        <param name="onload" value="true" />
+    </feature>
     <name>adjust-sample-app</name>
     <description>
     </description>
@@ -44,8 +48,4 @@
     <preference name="PageLength" value="0" />
     <preference name="PaginationBreakingMode" value="page" />
     <preference name="PaginationMode" value="unpaginated" />
-    <feature name="Adjust">
-        <param name="ios-package" value="AdjustCordova" />
-        <param name="onload" value="true" />
-    </feature>
 </widget>
