@@ -13,6 +13,7 @@ import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.util.Log;
 
 public class AdjustCordova extends CordovaPlugin 
     implements OnAttributionChangedListener, 
@@ -191,6 +192,7 @@ public class AdjustCordova extends CordovaPlugin
 
                 // shouldLaunchDeeplink
                 this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+                Log.d("ADJUST", ">>> shouldLaunchDeeplink: " + this.shouldLaunchDeeplink);
 
                 // delayStart
                 adjustConfig.setDelayStart(delayStart);
@@ -221,7 +223,9 @@ public class AdjustCordova extends CordovaPlugin
                 }
 
                 // Deeplink callback listener
+                Log.d("ADJUST", ">>> trying to set deeplink callback response");
                 if (deeplinkCallbackContext != null) {
+                    Log.d("ADJUST", ">>> setting deeplink callback response successful");
                     adjustConfig.setOnDeeplinkResponseListener(this);
                 }
 
@@ -254,6 +258,7 @@ public class AdjustCordova extends CordovaPlugin
 
             return true;
         } else if (action.equals(COMMAND_SET_DEEPLINK_CALLBACK)) {
+            Log.d("ADJUST", ">>> COMMAND_DEEPLINK_CALLED");
             AdjustCordova.deeplinkCallbackContext = callbackContext;
 
             return true;
@@ -439,13 +444,13 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        JSONObject jsonData = new JSONObject(getDeeplinkDictionary(deeplink));
-        PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+        Log.d("ADJUST", ">>> launchReceivedDeeplink");
+        PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
         pluginResult.setKeepCallback(true);
 
         deeplinkCallbackContext.sendPluginResult(pluginResult);
 
-        return shouldLaunchDeeplink;
+        return this.shouldLaunchDeeplink;
     }
 
     boolean isFieldValid(String field) {
@@ -705,15 +710,15 @@ public class AdjustCordova extends CordovaPlugin
         return dict;
     }
 
-    private Map<String, String> getDeeplinkDictionary(Uri deeplink) {
-        Map<String, String> dict = new HashMap<String, String>();
+    //private Map<String, String> getDeeplinkDictionary(Uri deeplink) {
+        //Map<String, String> dict = new HashMap<String, String>();
 
-        if (deeplink != null) {
-            dict.put(DEEPLINK_URI, deeplink.toString());
-        } else {
-            dict.put(DEEPLINK_URI, "");
-        }
+        //if (deeplink != null) {
+            //dict.put(DEEPLINK_URI, deeplink.toString());
+        //} else {
+            //dict.put(DEEPLINK_URI, "");
+        //}
 
-        return dict;
-    }
+        //return dict;
+    //}
 }

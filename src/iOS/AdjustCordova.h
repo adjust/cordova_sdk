@@ -25,16 +25,16 @@
 
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
-- (void)setEventTrackingFailureCallback:(CDVInvokedUrlCommand *)command;
+- (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
-- (void)setSessionTrackingFailureCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command;
 
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)RemoveSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)ResetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
+- (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
+- (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 - (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
-- (void)RemoveSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
-- (void)ResetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
+- (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 
 @end
