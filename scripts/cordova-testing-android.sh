@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit if any errors occur
-set -e
+#set -e
 
 # Get the current directory (/scripts/ directory)
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -27,4 +27,4 @@ echo -e "${GREEN}>>> Running Cordova build Android ${NC}"
 cordova build android
 
 echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
-cordova run android --device
+#cordova run android --device --nobuild

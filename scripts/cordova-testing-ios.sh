@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit if any errors occur
-set -e
+#set -e
 
 # Get the current directory (/scripts/ directory)
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -24,7 +24,7 @@ cordova plugin rm ${SDK_NAME}
 cordova plugin add ${SDK_DIR}
 
 echo -e "${GREEN}>>> Running Cordova build iOS ${NC}"
-cordova build ios
+cordova build ios --device
 
 echo -e "${GREEN}>>> Build successful. Installing IPA on device ${NC}"
-cordova run ios --device
+#cordova run ios --device
