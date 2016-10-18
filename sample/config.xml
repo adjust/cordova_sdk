@@ -20,4 +20,9 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="~5.2.2" />
+    <universal-links>
+        <host name="647dcb436f6c0318357e270f9b9cbcd1.ulink.adjust.com" scheme="https">
+            <path event="adjustDeepLinking" url="/ulink/*" />
+        </host>
+    </universal-links>
 </widget>
