@@ -38,8 +38,6 @@ AdjustConfig.LogLevelError         = "ERROR";
 AdjustConfig.LogLevelAssert        = "ASSERT";
 AdjustConfig.LogLevelSuppress      = "SUPPRESS";
 
-//GETTERS
-//===========================
 AdjustConfig.prototype.getAttributionCallback = function() {
     return this.attributionCallbackListener;
 };
@@ -84,8 +82,6 @@ AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
     return this.shouldLaunchDeeplink;
 }
 
-//SETTERS
-//===========================
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
@@ -102,7 +98,7 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
     this.defaultTracker = defaultTracker;
 };
 
-//@deprecated
+// @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     console.warn("Calling deprecated function! Use a dedicated setCallbackListener for the specific callback you need. Check adjust_config.js for more info");
     return false;
@@ -120,30 +116,25 @@ AdjustConfig.prototype.setAttributionCallbackListener = function(attributionCall
     this.attributionCallbackListener = attributionCallbackListener;
 };
 
-AdjustConfig.prototype.setEventTrackingSucceededCallbackListener 
-    = function(eventTrackingSucceededCallbackListener) {
-        this.eventTrackingSucceededCallbackListener = eventTrackingSucceededCallbackListener;
-    };
+AdjustConfig.prototype.setEventTrackingSucceededCallbackListener = function(eventTrackingSucceededCallbackListener) {
+    this.eventTrackingSucceededCallbackListener = eventTrackingSucceededCallbackListener;
+};
 
-AdjustConfig.prototype.setEventTrackingFailedCallbackListener 
-    = function(eventTrackingFailedCallbackListener) {
-        this.eventTrackingFailedCallbackListener = eventTrackingFailedCallbackListener;
-    };
+AdjustConfig.prototype.setEventTrackingFailedCallbackListener = function(eventTrackingFailedCallbackListener) {
+    this.eventTrackingFailedCallbackListener = eventTrackingFailedCallbackListener;
+};
 
-AdjustConfig.prototype.setSessionTrackingSucceededCallbackListener 
-    = function(sessionTrackingSucceededCallbackListener) {
-        this.sessionTrackingSucceededCallbackListener = sessionTrackingSucceededCallbackListener;
-    };
+AdjustConfig.prototype.setSessionTrackingSucceededCallbackListener = function(sessionTrackingSucceededCallbackListener) {
+    this.sessionTrackingSucceededCallbackListener = sessionTrackingSucceededCallbackListener;
+};
 
-AdjustConfig.prototype.setSessionTrackingFailedCallbackListener 
-    = function(sessionTrackingFailedCallbackListener) {
-        this.sessionTrackingFailedCallbackListener = sessionTrackingFailedCallbackListener;
-    };
+AdjustConfig.prototype.setSessionTrackingFailedCallbackListener = function(sessionTrackingFailedCallbackListener) {
+    this.sessionTrackingFailedCallbackListener = sessionTrackingFailedCallbackListener;
+};
 
-AdjustConfig.prototype.setDeferredDeeplinkCallbackListener 
-    = function(deferredDeeplinkCallbackListener) {
-        this.deferredDeeplinkCallbackListener = deferredDeeplinkCallbackListener;
-    };
+AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDeeplinkCallbackListener) {
+    this.deferredDeeplinkCallbackListener = deferredDeeplinkCallbackListener;
+};
 
 AdjustConfig.prototype.setReferrer = function(referrer) {
     this.referrer = referrer;
@@ -157,10 +148,7 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
     this.shouldLaunchDeeplink = shouldLaunchDeeplink;
 }
 
-//HAS
-//=================================
-
-//@deprecated
+// @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use a dedicated hasListener for the specific callback you need. Check adjust_config.js for more info");
     return false;

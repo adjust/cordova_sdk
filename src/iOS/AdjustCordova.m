@@ -30,13 +30,13 @@
 #define KEY_DELAY_START             @"delayStart"
 
 @implementation AdjustCordova {
-NSString *attributionCallbackId;
-NSString *eventSucceededCallbackId;
-NSString *eventFailedCallbackId;
-NSString *sessionSucceededCallbackId;
-NSString *sessionFailedCallbackId;
-NSString *deferredDeeplinkCallbackId;
-BOOL _shouldLaunchDeeplink;
+    NSString *attributionCallbackId;
+    NSString *eventSucceededCallbackId;
+    NSString *eventFailedCallbackId;
+    NSString *sessionSucceededCallbackId;
+    NSString *sessionFailedCallbackId;
+    NSString *deferredDeeplinkCallbackId;
+    BOOL _shouldLaunchDeeplink;
 }
 
 - (void)pluginInitialize {
@@ -100,6 +100,7 @@ BOOL _shouldLaunchDeeplink;
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:deferredDeeplinkCallbackId];
+    
     return _shouldLaunchDeeplink;
 }
 
@@ -148,12 +149,12 @@ BOOL _shouldLaunchDeeplink;
             [adjustConfig setDelegate:self];
         }
 
-        //send in background
+        // Send in background
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];
         }
 
-        // should launch deeplink
+        // Should launch deeplink
         if ([self isFieldValid:shouldLaunchDeeplink]) {
             _shouldLaunchDeeplink = [shouldLaunchDeeplink boolValue];
         }
@@ -163,7 +164,7 @@ BOOL _shouldLaunchDeeplink;
             [adjustConfig setUserAgent:userAgent];
         }
 
-        // delayStart
+        // Delay start
         if ([self isFieldValid:delayStart]) {
             [adjustConfig setDelayStart:[delayStart doubleValue]];
         }
@@ -287,17 +288,11 @@ BOOL _shouldLaunchDeeplink;
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)onPause:(CDVInvokedUrlCommand *)command {
+- (void)onPause:(CDVInvokedUrlCommand *)command {}
 
-}
+- (void)onResume:(CDVInvokedUrlCommand *)command {}
 
-- (void)onResume:(CDVInvokedUrlCommand *)command {
-
-}
-
-- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
-
-}
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {}
 
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command {
     [Adjust sendFirstPackages];
@@ -331,7 +326,7 @@ BOOL _shouldLaunchDeeplink;
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
 
-    if (!([self isFieldValid:key]) || !([self isFieldValid:value]) ) {
+    if (!([self isFieldValid:key]) || !([self isFieldValid:value])) {
         return;
     }
 
@@ -356,7 +351,7 @@ BOOL _shouldLaunchDeeplink;
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
 
-    if (!([self isFieldValid:key]) || !([self isFieldValid:value]) ) {
+    if (!([self isFieldValid:key]) || !([self isFieldValid:value])) {
         return;
     }
 
