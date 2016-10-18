@@ -422,7 +422,7 @@ events:
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
 
-adjustConfig.setEventTrackingSuccessfulCallbackListener(function(eventSuccess) {
+adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
     // Printing all event success properties.
     console.log("Event tracking succeeded!");
     console.log(eventSuccess.message);
@@ -459,7 +459,7 @@ For successfully tracked sessions:
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
 
-adjustConfig.setSessionTrackingSuccessfulCallbackListener(function(sessionSuccess) {
+adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
     // Printing all session success properties.
     console.log("Session tracking succeeded!");
     console.log(sessionSuccess.message);
@@ -686,11 +686,13 @@ the adjust dashboard you must:
 You need to add following entry to your `config.xml` file:
 
 ```xml
-<universal-links>
-    <host name="[hash].ulink.adjust.com" scheme="https">
-        <path event="adjustDeepLinking" url="/ulink/*" />
-    </host>
-</universal-links>
+<widget>
+    <universal-links>
+        <host name="[hash].ulink.adjust.com" scheme="https">
+            <path event="adjustDeepLinking" url="/ulink/*" />
+        </host>
+    </universal-links>
+</widget>
 ```
 
 You should replace the `[hash]` value with the value you generated on the adjust dashboard. You can name the event also how 
@@ -762,7 +764,7 @@ method on the config object by calling the method `setDeeplinkCallbackListener`:
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
 
-adjustConfig.setDeeplinkCallbackListener(function(deeplink) {
+adjustConfig.setDeferredDeeplinkCallbackListener(function(deeplink) {
     console.log("Deferred deep link URL content: " + deeplink);
 });
 
