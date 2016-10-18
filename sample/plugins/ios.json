@@ -6,29 +6,6 @@
     "config_munge": {
         "files": {}
     },
-    "installed_plugins": {
-        "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "cordova-plugin-customurlscheme": {
-            "URL_SCHEME": "adjustExample",
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "cordova-universal-links-plugin": {
-            "PACKAGE_NAME": "com.adjust.example"
-        },
-        "com.adjust.sdk": {
-            "PACKAGE_NAME": "com.adjust.example"
-        }
-    },
+    "installed_plugins": {},
     "dependent_plugins": {}
 }
