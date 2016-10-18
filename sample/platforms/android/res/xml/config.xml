@@ -7,6 +7,16 @@
     <feature name="Notification">
         <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
     </feature>
+    <feature name="LaunchMyApp">
+        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
+    </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="UniversalLinks">
+        <param name="android-package" value="com.nordnetab.cordova.ul.UniversalLinksPlugin" />
+        <param name="onload" value="true" />
+    </feature>
     <name>adjust-sample-app</name>
     <description>
     </description>
@@ -18,11 +28,13 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <universal-links>
+        <host name="647dcb436f6c0318357e270f9b9cbcd1.ulink.adjust.com" scheme="https">
+            <path event="adjustDeepLinking" url="/ulink/*" />
+        </host>
+    </universal-links>
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
-    <feature name="LaunchMyApp">
-        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
-    </feature>
     <feature name="Adjust">
         <param name="android-package" value="com.adjust.sdk.AdjustCordova" />
         <param name="onload" value="true" />

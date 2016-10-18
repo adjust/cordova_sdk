@@ -31,25 +31,24 @@
 
 @implementation AdjustCordova {
 NSString *attributionCallbackId;
-NSString *eventSuccessfulCallbackId;
+NSString *eventSucceededCallbackId;
 NSString *eventFailedCallbackId;
-NSString *sessionSuccessfulCallbackId;
+NSString *sessionSucceededCallbackId;
 NSString *sessionFailedCallbackId;
-NSString *deeplinkCallbackId;
+NSString *deferredDeeplinkCallbackId;
 BOOL _shouldLaunchDeeplink;
 }
 
 - (void)pluginInitialize {
     attributionCallbackId = nil;
-    eventSuccessfulCallbackId = nil;
+    eventSucceededCallbackId = nil;
     eventFailedCallbackId = nil;
-    sessionSuccessfulCallbackId = nil;
+    sessionSucceededCallbackId = nil;
     sessionFailedCallbackId = nil;
-    deeplinkCallbackId = nil;
+    deferredDeeplinkCallbackId = nil;
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@">>> HERE: attribution changed");
     NSDictionary *attributionDictionary = [attribution dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:attributionDictionary];
@@ -59,17 +58,15 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    NSLog(@">>> HERE: event tracking succeeded");
     NSDictionary *dict = [eventSuccessResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:eventSuccessfulCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:eventSucceededCallbackId];
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    NSLog(@">>> HERE: event tracking failed");
     NSDictionary *dict = [eventFailureResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
@@ -79,17 +76,15 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    NSLog(@">>> HERE: session succeeded 3");
     NSDictionary *dict = [sessionSuccessResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionSuccessfulCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionSucceededCallbackId];
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    NSLog(@">>> HERE: session failed");
     NSDictionary *dict = [sessionFailureResponseData dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
@@ -99,13 +94,12 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
-    NSLog(@">>> HERE: deeplink worked");
-    NSString *path = [[NSString alloc] initWithString:[deeplink path]];
+    NSString *path = [deeplink absoluteString];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:attributionCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:deferredDeeplinkCallbackId];
     return _shouldLaunchDeeplink;
 }
 
@@ -144,37 +138,17 @@ BOOL _shouldLaunchDeeplink;
             [adjustConfig setDefaultTracker:defaultTracker];
         }
 
-        // Attribution delegate
-        if (attributionCallbackId != nil) {
+        // Attribution delegate & other delegates
+        if (attributionCallbackId != nil
+                || eventSucceededCallbackId != nil
+                || eventFailedCallbackId != nil
+                || sessionSucceededCallbackId != nil
+                || sessionFailedCallbackId != nil
+                || deferredDeeplinkCallbackId != nil) {
             [adjustConfig setDelegate:self];
         }
 
-        // event successful delegate
-        if (eventSuccessfulCallbackId != nil) {
-        [adjustConfig setDelegate:self];
-        }
-
-        // event failure delegate
-        if (eventFailedCallbackId != nil) {
-        [adjustConfig setDelegate:self];
-        }
-
-        // session successful delegate
-        if (sessionSuccessfulCallbackId != nil) {
-        [adjustConfig setDelegate:self];
-        }
-
-        // session failure delegate
-        if (sessionFailedCallbackId != nil) {
-        [adjustConfig setDelegate:self];
-        }
-
-        // deeplink delegate
-        if (deeplinkCallbackId != nil) {
-        [adjustConfig setDelegate:self];
-        }
-
-         //send in background
+        //send in background
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];
         }
@@ -195,6 +169,7 @@ BOOL _shouldLaunchDeeplink;
         }
 
         [Adjust appDidLaunch:adjustConfig];
+        [Adjust trackSubsessionStart];
     }
 }
 
@@ -332,24 +307,24 @@ BOOL _shouldLaunchDeeplink;
     attributionCallbackId = command.callbackId;
 }
 
-- (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command {
-    eventSuccessfulCallbackId = command.callbackId;
+- (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command {
+    eventSucceededCallbackId = command.callbackId;
 }
 
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
     eventFailedCallbackId = command.callbackId;
 }
 
-- (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command {
-    sessionSuccessfulCallbackId = command.callbackId;
+- (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command {
+    sessionSucceededCallbackId = command.callbackId;
 }
 
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
     sessionFailedCallbackId = command.callbackId;
 }
 
-- (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command {
-    deeplinkCallbackId = command.callbackId;
+- (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command {
+    deferredDeeplinkCallbackId = command.callbackId;
 }
 
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command {

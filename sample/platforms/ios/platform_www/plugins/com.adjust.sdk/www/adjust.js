@@ -28,9 +28,9 @@ var Adjust = {
                 adjustConfig.getAttributionCallback());
         }
 
-        if (adjustConfig.hasEventTrackingSuccessfulListener()) {
-            callCordovaCallback('setEventTrackingSuccessfulCallback', 
-                adjustConfig.getEventTrackingSuccessfulCallback());
+        if (adjustConfig.hasEventTrackingSucceededListener()) {
+            callCordovaCallback('setEventTrackingSucceededCallback', 
+                adjustConfig.getEventTrackingSucceededCallback());
         }
 
         if (adjustConfig.hasEventTrackingFailedListener()) {
@@ -38,9 +38,9 @@ var Adjust = {
                 adjustConfig.getEventTrackingFailedCallback());
         }
 
-        if (adjustConfig.hasSessionTrackingSuccessfulListener()) {
-            callCordovaCallback('setSessionTrackingSuccessfulCallback', 
-                adjustConfig.getSessionTrackingSuccessfulCallback());
+        if (adjustConfig.hasSessionTrackingSucceededListener()) {
+            callCordovaCallback('setSessionTrackingSucceededCallback', 
+                adjustConfig.getSessionTrackingSucceededCallback());
         }
 
         if (adjustConfig.hasSessionTrackingFailedListener()) {
@@ -48,9 +48,9 @@ var Adjust = {
                 adjustConfig.getSessionTrackingFailedCallback());
         }
 
-        if (adjustConfig.hasDeeplinkCallbackListener()) {
-            callCordovaCallback('setDeeplinkCallback', 
-                adjustConfig.getDeeplinkCallback());
+        if (adjustConfig.hasDeferredDeeplinkCallbackListener()) {
+            callCordovaCallback('setDeferredDeeplinkCallback', 
+                adjustConfig.getDeferredDeeplinkCallback());
         }
 
         callCordova('create', adjustConfig);

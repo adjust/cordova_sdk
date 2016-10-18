@@ -21,6 +21,13 @@
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
     </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="UniversalLinks">
+        <param name="ios-package" value="CULPlugin" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="Adjust">
         <param name="ios-package" value="AdjustCordova" />
         <param name="onload" value="true" />
@@ -36,6 +43,11 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <universal-links>
+        <host name="647dcb436f6c0318357e270f9b9cbcd1.ulink.adjust.com" scheme="https">
+            <path event="adjustDeepLinking" url="/ulink/*" />
+        </host>
+    </universal-links>
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
     <preference name="AllowInlineMediaPlayback" value="false" />

@@ -51,6 +51,14 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"UniversalLinks\"><param name=\"android-package\" value=\"com.nordnetab.cordova.ul.UniversalLinksPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Adjust\"><param name=\"android-package\" value=\"com.adjust.sdk.AdjustCordova\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         }
@@ -74,6 +82,12 @@
             "ANDROID_SCHEME": " ",
             "ANDROID_HOST": " ",
             "ANDROID_PATHPREFIX": "/",
+            "PACKAGE_NAME": "com.adjust.example"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.adjust.example"
+        },
+        "cordova-universal-links-plugin": {
             "PACKAGE_NAME": "com.adjust.example"
         },
         "com.adjust.sdk": {
@@ -107,6 +121,22 @@
             ]
         },
         {
+            "id": "cordova-plugin-device.device",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "pluginId": "cordova-plugin-device",
+            "clobbers": [
+                "device"
+            ]
+        },
+        {
+            "id": "cordova-universal-links-plugin.universalLinks",
+            "file": "plugins/cordova-universal-links-plugin/www/universal_links.js",
+            "pluginId": "cordova-universal-links-plugin",
+            "clobbers": [
+                "universalLinks"
+            ]
+        },
+        {
             "id": "com.adjust.sdk.Adjust",
             "file": "plugins/com.adjust.sdk/www/adjust.js",
             "pluginId": "com.adjust.sdk",
@@ -136,6 +166,8 @@
         "cordova-plugin-dialogs": "1.3.0",
         "cordova-plugin-console": "1.0.4",
         "cordova-plugin-customurlscheme": "4.2.0",
+        "cordova-plugin-device": "1.1.3",
+        "cordova-universal-links-plugin": "1.2.0",
         "com.adjust.sdk": "4.10.0"
     }
 }

@@ -13,11 +13,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="adjustExample" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host=" " android:pathPrefix="/" android:scheme=" " />
+                <data android:host="647dcb436f6c0318357e270f9b9cbcd1.ulink.adjust.com" android:pathPattern="/ulink/.*" android:scheme="https" />
             </intent-filter>
         </activity>
         <receiver android:exported="true" android:name="com.adjust.sdk.AdjustReferrerReceiver">

@@ -42,11 +42,11 @@ public class AdjustCordova extends CordovaPlugin
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
-    private static final String COMMAND_SET_EVENT_TRACKING_SUCCESSFUL_CALLBACK   = "setEventTrackingSuccessfulCallback";
+    private static final String COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK   = "setEventTrackingSucceededCallback";
     private static final String COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK       = "setEventTrackingFailedCallback";
-    private static final String COMMAND_SET_SESSION_TRACKING_SUCCESSFUL_CALLBACK = "setSessionTrackingSuccessfulCallback";
+    private static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK = "setSessionTrackingSucceededCallback";
     private static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK     = "setSessionTrackingFailedCallback";
-    private static final String COMMAND_SET_DEEPLINK_CALLBACK                    = "setDeeplinkCallback";
+    private static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK                    = "setDeferredDeeplinkCallback";
     private static final String COMMAND_SET_PUSH_TOKEN                           = "setPushToken";
     private static final String COMMAND_TRACK_EVENT                              = "trackEvent";
     private static final String COMMAND_SET_OFFLINE_MODE                         = "setOfflineMode";
@@ -98,15 +98,13 @@ public class AdjustCordova extends CordovaPlugin
     private static final String SESSION_FAILED_WILL_RETRY = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE = "jsonResponse";
 
-    private static final String DEEPLINK_URI = "deeplink_uri";
-
     private static CallbackContext googleAdIdCallbackContext;
     private static CallbackContext attributionCallbackContext;
-    private static CallbackContext eventTrackingSuccessfulCallbackContext;
+    private static CallbackContext eventTrackingSucceededCallbackContext;
     private static CallbackContext eventTrackingFailedCallbackContext;
-    private static CallbackContext sessionTrackingSuccessfulCallbackContext;
+    private static CallbackContext sessionTrackingSucceededCallbackContext;
     private static CallbackContext sessionTrackingFailedCallbackContext;
-    private static CallbackContext deeplinkCallbackContext;
+    private static CallbackContext deferredDeeplinkCallbackContext;
 
     private boolean shouldLaunchDeeplink = false;
 
@@ -192,7 +190,6 @@ public class AdjustCordova extends CordovaPlugin
 
                 // shouldLaunchDeeplink
                 this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-                Log.d("ADJUST", ">>> shouldLaunchDeeplink: " + this.shouldLaunchDeeplink);
 
                 // delayStart
                 adjustConfig.setDelayStart(delayStart);
@@ -202,8 +199,8 @@ public class AdjustCordova extends CordovaPlugin
                     adjustConfig.setOnAttributionChangedListener(this);
                 }
 
-                // Event tracking successful callback
-                if (eventTrackingSuccessfulCallbackContext != null) {
+                // Event tracking succeeded callback
+                if (eventTrackingSucceededCallbackContext != null) {
                     adjustConfig.setOnEventTrackingSucceededListener(this);
                 }
 
@@ -212,8 +209,8 @@ public class AdjustCordova extends CordovaPlugin
                     adjustConfig.setOnEventTrackingFailedListener(this);
                 }
 
-                // session tracking successful callback
-                if (sessionTrackingSuccessfulCallbackContext != null) {
+                // session tracking succeeded callback
+                if (sessionTrackingSucceededCallbackContext != null) {
                     adjustConfig.setOnSessionTrackingSucceededListener(this);
                 }
 
@@ -223,9 +220,7 @@ public class AdjustCordova extends CordovaPlugin
                 }
 
                 // Deeplink callback listener
-                Log.d("ADJUST", ">>> trying to set deeplink callback response");
-                if (deeplinkCallbackContext != null) {
-                    Log.d("ADJUST", ">>> setting deeplink callback response successful");
+                if (deferredDeeplinkCallbackContext != null) {
                     adjustConfig.setOnDeeplinkResponseListener(this);
                 }
 
@@ -241,25 +236,24 @@ public class AdjustCordova extends CordovaPlugin
             AdjustCordova.attributionCallbackContext = callbackContext;
 
             return true;
-        } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCESSFUL_CALLBACK)) {
-            AdjustCordova.eventTrackingSuccessfulCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK)) {
+            AdjustCordova.eventTrackingSucceededCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK)) {
             AdjustCordova.eventTrackingFailedCallbackContext = callbackContext;
 
             return true;
-        } else if (action.equals(COMMAND_SET_SESSION_TRACKING_SUCCESSFUL_CALLBACK)) {
-            AdjustCordova.sessionTrackingSuccessfulCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK)) {
+            AdjustCordova.sessionTrackingSucceededCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK)) {
             AdjustCordova.sessionTrackingFailedCallbackContext = callbackContext;
 
             return true;
-        } else if (action.equals(COMMAND_SET_DEEPLINK_CALLBACK)) {
-            Log.d("ADJUST", ">>> COMMAND_DEEPLINK_CALLED");
-            AdjustCordova.deeplinkCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
+            AdjustCordova.deferredDeeplinkCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
@@ -408,11 +402,11 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onFinishedEventTrackingSucceeded(AdjustEventSuccess event) {
-        JSONObject jsonData = new JSONObject(getEventTrackingSuccessfulDictionary(event));
+        JSONObject jsonData = new JSONObject(getEventTrackingSucceededDictionary(event));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        eventTrackingSuccessfulCallbackContext.sendPluginResult(pluginResult);
+        eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
@@ -426,11 +420,11 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onFinishedSessionTrackingSucceeded(AdjustSessionSuccess session) {
-        JSONObject jsonData = new JSONObject(getSessionTrackingSuccessfulDictionary(session));
+        JSONObject jsonData = new JSONObject(getSessionTrackingSucceededDictionary(session));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        sessionTrackingSuccessfulCallbackContext.sendPluginResult(pluginResult);
+        sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
@@ -444,11 +438,10 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        Log.d("ADJUST", ">>> launchReceivedDeeplink");
         PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
         pluginResult.setKeepCallback(true);
 
-        deeplinkCallbackContext.sendPluginResult(pluginResult);
+        deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
 
         return this.shouldLaunchDeeplink;
     }
@@ -491,7 +484,7 @@ public class AdjustCordova extends CordovaPlugin
         return map;
     }
 
-    private Map<String, String> getEventTrackingSuccessfulDictionary(AdjustEventSuccess event) {
+    private Map<String, String> getEventTrackingSucceededDictionary(AdjustEventSuccess event) {
         Map<String, String> dict = new HashMap<String, String>();
 
         // Message
@@ -635,7 +628,7 @@ public class AdjustCordova extends CordovaPlugin
         return dict;
     }
 
-    private Map<String, String> getSessionTrackingSuccessfulDictionary(AdjustSessionSuccess session) {
+    private Map<String, String> getSessionTrackingSucceededDictionary(AdjustSessionSuccess session) {
         Map<String, String> dict = new HashMap<String, String>();
 
         // Message
@@ -709,16 +702,4 @@ public class AdjustCordova extends CordovaPlugin
 
         return dict;
     }
-
-    //private Map<String, String> getDeeplinkDictionary(Uri deeplink) {
-        //Map<String, String> dict = new HashMap<String, String>();
-
-        //if (deeplink != null) {
-            //dict.put(DEEPLINK_URI, deeplink.toString());
-        //} else {
-            //dict.put(DEEPLINK_URI, "");
-        //}
-
-        //return dict;
-    //}
 }

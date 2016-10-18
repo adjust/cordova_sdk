@@ -1,16 +1,18 @@
 var isOffline = false;
 
 function handleOpenURL(url) {
-    setTimeout(function () {
+    setTimeout(function() {
+        //navigator.notification.alert('received url: ' + url, null, 'Notification', 'OK');
         Adjust.appWillOpenUrl(url);
-    }, 300);
-};
+    }, 0);
+}
 
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
     },
+
     // Bind Event Listeners
     //
     bindEvents: function() {
@@ -20,6 +22,9 @@ var app = {
     //
 
     onDeviceReady: function() {
+        //Register for universal links
+        universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+
         app.receivedEvent('deviceready');
 
         var adjustConfig = new AdjustConfig("rb4g27fje5ej", AdjustConfig.EnvironmentSandbox);
@@ -36,7 +41,7 @@ var app = {
             console.log("Click label = " + attribution.clickLabel);
         });
 
-        adjustConfig.setEventTrackingSuccessfulCallbackListener(function(eventSuccess) {
+        adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
             console.log(">>> event tracking succeeded callback received");
 
             console.log("message: " + eventSuccess.message);
@@ -57,7 +62,7 @@ var app = {
             console.log("json response: " + eventFailed.jsonResponse);
         });
 
-        adjustConfig.setSessionTrackingSuccessfulCallbackListener(function(sessionSuccess) {
+        adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
             console.log(">>> session tracking succeeded callback received");
 
             console.log("message: " + sessionSuccess.message);
@@ -76,13 +81,14 @@ var app = {
             console.log("json response: " + sessionFailed.jsonResponse);
         });
 
-        adjustConfig.setDeeplinkCallbackListener(function(uri) {
-            console.log(">>> Deeplink Callback received");
+        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+            console.log(">>> Deferred Deeplink Callback received");
 
             console.log("uri: " + uri);
         });
 
         adjustConfig.setShouldLaunchDeeplink(true);
+        //adjustConfig.setEventBufferingEnabled(true);
 
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
@@ -103,9 +109,15 @@ var app = {
 
         Adjust.create(adjustConfig);
 
-        Adjust.setDeviceToken("bunny_foo_foo");
+        Adjust.setPushToken("bunny_foo_foo");
         //Adjust.sendFirstPackages();
     },
+
+    didLaunchAppFromLink: function(eventData) {
+        //navigator.notification.alert('received url from universal link: ' + eventData.url, null, 'Notification', 'OK');
+        Adjust.appWillOpenUrl(eventData.url);
+    },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
