@@ -20,6 +20,12 @@
             "URL_SCHEME": "adjustExample",
             "PACKAGE_NAME": "com.adjust.example"
         },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.adjust.example"
+        },
+        "cordova-universal-links-plugin": {
+            "PACKAGE_NAME": "com.adjust.example"
+        },
         "com.adjust.sdk": {
             "PACKAGE_NAME": "com.adjust.example"
         }
