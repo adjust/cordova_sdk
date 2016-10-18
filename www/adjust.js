@@ -107,7 +107,7 @@ var Adjust = {
 
     sendFirstPackages: function() {
         callCordova('sendFirstPackages');
-    },
+    }
 };
 
 function onPause() {

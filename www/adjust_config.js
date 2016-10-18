@@ -25,7 +25,7 @@ function AdjustConfig(appToken, environment) {
 
     // Android only
     this.processName = null;
-}
+};
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
@@ -64,23 +64,23 @@ AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
-}
+};
 
 AdjustConfig.prototype.getDelayStart = function() {
     return this.delayStart;
-}
+};
 
 AdjustConfig.prototype.getReferrer = function() {
     return this.referrer;
-}
+};
 
 AdjustConfig.prototype.getSendInBackground = function() {
     return this.sendInBackground;
-}
+};
 
 AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
     return this.shouldLaunchDeeplink;
-}
+};
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
@@ -138,15 +138,15 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
 
 AdjustConfig.prototype.setReferrer = function(referrer) {
     this.referrer = referrer;
-}
+};
 
 AdjustConfig.prototype.setSendInBackground = function(sendInBackground) {
     this.sendInBackground = sendInBackground;
-}
+};
 
 AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
     this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-}
+};
 
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
