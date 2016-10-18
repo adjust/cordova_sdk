@@ -15,6 +15,10 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Adjust">
+        <param name="ios-package" value="AdjustCordova" />
+        <param name="onload" value="true" />
+    </feature>
     <name>adjust-sample-app</name>
     <description>
     </description>

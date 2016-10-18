@@ -1,1 +1,10 @@
-{}
+{
+    "com.adjust.sdk": {
+        "source": {
+            "type": "local",
+            "path": "/Users/AB/Dev/cordova_sdk"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

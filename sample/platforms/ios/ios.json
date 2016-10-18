@@ -7,7 +7,12 @@
         "files": {
             "config.xml": {
                 "parents": {
-                    "/*": []
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Adjust\"><param name=\"ios-package\" value=\"AdjustCordova\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
                 }
             },
             "*-Info.plist": {
@@ -17,8 +22,39 @@
             }
         }
     },
-    "installed_plugins": {},
+    "installed_plugins": {
+        "com.adjust.sdk": {
+            "PACKAGE_NAME": "com.adjust.example"
+        }
+    },
     "dependent_plugins": {},
-    "modules": [],
-    "plugin_metadata": {}
+    "modules": [
+        {
+            "id": "com.adjust.sdk.Adjust",
+            "file": "plugins/com.adjust.sdk/www/adjust.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "Adjust"
+            ]
+        },
+        {
+            "id": "com.adjust.sdk.AdjustConfig",
+            "file": "plugins/com.adjust.sdk/www/adjust_config.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "AdjustConfig"
+            ]
+        },
+        {
+            "id": "com.adjust.sdk.AdjustEvent",
+            "file": "plugins/com.adjust.sdk/www/adjust_event.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "AdjustEvent"
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "com.adjust.sdk": "4.10.0"
+    }
 }

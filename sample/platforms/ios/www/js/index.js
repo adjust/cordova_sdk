@@ -22,10 +22,12 @@ var app = {
     //
 
     onDeviceReady: function() {
-        //Register for universal links
-        universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-
         app.receivedEvent('deviceready');
+
+        //Register for universal links
+        if(device.platform == 'iOS') {
+            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+        }
 
         var adjustConfig = new AdjustConfig("rb4g27fje5ej", AdjustConfig.EnvironmentSandbox);
 

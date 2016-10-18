@@ -16,6 +16,8 @@
 		6A506717B868452995DDDB4A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5151C6188946B2999D2333 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CF06CB30508D463CB5E8BA7C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C804599745784B90A62775D5 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E00E1898DAF64024BB8E37DE /* adjust-sample-app.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 628871A9FF064C79B2C31EE1 /* adjust-sample-app.entitlements */; };
+		163A66FDA20A4ED092A7172D /* AdjustCordova.m in Sources */ = {isa = PBXBuildFile; fileRef = D809715EFA8146F3B2C254A0 /* AdjustCordova.m */; };
+		0010D70DE43941A4B7D2C38B /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A998C104FAA0406C807ECD82 /* AdjustSdk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,9 @@
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "adjust-sample-app/config.xml"; sourceTree = "<group>"; };
 		628871A9FF064C79B2C31EE1 /* adjust-sample-app.entitlements */ = {isa = PBXFileReference; name = "adjust-sample-app.entitlements"; path = "adjust-sample-app.entitlements"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D809715EFA8146F3B2C254A0 /* AdjustCordova.m */ = {isa = PBXFileReference; name = "AdjustCordova.m"; path = "com.adjust.sdk/AdjustCordova.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		AD60B2A4A37C460BA4F01424 /* AdjustCordova.h */ = {isa = PBXFileReference; name = "AdjustCordova.h"; path = "com.adjust.sdk/AdjustCordova.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		A998C104FAA0406C807ECD82 /* AdjustSdk.framework */ = {isa = PBXFileReference; name = "AdjustSdk.framework"; path = "adjust-sample-app/Plugins/com.adjust.sdk/AdjustSdk.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +75,7 @@
 				6A506717B868452995DDDB4A /* AdSupport.framework in Frameworks */,
 				CF06CB30508D463CB5E8BA7C /* iAd.framework in Frameworks */,
 				029E3D2988BB4768B461FD13 /* AudioToolbox.framework in Frameworks */,
+				0010D70DE43941A4B7D2C38B /* AdjustSdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +149,7 @@
 				1F5151C6188946B2999D2333 /* AdSupport.framework */,
 				C804599745784B90A62775D5 /* iAd.framework */,
 				49223E30FDE4431CBF704374 /* AudioToolbox.framework */,
+				A998C104FAA0406C807ECD82 /* AdjustSdk.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -168,6 +175,8 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				D809715EFA8146F3B2C254A0 /* AdjustCordova.m */,
+				AD60B2A4A37C460BA4F01424 /* AdjustCordova.h */,
 			);
 			name = Plugins;
 			path = "adjust-sample-app/Plugins";
@@ -288,6 +297,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
+				163A66FDA20A4ED092A7172D /* AdjustCordova.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +325,7 @@
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
@@ -420,6 +431,7 @@
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",
 					"\"adjust-sample-app/Plugins/com.adjust.sdk\"",

@@ -6,6 +6,10 @@
     "config_munge": {
         "files": {}
     },
-    "installed_plugins": {},
+    "installed_plugins": {
+        "com.adjust.sdk": {
+            "PACKAGE_NAME": "com.adjust.example"
+        }
+    },
     "dependent_plugins": {}
 }

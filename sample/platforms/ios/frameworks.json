@@ -1,5 +1,5 @@
 {
-    "AdSupport.framework": 1,
-    "iAd.framework": 1,
+    "AdSupport.framework": 2,
+    "iAd.framework": 2,
     "AudioToolbox.framework": 1
 }

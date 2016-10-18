@@ -7,20 +7,70 @@
         "files": {
             "AndroidManifest.xml": {
                 "parents": {
-                    "/manifest": [],
-                    "/manifest/application": [],
+                    "/manifest": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
+                        }
+                    ],
+                    "/manifest/application": [
+                        {
+                            "xml": "<receiver android:exported=\"true\" android:name=\"com.adjust.sdk.AdjustReferrerReceiver\"><intent-filter><action android:name=\"com.android.vending.INSTALL_REFERRER\" /></intent-filter></receiver>",
+                            "count": 1
+                        }
+                    ],
                     "/manifest/application/activity": []
                 }
             },
             "res/xml/config.xml": {
                 "parents": {
-                    "/*": []
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Adjust\"><param name=\"android-package\" value=\"com.adjust.sdk.AdjustCordova\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
                 }
             }
         }
     },
-    "installed_plugins": {},
+    "installed_plugins": {
+        "com.adjust.sdk": {
+            "PACKAGE_NAME": "com.adjust.example"
+        }
+    },
     "dependent_plugins": {},
-    "modules": [],
-    "plugin_metadata": {}
+    "modules": [
+        {
+            "id": "com.adjust.sdk.Adjust",
+            "file": "plugins/com.adjust.sdk/www/adjust.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "Adjust"
+            ]
+        },
+        {
+            "id": "com.adjust.sdk.AdjustConfig",
+            "file": "plugins/com.adjust.sdk/www/adjust_config.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "AdjustConfig"
+            ]
+        },
+        {
+            "id": "com.adjust.sdk.AdjustEvent",
+            "file": "plugins/com.adjust.sdk/www/adjust_event.js",
+            "pluginId": "com.adjust.sdk",
+            "clobbers": [
+                "AdjustEvent"
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "com.adjust.sdk": "4.10.0"
+    }
 }
