@@ -20,6 +20,8 @@ ext/iOS/build.sh
 
 echo -e "${GREEN}>>> Re-installing plugins ${NC}"
 cd ${SDK_DIR}/${SAMPLE_DIR}
+cordova plugin rm ${SDK_NAME}
+
 cordova plugin add ${SDK_DIR}
 cordova plugin add cordova-plugin-console
 cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=adjustExample

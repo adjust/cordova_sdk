@@ -19,6 +19,19 @@
         <param name="ios-package" value="AdjustCordova" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="Notification">
+        <param name="ios-package" value="CDVNotification" />
+    </feature>
+    <feature name="UniversalLinks">
+        <param name="ios-package" value="CULPlugin" />
+        <param name="onload" value="true" />
+    </feature>
     <name>adjust-sample-app</name>
     <description>
     </description>

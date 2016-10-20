@@ -23,12 +23,66 @@ module.exports = [
         "clobbers": [
             "AdjustEvent"
         ]
+    },
+    {
+        "id": "cordova-plugin-console.console",
+        "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "console"
+        ]
+    },
+    {
+        "id": "cordova-plugin-console.logger",
+        "file": "plugins/cordova-plugin-console/www/logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "cordova.logger"
+        ]
+    },
+    {
+        "id": "cordova-plugin-customurlscheme.LaunchMyApp",
+        "file": "plugins/cordova-plugin-customurlscheme/www/ios/LaunchMyApp.js",
+        "pluginId": "cordova-plugin-customurlscheme",
+        "clobbers": [
+            "window.plugins.launchmyapp"
+        ]
+    },
+    {
+        "id": "cordova-plugin-device.device",
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "pluginId": "cordova-plugin-device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
+        "id": "cordova-plugin-dialogs.notification",
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "id": "cordova-universal-links-plugin.universalLinks",
+        "file": "plugins/cordova-universal-links-plugin/www/universal_links.js",
+        "pluginId": "cordova-universal-links-plugin",
+        "clobbers": [
+            "universalLinks"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.adjust.sdk": "4.10.0"
+    "com.adjust.sdk": "4.10.0",
+    "cordova-plugin-console": "1.0.4",
+    "cordova-plugin-customurlscheme": "4.2.0",
+    "cordova-plugin-device": "1.1.4-dev",
+    "cordova-plugin-dialogs": "1.3.0",
+    "cordova-plugin-whitelist": "1.3.0",
+    "cordova-universal-links-plugin": "1.2.0"
 };
 // BOTTOM OF METADATA
 });

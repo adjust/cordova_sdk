@@ -16,10 +16,15 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}>>> Removing cordova plugins ${NC}"
 cd ${SDK_DIR}/${SAMPLE_DIR}
-cordova plugin rm ${SDK_DIR}
+cordova plugin rm ${SDK_NAME}
 cordova plugin rm cordova-plugin-console
 cordova plugin rm cordova-plugin-customurlscheme
 cordova plugin rm cordova-plugin-dialogs
 cordova plugin rm cordova-plugin-whitelist
 cordova plugin rm cordova-plugin-device
 cordova plugin rm cordova-universal-links-plugin
+
+rm -rv plugins/com.adjust.sdk
+
+cordova platform remove ios
+cordova platform remove android

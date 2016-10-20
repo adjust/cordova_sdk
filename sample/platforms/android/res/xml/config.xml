@@ -1,7 +1,20 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.adjust.example" version="4.10.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <feature name="Adjust">
-        <param name="android-package" value="com.adjust.sdk.AdjustCordova" />
+    <feature name="LaunchMyApp">
+        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
+    </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="UniversalLinks">
+        <param name="android-package" value="com.nordnetab.cordova.ul.UniversalLinksPlugin" />
         <param name="onload" value="true" />
     </feature>
     <name>adjust-sample-app</name>
@@ -22,4 +35,8 @@
     </universal-links>
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
+    <feature name="Adjust">
+        <param name="android-package" value="com.adjust.sdk.AdjustCordova" />
+        <param name="onload" value="true" />
+    </feature>
 </widget>
