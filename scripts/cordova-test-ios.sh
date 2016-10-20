@@ -14,13 +14,20 @@ RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}>>> Running iOS build script ${NC}"
+echo -e "${GREEN}>>> Updating git submodules ${NC}"
 cd ${SDK_DIR}
+git submodule update --init --recursive
+
+echo -e "${GREEN}>>> Running iOS build script ${NC}"
 ext/iOS/build.sh
 
-echo -e "${GREEN}>>> Re-installing plugins ${NC}"
+echo -e "${GREEN}>>> Installing iOS platform ${NC}"
 cd ${SDK_DIR}/${SAMPLE_DIR}
-cordova plugin rm ${SDK_NAME}
+cordova platform remove ios
+cordova platform add ios
+
+echo -e "${GREEN}>>> Re-installing plugins ${NC}"
+cordova plugin remove ${SDK_NAME}
 
 cordova plugin add ${SDK_DIR}
 cordova plugin add cordova-plugin-console
@@ -33,6 +40,5 @@ cordova plugin add cordova-universal-links-plugin
 echo -e "${GREEN}>>> Running Cordova build iOS ${NC}"
 cordova build ios --device
 
-echo -e "${GREEN}>>> Build successful. IPA generated ${NC}"
-#echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
-#cordova run android --device --nobuild
+echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
+cordova run ios --device --nobuild
