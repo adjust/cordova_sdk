@@ -24,7 +24,6 @@ ext/Android/build.sh; \cp -v ext/Android/adjust*.jar src/Android/adjust-android.
 
 echo "${GREEN}>>> Installing Android platform ${NC}"
 cd ${SDK_DIR}/${SAMPLE_DIR}
-cordova platform remove android
 cordova platform add android
 
 echo "${GREEN}>>> Re-installing plugins ${NC}"
