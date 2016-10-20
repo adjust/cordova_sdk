@@ -14,19 +14,18 @@ RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}>>> Updating git submodules ${NC}"
+echo "${GREEN}>>> Updating git submodules ${NC}"
 cd ${SDK_DIR}
 git submodule update --init --recursive
 
-echo -e "${GREEN}>>> Running iOS build script ${NC}"
+echo "${GREEN}>>> Running iOS build script ${NC}"
 ext/iOS/build.sh
 
-echo -e "${GREEN}>>> Installing iOS platform ${NC}"
+echo "${GREEN}>>> Installing iOS platform ${NC}"
 cd ${SDK_DIR}/${SAMPLE_DIR}
-cordova platform remove ios
 cordova platform add ios
 
-echo -e "${GREEN}>>> Re-installing plugins ${NC}"
+echo "${GREEN}>>> Re-installing plugins ${NC}"
 cordova plugin remove ${SDK_NAME}
 
 cordova plugin add ${SDK_DIR}
@@ -37,8 +36,8 @@ cordova plugin add cordova-plugin-whitelist
 cordova plugin add https://github.com/apache/cordova-plugin-device.git
 cordova plugin add cordova-universal-links-plugin
 
-echo -e "${GREEN}>>> Running Cordova build iOS ${NC}"
+echo "${GREEN}>>> Running Cordova build iOS ${NC}"
 cordova build ios --device
 
-echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
+echo "${GREEN}>>> Build successful. Installing APK on device ${NC}"
 cordova run ios --device --nobuild
