@@ -47,7 +47,7 @@ var app = {
             console.log(">>> event tracking succeeded callback received");
 
             console.log("message: " + eventSuccess.message);
-            console.log("timestamp: " + eventSuccess.timestamp);
+            console.log("timestamp: " + eventSuccess.timeStamp);
             console.log("adid: " + eventSuccess.adid);
             console.log("eventToken: " + eventSuccess.eventToken);
             console.log("json response: " + eventSuccess.jsonResponse);
@@ -57,7 +57,7 @@ var app = {
             console.log(">>> event tracking failed callback received");
 
             console.log("message: " + eventFailed.message);
-            console.log("timestamp: " + eventFailed.timestamp);
+            console.log("timestamp: " + eventFailed.timeStamp);
             console.log("adid: " + eventFailed.adid);
             console.log("eventToken: " + eventFailed.eventToken);
             console.log("will retry: " + eventFailed.willRetry);
@@ -68,7 +68,7 @@ var app = {
             console.log(">>> session tracking succeeded callback received");
 
             console.log("message: " + sessionSuccess.message);
-            console.log("timestamp: " + sessionSuccess.timestamp);
+            console.log("timestamp: " + sessionSuccess.timeStamp);
             console.log("adid: " + sessionSuccess.adid);
             console.log("json response: " + sessionSuccess.jsonResponse);
         });
@@ -77,7 +77,7 @@ var app = {
             console.log(">>> session tracking failed callback received");
 
             console.log("message: " + sessionFailed.message);
-            console.log("timestamp: " + sessionFailed.timestamp);
+            console.log("timestamp: " + sessionFailed.timeStamp);
             console.log("adid: " + sessionFailed.adid);
             console.log("will retry: " + sessionFailed.willRetry);
             console.log("json response: " + sessionFailed.jsonResponse);
