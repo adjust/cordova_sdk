@@ -30,13 +30,13 @@
 #define KEY_DELAY_START             @"delayStart"
 
 @implementation AdjustCordova {
-    NSString *attributionCallbackId;
-    NSString *eventSucceededCallbackId;
-    NSString *eventFailedCallbackId;
-    NSString *sessionSucceededCallbackId;
-    NSString *sessionFailedCallbackId;
-    NSString *deferredDeeplinkCallbackId;
-    BOOL _shouldLaunchDeeplink;
+NSString *attributionCallbackId;
+NSString *eventSucceededCallbackId;
+NSString *eventFailedCallbackId;
+NSString *sessionSucceededCallbackId;
+NSString *sessionFailedCallbackId;
+NSString *deferredDeeplinkCallbackId;
+BOOL _shouldLaunchDeeplink;
 }
 
 - (void)pluginInitialize {
@@ -100,7 +100,7 @@
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:deferredDeeplinkCallbackId];
-    
+
     return _shouldLaunchDeeplink;
 }
 
@@ -116,12 +116,23 @@
     NSString *userAgent = [[command.arguments objectAtIndex:0] objectForKey:KEY_USER_AGENT];
     NSNumber *delayStart = [[command.arguments objectAtIndex:0] objectForKey:KEY_DELAY_START];
 
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
+    ADJLogLevel logLevel = ADJLogLevelInfo;
+    BOOL allowSuppressLogLevel = false;
+
+    // Log level
+    if ([self isFieldValid:logLevel]) {
+        logLevel = [ADJLogger LogLevelFromString:[logLevel lowercaseString]];
+        if (logLevel == ADJLogLevelSuppress) {
+            allowSuppressLogLevel = true;
+        }
+    }
+
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 
     if ([adjustConfig isValid]) {
         // Log level
         if ([self isFieldValid:logLevel]) {
-            [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
+            [adjustConfig setLogLevel:logLevel];
         }
 
         // Event buffering
