@@ -75,8 +75,8 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
-Alternatively, if you have downloaded our SDK from the releases page, extract the archive to folder from your choice and 
-execute following command in your project folder:
+Alternatively, if you have downloaded our SDK from the releases page, extract the archive to the folder of your choice and 
+execute the following command in your project folder:
 
 ```
 > cordova plugin add path_to_folder/cordova_sdk
@@ -170,10 +170,10 @@ SDK plugin. Go to the `plugins/com.adjust.sdk` folder and open the `plugin.xml` 
 
 Sometimes, it can happen that other Cordova plugins which you are using are also importing Google Play Services by default 
 into your app. In this case, it can happen that Google Play Services from our SDk and other plugins conflict and cause build 
-time errors for you. It is not important that Google Play Services are present in your app as part of our SDK exclusively. As 
-long as you have `analytics` part of Google Play Services integrated in your app, our SDK will be able to read all needed 
-information. In case you choose to add Google Play Services into your app as part of another Cordova plygin, you can simply 
-remove line from above from `plugin.xml` file of our SDK.
+time errors for you. Google Play Services do not have to be present in your app as part of our SDK exclusively. As 
+long as you have the `analytics` part of Google Play Services integrated in your app, our SDK will be able to read all needed 
+information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply 
+remove above line from the `plugin.xml` file of our SDK.
 
 ## <a id="additional-features">Additional features
 
@@ -181,7 +181,7 @@ You can take advantage of the following features once the adjust SDK is integrat
 
 ### <a id="event-tracking">Event tracking
 
-With adjust, you can track every event that you want. Suppose you want to track every tap on a button. Simply create a new 
+You can use adjust to track all kinds of events. Let's say you want to track every tap on a button. Simply create a new 
 event token in your [dashboard]. Let's say that event token is `abc123`. You can add the following line in your button’s click
 handler method to track the click:
 
@@ -213,7 +213,7 @@ You can also add an optional transaction ID to avoid tracking duplicate revenues
 and revenue events with duplicate transaction IDs are skipped. This is especially useful for In-App Purchase tracking. You can 
 see an example below.
 
-If you want to track in-app purchases, please make sure to call the `trackEvent` only if the transaction is finished and item 
+If you want to track in-app purchases, please make sure to call the `trackEvent` only if the transaction is finished and an item 
 is purchased. That way you can avoid tracking revenue that is not actually being generated.
 
 ```js
@@ -230,8 +230,8 @@ Adjust.trackEvent(adjustEvent);
 
 ### <a id="iap-verification">In-App Purchase verification
 
-If you want to check the validity of In-App Purchases made in your app using Purchase Verification, adjust's server side 
-receipt verification tool, then check out our Cordova purchase SDK and read more about it [here][cordova-purchase-sdk].
+If you want to verify your In-App Purchases, you can use adjust's Purchase Verification product, our server side 
+receipt verification tool. Check out our Cordova purchase SDK and read more about it [here][cordova-purchase-sdk].
 
 ### <a id="callback-parameters">Callback parameters
 
@@ -301,7 +301,7 @@ The same callback parameters that are registered for [events](#callback-paramete
 event or session of the adjust SDK.
 
 The session callback parameters have a similar interface of the event callback parameters. Instead of adding the key and
-it's value to an event, it's added through a call to method `addSessionCallbackParameter` of the `Adjust` instance:
+its value to an event, it's added through a call to method `addSessionCallbackParameter` of the `Adjust` instance:
 
 ```js
 Adjust.addSessionCallbackParameter("foo", "bar");
@@ -327,8 +327,8 @@ Adjust.resetSessionCallbackParameters();
 
 ### <a id="session-partner-parameters">Session partner parameters
 
-In the same way that there is [session callback parameters](#session-callback-parameters) that are sent for every event or
-session of the adjust SDK, there is also session partner parameters.
+In the same way that there are [session callback parameters](#session-callback-parameters) that are sent for every event or
+session of the adjust SDK, there are also session partner parameters.
 
 These will be transmitted to network partners, for the integrations that have been activated in your adjust [dashboard].
 
@@ -377,7 +377,7 @@ will be added to the delayed install session and events and the adjust SDK will 
 ### <a id="attribution-callback">Attribution callback
 
 You can register a listener to be notified of tracker attribution changes. Due to the different sources considered for 
-attribution, this information can not by provided synchronously. The simplest way is to create a single anonymous listener 
+attribution, this information cannot by provided synchronously. The simplest way is to create a single anonymous listener 
 which is going to be called **each time your user's attribution value changes**:
 
 With the `AdjustConfig` instance, before starting the SDK, add the anonymous listener:
@@ -583,7 +583,7 @@ Inside the callback method you will have access to the Google Advertising ID as 
 
 ### iOS
 
-To obtain the IDFA, call the function `getIdfa` in the same way like the method `getGoogleAdId`:
+To obtain the IDFA, call the function `getIdfa` in the same way as the method `getGoogleAdId`:
 
 ```js
 Adjust.getIdfa(function(idfa) {
@@ -593,7 +593,7 @@ Adjust.getIdfa(function(idfa) {
 
 ### <a id="push-token">Push token
 
-To send us the push notifications token, then add the following call to Adjust **whenever you get your token in the app or 
+To send us the push notification token, add the following call to Adjust **whenever you get your token in the app or 
 when it gets updated**:
 
 ```js
@@ -638,8 +638,8 @@ settings to your app. If your user already has the app installed and hits the tr
 your application will be opened and the content of the deep link will be sent to your app so that you can parse it and decide 
 what to do next. 
 
-**Note for iOS**: With introduction of iOS 9, Apple has changed the way how deep linking should be handled in the app. 
-Depending on which scenario you want to use for your app (or if you want to use them both to support wide range of devices), 
+**Note for iOS**: With the introduction of iOS 9, Apple has changed the way deep linking is handled in the app. 
+Depending on which scenario you want to use for your app (or if you want to use them both to support a wide range of devices), 
 you need to set up your app to handle one or both of the following scenarios.
 
 ### <a id="deeplinking-android-ios-old"> Deep linking on Android & iOS 8 and earlier
@@ -673,10 +673,10 @@ After you have enabled universal links handling for your app in your dashboard, 
 well. You can achieve this by adding this [plugin][plugin-ulinks] to your cordova app. Please, read the README of this plugin, 
 because it precisely describes what should be done in order to properly integrate it.
 
-**Note**: With anything you see in the README that assumes you need to have domain and website or to upload a file to the root 
-of your domain - don't worry about that. Adjust is taking care of this instead of you and you can skip these parts of the 
+**Note**: You can disregard any information in the README that states that you need to have a domain and website or you need to upload a file to the root 
+of your domain. Adjust is taking care of this instead of you and you can skip these parts of the 
 README. Also, you don't need to follow the instructions of this plugin for the Android platform, because deep linking in 
-Android is still being handled unchanged with `Custom URL scheme` plugin.
+Android is still being handled with `Custom URL scheme` plugin.
 
 To complete the integration of `Cordova Universal Links Plugin` after successfully enabling universal links for your app in 
 the adjust dashboard you must:
