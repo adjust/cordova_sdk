@@ -372,6 +372,16 @@
     [Adjust resetSessionPartnerParameters];
 }
 
+- (void)setPushToken:(CDVInvokedUrlCommand *)command {
+    NSString *token = [command argumentAtIndex:0 withDefault:nil];
+
+    if (!([self isFieldValid:token])) {
+        return;
+    }
+
+    [Adjust setDeviceToken:token];
+}
+
 - (BOOL)isFieldValid:(NSObject *)field {
     if (![field isKindOfClass:[NSNull class]]) {
         if (field != nil) {

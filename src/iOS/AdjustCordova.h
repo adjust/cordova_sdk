@@ -36,5 +36,6 @@
 - (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
+- (void)setPushToken:(CDVInvokedUrlCommand *)command;
 
 @end
