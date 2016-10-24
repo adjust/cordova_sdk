@@ -107,7 +107,7 @@ BOOL _shouldLaunchDeeplink;
 - (void)create:(CDVInvokedUrlCommand *)command {
     NSString *appToken = [[command.arguments objectAtIndex:0] objectForKey:KEY_APP_TOKEN];
     NSString *environment = [[command.arguments objectAtIndex:0] objectForKey:KEY_ENVIRONMENT];
-    NSString *logLevelString = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
+    NSString *logLevel = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
     NSString *sdkPrefix = [[command.arguments objectAtIndex:0] objectForKey:KEY_SDK_PREFIX];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
     NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
@@ -116,13 +116,11 @@ BOOL _shouldLaunchDeeplink;
     NSString *userAgent = [[command.arguments objectAtIndex:0] objectForKey:KEY_USER_AGENT];
     NSNumber *delayStart = [[command.arguments objectAtIndex:0] objectForKey:KEY_DELAY_START];
 
-    ADJLogLevel logLevel = ADJLogLevelInfo;
     BOOL allowSuppressLogLevel = false;
 
     // Log level
     if ([self isFieldValid:logLevelStr]) {
-        logLevel = [ADJLogger LogLevelFromString:[logLevelString lowercaseString]];
-        if (logLevel == ADJLogLevelSuppress) {
+        if ([ADJLogger LogLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
             allowSuppressLogLevel = true;
         }
     }
@@ -132,7 +130,7 @@ BOOL _shouldLaunchDeeplink;
     if ([adjustConfig isValid]) {
         // Log level
         if ([self isFieldValid:logLevel]) {
-            [adjustConfig setLogLevel:logLevel];
+            [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
         }
 
         // Event buffering
