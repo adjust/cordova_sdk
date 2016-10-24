@@ -42,4 +42,4 @@ cordova run android
 
 #echo -e "${GREEN}>>> Build successful. APK generated ${NC}"
 #echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
-#cordova run android --device --nobuild
+cordova run android --device --nobuild
