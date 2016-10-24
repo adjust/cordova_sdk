@@ -14,4 +14,4 @@ cd $(dirname $0)
 
 cd $BUILD_DIR
 ./gradlew clean clearJar makeJar
-mv -v ${OUT_DIR}/*.jar ../../
+mv -v ${OUT_DIR}/*.jar ../../../../src/Android/adjust-android.jar
