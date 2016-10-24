@@ -107,7 +107,7 @@ BOOL _shouldLaunchDeeplink;
 - (void)create:(CDVInvokedUrlCommand *)command {
     NSString *appToken = [[command.arguments objectAtIndex:0] objectForKey:KEY_APP_TOKEN];
     NSString *environment = [[command.arguments objectAtIndex:0] objectForKey:KEY_ENVIRONMENT];
-    NSString *logLevel = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
+    NSString *logLevelString = [[command.arguments objectAtIndex:0] objectForKey:KEY_LOG_LEVEL];
     NSString *sdkPrefix = [[command.arguments objectAtIndex:0] objectForKey:KEY_SDK_PREFIX];
     NSString *defaultTracker = [[command.arguments objectAtIndex:0] objectForKey:KEY_DEFAULT_TRACKER];
     NSNumber *eventBufferingEnabled = [[command.arguments objectAtIndex:0] objectForKey:KEY_EVENT_BUFFERING_ENABLED];
@@ -120,8 +120,8 @@ BOOL _shouldLaunchDeeplink;
     BOOL allowSuppressLogLevel = false;
 
     // Log level
-    if ([self isFieldValid:logLevel]) {
-        logLevel = [ADJLogger LogLevelFromString:[logLevel lowercaseString]];
+    if ([self isFieldValid:logLevelStr]) {
+        logLevel = [ADJLogger LogLevelFromString:[logLevelString lowercaseString]];
         if (logLevel == ADJLogLevelSuppress) {
             allowSuppressLogLevel = true;
         }
