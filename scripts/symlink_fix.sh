@@ -1,19 +1,34 @@
-
 #!/usr/bin/env bash
 
 # End script if one of the lines fails
 set -e
 
+# Get the current directory (/scripts/ directory)
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Traverse up to get to the root directory
+SDK_DIR="$(dirname "$SCRIPTS_DIR")"
+
+# Relative directories
+SRC_DIR=src/iOS
+
+echo ">>><<<"
+echo ">>> Symlink_fix started"
+echo ">>><<<"
+
 # Go to framework folder
-cd ../../src/iOS/AdjustSdk.framework
+cd ${SDK_DIR}/${SRC_DIR}/AdjustSdk.framework
 
 # Remove any existing symlinks
-rm -rf AdjustSdk
-rm -rf Headers
+rm -rfv AdjustSdk
+rm -rfv Headers
 
 # Move library and headers
-mv Versions/A/AdjustSdk .
-mv Versions/A/Headers .
+mv -v Versions/A/AdjustSdk .
+mv -v Versions/A/Headers .
 
 # Remove Versions folder
-rm -rf Versions
+rm -rfv Versions
+
+echo ">>><<<"
+echo ">>> Symlink_fix finished"
+echo ">>><<<"

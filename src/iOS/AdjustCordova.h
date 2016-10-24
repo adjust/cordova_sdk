@@ -21,6 +21,21 @@
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
+- (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
+- (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
+- (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
+- (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command;
+
+- (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
+- (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
+- (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
+- (void)setPushToken:(CDVInvokedUrlCommand *)command;
 
 @end
