@@ -119,7 +119,7 @@ BOOL _shouldLaunchDeeplink;
     BOOL allowSuppressLogLevel = false;
 
     // Log level
-    if ([self isFieldValid:logLevelStr]) {
+    if ([self isFieldValid:logLevel]) {
         if ([ADJLogger LogLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
             allowSuppressLogLevel = true;
         }
