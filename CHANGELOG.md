@@ -1,4 +1,14 @@
-### Version 4.10.0 (30th September 2016)
+### Version 4.10.1 (24th October 2016)
+#### Fixed
+- Fixed error when adding the SDK plugin for Android platform due to missing `adjust-android.jar` file.
+
+#### Native SDKs
+- [iOS@v4.10.2][ios_sdk_v4.10.2]
+- [Android@v4.10.2][android_sdk_v4.10.2]
+
+--
+
+### Version 4.10.0 (24th October 2016)
 #### Added
 - Added support for iOS 10.
 - Added revenue deduplication for Android platform.
