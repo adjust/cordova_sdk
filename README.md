@@ -47,12 +47,16 @@ N.B. At the moment, SDK 4.10.0 for Cordova supports Android platform version `4.
 
 There is example inside the [`example` directory][example]. In there you can check how to integrate the adjust SDK into your 
 app. The example app has been uploaded without platforms being added due to size considerations, so after downloading the app, 
-go to app folder and run:
+please run appropriate script from `scripts` folder to build the app for desired platform:
 
 ```
-cordova platform add ios
-cordova platform add android
+sh cordova-test-ios.sh
+sh cordova-test-android.sh
 ```
+
+**Note**: Please have in mind that after building the example app for the first time for iOS platform, you will get the code 
+signing error which requires you to open your app's Xcode project and choose your `Team` in `Signing` part of your Xcode 
+project settings. After that, either run your app from Xcode or re-run the build script.
 
 ## <a id="basic-integration">Basic integration
 
