@@ -75,25 +75,25 @@ public class AdjustCordova extends CordovaPlugin
     private static final String ATTRIBUTION_CLICK_LABEL     = "clickLabel";
 
     private static final String EVENT_SUCCESS_MESSAGE       = "message";
-    private static final String EVENT_SUCCESS_TIMESTAMP     = "timestamp";
+    private static final String EVENT_SUCCESS_TIMESTAMP     = "timeStamp";
     private static final String EVENT_SUCCESS_ADID          = "adid";
     private static final String EVENT_SUCCESS_EVENT_TOKEN   = "eventToken";
     private static final String EVENT_SUCCESS_JSON_RESPONSE = "jsonResponse";
 
     private static final String EVENT_FAILED_MESSAGE        = "message";
-    private static final String EVENT_FAILED_TIMESTAMP      = "timestamp";
+    private static final String EVENT_FAILED_TIMESTAMP      = "timeStamp";
     private static final String EVENT_FAILED_ADID           = "adid";
     private static final String EVENT_FAILED_EVENT_TOKEN    = "eventToken";
     private static final String EVENT_FAILED_WILL_RETRY     = "willRetry";
     private static final String EVENT_FAILED_JSON_RESPONSE  = "jsonResponse";
 
     private static final String SESSION_SUCCESS_MESSAGE         = "message";
-    private static final String SESSION_SUCCESS_TIMESTAMP       = "timestamp";
+    private static final String SESSION_SUCCESS_TIMESTAMP       = "timeStamp";
     private static final String SESSION_SUCCESS_ADID            = "adid";
     private static final String SESSION_SUCCESS_JSON_RESPONSE   = "jsonResponse";
 
     private static final String SESSION_FAILED_MESSAGE          = "message";
-    private static final String SESSION_FAILED_TIMESTAMP        = "timestamp";
+    private static final String SESSION_FAILED_TIMESTAMP        = "timeStamp";
     private static final String SESSION_FAILED_ADID             = "adid";
     private static final String SESSION_FAILED_WILL_RETRY       = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE    = "jsonResponse";
