@@ -29,7 +29,7 @@ var app = {
             universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
         }
 
-        var adjustConfig = new AdjustConfig("rb4g27fje5ej", AdjustConfig.EnvironmentSandbox);
+        var adjustConfig = new AdjustConfig("{YourAppToken}", AdjustConfig.EnvironmentSandbox);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log(">>> attribution callback received");
@@ -101,18 +101,19 @@ var app = {
         Adjust.removeSessionCallbackParameter("dummy_foo");
         Adjust.removeSessionPartnerParameter("dummy_foo");
 
-        //Adjust.resetSessionCallbackParameters();
-        //Adjust.resetSessionPartnerParameters();
+        Adjust.resetSessionCallbackParameters();
+        Adjust.resetSessionPartnerParameters();
 
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
 
         adjustConfig.setDelayStart(3.0);
         adjustConfig.setUserAgent("little_bunny_foo_foo");
+        adjustConfig.setSendInBackground(true);
 
         Adjust.create(adjustConfig);
 
         Adjust.setPushToken("bunny_foo_foo");
-        //Adjust.sendFirstPackages();
+        Adjust.sendFirstPackages();
     },
 
     didLaunchAppFromLink: function(eventData) {
@@ -136,7 +137,7 @@ var app = {
             console.log("trackSimpleEvent()");
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("uqg17r");
+                    var adjustEvent = new AdjustEvent("{YourEventToken}");
                     Adjust.trackEvent(adjustEvent);
                 } else {
                     navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
@@ -147,7 +148,7 @@ var app = {
         btnTrackRevenueEvent.addEventListener('click',function() { 
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("71iltz");
+                    var adjustEvent = new AdjustEvent("{YourEventToken}");
                     adjustEvent.setRevenue(0.01, "EUR");
                     Adjust.trackEvent(adjustEvent);
                 } else {
@@ -159,7 +160,7 @@ var app = {
         btnTrackCallbackEvent.addEventListener('click',function() {
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("1ziip1");
+                    var adjustEvent = new AdjustEvent("{YourEventToken}");
                     adjustEvent.addCallbackParameter("key", "value");
                     adjustEvent.addCallbackParameter("x", "y");
                     adjustEvent.addCallbackParameter("key", "lock");
@@ -173,7 +174,7 @@ var app = {
         btnTrackPartnerEvent.addEventListener('click',function() {
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("9s4lqn");
+                    var adjustEvent = new AdjustEvent("{YourEventToken}");
                     adjustEvent.addPartnerParameter("foo", "bar");
                     adjustEvent.addPartnerParameter("x", "y");
                     adjustEvent.addPartnerParameter("foo", "foot");
