@@ -33,6 +33,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_EVENT_TOKEN             = "eventToken";
     private static final String KEY_REVENUE                 = "revenue";
     private static final String KEY_CURRENCY                = "currency";
+    private static final String KEY_TRANSACTION_ID          = "transactionId";
     private static final String KEY_CALLBACK_PARAMETERS     = "callbackParameters";
     private static final String KEY_PARTNER_PARAMETERS      = "partnerParameters";
     private static final String KEY_SEND_IN_BACKGROUND      = "sendInBackground";
@@ -121,15 +122,14 @@ public class AdjustCordova extends CordovaPlugin
             String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
 
             String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
-            String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
-
             String userAgent = parameters.get(KEY_USER_AGENT).toString();
-            boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
-
-            boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-            double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
-
+            String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
+            
             boolean isLogLevelSuppress = false;
+            boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
+            boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+
+            double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
 
             if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
                 isLogLevelSuppress = true;
@@ -273,6 +273,7 @@ public class AdjustCordova extends CordovaPlugin
             String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
             String revenue = parameters.get(KEY_REVENUE).toString();
             String currency = parameters.get(KEY_CURRENCY).toString();
+            String transactionId = parameters.get(KEY_TRANSACTION_ID).toString();
 
             JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
             JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
@@ -305,6 +306,10 @@ public class AdjustCordova extends CordovaPlugin
                     String value = partnerParameters[i+1];
 
                     adjustEvent.addPartnerParameter(key, value);
+                }
+
+                if (isFieldValid(transactionId)) {
+                    adjustEvent.setOrderId(transactionId);
                 }
 
                 Adjust.trackEvent(adjustEvent);
