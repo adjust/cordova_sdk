@@ -1,19 +1,20 @@
 package com.adjust.sdk;
 
+import android.net.Uri;
+
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import android.net.Uri;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.util.Log;
+
 
 public class AdjustCordova extends CordovaPlugin 
     implements OnAttributionChangedListener, 
@@ -153,7 +154,7 @@ public class AdjustCordova extends CordovaPlugin
                     } else if (logLevel.equals("ASSERT")) {
                         adjustConfig.setLogLevel(LogLevel.ASSERT);
                     } else if (logLevel.equals("SUPPRESS")) {
-                        adjustConfig.setLogLevel(LogLevel.SUPPRESS);
+                        adjustConfig.setLogLevel(LogLevel.SUPRESS);
                     } else {
                         adjustConfig.setLogLevel(LogLevel.INFO);
                     }
@@ -402,8 +403,8 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         String errorMessage = String.format("Invalid call (%s)", action);
-
         Logger logger = (Logger)AdjustFactory.getLogger();
+        
         logger.error(errorMessage);
 
         return false;
