@@ -404,73 +404,87 @@ public class AdjustCordova extends CordovaPlugin
 
         String errorMessage = String.format("Invalid call (%s)", action);
         Logger logger = (Logger)AdjustFactory.getLogger();
-        
+
         logger.error(errorMessage);
 
         return false;
     }
 
     @Override
-    public void onGoogleAdIdRead(String playAdId) {
-        PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
-        pluginResult.setKeepCallback(true);
-
-        googleAdIdCallbackContext.sendPluginResult(pluginResult);
-    }
-
-    @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
-        PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.googleAdIdCallbackContext != null) {
+            JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
+            PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
+            pluginResult.setKeepCallback(true);
 
-        attributionCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.attributionCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     @Override
     public void onFinishedEventTrackingSucceeded(AdjustEventSuccess event) {
-        JSONObject jsonData = new JSONObject(getEventTrackingSucceededDictionary(event));
-        PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.eventTrackingSucceededCallbackContext != null) {
+            JSONObject jsonData = new JSONObject(getEventTrackingSucceededDictionary(event));
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
 
-        eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     @Override
     public void onFinishedEventTrackingFailed(AdjustEventFailure event) {
-        JSONObject jsonData = new JSONObject(getEventTrackingFailedDictionary(event));
-        PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.eventTrackingFailedCallbackContext != null) {
+            JSONObject jsonData = new JSONObject(getEventTrackingFailedDictionary(event));
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
 
-        eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     @Override
     public void onFinishedSessionTrackingSucceeded(AdjustSessionSuccess session) {
-        JSONObject jsonData = new JSONObject(getSessionTrackingSucceededDictionary(session));
-        PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.sessionTrackingSucceededCallbackContext != null) {
+            JSONObject jsonData = new JSONObject(getSessionTrackingSucceededDictionary(session));
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
 
-        sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     @Override
     public void onFinishedSessionTrackingFailed(AdjustSessionFailure session) {
-        JSONObject jsonData = new JSONObject(getSessionTrackingFailedDictionary(session));
-        PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.sessionTrackingFailedCallbackContext != null) {
+            JSONObject jsonData = new JSONObject(getSessionTrackingFailedDictionary(session));
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
 
-        sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
+            PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
+            pluginResult.setKeepCallback(true);
 
-        deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
+        }
 
         return this.shouldLaunchDeeplink;
+    }
+
+    @Override
+    public void onGoogleAdIdRead(String playAdId) {
+        if (AdjustCordova.googleAdIdCallbackContext != null) {
+            PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
+            pluginResult.setKeepCallback(true);
+
+            AdjustCordova.googleAdIdCallbackContext.sendPluginResult(pluginResult);
+        }
     }
 
     boolean isFieldValid(String field) {
