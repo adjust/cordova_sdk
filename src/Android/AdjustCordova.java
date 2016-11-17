@@ -197,32 +197,32 @@ public class AdjustCordova extends CordovaPlugin
                 adjustConfig.setDelayStart(delayStart);
 
                 // Attribution callback
-                if (attributionCallbackContext != null) {
+                if (AdjustCordova.attributionCallbackContext != null) {
                     adjustConfig.setOnAttributionChangedListener(this);
                 }
 
                 // Event tracking succeeded callback
-                if (eventTrackingSucceededCallbackContext != null) {
+                if (AdjustCordova.eventTrackingSucceededCallbackContext != null) {
                     adjustConfig.setOnEventTrackingSucceededListener(this);
                 }
 
                 // Event tracking failed callback
-                if (eventTrackingFailedCallbackContext != null) {
+                if (AdjustCordova.eventTrackingFailedCallbackContext != null) {
                     adjustConfig.setOnEventTrackingFailedListener(this);
                 }
 
                 // Session tracking succeeded callback
-                if (sessionTrackingSucceededCallbackContext != null) {
+                if (AdjustCordova.sessionTrackingSucceededCallbackContext != null) {
                     adjustConfig.setOnSessionTrackingSucceededListener(this);
                 }
 
                 // Session tracking failed callback
-                if (sessionTrackingFailedCallbackContext != null) {
+                if (AdjustCordova.sessionTrackingFailedCallbackContext != null) {
                     adjustConfig.setOnSessionTrackingFailedListener(this);
                 }
 
                 // Deferred deeplink callback listener
-                if (deferredDeeplinkCallbackContext != null) {
+                if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
                     adjustConfig.setOnDeeplinkResponseListener(this);
                 }
 
@@ -412,7 +412,7 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        if (AdjustCordova.googleAdIdCallbackContext != null) {
+        if (AdjustCordova.attributionCallbackContext != null) {
             JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
             PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
             pluginResult.setKeepCallback(true);
