@@ -388,7 +388,8 @@ BOOL _shouldLaunchDeeplink;
         return;
     }
 
-    [Adjust setDeviceToken:token];
+    NSData *data = [token dataUsingEncoding:NSUTF8StringEncoding];
+    [Adjust setDeviceToken:data];
 }
 
 - (BOOL)isFieldValid:(NSObject *)field {
