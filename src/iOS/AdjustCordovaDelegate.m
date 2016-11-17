@@ -34,27 +34,33 @@
 
         // Do the swizzling where and if needed.
         if (swizzleAttributionCallback) {
-            [defaultInstance swizzleAttributionCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustAttributionChanged:)
+                                  swizzledSelector:@selector(adjustAttributionChangedWannabe:)];
         }
 
         if (swizzleEventSucceededCallback) {
-            [defaultInstance swizzleEventSucceededCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingSucceeded:)
+                                  swizzledSelector:@selector(adjustEventTrackingSucceededWannabe:)];
         }
 
         if (swizzleEventFailedCallback) {
-            [defaultInstance swizzleEventFailedCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingFailed:)
+                                  swizzledSelector:@selector(adjustEventTrackingFailedWannabe:)];
         }
 
         if (swizzleSessionSucceededCallback) {
-            [defaultInstance swizzleSessionSucceededCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingSucceeded:)
+                                  swizzledSelector:@selector(adjustSessionTrackingSucceededWannabe:)];
         }
 
         if (swizzleSessionFailedCallback) {
-            [defaultInstance swizzleSessionFailedCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
+                                  swizzledSelector:@selector(adjustSessionTrackingFailedWananbe:)];
         }
 
         if (swizzleDeferredDeeplinkCallback) {
-            [defaultInstance swizzleDeferredDeeplinkCallbackMethod];
+            [defaultInstance swizzleCallbackMethod:@selector(adjustDeeplinkResponse:)
+                                  swizzledSelector:@selector(adjustDeeplinkResponseWannabe:)];
         }
 
         [defaultInstance setAttributionCallbackId:attributionCallbackId];
@@ -93,6 +99,16 @@
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionCallbackId];
 }
 
+- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
+                    key:(NSString *)key
+                  value:(NSObject *)value {
+    if (nil != value) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+    } else {
+        [dictionary setObject:@"" forKey:key];
+    }
+}
+
 - (void)adjustEventTrackingSucceededWannabe:(ADJEventSuccess *)eventSuccessResponseData {
     if (nil == eventSuccessResponseData) {
         return;
@@ -100,35 +116,11 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    if (nil != eventSuccessResponseData.message) {
-        [dictionary setObject:eventSuccessResponseData.message forKey:@"message"];
-    } else {
-        [dictionary setObject:@"" forKey:@"message"];
-    }
-
-    if (nil != eventSuccessResponseData.timeStamp) {
-        [dictionary setObject:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
-    } else {
-        [dictionary setObject:@"" forKey:@"timestamp"];
-    }
-
-    if (nil != eventSuccessResponseData.adid) {
-        [dictionary setObject:eventSuccessResponseData.adid forKey:@"adid"];
-    } else {
-        [dictionary setObject:@"" forKey:@"adid"];
-    }
-
-    if (nil != eventSuccessResponseData.eventToken) {
-        [dictionary setObject:eventSuccessResponseData.eventToken forKey:@"eventToken"];
-    } else {
-        [dictionary setObject:@"" forKey:@"eventToken"];
-    }
-
-    if (nil != eventSuccessResponseData.jsonResponse) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", eventSuccessResponseData.jsonResponse] forKey:@"jsonResponse"];
-    } else {
-        [dictionary setObject:@"" forKey:@"jsonResponse"];
-    }
+    [self addValueOrEmpty:dictionary key:@"message" value:eventSuccessResponseData.message];
+    [self addValueOrEmpty:dictionary key:@"timestamp" value:eventSuccessResponseData.timeStamp];
+    [self addValueOrEmpty:dictionary key:@"adid" value:eventSuccessResponseData.adid];
+    [self addValueOrEmpty:dictionary key:@"eventToken" value:eventSuccessResponseData.eventToken];
+    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:eventSuccessResponseData.jsonResponse];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -143,37 +135,12 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    if (nil != eventFailureResponseData.message) {
-        [dictionary setObject:eventFailureResponseData.message forKey:@"message"];
-    } else {
-        [dictionary setObject:@"" forKey:@"message"];
-    }
-
-    if (nil != eventFailureResponseData.timeStamp) {
-        [dictionary setObject:eventFailureResponseData.timeStamp forKey:@"timestamp"];
-    } else {
-        [dictionary setObject:@"" forKey:@"timestamp"];
-    }
-
-    if (nil != eventFailureResponseData.adid) {
-        [dictionary setObject:eventFailureResponseData.adid forKey:@"adid"];
-    } else {
-        [dictionary setObject:@"" forKey:@"adid"];
-    }
-
-    if (nil != eventFailureResponseData.eventToken) {
-        [dictionary setObject:eventFailureResponseData.eventToken forKey:@"eventToken"];
-    } else {
-        [dictionary setObject:@"" forKey:@"eventToken"];
-    }
-
+    [self addValueOrEmpty:dictionary key:@"message" value:eventFailureResponseData.message];
+    [self addValueOrEmpty:dictionary key:@"timestamp" value:eventFailureResponseData.timeStamp];
+    [self addValueOrEmpty:dictionary key:@"adid" value:eventFailureResponseData.adid];
+    [self addValueOrEmpty:dictionary key:@"eventToken" value:eventFailureResponseData.eventToken];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-
-    if (nil != eventFailureResponseData.jsonResponse) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", eventFailureResponseData.jsonResponse] forKey:@"jsonResponse"];
-    } else {
-        [dictionary setObject:@"" forKey:@"jsonResponse"];
-    }
+    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:eventFailureResponseData.jsonResponse];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -188,29 +155,10 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    if (nil != sessionSuccessResponseData.message) {
-        [dictionary setObject:sessionSuccessResponseData.message forKey:@"message"];
-    } else {
-        [dictionary setObject:@"" forKey:@"message"];
-    }
-
-    if (nil != sessionSuccessResponseData.timeStamp) {
-        [dictionary setObject:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
-    } else {
-        [dictionary setObject:@"" forKey:@"timestamp"];
-    }
-
-    if (nil != sessionSuccessResponseData.adid) {
-        [dictionary setObject:sessionSuccessResponseData.adid forKey:@"adid"];
-    } else {
-        [dictionary setObject:@"" forKey:@"adid"];
-    }
-
-    if (nil != sessionSuccessResponseData.jsonResponse) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", sessionSuccessResponseData.jsonResponse] forKey:@"jsonResponse"];
-    } else {
-        [dictionary setObject:@"" forKey:@"jsonResponse"];
-    }
+    [self addValueOrEmpty:dictionary key:@"message" value:sessionSuccessResponseData.message];
+    [self addValueOrEmpty:dictionary key:@"timestamp" value:sessionSuccessResponseData.timeStamp];
+    [self addValueOrEmpty:dictionary key:@"adid" value:sessionSuccessResponseData.adid];
+    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:sessionSuccessResponseData.jsonResponse];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -225,31 +173,11 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    if (nil != sessionFailureResponseData.message) {
-        [dictionary setObject:sessionFailureResponseData.message forKey:@"message"];
-    } else {
-        [dictionary setObject:@"" forKey:@"message"];
-    }
-
-    if (nil != sessionFailureResponseData.timeStamp) {
-        [dictionary setObject:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
-    } else {
-        [dictionary setObject:@"" forKey:@"timestamp"];
-    }
-
-    if (nil != sessionFailureResponseData.adid) {
-        [dictionary setObject:sessionFailureResponseData.adid forKey:@"adid"];
-    } else {
-        [dictionary setObject:@"" forKey:@"adid"];
-    }
-
+    [self addValueOrEmpty:dictionary key:@"message" value:sessionFailureResponseData.message];
+    [self addValueOrEmpty:dictionary key:@"timestamp" value:sessionFailureResponseData.timeStamp];
+    [self addValueOrEmpty:dictionary key:@"adid" value:sessionFailureResponseData.adid];
     [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-
-    if (nil != sessionFailureResponseData.jsonResponse) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", sessionFailureResponseData.jsonResponse] forKey:@"jsonResponse"];
-    } else {
-        [dictionary setObject:@"" forKey:@"jsonResponse"];
-    }
+    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:sessionFailureResponseData.jsonResponse];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -268,131 +196,9 @@
     return _shouldLaunchDeferredDeeplink;
 }
 
-- (void)swizzleAttributionCallbackMethod {
+- (void)swizzleCallbackMethod:(SEL)originalSelector
+             swizzledSelector:(SEL)swizzledSelector {
     Class class = [self class];
-
-    SEL originalSelector = @selector(adjustAttributionChanged:);
-    SEL swizzledSelector = @selector(adjustAttributionChangedWannabe:);
-
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-- (void)swizzleEventSucceededCallbackMethod {
-    Class class = [self class];
-
-    SEL originalSelector = @selector(adjustEventTrackingSucceeded:);
-    SEL swizzledSelector = @selector(adjustEventTrackingSucceededWannabe:);
-
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-- (void)swizzleEventFailedCallbackMethod {
-    Class class = [self class];
-
-    SEL originalSelector = @selector(adjustEventTrackingFailed:);
-    SEL swizzledSelector = @selector(adjustEventTrackingFailedWannabe:);
-
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-- (void)swizzleSessionSucceededCallbackMethod {
-    Class class = [self class];
-
-    SEL originalSelector = @selector(adjustSessionTrackingSucceeded:);
-    SEL swizzledSelector = @selector(adjustSessionTrackingSucceededWannabe:);
-
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-- (void)swizzleSessionFailedCallbackMethod {
-    Class class = [self class];
-
-    SEL originalSelector = @selector(adjustSessionTrackingFailed:);
-    SEL swizzledSelector = @selector(adjustSessionTrackingFailedWananbe:);
-
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-- (void)swizzleDeferredDeeplinkCallbackMethod {
-    Class class = [self class];
-
-    SEL originalSelector = @selector(adjustDeeplinkResponse:);
-    SEL swizzledSelector = @selector(adjustDeeplinkResponseWannabe:);
 
     Method originalMethod = class_getInstanceMethod(class, originalSelector);
     Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);

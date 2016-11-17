@@ -72,77 +72,79 @@
 
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 
-    if ([adjustConfig isValid]) {
-        // Log level
-        if ([self isFieldValid:logLevel]) {
-            [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
-        }
-
-        // Event buffering
-        if ([self isFieldValid:eventBufferingEnabled]) {
-            [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
-        }
-
-        // SDK prefix
-        if ([self isFieldValid:sdkPrefix]) {
-            [adjustConfig setSdkPrefix:sdkPrefix];
-        }
-
-        // Default tracker
-        if ([self isFieldValid:defaultTracker]) {
-            [adjustConfig setDefaultTracker:defaultTracker];
-        }
-
-        BOOL isAttributionCallbackImplemented = attributionCallbackId != nil ? YES : NO;
-        BOOL isEventSucceededCallbackImplemented = eventSucceededCallbackId != nil ? YES : NO;
-        BOOL isEventFailedCallbackImplemented = eventFailedCallbackId != nil ? YES : NO;
-        BOOL isSessionSucceededCallbackImplemented = sessionSucceededCallbackId != nil ? YES : NO;
-        BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
-        BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
-        BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
-
-        // Attribution delegate & other delegates
-        if (isAttributionCallbackImplemented ||
-            isEventSucceededCallbackImplemented ||
-            isEventFailedCallbackImplemented ||
-            isSessionSucceededCallbackImplemented ||
-            isSessionFailedCallbackImplemented ||
-            isDeferredDeeplinkCallbackImplemented) {
-            [adjustConfig setDelegate:
-                [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
-                                                            eventSucceededCallback:isEventSucceededCallbackImplemented
-                                                               eventFailedCallback:isEventFailedCallbackImplemented
-                                                          sessionSucceededCallback:isSessionSucceededCallbackImplemented
-                                                             sessionFailedCallback:isSessionFailedCallbackImplemented
-                                                          deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
-                                                          andAttributionCallbackId:attributionCallbackId
-                                                          eventSucceededCallbackId:eventSucceededCallbackId
-                                                             eventFailedCallbackId:eventFailedCallbackId
-                                                        sessionSucceededCallbackId:sessionSucceededCallbackId
-                                                           sessionFailedCallbackId:sessionFailedCallbackId
-                                                        deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
-                                                      shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
-                                                               withCommandDelegate:self.commandDelegate]];
-        }
-
-        // Send in background
-        if ([self isFieldValid:sendInBackground]) {
-            [adjustConfig setSendInBackground:[sendInBackground boolValue]];
-        }
-
-        // User agent
-        if ([self isFieldValid:userAgent]) {
-            [adjustConfig setUserAgent:userAgent];
-        }
-
-        // Delay start
-        if ([self isFieldValid:delayStart]) {
-            [adjustConfig setDelayStart:[delayStart doubleValue]];
-        }
-
-        [Adjust appDidLaunch:adjustConfig];
-        [Adjust trackSubsessionStart];
+    if (![adjustConfig isValid]) {
+        return;
     }
+    // Log level
+    if ([self isFieldValid:logLevel]) {
+        [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
+    }
+
+    // Event buffering
+    if ([self isFieldValid:eventBufferingEnabled]) {
+        [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+    }
+
+    // SDK prefix
+    if ([self isFieldValid:sdkPrefix]) {
+        [adjustConfig setSdkPrefix:sdkPrefix];
+    }
+
+    // Default tracker
+    if ([self isFieldValid:defaultTracker]) {
+        [adjustConfig setDefaultTracker:defaultTracker];
+    }
+
+    BOOL isAttributionCallbackImplemented = attributionCallbackId != nil ? YES : NO;
+    BOOL isEventSucceededCallbackImplemented = eventSucceededCallbackId != nil ? YES : NO;
+    BOOL isEventFailedCallbackImplemented = eventFailedCallbackId != nil ? YES : NO;
+    BOOL isSessionSucceededCallbackImplemented = sessionSucceededCallbackId != nil ? YES : NO;
+    BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
+    BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
+    BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
+
+    // Attribution delegate & other delegates
+    if (isAttributionCallbackImplemented ||
+        isEventSucceededCallbackImplemented ||
+        isEventFailedCallbackImplemented ||
+        isSessionSucceededCallbackImplemented ||
+        isSessionFailedCallbackImplemented ||
+        isDeferredDeeplinkCallbackImplemented) 
+    {
+        [adjustConfig setDelegate:
+            [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
+                                                        eventSucceededCallback:isEventSucceededCallbackImplemented
+                                                           eventFailedCallback:isEventFailedCallbackImplemented
+                                                      sessionSucceededCallback:isSessionSucceededCallbackImplemented
+                                                         sessionFailedCallback:isSessionFailedCallbackImplemented
+                                                      deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
+                                                      andAttributionCallbackId:attributionCallbackId
+                                                      eventSucceededCallbackId:eventSucceededCallbackId
+                                                         eventFailedCallbackId:eventFailedCallbackId
+                                                    sessionSucceededCallbackId:sessionSucceededCallbackId
+                                                       sessionFailedCallbackId:sessionFailedCallbackId
+                                                    deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
+                                                  shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
+                                                           withCommandDelegate:self.commandDelegate]];
+    }
+
+    // Send in background
+    if ([self isFieldValid:sendInBackground]) {
+        [adjustConfig setSendInBackground:[sendInBackground boolValue]];
+    }
+
+    // User agent
+    if ([self isFieldValid:userAgent]) {
+        [adjustConfig setUserAgent:userAgent];
+    }
+
+    // Delay start
+    if ([self isFieldValid:delayStart]) {
+        [adjustConfig setDelayStart:[delayStart doubleValue]];
+    }
+
+    [Adjust appDidLaunch:adjustConfig];
+    [Adjust trackSubsessionStart];
 }
 
 - (void)trackEvent:(CDVInvokedUrlCommand *)command {
@@ -166,49 +168,51 @@
 
     ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
 
-    if ([adjustEvent isValid]) {
-        if ([self isFieldValid:revenue]) {
-            double revenueValue = [revenue doubleValue];
+    if (![adjustEvent isValid]) {
+        return;
+    }
 
-            [adjustEvent setRevenue:revenueValue currency:currency];
-        }
+    if ([self isFieldValid:revenue]) {
+        double revenueValue = [revenue doubleValue];
 
-        for (int i = 0; i < [callbackParameters count]; i += 2) {
-            NSString *key = [callbackParameters objectAtIndex:i];
-            NSString *value = [callbackParameters objectAtIndex:(i+1)];
+        [adjustEvent setRevenue:revenueValue currency:currency];
+    }
 
-            [adjustEvent addCallbackParameter:key value:value];
-        }
+    for (int i = 0; i < [callbackParameters count]; i += 2) {
+        NSString *key = [callbackParameters objectAtIndex:i];
+        NSString *value = [callbackParameters objectAtIndex:(i+1)];
 
-        for (int i = 0; i < [partnerParameters count]; i += 2) {
-            NSString *key = [partnerParameters objectAtIndex:i];
-            NSString *value = [partnerParameters objectAtIndex:(i+1)];
+        [adjustEvent addCallbackParameter:key value:value];
+    }
 
-            [adjustEvent addPartnerParameter:key value:value];
-        }
+    for (int i = 0; i < [partnerParameters count]; i += 2) {
+        NSString *key = [partnerParameters objectAtIndex:i];
+        NSString *value = [partnerParameters objectAtIndex:(i+1)];
 
-        BOOL isTransactionIdSet = false;
+        [adjustEvent addPartnerParameter:key value:value];
+    }
 
-        if ([self isFieldValid:isReceiptSet]) {
-            if ([isReceiptSet boolValue]) {
-                [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding] transactionId:transactionId];
-            } else {
-                if ([self isFieldValid:transactionId]) {
-                    [adjustEvent setTransactionId:transactionId];
+    BOOL isTransactionIdSet = false;
 
-                    isTransactionIdSet = YES;
-                }
-            }
-        }
-
-        if (NO == isTransactionIdSet) {
+    if ([self isFieldValid:isReceiptSet]) {
+        if ([isReceiptSet boolValue]) {
+            [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding] transactionId:transactionId];
+        } else {
             if ([self isFieldValid:transactionId]) {
                 [adjustEvent setTransactionId:transactionId];
+
+                isTransactionIdSet = YES;
             }
         }
-
-        [Adjust trackEvent:adjustEvent];
     }
+
+    if (NO == isTransactionIdSet) {
+        if ([self isFieldValid:transactionId]) {
+            [adjustEvent setTransactionId:transactionId];
+        }
+    }
+
+    [Adjust trackEvent:adjustEvent];
 }
 
 - (void)setOfflineMode:(CDVInvokedUrlCommand *)command {
@@ -354,13 +358,7 @@
 }
 
 - (BOOL)isFieldValid:(NSObject *)field {
-    if (![field isKindOfClass:[NSNull class]]) {
-        if (field != nil) {
-            return YES;
-        }
-    }
-
-    return NO;
+    return field != nil && ![field isKindOfClass:[NSNull class]];
 }
 
 @end
