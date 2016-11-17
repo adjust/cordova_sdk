@@ -101,7 +101,7 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 // @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     console.warn("Calling deprecated function! Use a dedicated setCallbackListener for the specific callback you need. Check adjust_config.js for more info");
-    return false;
+    this.attributionCallbackListener = attributionCallbackListener;
 };
 
 AdjustConfig.prototype.setUserAgent = function(userAgent) {
@@ -151,7 +151,7 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use a dedicated hasListener for the specific callback you need. Check adjust_config.js for more info");
-    return false;
+    return this.attributionCallbackListener != null;
 };
 
 AdjustConfig.prototype.hasAttributionListener = function() {
