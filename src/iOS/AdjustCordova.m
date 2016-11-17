@@ -30,21 +30,24 @@
 #define KEY_DELAY_START             @"delayStart"
 
 @implementation AdjustCordova {
-NSString *attributionCallbackId;
-NSString *eventSucceededCallbackId;
-NSString *eventFailedCallbackId;
-NSString *sessionSucceededCallbackId;
-NSString *sessionFailedCallbackId;
-NSString *deferredDeeplinkCallbackId;
-BOOL _shouldLaunchDeeplink;
+    BOOL _shouldLaunchDeeplink;
+
+    NSString *attributionCallbackId;
+    NSString *eventFailedCallbackId;
+    NSString *eventSucceededCallbackId;
+    NSString *sessionFailedCallbackId;
+    NSString *sessionSucceededCallbackId;
+    NSString *deferredDeeplinkCallbackId;
 }
 
 - (void)pluginInitialize {
+    _shouldLaunchDeeplink = YES;
+
     attributionCallbackId = nil;
-    eventSucceededCallbackId = nil;
     eventFailedCallbackId = nil;
-    sessionSucceededCallbackId = nil;
+    eventSucceededCallbackId = nil;
     sessionFailedCallbackId = nil;
+    sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
 }
 
@@ -58,36 +61,164 @@ BOOL _shouldLaunchDeeplink;
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    NSDictionary *dict = [eventSuccessResponseData dictionary];
+    if (nil == eventSuccessResponseData) {
+        return;
+    }
 
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    if (nil != eventSuccessResponseData.message) {
+        [dictionary setObject:eventSuccessResponseData.message forKey:@"message"];
+    } else {
+        [dictionary setObject:@"" forKey:@"message"];
+    }
+
+    if (nil != eventSuccessResponseData.timeStamp) {
+        [dictionary setObject:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
+    } else {
+        [dictionary setObject:@"" forKey:@"timestamp"];
+    }
+
+    if (nil != eventSuccessResponseData.adid) {
+        [dictionary setObject:eventSuccessResponseData.adid forKey:@"adid"];
+    } else {
+        [dictionary setObject:@"" forKey:@"adid"];
+    }
+
+    if (nil != eventSuccessResponseData.eventToken) {
+        [dictionary setObject:eventSuccessResponseData.eventToken forKey:@"eventToken"];
+    } else {
+        [dictionary setObject:@"" forKey:@"eventToken"];
+    }
+
+    if (nil != eventSuccessResponseData.jsonResponse) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", eventSuccessResponseData.jsonResponse] forKey:@"jsonResponse"];
+    } else {
+        [dictionary setObject:@"" forKey:@"jsonResponse"];
+    }
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:eventSucceededCallbackId];
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    NSDictionary *dict = [eventFailureResponseData dictionary];
+    if (nil == eventFailureResponseData) {
+        return;
+    }
 
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    if (nil != eventFailureResponseData.message) {
+        [dictionary setObject:eventFailureResponseData.message forKey:@"message"];
+    } else {
+        [dictionary setObject:@"" forKey:@"message"];
+    }
+
+    if (nil != eventFailureResponseData.timeStamp) {
+        [dictionary setObject:eventFailureResponseData.timeStamp forKey:@"timestamp"];
+    } else {
+        [dictionary setObject:@"" forKey:@"timestamp"];
+    }
+
+    if (nil != eventFailureResponseData.adid) {
+        [dictionary setObject:eventFailureResponseData.adid forKey:@"adid"];
+    } else {
+        [dictionary setObject:@"" forKey:@"adid"];
+    }
+
+    if (nil != eventFailureResponseData.eventToken) {
+        [dictionary setObject:eventFailureResponseData.eventToken forKey:@"eventToken"];
+    } else {
+        [dictionary setObject:@"" forKey:@"eventToken"];
+    }
+
+    [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
+
+    if (nil != eventFailureResponseData.jsonResponse) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", eventFailureResponseData.jsonResponse] forKey:@"jsonResponse"];
+    } else {
+        [dictionary setObject:@"" forKey:@"jsonResponse"];
+    }
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:eventFailedCallbackId];
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    NSDictionary *dict = [sessionSuccessResponseData dictionary];
+    if (nil == sessionSuccessResponseData) {
+        return;
+    }
 
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    if (nil != sessionSuccessResponseData.message) {
+        [dictionary setObject:sessionSuccessResponseData.message forKey:@"message"];
+    } else {
+        [dictionary setObject:@"" forKey:@"message"];
+    }
+
+    if (nil != sessionSuccessResponseData.timeStamp) {
+        [dictionary setObject:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
+    } else {
+        [dictionary setObject:@"" forKey:@"timestamp"];
+    }
+
+    if (nil != sessionSuccessResponseData.adid) {
+        [dictionary setObject:sessionSuccessResponseData.adid forKey:@"adid"];
+    } else {
+        [dictionary setObject:@"" forKey:@"adid"];
+    }
+
+    if (nil != sessionSuccessResponseData.jsonResponse) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", sessionSuccessResponseData.jsonResponse] forKey:@"jsonResponse"];
+    } else {
+        [dictionary setObject:@"" forKey:@"jsonResponse"];
+    }
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionSucceededCallbackId];
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    NSDictionary *dict = [sessionFailureResponseData dictionary];
+    if (nil == sessionFailureResponseData) {
+        return;
+    }
 
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    if (nil != sessionFailureResponseData.message) {
+        [dictionary setObject:sessionFailureResponseData.message forKey:@"message"];
+    } else {
+        [dictionary setObject:@"" forKey:@"message"];
+    }
+
+    if (nil != sessionFailureResponseData.timeStamp) {
+        [dictionary setObject:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
+    } else {
+        [dictionary setObject:@"" forKey:@"timestamp"];
+    }
+
+    if (nil != sessionFailureResponseData.adid) {
+        [dictionary setObject:sessionFailureResponseData.adid forKey:@"adid"];
+    } else {
+        [dictionary setObject:@"" forKey:@"adid"];
+    }
+
+    [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
+
+    if (nil != sessionFailureResponseData.jsonResponse) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", sessionFailureResponseData.jsonResponse] forKey:@"jsonResponse"];
+    } else {
+        [dictionary setObject:@"" forKey:@"jsonResponse"];
+    }
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:sessionFailedCallbackId];
@@ -388,7 +519,7 @@ BOOL _shouldLaunchDeeplink;
         return;
     }
 
-    [Adjust setDeviceToken:token];
+    [Adjust setDeviceToken:[token dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (BOOL)isFieldValid:(NSObject *)field {

@@ -19,23 +19,27 @@
 - (void)trackEvent:(CDVInvokedUrlCommand *)command;
 - (void)setOfflineMode:(CDVInvokedUrlCommand *)command;
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
+
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
+
+- (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
 
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
-- (void)setEventTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
+- (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
-- (void)setSessionTrackingSuccessfulCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
-- (void)setDeeplinkCallback:(CDVInvokedUrlCommand *)command;
+- (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
 
-- (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 - (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
+
 - (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
+
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
-- (void)setPushToken:(CDVInvokedUrlCommand *)command;
+- (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 
 @end

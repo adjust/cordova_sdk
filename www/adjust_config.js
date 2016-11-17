@@ -3,25 +3,23 @@ function AdjustConfig(appToken, environment) {
     this.appToken = appToken;
     this.environment = environment;
 
+    this.delayStart = 0.0;
     this.sdkPrefix = "cordova4.10.1";
 
     this.logLevel = null;
-    this.defaultTracker = null;
-
-    this.attributionCallbackListener = null;
-    this.eventTrackingSucceededCallbackListener = null;
-    this.eventTrackingFailedCallbackListener = null;
-    this.sessionTrackingSucceededCallbackListener = null;
-    this.sessionTrackingFailedCallbackListener = null;
-    this.deferredDeeplinkCallbackListener = null;
-
-    this.eventBufferingEnabled = null;
-    this.shouldLaunchDeeplink = null;
     this.referrer = null;
-    this.sendInBackground = null;
-
     this.userAgent = null;
-    this.delayStart = 0.0;
+    this.defaultTracker = null;
+    this.sendInBackground = null;
+    this.shouldLaunchDeeplink = null;
+    this.eventBufferingEnabled = null;
+
+    this.attributionCallback = null;
+    this.eventTrackingSucceededCallback = null;
+    this.eventTrackingFailedCallback = null;
+    this.sessionTrackingSucceededCallback = null;
+    this.sessionTrackingFailedCallback = null;
+    this.deferredDeeplinkCallback = null;
 
     // Android only
     this.processName = null;
@@ -37,6 +35,26 @@ AdjustConfig.LogLevelWarn          = "WARN";
 AdjustConfig.LogLevelError         = "ERROR";
 AdjustConfig.LogLevelAssert        = "ASSERT";
 AdjustConfig.LogLevelSuppress      = "SUPPRESS";
+
+AdjustConfig.prototype.getUserAgent = function() {
+    return this.userAgent;
+};
+
+AdjustConfig.prototype.getDelayStart = function() {
+    return this.delayStart;
+};
+
+AdjustConfig.prototype.getReferrer = function() {
+    return this.referrer;
+};
+
+AdjustConfig.prototype.getSendInBackground = function() {
+    return this.sendInBackground;
+};
+
+AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
+    return this.shouldLaunchDeeplink;
+};
 
 AdjustConfig.prototype.getAttributionCallback = function() {
     return this.attributionCallbackListener;
@@ -62,26 +80,6 @@ AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
     return this.deferredDeeplinkCallbackListener;
 };
 
-AdjustConfig.prototype.getUserAgent = function() {
-    return this.userAgent;
-};
-
-AdjustConfig.prototype.getDelayStart = function() {
-    return this.delayStart;
-};
-
-AdjustConfig.prototype.getReferrer = function() {
-    return this.referrer;
-};
-
-AdjustConfig.prototype.getSendInBackground = function() {
-    return this.sendInBackground;
-};
-
-AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
-    return this.shouldLaunchDeeplink;
-};
-
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
@@ -98,12 +96,6 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
     this.defaultTracker = defaultTracker;
 };
 
-// @deprecated
-AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
-    console.warn("Calling deprecated function! Use a dedicated setCallbackListener for the specific callback you need. Check adjust_config.js for more info");
-    return false;
-};
-
 AdjustConfig.prototype.setUserAgent = function(userAgent) {
     this.userAgent = userAgent;
 }
@@ -111,6 +103,25 @@ AdjustConfig.prototype.setUserAgent = function(userAgent) {
 AdjustConfig.prototype.setDelayStart = function(delayStart) {
     this.delayStart = delayStart;
 }
+
+AdjustConfig.prototype.setReferrer = function(referrer) {
+    this.referrer = referrer;
+};
+
+AdjustConfig.prototype.setSendInBackground = function(sendInBackground) {
+    this.sendInBackground = sendInBackground;
+};
+
+AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
+    this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+};
+
+// @deprecated
+AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
+    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info");
+    
+    this.attributionCallbackListener = attributionCallbackListener;
+};
 
 AdjustConfig.prototype.setAttributionCallbackListener = function(attributionCallbackListener) {
     this.attributionCallbackListener = attributionCallbackListener;
@@ -136,22 +147,11 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
     this.deferredDeeplinkCallbackListener = deferredDeeplinkCallbackListener;
 };
 
-AdjustConfig.prototype.setReferrer = function(referrer) {
-    this.referrer = referrer;
-};
-
-AdjustConfig.prototype.setSendInBackground = function(sendInBackground) {
-    this.sendInBackground = sendInBackground;
-};
-
-AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
-    this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-};
-
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
-    console.warn("Calling deprecated function! Use a dedicated hasListener for the specific callback you need. Check adjust_config.js for more info");
-    return false;
+    console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
+    
+    return this.attributionCallbackListener != null;
 };
 
 AdjustConfig.prototype.hasAttributionListener = function() {
