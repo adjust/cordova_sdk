@@ -27,6 +27,5 @@
 
 + (ADJSessionFailure *)sessionFailureResponseData;
 - (id)init;
-- (NSDictionary *)dictionary;
 
 @end
