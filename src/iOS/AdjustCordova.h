@@ -9,7 +9,7 @@
 #import <Cordova/CDV.h>
 #import <AdjustSdk/Adjust.h>
 
-@interface AdjustCordova : CDVPlugin<AdjustDelegate>
+@interface AdjustCordova : CDVPlugin
 
 - (void)create:(CDVInvokedUrlCommand *)command;
 - (void)onPause:(CDVInvokedUrlCommand *)command;

@@ -66,6 +66,8 @@
 
         <header-file src="src/iOS/AdjustCordova.h" />
         <source-file src="src/iOS/AdjustCordova.m" />
+        <header-file src="src/iOS/AdjustCordovaDelegate.h" />
+        <source-file src="src/iOS/AdjustCordovaDelegate.m" />
 
         <framework src="src/iOS/AdjustSdk.framework" custom="true" />
         <framework src="AdSupport.framework" weak="true" />
