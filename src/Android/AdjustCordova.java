@@ -247,7 +247,9 @@ public class AdjustCordova extends CordovaPlugin
     }
 
     private void executeCreate(final JSONArray args) throws JSONException {
-        final JSONObject jsonParameters = args.optJSONObject(0);
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
         String appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -371,7 +373,9 @@ public class AdjustCordova extends CordovaPlugin
     }
 
     private void executeTrackEvent(final JSONArray args) throws JSONException {
-        JSONObject jsonParameters = args.optJSONObject(0);
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
         String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
