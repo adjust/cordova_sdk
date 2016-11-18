@@ -91,22 +91,20 @@
         return;
     }
     
-    NSDictionary *attributionDictionary = [attribution dictionary];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:attributionDictionary];
+    [self addValueOrEmpty:dictionary key:@"trackerToken" value:attribution.trackerToken];
+    [self addValueOrEmpty:dictionary key:@"trackerName" value:attribution.trackerName];
+    [self addValueOrEmpty:dictionary key:@"network" value:attribution.network];
+    [self addValueOrEmpty:dictionary key:@"campaign" value:attribution.campaign];
+    [self addValueOrEmpty:dictionary key:@"creative" value:attribution.creative];
+    [self addValueOrEmpty:dictionary key:@"adgroup" value:attribution.adgroup];
+    [self addValueOrEmpty:dictionary key:@"clickLabel" value:attribution.clickLabel];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
 
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionCallbackId];
-}
-
-- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
-                    key:(NSString *)key
-                  value:(NSObject *)value {
-    if (nil != value) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
-    } else {
-        [dictionary setObject:@"" forKey:key];
-    }
 }
 
 - (void)adjustEventTrackingSucceededWannabe:(ADJEventSuccess *)eventSuccessResponseData {
@@ -215,6 +213,16 @@
                             method_getTypeEncoding(originalMethod));
     } else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
+- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
+                    key:(NSString *)key
+                  value:(NSObject *)value {
+    if (nil != value) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+    } else {
+        [dictionary setObject:@"" forKey:key];
     }
 }
 
