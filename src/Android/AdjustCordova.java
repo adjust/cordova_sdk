@@ -546,11 +546,11 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getEventTrackingSucceededDictionary(AdjustEventSuccess event) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        AddValueOrEmpty(dict, EVENT_SUCCESS_MESSAGE, event.message);
-        AddValueOrEmpty(dict, EVENT_SUCCESS_TIMESTAMP, event.timestamp);
-        AddValueOrEmpty(dict, EVENT_SUCCESS_ADID, event.adid);
-        AddValueOrEmpty(dict, EVENT_SUCCESS_EVENT_TOKEN, event.eventToken);
-        AddValueOrEmpty(dict, EVENT_SUCCESS_JSON_RESPONSE, event.jsonResponse);
+        addValueOrEmpty(dict, EVENT_SUCCESS_MESSAGE, event.message);
+        addValueOrEmpty(dict, EVENT_SUCCESS_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, EVENT_SUCCESS_ADID, event.adid);
+        addValueOrEmpty(dict, EVENT_SUCCESS_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, EVENT_SUCCESS_JSON_RESPONSE, event.jsonResponse);
 
         return dict;
     }
@@ -558,12 +558,12 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getEventTrackingFailedDictionary(AdjustEventFailure event) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        AddValueOrEmpty(dict, EVENT_FAILED_MESSAGE, event.message);
-        AddValueOrEmpty(dict, EVENT_FAILED_TIMESTAMP, event.timestamp);
-        AddValueOrEmpty(dict, EVENT_FAILED_ADID, event.adid);
-        AddValueOrEmpty(dict, EVENT_FAILED_EVENT_TOKEN, event.eventToken);
-        AddValueOrEmpty(dict, EVENT_FAILED_WILL_RETRY, event.willRetry ? "true" : "false");;
-        AddValueOrEmpty(dict, EVENT_FAILED_JSON_RESPONSE, event.jsonResponse);
+        addValueOrEmpty(dict, EVENT_FAILED_MESSAGE, event.message);
+        addValueOrEmpty(dict, EVENT_FAILED_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, EVENT_FAILED_ADID, event.adid);
+        addValueOrEmpty(dict, EVENT_FAILED_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, EVENT_FAILED_WILL_RETRY, event.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, EVENT_FAILED_JSON_RESPONSE, event.jsonResponse);
 
         return dict;
     }
@@ -571,13 +571,13 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getAttributionDictionary(AdjustAttribution attribution) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        AddValueOrEmpty(dict, ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
-        AddValueOrEmpty(dict, ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
-        AddValueOrEmpty(dict, ATTRIBUTION_NETWORK, attribution.network);
-        AddValueOrEmpty(dict, ATTRIBUTION_CAMPAIGN, attribution.campaign);
-        AddValueOrEmpty(dict, ATTRIBUTION_ADGROUP, attribution.adgroup);
-        AddValueOrEmpty(dict, ATTRIBUTION_CREATIVE, attribution.creative);
-        AddValueOrEmpty(dict, ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
+        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
+        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
+        addValueOrEmpty(dict, ATTRIBUTION_NETWORK, attribution.network);
+        addValueOrEmpty(dict, ATTRIBUTION_CAMPAIGN, attribution.campaign);
+        addValueOrEmpty(dict, ATTRIBUTION_ADGROUP, attribution.adgroup);
+        addValueOrEmpty(dict, ATTRIBUTION_CREATIVE, attribution.creative);
+        addValueOrEmpty(dict, ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
 
         return dict;
     }
@@ -585,10 +585,10 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getSessionTrackingSucceededDictionary(AdjustSessionSuccess session) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        AddValueOrEmpty(dict, SESSION_SUCCESS_MESSAGE, session.message);
-        AddValueOrEmpty(dict, SESSION_SUCCESS_TIMESTAMP, session.timestamp);
-        AddValueOrEmpty(dict, SESSION_SUCCESS_ADID, session.adid);
-        AddValueOrEmpty(dict, SESSION_SUCCESS_JSON_RESPONSE, session.jsonResponse);
+        addValueOrEmpty(dict, SESSION_SUCCESS_MESSAGE, session.message);
+        addValueOrEmpty(dict, SESSION_SUCCESS_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, SESSION_SUCCESS_ADID, session.adid);
+        addValueOrEmpty(dict, SESSION_SUCCESS_JSON_RESPONSE, session.jsonResponse);
 
         return dict;
     }
@@ -596,16 +596,16 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getSessionTrackingFailedDictionary(AdjustSessionFailure session) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        AddValueOrEmpty(dict, SESSION_FAILED_MESSAGE, session.message);
-        AddValueOrEmpty(dict, SESSION_FAILED_TIMESTAMP, session.timestamp);
-        AddValueOrEmpty(dict, SESSION_FAILED_ADID, session.adid);
-        AddValueOrEmpty(dict, SESSION_FAILED_WILL_RETRY, session.willRetry ? "true" : "false");;
-        AddValueOrEmpty(dict, SESSION_FAILED_JSON_RESPONSE, session.jsonResponse);
+        addValueOrEmpty(dict, SESSION_FAILED_MESSAGE, session.message);
+        addValueOrEmpty(dict, SESSION_FAILED_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, SESSION_FAILED_ADID, session.adid);
+        addValueOrEmpty(dict, SESSION_FAILED_WILL_RETRY, session.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, SESSION_FAILED_JSON_RESPONSE, session.jsonResponse);
 
         return dict;
     }
 
-    private void AddValueOrEmpty(Map<String, String> dict, String key, Object value){
+    private void addValueOrEmpty(Map<String, String> dict, String key, Object value){
         if (value != null) {
             dict.put(key, value.toString());
         } else {
