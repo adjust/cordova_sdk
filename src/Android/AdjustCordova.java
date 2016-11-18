@@ -385,9 +385,11 @@ public class AdjustCordova extends CordovaPlugin
         String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
 
         final AdjustEvent adjustEvent = new AdjustEvent(eventToken);
+        
         if (!adjustEvent.isValid()) {
             return;
         }
+        
         if (isFieldValid(revenue)) {
             try {
                 double revenueValue = Double.parseDouble(revenue);
@@ -422,9 +424,10 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        if (AdjustCordova.googleAdIdCallbackContext == null) {
+        if (AdjustCordova.attributionCallbackContext == null) {
             return;
         }
+
         JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
         PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
         pluginResult.setKeepCallback(true);
@@ -437,6 +440,7 @@ public class AdjustCordova extends CordovaPlugin
         if (AdjustCordova.eventTrackingSucceededCallbackContext == null) {
             return;
         }
+
         JSONObject jsonData = new JSONObject(getEventTrackingSucceededDictionary(event));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
@@ -449,6 +453,7 @@ public class AdjustCordova extends CordovaPlugin
         if (AdjustCordova.eventTrackingFailedCallbackContext == null) {
             return;
         }
+
         JSONObject jsonData = new JSONObject(getEventTrackingFailedDictionary(event));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
@@ -461,6 +466,7 @@ public class AdjustCordova extends CordovaPlugin
         if (AdjustCordova.sessionTrackingSucceededCallbackContext == null) {
             return;
         }
+
         JSONObject jsonData = new JSONObject(getSessionTrackingSucceededDictionary(session));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
@@ -473,6 +479,7 @@ public class AdjustCordova extends CordovaPlugin
         if (AdjustCordova.sessionTrackingFailedCallbackContext == null) {
             return;
         }
+
         JSONObject jsonData = new JSONObject(getSessionTrackingFailedDictionary(session));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
@@ -497,6 +504,7 @@ public class AdjustCordova extends CordovaPlugin
         if (AdjustCordova.googleAdIdCallbackContext == null) {
             return;
         }
+
         PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
         pluginResult.setKeepCallback(true);
 
@@ -511,6 +519,7 @@ public class AdjustCordova extends CordovaPlugin
         if (jsonArray == null) {
             return null;
         }
+
         String[] array = new String[jsonArray.length()];
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -603,5 +612,4 @@ public class AdjustCordova extends CordovaPlugin
             dict.put(key, "");
         }
     }
-
 }
