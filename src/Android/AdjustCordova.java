@@ -10,9 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
 
 
@@ -143,7 +143,7 @@ public class AdjustCordova extends CordovaPlugin
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             AdjustCordova.googleAdIdCallbackContext = callbackContext;
 
-            // Google ad id callback
+            // Google Ad Id callback
             if (googleAdIdCallbackContext != null) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
