@@ -29,10 +29,18 @@ var app = {
             universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
         }
 
-        var adjustConfig = new AdjustConfig("{YourAppToken}", AdjustConfig.EnvironmentSandbox);
+        var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
+
+        adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+        adjustConfig.setShouldLaunchDeeplink(true);
+        adjustConfig.setDelayStart(3.0);
+        adjustConfig.setSendInBackground(true);
+
+        // adjustConfig.setEventBufferingEnabled(true);
+        // adjustConfig.setUserAgent("little_bunny_foo_foo");
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
-            console.log(">>> attribution callback received");
+            console.log("### Attribution callback received");
 
             console.log("Tracker token = " + attribution.trackerToken);
             console.log("Tracker name = " + attribution.trackerName);
@@ -44,53 +52,50 @@ var app = {
         });
 
         adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
-            console.log(">>> event tracking succeeded callback received");
+            console.log("### Event tracking succeeded callback received");
 
-            console.log("message: " + eventSuccess.message);
-            console.log("timestamp: " + eventSuccess.timeStamp);
-            console.log("adid: " + eventSuccess.adid);
-            console.log("eventToken: " + eventSuccess.eventToken);
-            console.log("json response: " + eventSuccess.jsonResponse);
+            console.log("Message: " + eventSuccess.message);
+            console.log("Timestamp: " + eventSuccess.timestamp);
+            console.log("Adid: " + eventSuccess.adid);
+            console.log("Event token: " + eventSuccess.eventToken);
+            console.log("JSON response: " + eventSuccess.jsonResponse);
         });
 
         adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
-            console.log(">>> event tracking failed callback received");
+            console.log("### Event tracking failed callback received");
 
-            console.log("message: " + eventFailed.message);
-            console.log("timestamp: " + eventFailed.timeStamp);
-            console.log("adid: " + eventFailed.adid);
-            console.log("eventToken: " + eventFailed.eventToken);
-            console.log("will retry: " + eventFailed.willRetry);
-            console.log("json response: " + eventFailed.jsonResponse);
+            console.log("Message: " + eventFailed.message);
+            console.log("Timestamp: " + eventFailed.timestamp);
+            console.log("Adid: " + eventFailed.adid);
+            console.log("Event token: " + eventFailed.eventToken);
+            console.log("Will retry: " + eventFailed.willRetry);
+            console.log("JSON response: " + eventFailed.jsonResponse);
         });
 
         adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
-            console.log(">>> session tracking succeeded callback received");
+            console.log("### Session tracking succeeded callback received");
 
-            console.log("message: " + sessionSuccess.message);
-            console.log("timestamp: " + sessionSuccess.timeStamp);
-            console.log("adid: " + sessionSuccess.adid);
-            console.log("json response: " + sessionSuccess.jsonResponse);
+            console.log("Message: " + sessionSuccess.message);
+            console.log("Timestamp: " + sessionSuccess.timestamp);
+            console.log("Adid: " + sessionSuccess.adid);
+            console.log("JSON response: " + sessionSuccess.jsonResponse);
         });
 
         adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
-            console.log(">>> session tracking failed callback received");
+            console.log("### Session tracking failed callback received");
 
-            console.log("message: " + sessionFailed.message);
-            console.log("timestamp: " + sessionFailed.timeStamp);
-            console.log("adid: " + sessionFailed.adid);
-            console.log("will retry: " + sessionFailed.willRetry);
-            console.log("json response: " + sessionFailed.jsonResponse);
+            console.log("Message: " + sessionFailed.message);
+            console.log("Timestamp: " + sessionFailed.timestamp);
+            console.log("Adid: " + sessionFailed.adid);
+            console.log("Will retry: " + sessionFailed.willRetry);
+            console.log("JSON response: " + sessionFailed.jsonResponse);
         });
 
         adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
             console.log(">>> Deferred Deeplink Callback received");
 
-            console.log("uri: " + uri);
+            console.log("URL: " + uri);
         });
-
-        adjustConfig.setShouldLaunchDeeplink(true);
-        //adjustConfig.setEventBufferingEnabled(true);
 
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
@@ -101,23 +106,18 @@ var app = {
         Adjust.removeSessionCallbackParameter("dummy_foo");
         Adjust.removeSessionPartnerParameter("dummy_foo");
 
-        Adjust.resetSessionCallbackParameters();
-        Adjust.resetSessionPartnerParameters();
-
-        adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-
-        adjustConfig.setDelayStart(3.0);
-        adjustConfig.setUserAgent("little_bunny_foo_foo");
-        adjustConfig.setSendInBackground(true);
+        // Adjust.resetSessionCallbackParameters();
+        // Adjust.resetSessionPartnerParameters();
 
         Adjust.create(adjustConfig);
 
         Adjust.setPushToken("bunny_foo_foo");
-        Adjust.sendFirstPackages();
+
+        // Adjust.sendFirstPackages();
     },
 
     didLaunchAppFromLink: function(eventData) {
-        //navigator.notification.alert('received url from universal link: ' + eventData.url, null, 'Notification', 'OK');
+        // navigator.notification.alert('received url from universal link: ' + eventData.url, null, 'Notification', 'OK');
         Adjust.appWillOpenUrl(eventData.url);
     },
 
@@ -134,10 +134,9 @@ var app = {
         var btnIsSdkEnabled = document.getElementById("btnIsSdkEnabled");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
-            console.log("trackSimpleEvent()");
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("{YourEventToken}");
+                    var adjustEvent = new AdjustEvent("g3mfiw");
                     Adjust.trackEvent(adjustEvent);
                 } else {
                     navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
@@ -148,7 +147,7 @@ var app = {
         btnTrackRevenueEvent.addEventListener('click',function() { 
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("{YourEventToken}");
+                    var adjustEvent = new AdjustEvent("a4fd35");
                     adjustEvent.setRevenue(0.01, "EUR");
                     Adjust.trackEvent(adjustEvent);
                 } else {
@@ -160,7 +159,7 @@ var app = {
         btnTrackCallbackEvent.addEventListener('click',function() {
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("{YourEventToken}");
+                    var adjustEvent = new AdjustEvent("34vgg9");
                     adjustEvent.addCallbackParameter("key", "value");
                     adjustEvent.addCallbackParameter("x", "y");
                     adjustEvent.addCallbackParameter("key", "lock");
@@ -174,7 +173,7 @@ var app = {
         btnTrackPartnerEvent.addEventListener('click',function() {
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("{YourEventToken}");
+                    var adjustEvent = new AdjustEvent("w788qs");
                     adjustEvent.addPartnerParameter("foo", "bar");
                     adjustEvent.addPartnerParameter("x", "y");
                     adjustEvent.addPartnerParameter("foo", "foot");
