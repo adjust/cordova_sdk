@@ -2,7 +2,6 @@ var isOffline = false;
 
 function handleOpenURL(url) {
     setTimeout(function() {
-        //navigator.notification.alert('received url: ' + url, null, 'Notification', 'OK');
         Adjust.appWillOpenUrl(url);
     }, 0);
 }
@@ -24,8 +23,8 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        //Register for universal links
-        if(device.platform == 'iOS') {
+        // Register for universal links
+        if (device.platform == 'iOS') {
             universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
         }
 
@@ -92,7 +91,7 @@ var app = {
         });
 
         adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
-            console.log(">>> Deferred Deeplink Callback received");
+            console.log("### Deferred Deeplink Callback received");
 
             console.log("URL: " + uri);
         });
@@ -117,7 +116,6 @@ var app = {
     },
 
     didLaunchAppFromLink: function(eventData) {
-        // navigator.notification.alert('received url from universal link: ' + eventData.url, null, 'Notification', 'OK');
         Adjust.appWillOpenUrl(eventData.url);
     },
 
