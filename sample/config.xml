@@ -21,8 +21,6 @@
     </platform>
     <engine name="android" spec="~5.2.2" />
     <universal-links>
-        <host name="f6wc.adj.st" scheme="https">
-            <path event="adjustDeepLinking" url="/ulink/*" />
-        </host>
+        <host name="f6wc.adj.st" scheme="https" event="adjustDeepLinking" />
     </universal-links>
 </widget>
