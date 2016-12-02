@@ -1,3 +1,21 @@
+### Version 4.10.2 (xxth December 2016)
+#### Changed
+- Not implementing all callbacks in iOS middleware part anymore, only those which user has defined in the app.
+- Updated docs.
+- Native SDKs stability updates and improvements.
+- Updated native iOS SDK to version **4.10.3**.
+- Updated native Android SDK to version **4.10.4**.
+
+#### Fixed
+- Not displaying error message in logs after event was successfully tracked and event tracking succeeded callback is not implemented in user's app.
+- Deferred deep link arrival to the app is no longer dependent from implementation of the attribution callback.
+
+#### Native SDKs
+- [iOS@v4.10.3][ios_sdk_v4.10.3]
+- [Android@v4.10.4][android_sdk_v4.10.4]
+
+---
+
 ### Version 4.10.1 (24th October 2016)
 #### Fixed
 - Fixed error when adding the SDK plugin for Android platform due to missing `adjust-android.jar` file.
@@ -6,7 +24,7 @@
 - [iOS@v4.10.2][ios_sdk_v4.10.2]
 - [Android@v4.10.2][android_sdk_v4.10.2]
 
---
+---
 
 ### Version 4.10.0 (24th October 2016)
 #### Added
@@ -37,7 +55,7 @@
 - [iOS@v4.10.2][ios_sdk_v4.10.2]
 - [Android@v4.10.2][android_sdk_v4.10.2]
 
---
+---
 
 ### Version 4.3.0 (26th February 2016)
 ### Added
@@ -180,6 +198,7 @@
 [ios_sdk_v4.5.0]: https://github.com/adjust/ios_sdk/tree/v4.5.0
 [ios_sdk_v4.5.4]: https://github.com/adjust/ios_sdk/tree/v4.5.4
 [ios_sdk_v4.10.2]: https://github.com/adjust/ios_sdk/tree/v4.10.2
+[ios_sdk_v4.10.3]: https://github.com/adjust/ios_sdk/tree/v4.10.3
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -187,3 +206,4 @@
 [android_sdk_v4.2.0]: https://github.com/adjust/android_sdk/tree/v4.2.0
 [android_sdk_v4.2.3]: https://github.com/adjust/android_sdk/tree/v4.2.3
 [android_sdk_v4.10.2]: https://github.com/adjust/android_sdk/tree/v4.10.2
+[android_sdk_v4.10.4]: https://github.com/adjust/android_sdk/tree/v4.10.4
