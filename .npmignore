@@ -1,7 +1,8 @@
 # OS X
 .DS_Store
 
-# Adjust SDK
+# Adjust SDK repository
 doc/
 ext/
 scripts/
+sample/
