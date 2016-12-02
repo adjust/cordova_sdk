@@ -7,7 +7,7 @@
 - Updated native Android SDK to version **4.10.4**.
 
 #### Fixed
-- Not displaying error message in logs after event was successfully tracked and event tracking succeeded callback is not implemented in user's app.
+- Not displaying error message in iOS logs after event was successfully tracked and event tracking succeeded callback is not implemented in user's app.
 - Deferred deep link arrival to the app is no longer dependent from implementation of the attribution callback.
 
 #### Native SDKs
