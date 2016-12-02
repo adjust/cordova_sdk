@@ -81,9 +81,7 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
---
-
-As of **adjust SDK v4.10.2**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
+<a id="sdk-cocoon">**Note:** Starting from **adjust SDK v4.10.2**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
 
 ### <a id="sdk-integrate">Integrate the SDK into your app
 
