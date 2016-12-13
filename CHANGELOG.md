@@ -1,4 +1,4 @@
-### Version 4.10.2 (xxth December 2016)
+### Version 4.10.2 (13th December 2016)
 #### Changed
 - Not implementing all callbacks in iOS middleware part anymore, only those which user has defined in the app.
 - SDK is now `cocoon.io` compatible in both, `npm` repository and on `master` branch, so no need for `cocoon.io` users to use `cocoon` branch of the repository anymore.
