@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.adjust.example" version="4.10.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.adjust.examples" version="4.10.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>adjust-sample-app</name>
     <description>
     </description>
@@ -21,8 +21,6 @@
     </platform>
     <engine name="android" spec="~5.2.2" />
     <universal-links>
-        <host name="647dcb436f6c0318357e270f9b9cbcd1.ulink.adjust.com" scheme="https">
-            <path event="adjustDeepLinking" url="/ulink/*" />
-        </host>
+        <host name="f6wc.adj.st" scheme="https" event="adjustDeepLinking" />
     </universal-links>
 </widget>

@@ -33,7 +33,11 @@ AdjustEvent.prototype.setTransactionId = function(transactionId) {
     this.transactionId = transactionId;
 }
 
+// @deprecated
 AdjustEvent.prototype.setReceiptForTransactionId = function(receipt, transactionId) {
+    console.warn("Calling deprecated function! Use Cordova purchase SDK for this purpose.");
+    console.warn("For more info, visit https://github.com/adjust/cordova_purchase_sdk");
+
     this.receipt = receipt;
     this.transactionId = transactionId;
     this.isReceiptSet = true;

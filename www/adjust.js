@@ -1,4 +1,4 @@
-function callCordova (action) {
+function callCordova(action) {
     var args = Array.prototype.slice.call(arguments, 1);
 
     cordova.exec(function callback(data) { },
@@ -6,6 +6,17 @@ function callCordova (action) {
         'Adjust',
         action,
         args
+    );
+}
+
+function callCordovaStringify(action) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    cordova.exec(function callback(data) { },
+                 function errorHandler(err) { },
+                 'Adjust',
+                 action,
+                 [JSON.stringify(args)]
     );
 }
 
@@ -46,11 +57,11 @@ var Adjust = {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
 
-        callCordova('create', adjustConfig);
+        callCordovaStringify('create', adjustConfig);
     },
 
     trackEvent: function(adjustEvent) {
-        callCordova('trackEvent', adjustEvent);
+        callCordovaStringify('trackEvent', adjustEvent);
     },
 
     setOfflineMode: function(enabled) {

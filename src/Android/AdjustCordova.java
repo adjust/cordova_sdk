@@ -1,19 +1,20 @@
 package com.adjust.sdk;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import android.net.Uri;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
-import org.apache.cordova.PluginResult.Status;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import android.util.Log;
+import org.json.JSONException;
+
+import org.apache.cordova.PluginResult;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult.Status;
+
 
 public class AdjustCordova extends CordovaPlugin 
     implements OnAttributionChangedListener, 
@@ -33,6 +34,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_EVENT_TOKEN             = "eventToken";
     private static final String KEY_REVENUE                 = "revenue";
     private static final String KEY_CURRENCY                = "currency";
+    private static final String KEY_TRANSACTION_ID          = "transactionId";
     private static final String KEY_CALLBACK_PARAMETERS     = "callbackParameters";
     private static final String KEY_PARTNER_PARAMETERS      = "partnerParameters";
     private static final String KEY_SEND_IN_BACKGROUND      = "sendInBackground";
@@ -75,25 +77,25 @@ public class AdjustCordova extends CordovaPlugin
     private static final String ATTRIBUTION_CLICK_LABEL     = "clickLabel";
 
     private static final String EVENT_SUCCESS_MESSAGE       = "message";
-    private static final String EVENT_SUCCESS_TIMESTAMP     = "timeStamp";
+    private static final String EVENT_SUCCESS_TIMESTAMP     = "timestamp";
     private static final String EVENT_SUCCESS_ADID          = "adid";
     private static final String EVENT_SUCCESS_EVENT_TOKEN   = "eventToken";
     private static final String EVENT_SUCCESS_JSON_RESPONSE = "jsonResponse";
 
     private static final String EVENT_FAILED_MESSAGE        = "message";
-    private static final String EVENT_FAILED_TIMESTAMP      = "timeStamp";
+    private static final String EVENT_FAILED_TIMESTAMP      = "timestamp";
     private static final String EVENT_FAILED_ADID           = "adid";
     private static final String EVENT_FAILED_EVENT_TOKEN    = "eventToken";
     private static final String EVENT_FAILED_WILL_RETRY     = "willRetry";
     private static final String EVENT_FAILED_JSON_RESPONSE  = "jsonResponse";
 
     private static final String SESSION_SUCCESS_MESSAGE         = "message";
-    private static final String SESSION_SUCCESS_TIMESTAMP       = "timeStamp";
+    private static final String SESSION_SUCCESS_TIMESTAMP       = "timestamp";
     private static final String SESSION_SUCCESS_ADID            = "adid";
     private static final String SESSION_SUCCESS_JSON_RESPONSE   = "jsonResponse";
 
     private static final String SESSION_FAILED_MESSAGE          = "message";
-    private static final String SESSION_FAILED_TIMESTAMP        = "timeStamp";
+    private static final String SESSION_FAILED_TIMESTAMP        = "timestamp";
     private static final String SESSION_FAILED_ADID             = "adid";
     private static final String SESSION_FAILED_WILL_RETRY       = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE    = "jsonResponse";
@@ -111,126 +113,7 @@ public class AdjustCordova extends CordovaPlugin
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
-            final JSONObject jsonParameters = args.optJSONObject(0);
-            Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
-
-            String appToken = parameters.get(KEY_APP_TOKEN).toString();
-            String environment = parameters.get(KEY_ENVIRONMENT).toString();
-            String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
-            String processName = parameters.get(KEY_PROCESS_NAME).toString();
-            String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
-
-            String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
-            String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
-
-            String userAgent = parameters.get(KEY_USER_AGENT).toString();
-            boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
-
-            boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-            double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
-
-            boolean isLogLevelSuppress = false;
-
-            if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
-                isLogLevelSuppress = true;
-            }
-
-            final AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(), appToken, environment, isLogLevelSuppress);
-
-            if (adjustConfig.isValid()) {
-                // Log level
-                if (isFieldValid(logLevel)) {
-                    if (logLevel.equals("VERBOSE")) {
-                        adjustConfig.setLogLevel(LogLevel.VERBOSE);
-                    } else if (logLevel.equals("DEBUG")) {
-                        adjustConfig.setLogLevel(LogLevel.DEBUG);
-                    } else if (logLevel.equals("INFO")) {
-                        adjustConfig.setLogLevel(LogLevel.INFO);
-                    } else if (logLevel.equals("WARN")) {
-                        adjustConfig.setLogLevel(LogLevel.WARN);
-                    } else if (logLevel.equals("ERROR")) {
-                        adjustConfig.setLogLevel(LogLevel.ERROR);
-                    } else if (logLevel.equals("ASSERT")) {
-                        adjustConfig.setLogLevel(LogLevel.ASSERT);
-                    } else if (logLevel.equals("SUPPRESS")) {
-                        adjustConfig.setLogLevel(LogLevel.SUPPRESS);
-                    } else {
-                        adjustConfig.setLogLevel(LogLevel.INFO);
-                    }
-                }
-
-                // Event buffering
-                if (isFieldValid(eventBufferingEnabled)) {
-                    if (eventBufferingEnabled.equalsIgnoreCase("true") || eventBufferingEnabled.equalsIgnoreCase("false")) {
-                        adjustConfig.setEventBufferingEnabled(Boolean.valueOf(eventBufferingEnabled));
-                    }
-                }
-
-                // SDK prefix
-                if (isFieldValid(sdkPrefix)) {
-                    adjustConfig.setSdkPrefix(sdkPrefix);
-                }
-
-                // Main process name
-                if (isFieldValid(processName)) {
-                    adjustConfig.setProcessName(processName);
-                }
-
-                // Default tracker
-                if (isFieldValid(defaultTracker)) {
-                    adjustConfig.setDefaultTracker(defaultTracker);
-                }
-
-                // User agent
-                if (isFieldValid(userAgent)) {
-                    adjustConfig.setUserAgent(userAgent);
-                }
-
-                // Background tracking
-                adjustConfig.setSendInBackground(sendInBackground);
-
-                // Launching deferred deep link
-                this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-
-                // Delayed start
-                adjustConfig.setDelayStart(delayStart);
-
-                // Attribution callback
-                if (attributionCallbackContext != null) {
-                    adjustConfig.setOnAttributionChangedListener(this);
-                }
-
-                // Event tracking succeeded callback
-                if (eventTrackingSucceededCallbackContext != null) {
-                    adjustConfig.setOnEventTrackingSucceededListener(this);
-                }
-
-                // Event tracking failed callback
-                if (eventTrackingFailedCallbackContext != null) {
-                    adjustConfig.setOnEventTrackingFailedListener(this);
-                }
-
-                // Session tracking succeeded callback
-                if (sessionTrackingSucceededCallbackContext != null) {
-                    adjustConfig.setOnSessionTrackingSucceededListener(this);
-                }
-
-                // Session tracking failed callback
-                if (sessionTrackingFailedCallbackContext != null) {
-                    adjustConfig.setOnSessionTrackingFailedListener(this);
-                }
-
-                // Deferred deeplink callback listener
-                if (deferredDeeplinkCallbackContext != null) {
-                    adjustConfig.setOnDeeplinkResponseListener(this);
-                }
-
-                Adjust.onCreate(adjustConfig);
-
-                // Needed because Cordova doesn't launch 'resume' event on app start.
-                // It initializes it only when app comes back from the background.
-                Adjust.onResume();
-            }
+            executeCreate(args);
 
             return true;
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
@@ -260,55 +143,14 @@ public class AdjustCordova extends CordovaPlugin
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             AdjustCordova.googleAdIdCallbackContext = callbackContext;
 
-            // Google ad id callback
+            // Google Ad Id callback
             if (googleAdIdCallbackContext != null) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
-            JSONObject jsonParameters = args.optJSONObject(0);
-            Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
-
-            String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
-            String revenue = parameters.get(KEY_REVENUE).toString();
-            String currency = parameters.get(KEY_CURRENCY).toString();
-
-            JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
-            JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
-            String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
-            String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
-
-            final AdjustEvent adjustEvent = new AdjustEvent(eventToken);
-
-            if (adjustEvent.isValid()) {
-                if (isFieldValid(revenue)) {
-                    try {
-                        double revenueValue = Double.parseDouble(revenue);
-
-                        adjustEvent.setRevenue(revenueValue, currency);
-                    } catch (Exception e) {
-                        ILogger logger = AdjustFactory.getLogger();
-                        logger.error("Unable to parse revenue");
-                    }
-                }
-
-                for (int i = 0; i < callbackParameters.length; i +=2) {
-                    String key = callbackParameters[i];
-                    String value = callbackParameters[i+1];
-
-                    adjustEvent.addCallbackParameter(key, value);
-                }
-
-                for (int i = 0; i < partnerParameters.length; i += 2) {
-                    String key = partnerParameters[i];
-                    String value = partnerParameters[i+1];
-
-                    adjustEvent.addPartnerParameter(key, value);
-                }
-
-                Adjust.trackEvent(adjustEvent);
-            }
+            executeTrackEvent(args);
 
             return true;
         } else if (action.equals(COMMAND_SET_OFFLINE_MODE)) {
@@ -397,98 +239,298 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         String errorMessage = String.format("Invalid call (%s)", action);
-
         Logger logger = (Logger)AdjustFactory.getLogger();
+
         logger.error(errorMessage);
 
         return false;
     }
 
-    @Override
-    public void onGoogleAdIdRead(String playAdId) {
-        PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
-        pluginResult.setKeepCallback(true);
+    private void executeCreate(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
-        googleAdIdCallbackContext.sendPluginResult(pluginResult);
+        String appToken = parameters.get(KEY_APP_TOKEN).toString();
+        String environment = parameters.get(KEY_ENVIRONMENT).toString();
+        String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
+        String processName = parameters.get(KEY_PROCESS_NAME).toString();
+        String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
+
+        String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
+        String userAgent = parameters.get(KEY_USER_AGENT).toString();
+        String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
+
+        boolean isLogLevelSuppress = false;
+        boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
+        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+
+        double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
+
+        if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
+            isLogLevelSuppress = true;
+        }
+
+        final AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(), appToken, environment, isLogLevelSuppress);
+
+        if (!adjustConfig.isValid()) {
+            return;
+        }
+
+        // Log level
+        if (isFieldValid(logLevel)) {
+            if (logLevel.equals("VERBOSE")) {
+                adjustConfig.setLogLevel(LogLevel.VERBOSE);
+            } else if (logLevel.equals("DEBUG")) {
+                adjustConfig.setLogLevel(LogLevel.DEBUG);
+            } else if (logLevel.equals("INFO")) {
+                adjustConfig.setLogLevel(LogLevel.INFO);
+            } else if (logLevel.equals("WARN")) {
+                adjustConfig.setLogLevel(LogLevel.WARN);
+            } else if (logLevel.equals("ERROR")) {
+                adjustConfig.setLogLevel(LogLevel.ERROR);
+            } else if (logLevel.equals("ASSERT")) {
+                adjustConfig.setLogLevel(LogLevel.ASSERT);
+            } else if (logLevel.equals("SUPPRESS")) {
+                adjustConfig.setLogLevel(LogLevel.SUPRESS);
+            } else {
+                adjustConfig.setLogLevel(LogLevel.INFO);
+            }
+        }
+
+        // Event buffering
+        if (isFieldValid(eventBufferingEnabled)) {
+            if (eventBufferingEnabled.equalsIgnoreCase("true") || eventBufferingEnabled.equalsIgnoreCase("false")) {
+                adjustConfig.setEventBufferingEnabled(Boolean.valueOf(eventBufferingEnabled));
+            }
+        }
+
+        // SDK prefix
+        if (isFieldValid(sdkPrefix)) {
+            adjustConfig.setSdkPrefix(sdkPrefix);
+        }
+
+        // Main process name
+        if (isFieldValid(processName)) {
+            adjustConfig.setProcessName(processName);
+        }
+
+        // Default tracker
+        if (isFieldValid(defaultTracker)) {
+            adjustConfig.setDefaultTracker(defaultTracker);
+        }
+
+        // User agent
+        if (isFieldValid(userAgent)) {
+            adjustConfig.setUserAgent(userAgent);
+        }
+
+        // Background tracking
+        adjustConfig.setSendInBackground(sendInBackground);
+
+        // Launching deferred deep link
+        this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+
+        // Delayed start
+        adjustConfig.setDelayStart(delayStart);
+
+        // Attribution callback
+        if (AdjustCordova.attributionCallbackContext != null) {
+            adjustConfig.setOnAttributionChangedListener(this);
+        }
+
+        // Event tracking succeeded callback
+        if (AdjustCordova.eventTrackingSucceededCallbackContext != null) {
+            adjustConfig.setOnEventTrackingSucceededListener(this);
+        }
+
+        // Event tracking failed callback
+        if (AdjustCordova.eventTrackingFailedCallbackContext != null) {
+            adjustConfig.setOnEventTrackingFailedListener(this);
+        }
+
+        // Session tracking succeeded callback
+        if (AdjustCordova.sessionTrackingSucceededCallbackContext != null) {
+            adjustConfig.setOnSessionTrackingSucceededListener(this);
+        }
+
+        // Session tracking failed callback
+        if (AdjustCordova.sessionTrackingFailedCallbackContext != null) {
+            adjustConfig.setOnSessionTrackingFailedListener(this);
+        }
+
+        // Deferred deeplink callback listener
+        if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
+            adjustConfig.setOnDeeplinkResponseListener(this);
+        }
+
+        Adjust.onCreate(adjustConfig);
+
+        // Needed because Cordova doesn't launch 'resume' event on app start.
+        // It initializes it only when app comes back from the background.
+        Adjust.onResume();
+    }
+
+    private void executeTrackEvent(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
+        String revenue = parameters.get(KEY_REVENUE).toString();
+        String currency = parameters.get(KEY_CURRENCY).toString();
+        String transactionId = parameters.get(KEY_TRANSACTION_ID).toString();
+
+        JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
+        JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
+        String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
+        String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
+
+        final AdjustEvent adjustEvent = new AdjustEvent(eventToken);
+        
+        if (!adjustEvent.isValid()) {
+            return;
+        }
+        
+        if (isFieldValid(revenue)) {
+            try {
+                double revenueValue = Double.parseDouble(revenue);
+
+                adjustEvent.setRevenue(revenueValue, currency);
+            } catch (Exception e) {
+                ILogger logger = AdjustFactory.getLogger();
+                logger.error("Unable to parse revenue");
+            }
+        }
+
+        for (int i = 0; i < callbackParameters.length; i +=2) {
+            String key = callbackParameters[i];
+            String value = callbackParameters[i+1];
+
+            adjustEvent.addCallbackParameter(key, value);
+        }
+
+        for (int i = 0; i < partnerParameters.length; i += 2) {
+            String key = partnerParameters[i];
+            String value = partnerParameters[i+1];
+
+            adjustEvent.addPartnerParameter(key, value);
+        }
+
+        if (isFieldValid(transactionId)) {
+            adjustEvent.setOrderId(transactionId);
+        }
+
+        Adjust.trackEvent(adjustEvent);
     }
 
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
+        if (AdjustCordova.attributionCallbackContext == null) {
+            return;
+        }
+
         JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
         PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
         pluginResult.setKeepCallback(true);
 
-        attributionCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.attributionCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedEventTrackingSucceeded(AdjustEventSuccess event) {
+        if (AdjustCordova.eventTrackingSucceededCallbackContext == null) {
+            return;
+        }
+
         JSONObject jsonData = new JSONObject(getEventTrackingSucceededDictionary(event));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedEventTrackingFailed(AdjustEventFailure event) {
+        if (AdjustCordova.eventTrackingFailedCallbackContext == null) {
+            return;
+        }
+
         JSONObject jsonData = new JSONObject(getEventTrackingFailedDictionary(event));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedSessionTrackingSucceeded(AdjustSessionSuccess session) {
+        if (AdjustCordova.sessionTrackingSucceededCallbackContext == null) {
+            return;
+        }
+
         JSONObject jsonData = new JSONObject(getSessionTrackingSucceededDictionary(session));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedSessionTrackingFailed(AdjustSessionFailure session) {
+        if (AdjustCordova.sessionTrackingFailedCallbackContext == null) {
+            return;
+        }
+
         JSONObject jsonData = new JSONObject(getSessionTrackingFailedDictionary(session));
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
-        pluginResult.setKeepCallback(true);
+        if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
+            PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
+            pluginResult.setKeepCallback(true);
 
-        deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
+            AdjustCordova.deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
+        }
 
         return this.shouldLaunchDeeplink;
     }
 
-    boolean isFieldValid(String field) {
-        if (field != null) {
-            if (!field.equals("") && !field.equals("null")) {
-                return true;
-            }
+    @Override
+    public void onGoogleAdIdRead(String playAdId) {
+        if (AdjustCordova.googleAdIdCallbackContext == null) {
+            return;
         }
 
-        return false;
+        PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
+        pluginResult.setKeepCallback(true);
+
+        AdjustCordova.googleAdIdCallbackContext.sendPluginResult(pluginResult);
+    }
+
+    boolean isFieldValid(String field) {
+        return field != null && !field.equals("") && !field.equals("null");
     }
 
     private String[] jsonArrayToArray(JSONArray jsonArray) throws JSONException {
-        if (jsonArray != null) { 
-            String[] array = new String[jsonArray.length()];
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                array[i] = jsonArray.get(i).toString();
-            }
-
-            return array;
+        if (jsonArray == null) {
+            return null;
         }
 
-        return null;
+        String[] array = new String[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            array[i] = jsonArray.get(i).toString();
+        }
+
+        return array;
     }
 
     private Map<String, Object> jsonObjectToMap(JSONObject jsonObject) throws JSONException {
@@ -508,40 +550,11 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getEventTrackingSucceededDictionary(AdjustEventSuccess event) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        // Message
-        if (event.message != null) {
-            dict.put(EVENT_SUCCESS_MESSAGE, event.message);
-        } else {
-            dict.put(EVENT_SUCCESS_MESSAGE, "");
-        }
-
-        // Timestamp
-        if (event.timestamp != null) {
-            dict.put(EVENT_SUCCESS_TIMESTAMP, event.timestamp);
-        } else {
-            dict.put(EVENT_SUCCESS_TIMESTAMP, "");
-        }
-
-        // Adid
-        if (event.adid != null) {
-            dict.put(EVENT_SUCCESS_ADID, event.adid);
-        } else {
-            dict.put(EVENT_SUCCESS_ADID, "");
-        }
-
-        // Event token
-        if (event.eventToken != null) {
-            dict.put(EVENT_SUCCESS_EVENT_TOKEN, event.eventToken);
-        } else {
-            dict.put(EVENT_SUCCESS_EVENT_TOKEN, "");
-        }
-
-        // JSON response
-        if (event.jsonResponse != null) {
-            dict.put(EVENT_SUCCESS_JSON_RESPONSE, event.jsonResponse.toString());
-        } else {
-            dict.put(EVENT_SUCCESS_JSON_RESPONSE, "");
-        }
+        addValueOrEmpty(dict, EVENT_SUCCESS_MESSAGE, event.message);
+        addValueOrEmpty(dict, EVENT_SUCCESS_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, EVENT_SUCCESS_ADID, event.adid);
+        addValueOrEmpty(dict, EVENT_SUCCESS_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, EVENT_SUCCESS_JSON_RESPONSE, event.jsonResponse);
 
         return dict;
     }
@@ -549,47 +562,12 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getEventTrackingFailedDictionary(AdjustEventFailure event) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        // Message
-        if (event.message != null) {
-            dict.put(EVENT_FAILED_MESSAGE, event.message);
-        } else {
-            dict.put(EVENT_FAILED_MESSAGE, "");
-        }
-
-        // Timestamp
-        if (event.timestamp != null) {
-            dict.put(EVENT_FAILED_TIMESTAMP, event.timestamp);
-        } else {
-            dict.put(EVENT_FAILED_TIMESTAMP, "");
-        }
-
-        // Adid
-        if (event.adid != null) {
-            dict.put(EVENT_FAILED_ADID, event.adid);
-        } else {
-            dict.put(EVENT_FAILED_ADID, "");
-        }
-
-        // Event Token
-        if (event.eventToken != null) {
-            dict.put(EVENT_FAILED_EVENT_TOKEN, event.eventToken);
-        } else {
-            dict.put(EVENT_FAILED_EVENT_TOKEN, "");
-        }
-
-        // Will retry
-        if (event.willRetry) {
-            dict.put(EVENT_FAILED_WILL_RETRY, "true");
-        } else {
-            dict.put(EVENT_FAILED_WILL_RETRY, "false");
-        }
-
-        // JSON response
-        if (event.jsonResponse != null) {
-            dict.put(EVENT_FAILED_JSON_RESPONSE, event.jsonResponse.toString());
-        } else {
-            dict.put(EVENT_FAILED_JSON_RESPONSE, "");
-        }
+        addValueOrEmpty(dict, EVENT_FAILED_MESSAGE, event.message);
+        addValueOrEmpty(dict, EVENT_FAILED_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, EVENT_FAILED_ADID, event.adid);
+        addValueOrEmpty(dict, EVENT_FAILED_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, EVENT_FAILED_WILL_RETRY, event.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, EVENT_FAILED_JSON_RESPONSE, event.jsonResponse);
 
         return dict;
     }
@@ -597,54 +575,13 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getAttributionDictionary(AdjustAttribution attribution) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        // Tracker token
-        if (attribution.trackerToken != null) {
-            dict.put(ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
-        } else {
-            dict.put(ATTRIBUTION_TRACKER_TOKEN, "");
-        }
-
-        // Tracker name
-        if (attribution.trackerName != null) {
-            dict.put(ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
-        } else {
-            dict.put(ATTRIBUTION_TRACKER_NAME, "");
-        }
-
-        // Network
-        if (attribution.network != null) {
-            dict.put(ATTRIBUTION_NETWORK, attribution.network);
-        } else {
-            dict.put(ATTRIBUTION_NETWORK, "");
-        }
-
-        // Campaign
-        if (attribution.campaign != null) {
-            dict.put(ATTRIBUTION_CAMPAIGN, attribution.campaign);
-        } else {
-            dict.put(ATTRIBUTION_CAMPAIGN, "");
-        }
-
-        // Adgroup
-        if (attribution.adgroup != null) {
-            dict.put(ATTRIBUTION_ADGROUP, attribution.adgroup);
-        } else {
-            dict.put(ATTRIBUTION_ADGROUP, "");
-        }
-
-        // Creative
-        if (attribution.creative != null) {
-            dict.put(ATTRIBUTION_CREATIVE, attribution.creative);
-        } else {
-            dict.put(ATTRIBUTION_CREATIVE, "");
-        }
-
-        // Click label
-        if (attribution.clickLabel != null) {
-            dict.put(ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
-        } else {
-            dict.put(ATTRIBUTION_CLICK_LABEL, "");
-        }
+        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
+        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
+        addValueOrEmpty(dict, ATTRIBUTION_NETWORK, attribution.network);
+        addValueOrEmpty(dict, ATTRIBUTION_CAMPAIGN, attribution.campaign);
+        addValueOrEmpty(dict, ATTRIBUTION_ADGROUP, attribution.adgroup);
+        addValueOrEmpty(dict, ATTRIBUTION_CREATIVE, attribution.creative);
+        addValueOrEmpty(dict, ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
 
         return dict;
     }
@@ -652,33 +589,10 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getSessionTrackingSucceededDictionary(AdjustSessionSuccess session) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        // Message
-        if (session.message != null) {
-            dict.put(SESSION_SUCCESS_MESSAGE, session.message);
-        } else {
-            dict.put(SESSION_SUCCESS_MESSAGE, "");
-        }
-
-        // Timestamp
-        if (session.timestamp != null) {
-            dict.put(SESSION_SUCCESS_TIMESTAMP, session.timestamp);
-        } else {
-            dict.put(SESSION_SUCCESS_TIMESTAMP, "");
-        }
-
-        // Adid
-        if (session.adid != null) {
-            dict.put(SESSION_SUCCESS_ADID, session.adid);
-        } else {
-            dict.put(SESSION_SUCCESS_ADID, "");
-        }
-
-        // JSON response
-        if (session.jsonResponse != null) {
-            dict.put(SESSION_SUCCESS_JSON_RESPONSE, session.jsonResponse.toString());
-        } else {
-            dict.put(SESSION_SUCCESS_JSON_RESPONSE, "");
-        }
+        addValueOrEmpty(dict, SESSION_SUCCESS_MESSAGE, session.message);
+        addValueOrEmpty(dict, SESSION_SUCCESS_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, SESSION_SUCCESS_ADID, session.adid);
+        addValueOrEmpty(dict, SESSION_SUCCESS_JSON_RESPONSE, session.jsonResponse);
 
         return dict;
     }
@@ -686,41 +600,20 @@ public class AdjustCordova extends CordovaPlugin
     private Map<String, String> getSessionTrackingFailedDictionary(AdjustSessionFailure session) {
         Map<String, String> dict = new HashMap<String, String>();
 
-        // Message
-        if (session.message != null) {
-            dict.put(SESSION_FAILED_MESSAGE, session.message);
-        } else {
-            dict.put(SESSION_FAILED_MESSAGE, "");
-        }
-
-        // Timestamp
-        if (session.timestamp != null) {
-            dict.put(SESSION_FAILED_TIMESTAMP, session.timestamp);
-        } else {
-            dict.put(SESSION_FAILED_TIMESTAMP, "");
-        }
-
-        // Adid
-        if (session.adid != null) {
-            dict.put(SESSION_FAILED_ADID, session.adid);
-        } else {
-            dict.put(SESSION_FAILED_ADID, "");
-        }
-
-        // Will retry
-        if (session.willRetry) {
-            dict.put(SESSION_FAILED_WILL_RETRY, "true");
-        } else {
-            dict.put(SESSION_FAILED_WILL_RETRY, "false");
-        }
-
-        // JSON response
-        if (session.jsonResponse != null) {
-            dict.put(SESSION_FAILED_JSON_RESPONSE, session.jsonResponse.toString());
-        } else {
-            dict.put(SESSION_FAILED_JSON_RESPONSE, "");
-        }
+        addValueOrEmpty(dict, SESSION_FAILED_MESSAGE, session.message);
+        addValueOrEmpty(dict, SESSION_FAILED_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, SESSION_FAILED_ADID, session.adid);
+        addValueOrEmpty(dict, SESSION_FAILED_WILL_RETRY, session.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, SESSION_FAILED_JSON_RESPONSE, session.jsonResponse);
 
         return dict;
+    }
+
+    private void addValueOrEmpty(Map<String, String> dict, String key, Object value){
+        if (value != null) {
+            dict.put(key, value.toString());
+        } else {
+            dict.put(key, "");
+        }
     }
 }
