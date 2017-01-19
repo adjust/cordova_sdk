@@ -23,7 +23,7 @@ rm -rfv ${LIB_OUT_DIR}/AdjustSdk.framework
 
 echo -e "${GREEN}>>> building new framework ${NC}"
 cd ${SDK_DIR}/${SRC_DIR}
-xcodebuild -target AdjustStatic -configuration Release
+xcodebuild -target AdjustStatic -configuration Release clean build
 
 echo -e "${GREEN}>>> Copy built framework to designated location ${NC}"
 cd ${SDK_DIR}
