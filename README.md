@@ -2,7 +2,7 @@
 
 This is the Cordova SDK of adjust™. You can read more about adjust™ at [adjust.com].
 
-N.B. At the moment, SDK 4.10.2 for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version 
+N.B. At the moment, SDK 4.11.0 for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version 
 `3.0.0 and higher`. Windows platform is **not supported** at the moment.
 
 ## Table of contents
@@ -81,7 +81,7 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
-<a id="sdk-cocoon">**Note:** Starting from **adjust SDK v4.10.2**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
+<a id="sdk-cocoon">**Note:** Starting from **adjust SDK v4.11.0**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
 
 ### <a id="sdk-integrate">Integrate the SDK into your app
 
