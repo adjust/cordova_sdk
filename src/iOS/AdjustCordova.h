@@ -21,6 +21,8 @@
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command;
 
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
+- (void)getAdid:(CDVInvokedUrlCommand *)command;
+- (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;

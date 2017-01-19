@@ -255,6 +255,37 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)getAdid:(CDVInvokedUrlCommand *)command {
+    NSString *adid = [Adjust adid];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getAttribution:(CDVInvokedUrlCommand *)command {
+    ADJAttribution *attribution = [Adjust attribution];
+
+    if (attribution == nil) {
+        return;
+    }
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    [self addValueOrEmpty:dictionary key:@"trackerToken" value:attribution.trackerToken];
+    [self addValueOrEmpty:dictionary key:@"trackerName" value:attribution.trackerName];
+    [self addValueOrEmpty:dictionary key:@"network" value:attribution.network];
+    [self addValueOrEmpty:dictionary key:@"campaign" value:attribution.campaign];
+    [self addValueOrEmpty:dictionary key:@"creative" value:attribution.creative];
+    [self addValueOrEmpty:dictionary key:@"adgroup" value:attribution.adgroup];
+    [self addValueOrEmpty:dictionary key:@"clickLabel" value:attribution.clickLabel];
+    [self addValueOrEmpty:dictionary key:@"adid" value:attribution.adid];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)setEnabled:(CDVInvokedUrlCommand *)command {
     NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
 
@@ -369,6 +400,16 @@
 
 - (BOOL)isFieldValid:(NSObject *)field {
     return field != nil && ![field isKindOfClass:[NSNull class]];
+}
+
+- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
+                    key:(NSString *)key
+                  value:(NSObject *)value {
+    if (nil != value) {
+        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+    } else {
+        [dictionary setObject:@"" forKey:key];
+    }
 }
 
 @end
