@@ -13,7 +13,12 @@ N.B. At the moment, SDK 4.11.0 for Cordova supports Android platform version `4.
    * [Add the SDK to your project](#sdk-add)
    * [Integrate the SDK into your app](#sdk-integrate)
    * [Adjust logging](#adjust-logging)
-   * [Google Play Services](#google-play-services)
+   * [Adjust project settings](#adjust-project-settings)
+      * [Android permissions](#android-permissions)
+      * [Google Play Services](#android-gps)
+      * [Proguard settings](#android-proguard)
+      * [Android install referrer](#android-broadcast-receiver)
+      * [iOS frameworks](#ios-frameworks)
 * [Additional features](#additional-features)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
@@ -32,6 +37,10 @@ N.B. At the moment, SDK 4.11.0 for Cordova supports Android platform version `4.
     * [Event buffering](#event-buffering)
     * [Background tracking](#background-tracking)
     * [Device IDs](#device-ids)
+      * [iOS advertising identifier](#di-idfa)
+      * [Google Play Services advertising identifier](#di-gps-adid)
+      * [Adjust device identifier](#di-adid)
+    * [User attribution](#user-attribution)
     * [Push token](#push-token)
     * [Pre-installed trackers](#pre-installed-trackers)
     * [Deep linking](#deeplinking)
@@ -122,25 +131,43 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert);    // disable errors as w
 adjustConfig.setLogLevel(AdjustConfig.LogLevelSuppress);  // disable all logging
 ```
 
-### <a id="google-play-services">Google Play Services
+### <a id="adjust-project-settings">Adjust project settings
+
+Once adjust SDK has been added to your app, certain tweeks are being performed so that adjust SDK can work properly. All things that are being done in this process are written in `plugin.xml` file of the adjust SDK plugin. Bellow you can find description for every additional thing that adjust SDK performs after adding it to your app.
+
+### <a id="adjust-permissions">Android permissions
+
+Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `ACCESS_WIFI_STATE`. You can find this setting in `plugin.xml` file of the adjust SDK plugin:
+
+```xml
+<config-file target="AndroidManifest.xml" parent="/manifest">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+</config-file>
+```
+
+`INTERNET` permission is the one which our SDK needs at any point of time. `ACCESS_WIFI_STATE` is the permission which adjust SDK needs in case that your app is not targetting Google Play Store and doesn't use Google Play Services. If you are targetting Google Play Store and you are using Google Play Services, adjust SDK doesn't need this permission and, in case you don't need it anywhere else in your app, you can remove it.
+
+### <a id="adjust-gps">Google Play Services
 
 Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google-play-services].
 
-The adjust SDK adds Google Play Services by default to your app.
+The adjust SDK adds Google Play Services by default to your app. This is done with this line in `plugin.xml` file:
+
+```xml
+<framework src="com.google.android.gms:play-services-analytics:+" />
+```
+
+Sometimes, it can happen that other Cordova plugins which you are using are also importing Google Play Services by default into your app. In this case, it can happen that Google Play Services from our SDK and other plugins conflict and cause build time errors for you. Google Play Services do not have to be present in your app as part of our SDK exclusively. As long as you have the **analytics part of Google Play Services library integrated in your app**, our SDK will be able to read all needed information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply remove above line from the `plugin.xml` file of our SDK.
+
+In order for you to check whether analytics part of Google Play Services library is successfully added to your app so that adjust SDK reads it properly, you should start your app by configuring SDK to run in `sandbox` mode and turn log level to `verbose`. After that, track session or some events in your app and observe the list of parameters in verbose logs which are being read once session or event has been tracked. If you see parameter called `gps_adid` in there, you have successfully added analytics part of Google Play Services library to your app and our SDK is reading needed information from it.
+
+### <a id="adjust-proguard">Proguard settings
 
 If you are using Proguard, add these lines to your Proguard file:
 
 ```
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
--keep class com.adjust.sdk.plugin.MacAddressUtil {
-    java.lang.String getMacAddress(android.content.Context);
-}
--keep class com.adjust.sdk.plugin.AndroidIdUtil {
-    java.lang.String getAndroidId(android.content.Context);
-}
+-keep public class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.ConnectionResult {
     int SUCCESS;
 }
@@ -151,15 +178,57 @@ If you are using Proguard, add these lines to your Proguard file:
     java.lang.String getId();
     boolean isLimitAdTrackingEnabled();
 }
+-keep class dalvik.system.VMRuntime {
+    java.lang.String getRuntime();
+}
+-keep class android.os.Build {
+    java.lang.String[] SUPPORTED_ABIS;
+    java.lang.String CPU_ABI;
+}
+-keep class android.content.res.Configuration {
+    android.os.LocaledList getLocales();
+    java.util.Locale locale;
+}
+-keep class android.os.LocaledList {
+    java.util.Locale get(int);
+}
 ```
 
-If you don't want to use Google Play Services in your app, you can remove them by editing the `plugin.xml` file of the adjust SDK plugin. Go to the `plugins/com.adjust.sdk` folder and open the `plugin.xml` file. As part of the `<platform name="android">`, you can find the following line which adds the Google Play Services dependency:
+### <a id="android-broadcast-receiver">Android install referrer
+
+By default, adjust install referrer broadcast receiver is being added to your app. For more information, you can check our native [Android SDK README][broadcast-receiver]. You can find this setting in `plugin.xml` file of the adjust SDK plugin:
 
 ```xml
-<framework src="com.google.android.gms:play-services-analytics:+" />
+<config-file target="AndroidManifest.xml" parent="/manifest/application">
+    <receiver
+        android:name="com.adjust.sdk.AdjustReferrerReceiver"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="com.android.vending.INSTALL_REFERRER" />
+        </intent-filter>
+    </receiver>
+</config-file>
 ```
 
-Sometimes, it can happen that other Cordova plugins which you are using are also importing Google Play Services by default into your app. In this case, it can happen that Google Play Services from our SDk and other plugins conflict and cause build time errors for you. Google Play Services do not have to be present in your app as part of our SDK exclusively. As long as you have the `analytics` part of Google Play Services integrated in your app, our SDK will be able to read all needed information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply remove above line from the `plugin.xml` file of our SDK.
+Please, have in mind that if you are using your own broadcast receiver which handles INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added in your manifest file. Remove it, but inside your own receiver add the call to the Adjust broadcast receiver like described in [Android guide][broadcast-receiver-custom].
+
+### <a id="ios-frameworks">iOS frameworks
+
+Adjust SDK plugin adds three iOS frameworks to your generated Xcode project:
+
+* `iAd.framework` - in case you are running iAd campaigns.
+* `AdSupport.framework` - for reading iOS Advertising Id (IDFA).
+* `AdjustSdk.framework` - our native iOS SDK framework.
+
+Settings for this can also be found in `plugin.xml` file of the adjust SDK plugin:
+
+```xml
+<framework src="src/iOS/AdjustSdk.framework" custom="true" />
+<framework src="AdSupport.framework" weak="true" />
+<framework src="iAd.framework" weak="true" />
+```
+
+In case you are not running any iAd campaigns, you can feel free to remove `iAd.framework` dependency.
 
 ## <a id="additional-features">Additional features
 
@@ -341,6 +410,7 @@ adjustConfig.setAttributionCallbackListener(function(attribution) {
     console.log(attribution.adgroup);
     console.log(attribution.creative);
     console.log(attribution.clickLabel);
+    console.log(attribution.adid);
 });
 
 Adjust.create(adjustConfig);
@@ -355,6 +425,7 @@ Within the listener function you have access to the `attribution` parameters. He
 - `adgroup`         the ad group grouping level of the current install.
 - `creative`        the creative grouping level of the current install.
 - `clickLabel`      the click label of the current install.
+- `adid`            the Adjust device identifier.
 
 Please make sure to consider our [applicable attribution data policies][attribution-data].
 
@@ -503,9 +574,20 @@ If nothing is set, sending in background is **disabled by default**.
 
 Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate reporting.
 
-### Android
+### <a id="di-idfa">iOS Advertising Identifier
 
-If you need to obtain the Google Advertising ID, you can call the function `getGoogleAdId`. To get it in the callback method you pass to the call:
+To obtain the IDFA, call the `getIdfa` method of the `Adjust` instance. You need to pass a callback to that method in order to obtain the value:
+
+```js
+Adjust.getIdfa(function(idfa) {
+    // Use idfa value.
+});
+```
+
+
+### <a id="di-gps-adid">Google Play Services advertising identifier
+
+If you need to obtain the Google Advertising ID, you can call the `getGoogleAdId` method of the `Adjust` instance. You need to pass a callback to that method in order to obtain the value:
 
 ```js
 Adjust.getGoogleAdId(function(googleAdId) {
@@ -515,15 +597,29 @@ Adjust.getGoogleAdId(function(googleAdId) {
 
 Inside the callback method you will have access to the Google Advertising ID as the variable `googleAdId`.
 
-### iOS
+### <a id="di-adid"></a>Adjust device identifier
 
-To obtain the IDFA, call the function `getIdfa` in the same way as the method `getGoogleAdId`:
+For each device with your app installed on it, Adjust backend generates unique **Adjust device identifier** (**adid**). In order to obtain this identifier, call the `getAdid` method of the `Adjsut` instance. You need to pass a callback to that method in order to obtain the value:
 
 ```js
-Adjust.getIdfa(function(idfa) {
-    // Use idfa value.
+Adjust.getAdid(function(adid) {
+    // Use adid value.
 });
 ```
+
+**Note**: Information about **adid** is available after app installation has been tracked by the Adjust backend. From that moment on, the Adjust SDK has information about your device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** value before the SDK has been initialised and installation of your app has been successfully tracked.
+
+### <a id="user-attribution"></a>User attribution
+
+As described in the [attribution callback section](#attribution-callback), this callback is triggered, providing you with information about a new attribution whenever it changes. If you want to access information about a user's current attribution whenever you need it, you can make a call to the `getAttribution` method of the `Adjust` instance:
+
+```js
+Adjust.getAttribution(function(attribution) {
+    // Use attribution object in same way like in attribution callback.
+});
+```
+
+**Note**: Information about current attribution is available after app installation has been tracked by the Adjust backend and the attribution callback has been initially triggered. From that moment on, the Adjust SDK has information about a user's attribution and you can access it with this method. So, **it is not possible** to access a user's attribution value before the SDK has been initialised and an attribution callback has been triggered.
 
 ### <a id="push-token">Push token
 
@@ -743,7 +839,7 @@ var app = {
 [dashboard]:    http://adjust.com
 [adjust.com]:   http://adjust.com
 
-[example]:      http://github.com/adjust/ios_sdk/tree/master/examples
+[example]:      ./example
 [releases]:     https://github.com/adjust/cordova_sdk/releases
 [npm-repo]:     https://www.npmjs.com/package/com.adjust.sdk
 
@@ -755,6 +851,7 @@ var app = {
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [special-partners]:     https://docs.adjust.com/en/special-partners
 [custom-url-scheme]:    https://github.com/EddyVerbruggen/Custom-URL-scheme
+[broadcast-receiver]:   https://github.com/adjust/android_sdk#sdk-broadcast-receiver
 
 [google-launch-modes]:    http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
 [currency-conversion]:    https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
@@ -762,13 +859,14 @@ var app = {
 [google-play-services]:   http://developer.android.com/google/play-services/index.html
 
 [custom-url-scheme-usage]:      https://github.com/EddyVerbruggen/Custom-URL-scheme#3-usage
+[broadcast-receiver-custom]:    https://github.com/adjust/android_sdk/blob/master/doc/english/referrer.md
 [reattribution-with-deeplinks]: https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
 ## <a id="license">License
 
 The adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2016 adjust GmbH, 
+Copyright (c) 2012-2017 adjust GmbH, 
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
