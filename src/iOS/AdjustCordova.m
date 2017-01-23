@@ -190,16 +190,16 @@
 
     for (int i = 0; i < [callbackParameters count]; i += 2) {
         NSString *key = [callbackParameters objectAtIndex:i];
-        NSString *value = [callbackParameters objectAtIndex:(i+1)];
+        NSObject *value = [callbackParameters objectAtIndex:(i+1)];
 
-        [adjustEvent addCallbackParameter:key value:value];
+        [adjustEvent addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
     for (int i = 0; i < [partnerParameters count]; i += 2) {
         NSString *key = [partnerParameters objectAtIndex:i];
-        NSString *value = [partnerParameters objectAtIndex:(i+1)];
+        NSObject *value = [partnerParameters objectAtIndex:(i+1)];
 
-        [adjustEvent addPartnerParameter:key value:value];
+        [adjustEvent addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
     BOOL isTransactionIdSet = false;
