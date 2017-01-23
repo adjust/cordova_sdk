@@ -9,7 +9,7 @@
 #### Fixed
 - Now reading push token value from activity state file when sending package.
 - Fixed memory leak by closing network session for iOS platform.
-- Fixed `TARGET_OS_TV` pre processer check for iOS platform.
+- Fixed `TARGET_OS_TV` pre processor check for iOS platform.
 
 #### Changed
 - Firing attribution request as soon as install has been tracked, regardless of presence of attribution callback implementation in user's app.
