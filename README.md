@@ -135,7 +135,7 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelSuppress);  // disable all logging
 
 Once adjust SDK has been added to your app, certain tweeks are being performed so that adjust SDK can work properly. All things that are being done in this process are written in `plugin.xml` file of the adjust SDK plugin. Bellow you can find description for every additional thing that adjust SDK performs after adding it to your app.
 
-### <a id="adjust-permissions">Android permissions
+### <a id="android-permissions">Android permissions
 
 Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `ACCESS_WIFI_STATE`. You can find this setting in `plugin.xml` file of the adjust SDK plugin:
 
@@ -148,7 +148,7 @@ Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `A
 
 `INTERNET` permission is the one which our SDK needs at any point of time. `ACCESS_WIFI_STATE` is the permission which adjust SDK needs in case that your app is not targetting Google Play Store and doesn't use Google Play Services. If you are targetting Google Play Store and you are using Google Play Services, adjust SDK doesn't need this permission and, in case you don't need it anywhere else in your app, you can remove it.
 
-### <a id="adjust-gps">Google Play Services
+### <a id="android-gps">Google Play Services
 
 Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google-play-services].
 
@@ -162,7 +162,7 @@ Sometimes, it can happen that other Cordova plugins which you are using are also
 
 In order for you to check whether analytics part of Google Play Services library is successfully added to your app so that adjust SDK reads it properly, you should start your app by configuring SDK to run in `sandbox` mode and turn log level to `verbose`. After that, track session or some events in your app and observe the list of parameters in verbose logs which are being read once session or event has been tracked. If you see parameter called `gps_adid` in there, you have successfully added analytics part of Google Play Services library to your app and our SDK is reading needed information from it.
 
-### <a id="adjust-proguard">Proguard settings
+### <a id="android-proguard">Proguard settings
 
 If you are using Proguard, add these lines to your Proguard file:
 
