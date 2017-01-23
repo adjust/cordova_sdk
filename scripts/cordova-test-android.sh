@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 
 # Exit if any errors occur
-#set -e
+
+# set -e
 
 # Get the current directory (/scripts/ directory)
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Traverse up to get to the root directory
 SDK_DIR="$(dirname "$SCRIPTS_DIR")"
 EXAMPLE_DIR=example
 SDK_NAME=com.adjust.sdk
 
-RED='\033[0;31m' # Red color
-GREEN='\033[0;32m' # Green color
-NC='\033[0m' # No Color
+RED='\033[0;31m' 	# Red color
+GREEN='\033[0;32m' 	# Green color
+NC='\033[0m' 		# No Color
 
 echo -e "${GREEN}>>> Updating git submodules ${NC}"
 cd ${SDK_DIR}
@@ -40,6 +42,7 @@ cordova plugin add cordova-universal-links-plugin
 echo -e "${GREEN}>>> Running Cordova build Android ${NC}"
 cordova run android
 
-#echo -e "${GREEN}>>> Build successful. APK generated ${NC}"
-#echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
+# echo -e "${GREEN}>>> Build successful. APK generated ${NC}"
+# echo -e "${GREEN}>>> Build successful. Installing APK on device ${NC}"
+
 cordova run android --device --nobuild
