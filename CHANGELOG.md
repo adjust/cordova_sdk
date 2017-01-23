@@ -1,3 +1,30 @@
+### Version 4.11.0 (23rd January 2017)
+#### Added
+- Added `adid` property to the attribution callback response.
+- Added `Adjust.getAdid` method to be able to get adid value at any time after obtaining it, not only when session/event callbacks have been triggered.
+- Added `Adjust.getAttribution` method to be able to get current attribution value at any time after obtaining it, not only when attribution callback has been triggered.
+- Added sending of **Amazon Fire Advertising Identifier** for Android platform.
+- Added possibility to set default tracker for the app by adding `adjust_config.properties` file to the `assets` folder of your Android app. Mostly meant to be used by the `Adjust Store & Pre-install Tracker Tool` (https://github.com/adjust/android_sdk/blob/master/doc/english/pre_install_tracker_tool.md).
+
+#### Fixed
+- Now reading push token value from activity state file when sending package.
+- Fixed memory leak by closing network session for iOS platform.
+- Fixed `TARGET_OS_TV` pre processer check for iOS platform.
+
+#### Changed
+- Firing attribution request as soon as install has been tracked, regardless of presence of attribution callback implementation in user's app.
+- Saving iAd/AdSearch details to prevent sending duplicated `sdk_click` packages for iOS platform.
+- Updated docs.
+- Updated native iOS SDK to version **4.11.0**.
+- Updated native iOS SDK to version **4.11.0**.
+- Native SDKs stability updates and improvements.
+
+#### Native SDKs
+- [iOS@v4.11.0][ios_sdk_v4.11.0]
+- [Android@v4.11.0][android_sdk_v4.11.0]
+
+---
+
 ### Version 4.10.2 (13th December 2016)
 #### Changed
 - Not implementing all callbacks in iOS middleware part anymore, only those which user has defined in the app.
@@ -200,6 +227,7 @@
 [ios_sdk_v4.5.4]: https://github.com/adjust/ios_sdk/tree/v4.5.4
 [ios_sdk_v4.10.2]: https://github.com/adjust/ios_sdk/tree/v4.10.2
 [ios_sdk_v4.10.3]: https://github.com/adjust/ios_sdk/tree/v4.10.3
+[ios_sdk_v4.11.0]: https://github.com/adjust/ios_sdk/tree/v4.11.0
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -208,3 +236,4 @@
 [android_sdk_v4.2.3]: https://github.com/adjust/android_sdk/tree/v4.2.3
 [android_sdk_v4.10.2]: https://github.com/adjust/android_sdk/tree/v4.10.2
 [android_sdk_v4.10.4]: https://github.com/adjust/android_sdk/tree/v4.10.4
+[android_sdk_v4.11.0]: https://github.com/adjust/android_sdk/tree/v4.11.0
