@@ -7,7 +7,7 @@
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Traverse up to get to the root directory
 SDK_DIR="$(dirname "$SCRIPTS_DIR")"
-SAMPLE_DIR=sample
+EXAMPLE_DIR=example
 SDK_NAME=com.adjust.sdk
 
 RED='\033[0;31m' # Red color
@@ -23,7 +23,7 @@ cd ${SDK_DIR}
 ext/Android/build.sh; \cp -v ext/Android/adjust*.jar src/Android/adjust-android.jar
 
 echo -e "${GREEN}>>> Installing Android platform ${NC}"
-cd ${SDK_DIR}/${SAMPLE_DIR}
+cd ${SDK_DIR}/${EXAMPLE_DIR}
 cordova platform add android
 
 echo -e "${GREEN}>>> Re-installing plugins ${NC}"

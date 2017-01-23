@@ -7,7 +7,7 @@
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Traverse up to get to the root directory
 SDK_DIR="$(dirname "$SCRIPTS_DIR")"
-SAMPLE_DIR=sample
+EXAMPLE_DIR=example
 SDK_NAME=com.adjust.sdk
 
 RED='\033[0;31m' # Red color
@@ -22,7 +22,7 @@ echo -e "${GREEN}>>> Running iOS build script ${NC}"
 ext/iOS/build.sh
 
 echo -e "${GREEN}>>> Installing iOS platform ${NC}"
-cd ${SDK_DIR}/${SAMPLE_DIR}
+cd ${SDK_DIR}/${EXAMPLE_DIR}
 cordova platform add ios
 
 echo -e "${GREEN}>>> Re-installing plugins ${NC}"

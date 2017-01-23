@@ -703,7 +703,7 @@ If you are using this feature, in order for your user to be properly reattribute
 
 Once you have received deep link content information in your app, add a call to `appWillOpenUrl` method of the `Adjust` instance. By making this call, the adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will be sent to the adjust backend. If your user should be reattributed due to a click on the adjust tracker URL with deep link content in it, you will see the [attribution callback](#attribution-callback) in your app being triggered with new attribution info for this user.
 
-In the code samples described above, call to the `appWillOpenUrl` method should be done like this:
+In the code examples described above, call to the `appWillOpenUrl` method should be done like this:
 
 ```js
 function handleOpenURL(url) {
