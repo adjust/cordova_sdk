@@ -133,11 +133,11 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelSuppress);  // disable all logging
 
 ### <a id="adjust-project-settings">Adjust project settings
 
-Once adjust SDK has been added to your app, certain tweeks are being performed so that adjust SDK can work properly. All things that are being done in this process are written in `plugin.xml` file of the adjust SDK plugin. Bellow you can find description for every additional thing that adjust SDK performs after adding it to your app.
+Once the Adjust SDK has been added to your app, certain tweeks are being performed so that the Adjust SDK can work properly. Everything that is being done in this process is written in the `plugin.xml` file of the Adjust SDK plugin. Below you can find a description of every additional thing that the Adjust SDK performs after you've added it to your app.
 
 ### <a id="android-permissions">Android permissions
 
-Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `ACCESS_WIFI_STATE`. You can find this setting in `plugin.xml` file of the adjust SDK plugin:
+The Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `ACCESS_WIFI_STATE`. You can find this setting in the `plugin.xml` file of the Adjust SDK plugin:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -146,21 +146,21 @@ Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `A
 </config-file>
 ```
 
-`INTERNET` permission is the one which our SDK needs at any point of time. `ACCESS_WIFI_STATE` is the permission which adjust SDK needs in case that your app is not targetting Google Play Store and doesn't use Google Play Services. If you are targetting Google Play Store and you are using Google Play Services, adjust SDK doesn't need this permission and, in case you don't need it anywhere else in your app, you can remove it.
+`INTERNET` permission is the permission that our SDK might need at any point in time. `ACCESS_WIFI_STATE` is the permission which the Adjust SDK needs in case your app is not targetting the Google Play Store and doesn't use Google Play Services. If you are targetting the Google Play Store and you are using Google Play Services, the Adjust SDK doesn't need this permission and, if you don't need it anywhere else in your app, you can remove it.
 
 ### <a id="android-gps">Google Play Services
 
-Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the adjust SDK to use the Google Advertising ID, you must integrate the [Google Play Services][google-play-services].
+Since the August 1, 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the Adjust SDK to use the Google Advertising ID, you must integrate [Google Play Services][google-play-services].
 
-The adjust SDK adds Google Play Services by default to your app. This is done with this line in `plugin.xml` file:
+The Adjust SDK adds Google Play Services by default to your app. This is done with this line in the `plugin.xml` file:
 
 ```xml
 <framework src="com.google.android.gms:play-services-analytics:+" />
 ```
 
-Sometimes, it can happen that other Cordova plugins which you are using are also importing Google Play Services by default into your app. In this case, it can happen that Google Play Services from our SDK and other plugins conflict and cause build time errors for you. Google Play Services do not have to be present in your app as part of our SDK exclusively. As long as you have the **analytics part of Google Play Services library integrated in your app**, our SDK will be able to read all needed information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply remove above line from the `plugin.xml` file of our SDK.
+If you are using other Cordova plugins, they might also be importing Google Play Services by default into your app. If this is the case, Google Play Services from our SDK and other plugins can conflict and cause build time errors. Google Play Services does not have to be present in your app as part of our SDK exclusively. As long as you have the **analytics part of the Google Play Services library integrated in your app**, our SDK will be able to read all the necessary information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply remove the above line from the `plugin.xml` file of our SDK.
 
-In order for you to check whether analytics part of Google Play Services library is successfully added to your app so that adjust SDK reads it properly, you should start your app by configuring SDK to run in `sandbox` mode and turn log level to `verbose`. After that, track session or some events in your app and observe the list of parameters in verbose logs which are being read once session or event has been tracked. If you see parameter called `gps_adid` in there, you have successfully added analytics part of Google Play Services library to your app and our SDK is reading needed information from it.
+To check whether the analytics part of the Google Play Services library has been successfully added to your app so that the Adjust SDK can read it properly, you should start your app by configuring the SDK to run in `sandbox` mode and set the log level to `verbose`. After that, track a session or some events in your app and observe the list of parameters in the verbose logs which are being read once the session or event has been tracked. If you see a parameter called `gps_adid` in there, you have successfully added the analytics part of the Google Play Services library to your app and our SDK is reading the necessary information from it.
 
 ### <a id="android-proguard">Proguard settings
 
@@ -196,7 +196,7 @@ If you are using Proguard, add these lines to your Proguard file:
 
 ### <a id="android-broadcast-receiver">Android install referrer
 
-By default, adjust install referrer broadcast receiver is being added to your app. For more information, you can check our native [Android SDK README][broadcast-receiver]. You can find this setting in `plugin.xml` file of the adjust SDK plugin:
+The Adjust install referrer broadcast receiver is added to your app by default. For more information, you can check our native [Android SDK README][broadcast-receiver]. You can find this setting in the `plugin.xml` file of the the Adjust SDK plugin:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -210,7 +210,7 @@ By default, adjust install referrer broadcast receiver is being added to your ap
 </config-file>
 ```
 
-Please, have in mind that if you are using your own broadcast receiver which handles INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added in your manifest file. Remove it, but inside your own receiver add the call to the Adjust broadcast receiver like described in [Android guide][broadcast-receiver-custom].
+Please bear in mind that, if you are using your own broadcast receiver which handles the INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added to your manifest file. You can remove it, but inside your own receiver add the call to the Adjust broadcast receiver as described in our [Android guide][broadcast-receiver-custom].
 
 ### <a id="ios-frameworks">iOS frameworks
 
@@ -228,7 +228,7 @@ Settings for this can also be found in `plugin.xml` file of the adjust SDK plugi
 <framework src="iAd.framework" weak="true" />
 ```
 
-In case you are not running any iAd campaigns, you can feel free to remove `iAd.framework` dependency.
+If you are not running any iAd campaigns, you can feel free to remove the `iAd.framework` dependency.
 
 ## <a id="additional-features">Additional features
 
@@ -599,7 +599,7 @@ Inside the callback method you will have access to the Google Advertising ID as 
 
 ### <a id="di-adid"></a>Adjust device identifier
 
-For each device with your app installed on it, Adjust backend generates unique **Adjust device identifier** (**adid**). In order to obtain this identifier, call the `getAdid` method of the `Adjsut` instance. You need to pass a callback to that method in order to obtain the value:
+For every device with your app installed on it, the Adjust backend generates a unique **Adjust device identifier** (**adid**). In order to obtain this identifier, call the `getAdid` method of the `Adjust` instance. You need to pass a callback to that method in order to obtain the value:
 
 ```js
 Adjust.getAdid(function(adid) {
@@ -607,7 +607,7 @@ Adjust.getAdid(function(adid) {
 });
 ```
 
-**Note**: Information about **adid** is available after app installation has been tracked by the Adjust backend. From that moment on, the Adjust SDK has information about your device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** value before the SDK has been initialised and installation of your app has been successfully tracked.
+**Note**: Information about the **adid** is only available after an app installation has been tracked by the Adjust backend. From that moment on, the Adjust SDK has information about the device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** value before the SDK has been initialised and installation of your app has been successfully tracked.
 
 ### <a id="user-attribution"></a>User attribution
 
@@ -619,7 +619,7 @@ Adjust.getAttribution(function(attribution) {
 });
 ```
 
-**Note**: Information about current attribution is available after app installation has been tracked by the Adjust backend and the attribution callback has been initially triggered. From that moment on, the Adjust SDK has information about a user's attribution and you can access it with this method. So, **it is not possible** to access a user's attribution value before the SDK has been initialised and an attribution callback has been triggered.
+**Note**: Information about current attribution is only available after an app installation has been tracked by the Adjust backend and the attribution callback has been triggered. From that moment on, the Adjust SDK has information about a user's attribution and you can access it with this method. So, **it is not possible** to access a user's attribution value before the SDK has been initialised and an attribution callback has been triggered.
 
 ### <a id="push-token">Push token
 
@@ -799,7 +799,7 @@ If you are using this feature, in order for your user to be properly reattribute
 
 Once you have received deep link content information in your app, add a call to `appWillOpenUrl` method of the `Adjust` instance. By making this call, the adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will be sent to the adjust backend. If your user should be reattributed due to a click on the adjust tracker URL with deep link content in it, you will see the [attribution callback](#attribution-callback) in your app being triggered with new attribution info for this user.
 
-In the code examples described above, call to the `appWillOpenUrl` method should be done like this:
+In the code examples described above, a call to the `appWillOpenUrl` method should be done like this:
 
 ```js
 function handleOpenURL(url) {
