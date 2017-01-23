@@ -58,6 +58,8 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_SET_ENABLED                              = "setEnabled";
     private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
     private static final String COMMAND_GET_IDFA                                 = "getIdfa";
+    private static final String COMMAND_GET_ADID                                 = "getAdid";
+    private static final String COMMAND_GET_ATTRIBUTION                          = "getAttribution";
     private static final String COMMAND_GET_GOOGLE_AD_ID                         = "getGoogleAdId";
     private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER           = "addSessionCallbackParameter";
     private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER        = "removeSessionCallbackParameter";
@@ -75,6 +77,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String ATTRIBUTION_ADGROUP         = "adgroup";
     private static final String ATTRIBUTION_CREATIVE        = "creative";
     private static final String ATTRIBUTION_CLICK_LABEL     = "clickLabel";
+    private static final String ATTRIBUTION_ADID            = "adid";
 
     private static final String EVENT_SUCCESS_MESSAGE       = "message";
     private static final String EVENT_SUCCESS_TIMESTAMP     = "timestamp";
@@ -107,6 +110,8 @@ public class AdjustCordova extends CordovaPlugin
     private static CallbackContext sessionTrackingSucceededCallbackContext;
     private static CallbackContext sessionTrackingFailedCallbackContext;
     private static CallbackContext deferredDeeplinkCallbackContext;
+    private static CallbackContext getAdidCallbackContext;
+    private static CallbackContext getAttributionCallbackContext;
 
     private boolean shouldLaunchDeeplink = false;
 
@@ -144,8 +149,35 @@ public class AdjustCordova extends CordovaPlugin
             AdjustCordova.googleAdIdCallbackContext = callbackContext;
 
             // Google Ad Id callback
-            if (googleAdIdCallbackContext != null) {
+            if (null != googleAdIdCallbackContext) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
+            }
+
+            return true;
+        } else if (action.equals(COMMAND_GET_ADID)) {
+            AdjustCordova.getAdidCallbackContext = callbackContext;
+
+            if (null != getAdidCallbackContext) {
+                final String adid = Adjust.getAdid();
+
+                PluginResult pluginResult = new PluginResult(Status.OK, adid);
+                pluginResult.setKeepCallback(true);
+
+                AdjustCordova.getAdidCallbackContext.sendPluginResult(pluginResult);
+            }
+
+            return true;
+        } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
+            AdjustCordova.getAttributionCallbackContext = callbackContext;
+
+            if (null != getAttributionCallbackContext) {
+                final AdjustAttribution attribution = Adjust.getAttribution();
+
+                JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
+                PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
+                pluginResult.setKeepCallback(true);
+
+                AdjustCordova.getAttributionCallbackContext.sendPluginResult(pluginResult);
             }
 
             return true;
@@ -177,7 +209,7 @@ public class AdjustCordova extends CordovaPlugin
             
             return true;
         } else if (action.equals(COMMAND_IS_ENABLED)) {
-            Boolean isEnabled = Adjust.isEnabled();
+            final Boolean isEnabled = Adjust.isEnabled();
             PluginResult pluginResult = new PluginResult(Status.OK, isEnabled);
             
             callbackContext.sendPluginResult(pluginResult);
@@ -582,6 +614,7 @@ public class AdjustCordova extends CordovaPlugin
         addValueOrEmpty(dict, ATTRIBUTION_ADGROUP, attribution.adgroup);
         addValueOrEmpty(dict, ATTRIBUTION_CREATIVE, attribution.creative);
         addValueOrEmpty(dict, ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
+        addValueOrEmpty(dict, ATTRIBUTION_ADID, attribution.adid);
 
         return dict;
     }
