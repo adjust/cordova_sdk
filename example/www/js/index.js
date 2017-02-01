@@ -48,6 +48,7 @@ var app = {
             console.log("Adgroup = " + attribution.adgroup);
             console.log("Creative = " + attribution.creative);
             console.log("Click label = " + attribution.clickLabel);
+            console.log("Adid = " + attribution.adid);
         });
 
         adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
