@@ -1,8 +1,9 @@
-### Version 4.11.0 (23rd January 2017)
+### Version 4.11.0 (1st February 2017)
 #### Added
 - Added `adid` property to the attribution callback response.
 - Added `Adjust.getAdid` method to be able to get adid value at any time after obtaining it, not only when session/event callbacks have been triggered.
 - Added `Adjust.getAttribution` method to be able to get current attribution value at any time after obtaining it, not only when attribution callback has been triggered.
+- Added handling for numeric types being passed as callback/partner parameter values on iOS platform.
 - Added sending of **Amazon Fire Advertising Identifier** for Android platform.
 - Added possibility to set default tracker for the app by adding `adjust_config.properties` file to the `assets` folder of your Android app. Mostly meant to be used by the `Adjust Store & Pre-install Tracker Tool` (https://github.com/adjust/android_sdk/blob/master/doc/english/pre_install_tracker_tool.md).
 
