@@ -100,6 +100,7 @@
     [self addValueOrEmpty:dictionary key:@"creative" value:attribution.creative];
     [self addValueOrEmpty:dictionary key:@"adgroup" value:attribution.adgroup];
     [self addValueOrEmpty:dictionary key:@"clickLabel" value:attribution.clickLabel];
+    [self addValueOrEmpty:dictionary key:@"adid" value:attribution.adid];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];

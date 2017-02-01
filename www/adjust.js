@@ -92,6 +92,14 @@ var Adjust = {
         callCordovaCallback('getIdfa', callback);
     },
 
+    getAdid: function(callback) {
+        callCordovaCallback('getAdid', callback);
+    },
+
+    getAttribution: function(callback) {
+        callCordovaCallback('getAttribution', callback);
+    },
+
     addSessionCallbackParameter: function(key, value) {
         callCordova('addSessionCallbackParameter', key, value);
     },
