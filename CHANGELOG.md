@@ -1,14 +1,25 @@
-### Version 4.11.1 (xth March 2017)
+### Version 4.11.1 (xth April 2017)
+#### Added
+- **[iOS]** Added nullability annotations to public headers for Swift 3.0 compatibility.
+- **[iOS]** Added `BITCODE_GENERATION_MODE` to iOS framework for `Carthage` support.
+- **[iOS][AND]** Added sending of the app's install time.
+- **[iOS][AND]** Added sending of the app's update time.
+
 #### Fixed
-- Fixed issue of creating and destroying lots of threads on certain Android API levels (https://github.com/adjust/android_sdk/issues/265).
+- **[iOS]** Fixed not processing of `sdk_info` package type causing logs not to print proper package name once tracked.
+- **[AND]** Fixed query string parsing.
+- **[AND]** Fixed issue of creating and destroying lots of threads on certain Android API levels (https://github.com/adjust/android_sdk/issues/265).
+- **[AND]** Protected `Package Manager` from throwing unexpected exceptions (https://github.com/adjust/android_sdk/issues/266).
 
 #### Changed
-- Updated native Android SDK to version **4.11.1**.
-- Native SDKs stability updates and improvements.
+- **[AND]** Refactored native networking code.
+- **[iOS]** Updated native iOS SDK to version **4.11.3**.
+- **[AND]** Updated native Android SDK to version **4.11.3**.
+- **[REPO]** Introduced `[iOS]`, `[AND]`, `[WIN]` and `[REPO]` tags to `CHANGELOG` to highlight the platform the change is referring to.
 
 #### Native SDKs
-- [iOS@v4.11.0][ios_sdk_v4.11.0]
-- [Android@v4.11.1][android_sdk_v4.11.1]
+- **[iOS]** [iOS@v4.11.3][ios_sdk_v4.11.3]
+- **[AND]** [Android@v4.11.3][android_sdk_v4.11.3]
 
 ---
 
