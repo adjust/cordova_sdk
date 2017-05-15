@@ -1,4 +1,4 @@
-### Version 4.11.2 (xx May 2017)
+### Version 4.11.2 (15th May 2017)
 #### Added
 - **[IOS][AND]** Added check if `sdk_click` package response contains attribution information.
 - **[IOS][AND]** Added sending of attributable parameters with every `sdk_click` package.
