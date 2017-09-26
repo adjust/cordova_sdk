@@ -1,10 +1,24 @@
-### Version 4.11.2 (15th May 2017)
+### Version 4.11.3 (xxth September 2017)
 #### Added
-- **[IOS][AND]** Added check if `sdk_click` package response contains attribution information.
-- **[IOS][AND]** Added sending of attributable parameters with every `sdk_click` package.
+- **[iOS]** Improved iOS 11 support.
 
 #### Changed
-- **[IOS][AND]** Replaced `assert` level logs with `warn` level.
+- **[iOS]** Re-added support for Xcode 7.
+- **[iOS]** Removed iOS connection validity checks.
+
+#### Native SDKs
+- **[iOS]** [iOS@v4.11.5][ios_sdk_v4.11.5]
+- **[AND]** [Android@v4.11.4][android_sdk_v4.11.4]
+
+---
+
+### Version 4.11.2 (15th May 2017)
+#### Added
+- **[iOS][AND]** Added check if `sdk_click` package response contains attribution information.
+- **[iOS][AND]** Added sending of attributable parameters with every `sdk_click` package.
+
+#### Changed
+- **[iOS][AND]** Replaced `assert` level logs with `warn` level.
 
 #### Native SDKs
 - **[iOS]** [iOS@v4.11.4][ios_sdk_v4.11.4]
@@ -266,6 +280,7 @@
 [ios_sdk_v4.11.0]: https://github.com/adjust/ios_sdk/tree/v4.11.0
 [ios_sdk_v4.11.3]: https://github.com/adjust/ios_sdk/tree/v4.11.3
 [ios_sdk_v4.11.4]: https://github.com/adjust/ios_sdk/tree/v4.11.4
+[ios_sdk_v4.11.5]: https://github.com/adjust/ios_sdk/tree/v4.11.5
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
