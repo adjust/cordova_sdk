@@ -1,10 +1,11 @@
-### Version 4.11.3 (xxth September 2017)
+### Version 4.11.3 (28th September 2017)
 #### Added
 - **[iOS]** Improved iOS 11 support.
 
 #### Changed
 - **[iOS]** Re-added support for Xcode 7.
 - **[iOS]** Removed iOS connection validity checks.
+- **[iOS]** Updated native iOS SDK to version **4.11.5**.
 
 #### Native SDKs
 - **[iOS]** [iOS@v4.11.5][ios_sdk_v4.11.5]
