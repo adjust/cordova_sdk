@@ -13,5 +13,5 @@ OUT_DIR=./adjust/build/outputs
 cd $(dirname $0) 
 
 cd $BUILD_DIR
-./gradlew clean clearJar makeJar
+./gradlew clean makeReleaseJar
 mv -v ${OUT_DIR}/*.jar ../../../../src/Android/adjust-android.jar
