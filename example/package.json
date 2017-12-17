@@ -1,0 +1,10 @@
+{
+  "name": "com.adjust.examples",
+  "version": "4.11.3",
+  "displayName": "adjust-example-app",
+  "cordova": {
+    "platforms": [],
+    "plugins": {}
+  },
+  "dependencies": {}
+}
