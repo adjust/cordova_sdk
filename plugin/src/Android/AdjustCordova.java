@@ -41,6 +41,12 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_SHOULD_LAUNCH_DEEPLINK  = "shouldLaunchDeeplink";
     private static final String KEY_USER_AGENT              = "userAgent";
     private static final String KEY_DELAY_START             = "delayStart";
+    private static final String KEY_SECRET_ID               = "secretId";
+    private static final String KEY_INFO_1                  = "info1";
+    private static final String KEY_INFO_2                  = "info2";
+    private static final String KEY_INFO_3                  = "info3";
+    private static final String KEY_INFO_4                  = "info4";
+    private static final String KEY_SET_DEVICE_KNOWN              = "setDeviceKnown";
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
@@ -69,6 +75,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
     private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
     private static final String COMMAND_REFERRER                                 = "setReferrer";
+    private static final String COMMAND_GET_AMAZON_ADID                                 = "getAmazonAdId";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN   = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME    = "trackerName";
@@ -265,7 +272,11 @@ public class AdjustCordova extends CordovaPlugin
         } else if (action.equals(COMMAND_REFERRER)) {
             final String referrer = args.getString(0);
             
-            Adjust.setReferrer(referrer);
+            Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
+            
+            return true;
+        } else if (action.equals(COMMAND_GET_AMAZON_ADID)) {
+            Adjust.getAmazonAdid(this.cordova.getActivity().getApplicationContext());
             
             return true;
         }
@@ -292,7 +303,22 @@ public class AdjustCordova extends CordovaPlugin
 
         String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
         String userAgent = parameters.get(KEY_USER_AGENT).toString();
+
+        long secretId = -1L;
+        long info1 = -1L;
+        long info2 = -1L;
+        long info3 = -1L;
+        long info4 = -1L;
+        try {
+            secretId = Long.parseLong(parameters.get(KEY_SECRET_ID).toString(), 10);
+            info1    = Long.parseLong(parameters.get(KEY_INFO_1).toString(), 10);
+            info2    = Long.parseLong(parameters.get(KEY_INFO_2).toString(), 10);
+            info3    = Long.parseLong(parameters.get(KEY_INFO_3).toString(), 10);
+            info4    = Long.parseLong(parameters.get(KEY_INFO_4).toString(), 10);
+        } catch(NumberFormatException ignored) {}
+
         String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
+        boolean isDeviceKnown = parameters.get(KEY_SET_DEVICE_KNOWN).toString() == "true" ? true : false;;
 
         boolean isLogLevelSuppress = false;
         boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
@@ -357,6 +383,19 @@ public class AdjustCordova extends CordovaPlugin
         if (isFieldValid(userAgent)) {
             adjustConfig.setUserAgent(userAgent);
         }
+
+        // App secret
+        if (isLongValid(secretId)
+                && isLongValid(info1)
+                && isLongValid(info2)
+                && isLongValid(info3)
+                && isLongValid(info4)
+                ) {
+            adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
+        }
+
+        // Set Device Known
+        adjustConfig.setDeviceKnown(isDeviceKnown);
 
         // Background tracking
         adjustConfig.setSendInBackground(sendInBackground);
