@@ -1,10 +1,14 @@
 {
-  "name": "com.adjust.examples",
-  "version": "4.11.3",
-  "displayName": "adjust-example-app",
-  "cordova": {
-    "platforms": [],
-    "plugins": {}
-  },
-  "dependencies": {}
+    "name": "com.adjust.examples",
+    "version": "4.11.3",
+    "displayName": "adjust-example-app",
+    "cordova": {
+        "platforms": [],
+        "plugins": {}
+    },
+    "dependencies": {
+        "android-versions": "^1.2.1",
+        "cordova-plugin-customurlscheme": "^4.3.0",
+        "npm": "^5.6.0"
+    }
 }

@@ -1,10 +1,10 @@
 var isOffline = false;
 
-function handleOpenURL(url) {
-    setTimeout(function() {
-        Adjust.appWillOpenUrl(url);
-    }, 0);
-}
+//function handleOpenURL(url) {
+    //setTimeout(function() {
+        //Adjust.appWillOpenUrl(url);
+    //}, 0);
+//}
 
 var app = {
     // Application Constructor
@@ -24,101 +24,106 @@ var app = {
         app.receivedEvent('deviceready');
 
         // Register for universal links
-        if (device.platform == 'iOS') {
-            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-        }
+        //if (device.platform == 'iOS') {
+            //universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+        //}
 
-        var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
+        //var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
 
-        adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-        adjustConfig.setShouldLaunchDeeplink(true);
-        adjustConfig.setDelayStart(3.0);
-        adjustConfig.setSendInBackground(true);
+        //console.log("hello world 1");
+        //adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+        //adjustConfig.setShouldLaunchDeeplink(true);
+        ////adjustConfig.setDelayStart(3.0);
+        ////adjustConfig.setEventBufferingEnabled(true);
+        //adjustConfig.setSendInBackground(true);
+        ////adjustConfig.setDeviceKnown(true);
+        //adjustConfig.setReadMobileEquipmentIdentity(true);
 
-        // adjustConfig.setEventBufferingEnabled(true);
-        // adjustConfig.setUserAgent("little_bunny_foo_foo");
+        //// adjustConfig.setUserAgent("little_bunny_foo_foo");
 
-        adjustConfig.setAttributionCallbackListener(function(attribution) {
-            console.log("### Attribution callback received");
+        //console.log("hello world 2");
+        //adjustConfig.setAttributionCallbackListener(function(attribution) {
+            //console.log("### Attribution callback received");
 
-            console.log("Tracker token = " + attribution.trackerToken);
-            console.log("Tracker name = " + attribution.trackerName);
-            console.log("Network = " + attribution.network);
-            console.log("Campaign = " + attribution.campaign);
-            console.log("Adgroup = " + attribution.adgroup);
-            console.log("Creative = " + attribution.creative);
-            console.log("Click label = " + attribution.clickLabel);
-            console.log("Adid = " + attribution.adid);
-        });
+            //console.log("Tracker token = " + attribution.trackerToken);
+            //console.log("Tracker name = " + attribution.trackerName);
+            //console.log("Network = " + attribution.network);
+            //console.log("Campaign = " + attribution.campaign);
+            //console.log("Adgroup = " + attribution.adgroup);
+            //console.log("Creative = " + attribution.creative);
+            //console.log("Click label = " + attribution.clickLabel);
+            //console.log("Adid = " + attribution.adid);
+        //});
 
-        adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
-            console.log("### Event tracking succeeded callback received");
+        //adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
+            //console.log("### Event tracking succeeded callback received");
 
-            console.log("Message: " + eventSuccess.message);
-            console.log("Timestamp: " + eventSuccess.timestamp);
-            console.log("Adid: " + eventSuccess.adid);
-            console.log("Event token: " + eventSuccess.eventToken);
-            console.log("JSON response: " + eventSuccess.jsonResponse);
-        });
+            //console.log("Message: " + eventSuccess.message);
+            //console.log("Timestamp: " + eventSuccess.timestamp);
+            //console.log("Adid: " + eventSuccess.adid);
+            //console.log("Event token: " + eventSuccess.eventToken);
+            //console.log("JSON response: " + eventSuccess.jsonResponse);
+        //});
 
-        adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
-            console.log("### Event tracking failed callback received");
+        //adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
+            //console.log("### Event tracking failed callback received");
 
-            console.log("Message: " + eventFailed.message);
-            console.log("Timestamp: " + eventFailed.timestamp);
-            console.log("Adid: " + eventFailed.adid);
-            console.log("Event token: " + eventFailed.eventToken);
-            console.log("Will retry: " + eventFailed.willRetry);
-            console.log("JSON response: " + eventFailed.jsonResponse);
-        });
+            //console.log("Message: " + eventFailed.message);
+            //console.log("Timestamp: " + eventFailed.timestamp);
+            //console.log("Adid: " + eventFailed.adid);
+            //console.log("Event token: " + eventFailed.eventToken);
+            //console.log("Will retry: " + eventFailed.willRetry);
+            //console.log("JSON response: " + eventFailed.jsonResponse);
+        //});
 
-        adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
-            console.log("### Session tracking succeeded callback received");
+        //adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
+            //console.log("### Session tracking succeeded callback received");
 
-            console.log("Message: " + sessionSuccess.message);
-            console.log("Timestamp: " + sessionSuccess.timestamp);
-            console.log("Adid: " + sessionSuccess.adid);
-            console.log("JSON response: " + sessionSuccess.jsonResponse);
-        });
+            //console.log("Message: " + sessionSuccess.message);
+            //console.log("Timestamp: " + sessionSuccess.timestamp);
+            //console.log("Adid: " + sessionSuccess.adid);
+            //console.log("JSON response: " + sessionSuccess.jsonResponse);
+        //});
 
-        adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
-            console.log("### Session tracking failed callback received");
+        //adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
+            //console.log("### Session tracking failed callback received");
 
-            console.log("Message: " + sessionFailed.message);
-            console.log("Timestamp: " + sessionFailed.timestamp);
-            console.log("Adid: " + sessionFailed.adid);
-            console.log("Will retry: " + sessionFailed.willRetry);
-            console.log("JSON response: " + sessionFailed.jsonResponse);
-        });
+            //console.log("Message: " + sessionFailed.message);
+            //console.log("Timestamp: " + sessionFailed.timestamp);
+            //console.log("Adid: " + sessionFailed.adid);
+            //console.log("Will retry: " + sessionFailed.willRetry);
+            //console.log("JSON response: " + sessionFailed.jsonResponse);
+        //});
 
-        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
-            console.log("### Deferred Deeplink Callback received");
+        //adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+            //console.log("### Deferred Deeplink Callback received");
 
-            console.log("URL: " + uri);
-        });
+            //console.log("URL: " + uri);
+        //});
 
-        Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
+        //Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
+        //Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
 
-        Adjust.addSessionPartnerParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionPartnerParameter("dummy_foo_foo", "dummy_bar");
+        //Adjust.addSessionPartnerParameter("dummy_foo", "dummy_bar");
+        //Adjust.addSessionPartnerParameter("dummy_foo_foo", "dummy_bar");
 
-        Adjust.removeSessionCallbackParameter("dummy_foo");
-        Adjust.removeSessionPartnerParameter("dummy_foo");
+        //Adjust.removeSessionCallbackParameter("dummy_foo");
+        //Adjust.removeSessionPartnerParameter("dummy_foo");
 
-        // Adjust.resetSessionCallbackParameters();
-        // Adjust.resetSessionPartnerParameters();
+        //// Adjust.resetSessionCallbackParameters();
+        //// Adjust.resetSessionPartnerParameters();
 
-        Adjust.create(adjustConfig);
+        //console.log("hello world 3");
+        //Adjust.create(adjustConfig);
 
-        Adjust.setPushToken("bunny_foo_foo");
+        //Adjust.setPushToken("bunny_foo_foo");
 
         // Adjust.sendFirstPackages();
     },
 
-    didLaunchAppFromLink: function(eventData) {
-        Adjust.appWillOpenUrl(eventData.url);
-    },
+    //didLaunchAppFromLink: function(eventData) {
+        //Adjust.appWillOpenUrl(eventData.url);
+    //},
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -133,6 +138,8 @@ var app = {
         var btnIsSdkEnabled = document.getElementById("btnIsSdkEnabled");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
+            //console.log("hello world 3");
+
             Adjust.isEnabled(function(isEnabled) {
                 if (isEnabled) {
                     var adjustEvent = new AdjustEvent("g3mfiw");
@@ -216,14 +223,24 @@ var app = {
         }, false);
 
         btnIsSdkEnabled.addEventListener('click',function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    navigator.notification.alert('Yes, it is enabled.', null, 'Is SDK Enabled?', 'OK');
-                } else {
-                    navigator.notification.alert('No, it is not enabled.', null, 'Is SDK Enabled?', 'OK');
-                }
-            });
-        }, false);
+        var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
+
+        // Adjust.resetSessionCallbackParameters();
+        // Adjust.resetSessionPartnerParameters();
+
+        Adjust.create(adjustConfig);
+
+        //Adjust.setPushToken("bunny_foo_foo");
+
+        // Adjust.sendFirstPackages();
+            //Adjust.isEnabled(function(isEnabled) {
+                //if (isEnabled) {
+                    //navigator.notification.alert('Yes, it is enabled.', null, 'Is SDK Enabled?', 'OK');
+                //} else {
+                    //navigator.notification.alert('No, it is not enabled.', null, 'Is SDK Enabled?', 'OK');
+                //}
+            //});
+        //}, false);
     }
 };
 
