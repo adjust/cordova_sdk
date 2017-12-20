@@ -36,12 +36,12 @@ cd $BUILD_DIR
 if [ "$BUILD_TYPE" == "debug" ]; then
     JAR_IN_DIR=ext/android/sdk/Adjust/adjust/build/intermediates/bundles/debug
     echo -e "${GREEN}>>> Running Gradle tasks: makeDebugJar${NC}"
-    ./gradlew makeDebugJar
+    ./gradlew clean makeDebugJar
 
 elif [ "$BUILD_TYPE" == "release" ]; then
     JAR_IN_DIR=ext/android/sdk/Adjust/adjust/build/intermediates/bundles/release
     echo -e "${GREEN}>>> Running Gradle tasks: makeReleaseJar${NC}"
-    ./gradlew makeReleaseJar
+    ./gradlew clean makeReleaseJar
 fi
 
 echo -e "${GREEN}>>> Moving the jar from ${JAR_IN_DIR} to ${JAR_OUT_DIR} ${NC}"
