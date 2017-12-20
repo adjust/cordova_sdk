@@ -5,6 +5,7 @@ import android.net.Uri;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,29 +25,30 @@ public class AdjustCordova extends CordovaPlugin
                OnSessionTrackingFailedListener,
                OnDeeplinkResponseListener, 
                OnDeviceIdsRead {
-    private static final String KEY_APP_TOKEN               = "appToken";
-    private static final String KEY_ENVIRONMENT             = "environment";
-    private static final String KEY_LOG_LEVEL               = "logLevel";
-    private static final String KEY_SDK_PREFIX              = "sdkPrefix";
-    private static final String KEY_PROCESS_NAME            = "processName";
-    private static final String KEY_DEFAULT_TRACKER         = "defaultTracker";
-    private static final String KEY_EVENT_BUFFERING_ENABLED = "eventBufferingEnabled";
-    private static final String KEY_EVENT_TOKEN             = "eventToken";
-    private static final String KEY_REVENUE                 = "revenue";
-    private static final String KEY_CURRENCY                = "currency";
-    private static final String KEY_TRANSACTION_ID          = "transactionId";
-    private static final String KEY_CALLBACK_PARAMETERS     = "callbackParameters";
-    private static final String KEY_PARTNER_PARAMETERS      = "partnerParameters";
-    private static final String KEY_SEND_IN_BACKGROUND      = "sendInBackground";
-    private static final String KEY_SHOULD_LAUNCH_DEEPLINK  = "shouldLaunchDeeplink";
-    private static final String KEY_USER_AGENT              = "userAgent";
-    private static final String KEY_DELAY_START             = "delayStart";
-    private static final String KEY_SECRET_ID               = "secretId";
-    private static final String KEY_INFO_1                  = "info1";
-    private static final String KEY_INFO_2                  = "info2";
-    private static final String KEY_INFO_3                  = "info3";
-    private static final String KEY_INFO_4                  = "info4";
-    private static final String KEY_SET_DEVICE_KNOWN              = "setDeviceKnown";
+    private static final String KEY_APP_TOKEN                      = "appToken";
+    private static final String KEY_ENVIRONMENT                    = "environment";
+    private static final String KEY_LOG_LEVEL                      = "logLevel";
+    private static final String KEY_SDK_PREFIX                     = "sdkPrefix";
+    private static final String KEY_PROCESS_NAME                   = "processName";
+    private static final String KEY_DEFAULT_TRACKER                = "defaultTracker";
+    private static final String KEY_EVENT_BUFFERING_ENABLED        = "eventBufferingEnabled";
+    private static final String KEY_EVENT_TOKEN                    = "eventToken";
+    private static final String KEY_REVENUE                        = "revenue";
+    private static final String KEY_CURRENCY                       = "currency";
+    private static final String KEY_TRANSACTION_ID                 = "transactionId";
+    private static final String KEY_CALLBACK_PARAMETERS            = "callbackParameters";
+    private static final String KEY_PARTNER_PARAMETERS             = "partnerParameters";
+    private static final String KEY_SEND_IN_BACKGROUND             = "sendInBackground";
+    private static final String KEY_SHOULD_LAUNCH_DEEPLINK         = "shouldLaunchDeeplink";
+    private static final String KEY_USER_AGENT                     = "userAgent";
+    private static final String KEY_DELAY_START                    = "delayStart";
+    private static final String KEY_SECRET_ID                      = "secretId";
+    private static final String KEY_INFO_1                         = "info1";
+    private static final String KEY_INFO_2                         = "info2";
+    private static final String KEY_INFO_3                         = "info3";
+    private static final String KEY_INFO_4                         = "info4";
+    private static final String KEY_SET_DEVICE_KNOWN               = "isDeviceKnown";
+    private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
@@ -276,7 +278,7 @@ public class AdjustCordova extends CordovaPlugin
             
             return true;
         } else if (action.equals(COMMAND_GET_AMAZON_ADID)) {
-            Adjust.getAmazonAdid(this.cordova.getActivity().getApplicationContext());
+            Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
             
             return true;
         }
@@ -295,36 +297,30 @@ public class AdjustCordova extends CordovaPlugin
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
-        String appToken = parameters.get(KEY_APP_TOKEN).toString();
-        String environment = parameters.get(KEY_ENVIRONMENT).toString();
-        String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
-        String processName = parameters.get(KEY_PROCESS_NAME).toString();
-        String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
+        String appToken              = parameters.get(KEY_APP_TOKEN).toString();
+        String environment           = parameters.get(KEY_ENVIRONMENT).toString();
+        String defaultTracker        = parameters.get(KEY_DEFAULT_TRACKER).toString();
+        String processName           = parameters.get(KEY_PROCESS_NAME).toString();
+        String sdkPrefix             = parameters.get(KEY_SDK_PREFIX).toString();
 
-        String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
-        String userAgent = parameters.get(KEY_USER_AGENT).toString();
+        String logLevel              = parameters.get(KEY_LOG_LEVEL).toString();
+        String userAgent             = parameters.get(KEY_USER_AGENT).toString();
 
-        long secretId = -1L;
-        long info1 = -1L;
-        long info2 = -1L;
-        long info3 = -1L;
-        long info4 = -1L;
-        try {
-            secretId = Long.parseLong(parameters.get(KEY_SECRET_ID).toString(), 10);
-            info1    = Long.parseLong(parameters.get(KEY_INFO_1).toString(), 10);
-            info2    = Long.parseLong(parameters.get(KEY_INFO_2).toString(), 10);
-            info3    = Long.parseLong(parameters.get(KEY_INFO_3).toString(), 10);
-            info4    = Long.parseLong(parameters.get(KEY_INFO_4).toString(), 10);
-        } catch(NumberFormatException ignored) {}
+        String secretId              = parameters.get(KEY_SECRET_ID).toString();
+        String info1                 = parameters.get(KEY_INFO_1).toString();
+        String info2                 = parameters.get(KEY_INFO_2).toString();
+        String info3                 = parameters.get(KEY_INFO_3).toString();
+        String info4                 = parameters.get(KEY_INFO_4).toString();
 
-        String eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString();
-        boolean isDeviceKnown = parameters.get(KEY_SET_DEVICE_KNOWN).toString() == "true" ? true : false;;
+        boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
+        Log.d("Bridge", "bridge is reading : " + readMobileEquipmentIdentity);
+        boolean eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
+        boolean isDeviceKnown        = parameters.get(KEY_SET_DEVICE_KNOWN).toString()         == "true" ? true : false;
+        boolean sendInBackground     = parameters.get(KEY_SEND_IN_BACKGROUND).toString()       == "true" ? true : false;
+        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString()   == "true" ? true : false;
+        boolean isLogLevelSuppress   = false;
 
-        boolean isLogLevelSuppress = false;
-        boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
-        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-
-        double delayStart = Double.parseDouble(parameters.get(KEY_DELAY_START).toString());
+        String delayStart = parameters.get(KEY_DELAY_START).toString();
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -357,13 +353,6 @@ public class AdjustCordova extends CordovaPlugin
             }
         }
 
-        // Event buffering
-        if (isFieldValid(eventBufferingEnabled)) {
-            if (eventBufferingEnabled.equalsIgnoreCase("true") || eventBufferingEnabled.equalsIgnoreCase("false")) {
-                adjustConfig.setEventBufferingEnabled(Boolean.valueOf(eventBufferingEnabled));
-            }
-        }
-
         // SDK prefix
         if (isFieldValid(sdkPrefix)) {
             adjustConfig.setSdkPrefix(sdkPrefix);
@@ -385,14 +374,34 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // App secret
-        if (isLongValid(secretId)
-                && isLongValid(info1)
-                && isLongValid(info2)
-                && isLongValid(info3)
-                && isLongValid(info4)
+        if (isFieldValid(secretId)
+                && isFieldValid(info1)
+                && isFieldValid(info2)
+                && isFieldValid(info3)
+                && isFieldValid(info4)
                 ) {
-            adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
+            try {
+                long lSecretId = Long.parseLong(secretId, 10);
+                long lInfo1    = Long.parseLong(info1, 10);
+                long lInfo2    = Long.parseLong(info2, 10);
+                long lInfo3    = Long.parseLong(info3, 10);
+                long lInfo4    = Long.parseLong(info4, 10);
+
+                adjustConfig.setAppSecret(
+                        lSecretId, 
+                        lInfo1, 
+                        lInfo2, 
+                        lInfo3, 
+                        lInfo4
+                );
+            } catch(NumberFormatException ignored) {}
         }
+        
+        // Read mobile equipment identity
+        adjustConfig.setReadMobileEquipmentIdentity(readMobileEquipmentIdentity);
+
+        // Event buffering
+        adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
 
         // Set Device Known
         adjustConfig.setDeviceKnown(isDeviceKnown);
@@ -404,7 +413,12 @@ public class AdjustCordova extends CordovaPlugin
         this.shouldLaunchDeeplink = shouldLaunchDeeplink;
 
         // Delayed start
-        adjustConfig.setDelayStart(delayStart);
+        if (isFieldValid(delayStart)) {
+            try {
+                double dDelayStart = Double.parseDouble(delayStart);
+                adjustConfig.setDelayStart(dDelayStart);
+            } catch(NumberFormatException ignored) {}
+        }
 
         // Attribution callback
         if (AdjustCordova.attributionCallbackContext != null) {

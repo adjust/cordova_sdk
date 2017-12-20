@@ -70,7 +70,7 @@
 
     // Log level
     if ([self isFieldValid:logLevel]) {
-        if ([ADJLogger LogLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
+        if ([ADJLogger logLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
             allowSuppressLogLevel = true;
         }
     }
@@ -82,7 +82,7 @@
     }
     // Log level
     if ([self isFieldValid:logLevel]) {
-        [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
+        [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
     }
 
     // Event buffering
