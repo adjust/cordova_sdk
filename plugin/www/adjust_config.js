@@ -21,8 +21,16 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
 
+    this.secretId = null;
+    this.info1 = null;
+    this.info2 = null;
+    this.info3 = null;
+    this.info4 = null;
+
     // Android only
     this.processName = null;
+    this.isDeviceKnown = null;
+    this.readMobileEquipmentIdentity = null;
 };
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
@@ -99,6 +107,23 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 AdjustConfig.prototype.setUserAgent = function(userAgent) {
     this.userAgent = userAgent;
 }
+
+AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
+    this.isDeviceKnown = isDeviceKnown;
+}
+
+AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
+    console.log("JS is reading readMobileEquipmentIdentity");
+    this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
+}
+
+AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
+    this.secretId = secretId.toString();
+    this.info1 = info1.toString();
+    this.info2 = info2.toString();
+    this.info3 = info3.toString();
+    this.info4 = info4.toString();
+};
 
 AdjustConfig.prototype.setDelayStart = function(delayStart) {
     this.delayStart = delayStart;
