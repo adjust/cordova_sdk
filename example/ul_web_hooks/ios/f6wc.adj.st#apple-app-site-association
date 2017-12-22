@@ -5,7 +5,8 @@
       {
         "appID": "<YOUR_TEAM_ID_FROM_MEMBER_CENTER>.com.adjust.examples",
         "paths": [
-          "/ulink/*"
+          "*",
+          "/"
         ]
       }
     ]
