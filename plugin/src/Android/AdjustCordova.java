@@ -120,6 +120,7 @@ public class AdjustCordova extends CordovaPlugin
     private static CallbackContext sessionTrackingFailedCallbackContext;
     private static CallbackContext deferredDeeplinkCallbackContext;
     private static CallbackContext getAdidCallbackContext;
+    private static CallbackContext getAmazonAdidCallbackContext;
     private static CallbackContext getAttributionCallbackContext;
 
     private boolean shouldLaunchDeeplink = false;
@@ -278,7 +279,15 @@ public class AdjustCordova extends CordovaPlugin
             
             return true;
         } else if (action.equals(COMMAND_GET_AMAZON_ADID)) {
-            Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+            AdjustCordova.getAmazonAdidCallbackContext = callbackContext;
+
+            if (null != getAmazonAdidCallbackContext) {
+                final String adid = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+
+                PluginResult pluginResult = new PluginResult(Status.OK, adid);
+                pluginResult.setKeepCallback(true);
+
+                AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
             
             return true;
         }
