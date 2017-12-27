@@ -80,12 +80,20 @@ var Adjust = {
         callCordova('setPushToken', pushToken);
     },
 
+    setReferrer: function(referrer) {
+        callCordova('setReferrer');
+    },
+
     isEnabled: function(callback) {
         callCordovaCallback('isEnabled', callback);
     },
 
     getGoogleAdId: function(callback) {
         callCordovaCallback('getGoogleAdId', callback);
+    },
+
+    getAmazonAdId: function(callback) {
+        callCordovaCallback('getAmazonAdId', callback);
     },
 
     getIdfa: function(callback) {
