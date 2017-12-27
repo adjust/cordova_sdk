@@ -54,6 +54,7 @@
         <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
+        <framework src="com.android.installreferrer:installreferrer:1.0" />
     </platform>
 
     <!-- iOS -->
