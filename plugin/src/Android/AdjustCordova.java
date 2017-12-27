@@ -112,7 +112,6 @@ public class AdjustCordova extends CordovaPlugin
     private static final String SESSION_FAILED_WILL_RETRY       = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE    = "jsonResponse";
 
-    private static CallbackContext googleAdIdCallbackContext;
     private static CallbackContext attributionCallbackContext;
     private static CallbackContext eventTrackingSucceededCallbackContext;
     private static CallbackContext eventTrackingFailedCallbackContext;
@@ -120,6 +119,8 @@ public class AdjustCordova extends CordovaPlugin
     private static CallbackContext sessionTrackingFailedCallbackContext;
     private static CallbackContext deferredDeeplinkCallbackContext;
     private static CallbackContext getAdidCallbackContext;
+    private static CallbackContext getIdfaCallbackContext;
+    private static CallbackContext getGoogleAdIdCallbackContext;
     private static CallbackContext getAmazonAdidCallbackContext;
     private static CallbackContext getAttributionCallbackContext;
 
@@ -156,10 +157,10 @@ public class AdjustCordova extends CordovaPlugin
 
             return true;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
-            AdjustCordova.googleAdIdCallbackContext = callbackContext;
+            AdjustCordova.getGoogleAdIdCallbackContext = callbackContext;
 
             // Google Ad Id callback
-            if (null != googleAdIdCallbackContext) {
+            if (null != getGoogleAdIdCallbackContext) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
 
@@ -168,9 +169,13 @@ public class AdjustCordova extends CordovaPlugin
             AdjustCordova.getAmazonAdidCallbackContext = callbackContext;
 
             if (null != getAmazonAdidCallbackContext) {
-                final String adid = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+                String amazonAdId = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
 
-                PluginResult pluginResult = new PluginResult(Status.OK, adid);
+                if (amazonAdId == null) {
+                    amazonAdId = "";
+                }
+
+                PluginResult pluginResult = new PluginResult(Status.OK, amazonAdId);
                 pluginResult.setKeepCallback(true);
 
                 AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
@@ -202,6 +207,18 @@ public class AdjustCordova extends CordovaPlugin
 
                 AdjustCordova.getAttributionCallbackContext.sendPluginResult(pluginResult);
             }
+
+            return true;
+        } else if (action.equals(COMMAND_GET_IDFA)) {
+            AdjustCordova.getIdfaCallbackContext = callbackContext;
+
+            // Send empty string for IDFA
+            final String idfa = "";
+
+            PluginResult pluginResult = new PluginResult(Status.OK, idfa);
+            pluginResult.setKeepCallback(true);
+
+            AdjustCordova.getIdfaCallbackContext.sendPluginResult(pluginResult);
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
@@ -244,8 +261,6 @@ public class AdjustCordova extends CordovaPlugin
             
             Adjust.appWillOpenUrl(uri);
             
-            return true;
-        } else if (action.equals(COMMAND_GET_IDFA)) {
             return true;
         } else if (action.equals(COMMAND_ADD_SESSION_CALLBACK_PARAMETER)) {
             final String key = args.getString(0);
@@ -590,14 +605,14 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onGoogleAdIdRead(String playAdId) {
-        if (AdjustCordova.googleAdIdCallbackContext == null) {
+        if (AdjustCordova.getGoogleAdIdCallbackContext == null) {
             return;
         }
 
         PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.googleAdIdCallbackContext.sendPluginResult(pluginResult);
+        AdjustCordova.getGoogleAdIdCallbackContext.sendPluginResult(pluginResult);
     }
 
     boolean isFieldValid(String field) {
