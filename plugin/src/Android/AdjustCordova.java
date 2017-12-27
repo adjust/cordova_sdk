@@ -288,6 +288,7 @@ public class AdjustCordova extends CordovaPlugin
                 pluginResult.setKeepCallback(true);
 
                 AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
+            }
             
             return true;
         }
