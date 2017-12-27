@@ -47,7 +47,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_INFO_2                         = "info2";
     private static final String KEY_INFO_3                         = "info3";
     private static final String KEY_INFO_4                         = "info4";
-    private static final String KEY_SET_DEVICE_KNOWN               = "isDeviceKnown";
+    private static final String KEY_DEVICE_KNOWN                   = "isDeviceKnown";
     private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
 
     private static final String COMMAND_CREATE                                   = "create";
@@ -340,7 +340,7 @@ public class AdjustCordova extends CordovaPlugin
 
         boolean isLogLevelSuppress = false;
         boolean eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
-        boolean isDeviceKnown = parameters.get(KEY_SET_DEVICE_KNOWN).toString() == "true" ? true : false;
+        boolean isDeviceKnown = parameters.get(KEY_DEVICE_KNOWN).toString() == "true" ? true : false;
         boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
         boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
         boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
