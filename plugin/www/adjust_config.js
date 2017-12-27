@@ -1,14 +1,16 @@
 function AdjustConfig(appToken, environment) {
     // iOS & Android
+    this.sdkPrefix = "cordova4.12.0";
+
     this.appToken = appToken;
     this.environment = environment;
 
     this.delayStart = 0.0;
-    this.sdkPrefix = "cordova4.12.0";
 
     this.logLevel = null;
     this.referrer = null;
     this.userAgent = null;
+    this.isDeviceKnown = null;
     this.defaultTracker = null;
     this.sendInBackground = null;
     this.shouldLaunchDeeplink = null;
@@ -29,7 +31,6 @@ function AdjustConfig(appToken, environment) {
 
     // Android only
     this.processName = null;
-    this.isDeviceKnown = null;
     this.readMobileEquipmentIdentity = null;
 };
 
@@ -113,7 +114,6 @@ AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
 }
 
 AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
-    console.log("JS is reading readMobileEquipmentIdentity");
     this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
 }
 
