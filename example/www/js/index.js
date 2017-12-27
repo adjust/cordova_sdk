@@ -1,5 +1,3 @@
-var isOffline = false;
-
 function handleOpenURL(url) {
     setTimeout(function() {
         Adjust.appWillOpenUrl(url);
@@ -13,19 +11,16 @@ var app = {
     },
 
     // Bind Event Listeners
-    //
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
 
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
         // Register for universal links
         if (device.platform == 'iOS') {
-            // universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
         }
 
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
@@ -36,7 +31,9 @@ var app = {
         adjustConfig.setSendInBackground(true);
 
         // adjustConfig.setEventBufferingEnabled(true);
-        // adjustConfig.setUserAgent("little_bunny_foo_foo");
+        adjustConfig.setDeviceKnown(true);
+        adjustConfig.setUserAgent("Custom Adjust User Agent");
+        adjustConfig.setReadMobileEquipmentIdentity(true);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("### Attribution callback received");
@@ -109,13 +106,9 @@ var app = {
         // Adjust.resetSessionCallbackParameters();
         // Adjust.resetSessionPartnerParameters();
 
-        Adjust.setPushToken("bunny_foo_foo");
-
         Adjust.create(adjustConfig);
 
         Adjust.sendFirstPackages();
-
-        Adjust.setPushToken("push_token_1");
     },
 
     didLaunchAppFromLink: function(eventData) {
@@ -135,96 +128,55 @@ var app = {
         var btnIsSdkEnabled = document.getElementById("btnIsSdkEnabled");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("g3mfiw");
-                    
-                    Adjust.trackEvent(adjustEvent);
-                } else {
-                    navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
-                }
-            });
+            var adjustEvent = new AdjustEvent("g3mfiw");
+            
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
         btnTrackRevenueEvent.addEventListener('click',function() { 
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("a4fd35");
-                    
-                    adjustEvent.setRevenue(0.01, null);
-                    // adjustEvent.setTransactionId("dummy_id");
-                    
-                    Adjust.trackEvent(adjustEvent);
-                } else {
-                    navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
-                }
-            });
+            var adjustEvent = new AdjustEvent("a4fd35");
+            
+            adjustEvent.setRevenue(0.01, "USD");
+            adjustEvent.setTransactionId("dummy_id");
+            
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
         btnTrackCallbackEvent.addEventListener('click',function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("34vgg9");
+            var adjustEvent = new AdjustEvent("34vgg9");
 
-                    adjustEvent.addCallbackParameter("key", "crap");
-                    adjustEvent.addCallbackParameter("x", "y");
-                    adjustEvent.addCallbackParameter("key", "lock");
+            adjustEvent.addCallbackParameter("key", "stuff");
+            adjustEvent.addCallbackParameter("x", "y");
+            adjustEvent.addCallbackParameter("key", "lock");
 
-                    Adjust.trackEvent(adjustEvent);
-                } else {
-                    navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
-                }
-            });
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
         btnTrackPartnerEvent.addEventListener('click',function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    var adjustEvent = new AdjustEvent("w788qs");
-                    
-                    // var crap = 67.42;
+            var adjustEvent = new AdjustEvent("w788qs");
 
-                    // adjustEvent.addPartnerParameter("foo", bar);
-                    adjustEvent.addPartnerParameter("x", "y");
-                    adjustEvent.addPartnerParameter("foo", "foot");
-                    adjustEvent.addPartnerParameter("x", "z");
-                    
-                    Adjust.trackEvent(adjustEvent);
-                } else {
-                    navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
-                }
-            });
+            adjustEvent.addPartnerParameter("foo", bar);
+            adjustEvent.addPartnerParameter("x", "y");
+            adjustEvent.addPartnerParameter("foo", "foot");
+            adjustEvent.addPartnerParameter("x", "z");
+            
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
-        btnEnableDisableOfflineMode.addEventListener('click', function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    if(!isOffline) {
-                        isOffline = true;
-                        Adjust.setOfflineMode(isOffline);
-                        navigator.notification.alert('SDK is offline', null, 'SDK', 'OK');
-                    } else {
-                        isOffline = false;
-                        Adjust.setOfflineMode(isOffline);
-                        navigator.notification.alert('SDK is online', null, 'SDK', 'OK');
-                    }
-                } else {
-                    navigator.notification.alert('SDK is disabled.', null, 'Notification', 'OK');
-                }
-            });
+        btnEnableOfflineMode.addEventListener('click', function() {
+            Adjust.setOfflineMode(true);
         }, false);
 
-        btnEnableDisableSdk.addEventListener('click', function() {
-            Adjust.isEnabled(function(isEnabled) {
-                if (isEnabled) {
-                    Adjust.setEnabled(false);
-                    navigator.notification.alert('SDK is disabled', null, 'SDK', 'OK');
-                } else {
-                    Adjust.setEnabled(true);
-                    Adjust.setOfflineMode(false);
-                    navigator.notification.alert('SDK is enabled', null, 'SDK', 'OK');
-                }
-            });
+        btnDisableOfflineMode.addEventListener('click', function() {
+            Adjust.setOfflineMode(false);
+        }, false);
+
+        btnEnableSdk.addEventListener('click', function() {
+            Adjust.setEnabled(true);
+        }, false);
+
+        btnDisableSdk.addEventListener('click', function() {
+            Adjust.setEnabled(false);
         }, false);
 
         btnIsSdkEnabled.addEventListener('click', function() {
@@ -238,29 +190,31 @@ var app = {
         }, false);
 
         btnGetIds.addEventListener('click', function() {
-            Adjust.isEnabled(function(isEnabled) {
-                Adjust.getIdfa(function(idfa) {
-                    console.log("IDFA = " + idfa);
-                });
+            Adjust.getIdfa(function(idfa) {
+                console.log("IDFA = " + idfa);
+            });
 
-                Adjust.getGoogleAdId(function(gpsAdId) {
-                    console.log("GPS Ad Id = " + gpsAdId);
-                });
+            Adjust.getGoogleAdId(function(gpsAdId) {
+                console.log("Google Ad Id = " + gpsAdId);
+            });
 
-                Adjust.getAdid(function(adid) {
-                    console.log("Adid = " + adid);
-                });
+            Adjust.getAmazonAdId(function(gpsAdId) {
+                console.log("Amazon Ad Id = " + gpsAdId);
+            });
 
-                Adjust.getAttribution(function(attribution) {
-                    console.log("Tracker token = " + attribution.trackerToken);
-                    console.log("Tracker name = " + attribution.trackerName);
-                    console.log("Network = " + attribution.network);
-                    console.log("Campaign = " + attribution.campaign);
-                    console.log("Adgroup = " + attribution.adgroup);
-                    console.log("Creative = " + attribution.creative);
-                    console.log("Click label = " + attribution.clickLabel);
-                    console.log("Adid = " + attribution.adid);
-                });
+            Adjust.getAdid(function(adid) {
+                console.log("Adid = " + adid);
+            });
+
+            Adjust.getAttribution(function(attribution) {
+                console.log("Tracker token = " + attribution.trackerToken);
+                console.log("Tracker name = " + attribution.trackerName);
+                console.log("Network = " + attribution.network);
+                console.log("Campaign = " + attribution.campaign);
+                console.log("Adgroup = " + attribution.adgroup);
+                console.log("Creative = " + attribution.creative);
+                console.log("Click label = " + attribution.clickLabel);
+                console.log("Adid = " + attribution.adid);
             });
         }, false);
     }
