@@ -30,6 +30,12 @@
 #define KEY_SHOULD_LAUNCH_DEEPLINK  @"shouldLaunchDeeplink"
 #define KEY_SEND_IN_BACKGROUND      @"sendInBackground"
 #define KEY_DELAY_START             @"delayStart"
+#define KEY_IS_DEVICE_KNOWN         @"isDeviceKnown"
+#define KEY_SECRET_ID               @"secretId"
+#define KEY_INFO_1                  @"info1"
+#define KEY_INFO_2                  @"info2"
+#define KEY_INFO_3                  @"info3"
+#define KEY_INFO_4                  @"info4"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -55,16 +61,22 @@
                                                           options:0
                                                             error:NULL];
 
-    NSString *appToken = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
-    NSString *environment = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
-    NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
-    NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
-    NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
+    NSString *appToken              = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
+    NSString *environment           = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
+    NSString *logLevel              = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
+    NSString *sdkPrefix             = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
+    NSString *defaultTracker        = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
-    NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
-    NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
-    NSString *userAgent = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
-    NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
+    NSNumber *sendInBackground      = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
+    NSNumber *shouldLaunchDeeplink  = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
+    NSString *userAgent             = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
+    NSNumber *delayStart            = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
+    NSString *secretId              = [[jsonObject valueForKey:KEY_SECRET_ID] objectAtIndex:0];
+    NSString *info1                 = [[jsonObject valueForKey:KEY_INFO_1] objectAtIndex:0];
+    NSString *info2                 = [[jsonObject valueForKey:KEY_INFO_2] objectAtIndex:0];
+    NSString *info3                 = [[jsonObject valueForKey:KEY_INFO_3] objectAtIndex:0];
+    NSString *info4                 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
+    NSNumber *isDeviceKnown         = [[jsonObject valueForKey:KEY_IS_DEVICE_KNOWN] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = false;
 
@@ -146,6 +158,31 @@
     // Delay start
     if ([self isFieldValid:delayStart]) {
         [adjustConfig setDelayStart:[delayStart doubleValue]];
+    }
+
+    // App Secret
+    if ([self isFieldValid:secretId_str]
+        && [self isFieldValid:info1_str]
+        && [self isFieldValid:info2_str]
+        && [self isFieldValid:info3_str]
+        && [self isFieldValid:info4_str]
+        ) {
+        NSNumber *secretId = [NSNumber numberWithLongLong: [secretId_str longLongValue]];
+        NSNumber *info1 = [NSNumber numberWithLongLong: [info1_str longLongValue]];
+        NSNumber *info2 = [NSNumber numberWithLongLong: [info2_str longLongValue]];
+        NSNumber *info3 = [NSNumber numberWithLongLong: [info3_str longLongValue]];
+        NSNumber *info4 = [NSNumber numberWithLongLong: [info4_str longLongValue]];
+
+        [adjustConfig setAppSecret:secretId.unsignedIntegerValue
+                            info1:info1.unsignedIntegerValue
+                             info2:info2.unsignedIntegerValue
+                             info3:info3.unsignedIntegerValue
+                             info4:info4.unsignedIntegerValue];
+    }
+
+    // is device known
+    if ([self isFieldValid:isDeviceKnown]) {
+        [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
     }
 
     [Adjust appDidLaunch:adjustConfig];
