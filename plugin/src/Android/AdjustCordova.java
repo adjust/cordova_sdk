@@ -69,6 +69,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_GET_ADID                                 = "getAdid";
     private static final String COMMAND_GET_ATTRIBUTION                          = "getAttribution";
     private static final String COMMAND_GET_GOOGLE_AD_ID                         = "getGoogleAdId";
+    private static final String COMMAND_GET_AMAZON_AD_ID                         = "getAmazonAdId";
     private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER           = "addSessionCallbackParameter";
     private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER        = "removeSessionCallbackParameter";
     private static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS        = "resetSessionCallbackParameters";
@@ -76,8 +77,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER         = "removeSessionPartnerParameter";
     private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
     private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
-    private static final String COMMAND_REFERRER                                 = "setReferrer";
-    private static final String COMMAND_GET_AMAZON_ADID                                 = "getAmazonAdId";
+    private static final String COMMAND_SET_REFERRER                             = "setReferrer";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN   = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME    = "trackerName";
@@ -161,6 +161,19 @@ public class AdjustCordova extends CordovaPlugin
             // Google Ad Id callback
             if (null != googleAdIdCallbackContext) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
+            }
+
+            return true;
+        } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
+            AdjustCordova.getAmazonAdidCallbackContext = callbackContext;
+
+            if (null != getAmazonAdidCallbackContext) {
+                final String adid = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+
+                PluginResult pluginResult = new PluginResult(Status.OK, adid);
+                pluginResult.setKeepCallback(true);
+
+                AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
             }
 
             return true;
@@ -272,23 +285,10 @@ public class AdjustCordova extends CordovaPlugin
             Adjust.sendFirstPackages();
             
             return true;
-        } else if (action.equals(COMMAND_REFERRER)) {
+        } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
-            
-            return true;
-        } else if (action.equals(COMMAND_GET_AMAZON_ADID)) {
-            AdjustCordova.getAmazonAdidCallbackContext = callbackContext;
-
-            if (null != getAmazonAdidCallbackContext) {
-                final String adid = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
-
-                PluginResult pluginResult = new PluginResult(Status.OK, adid);
-                pluginResult.setKeepCallback(true);
-
-                AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
-            }
             
             return true;
         }
@@ -307,30 +307,28 @@ public class AdjustCordova extends CordovaPlugin
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
-        String appToken              = parameters.get(KEY_APP_TOKEN).toString();
-        String environment           = parameters.get(KEY_ENVIRONMENT).toString();
-        String defaultTracker        = parameters.get(KEY_DEFAULT_TRACKER).toString();
-        String processName           = parameters.get(KEY_PROCESS_NAME).toString();
-        String sdkPrefix             = parameters.get(KEY_SDK_PREFIX).toString();
-
-        String logLevel              = parameters.get(KEY_LOG_LEVEL).toString();
-        String userAgent             = parameters.get(KEY_USER_AGENT).toString();
-
-        String secretId              = parameters.get(KEY_SECRET_ID).toString();
-        String info1                 = parameters.get(KEY_INFO_1).toString();
-        String info2                 = parameters.get(KEY_INFO_2).toString();
-        String info3                 = parameters.get(KEY_INFO_3).toString();
-        String info4                 = parameters.get(KEY_INFO_4).toString();
-
-        boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
-        Log.d("Bridge", "bridge is reading : " + readMobileEquipmentIdentity);
-        boolean eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
-        boolean isDeviceKnown        = parameters.get(KEY_SET_DEVICE_KNOWN).toString()         == "true" ? true : false;
-        boolean sendInBackground     = parameters.get(KEY_SEND_IN_BACKGROUND).toString()       == "true" ? true : false;
-        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString()   == "true" ? true : false;
-        boolean isLogLevelSuppress   = false;
-
+        String appToken = parameters.get(KEY_APP_TOKEN).toString();
+        String environment = parameters.get(KEY_ENVIRONMENT).toString();
+        String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
+        String processName = parameters.get(KEY_PROCESS_NAME).toString();
+        String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
         String delayStart = parameters.get(KEY_DELAY_START).toString();
+
+        String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
+        String userAgent = parameters.get(KEY_USER_AGENT).toString();
+
+        String secretId = parameters.get(KEY_SECRET_ID).toString();
+        String info1 = parameters.get(KEY_INFO_1).toString();
+        String info2 = parameters.get(KEY_INFO_2).toString();
+        String info3 = parameters.get(KEY_INFO_3).toString();
+        String info4 = parameters.get(KEY_INFO_4).toString();
+
+        boolean isLogLevelSuppress = false;
+        boolean eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
+        boolean isDeviceKnown = parameters.get(KEY_SET_DEVICE_KNOWN).toString() == "true" ? true : false;
+        boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
+        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+        boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -384,26 +382,15 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // App secret
-        if (isFieldValid(secretId)
-                && isFieldValid(info1)
-                && isFieldValid(info2)
-                && isFieldValid(info3)
-                && isFieldValid(info4)
-                ) {
+        if (isFieldValid(secretId) && isFieldValid(info1) && isFieldValid(info2) && isFieldValid(info3) && isFieldValid(info4)) {
             try {
                 long lSecretId = Long.parseLong(secretId, 10);
-                long lInfo1    = Long.parseLong(info1, 10);
-                long lInfo2    = Long.parseLong(info2, 10);
-                long lInfo3    = Long.parseLong(info3, 10);
-                long lInfo4    = Long.parseLong(info4, 10);
+                long lInfo1 = Long.parseLong(info1, 10);
+                long lInfo2 = Long.parseLong(info2, 10);
+                long lInfo3 = Long.parseLong(info3, 10);
+                long lInfo4 = Long.parseLong(info4, 10);
 
-                adjustConfig.setAppSecret(
-                        lSecretId, 
-                        lInfo1, 
-                        lInfo2, 
-                        lInfo3, 
-                        lInfo4
-                );
+                adjustConfig.setAppSecret(lSecretId, lInfo1, lInfo2, lInfo3, lInfo4);
             } catch(NumberFormatException ignored) {}
         }
         
@@ -488,7 +475,8 @@ public class AdjustCordova extends CordovaPlugin
         if (!adjustEvent.isValid()) {
             return;
         }
-        
+
+        // Revenue and currency
         if (isFieldValid(revenue)) {
             try {
                 double revenueValue = Double.parseDouble(revenue);
@@ -500,6 +488,7 @@ public class AdjustCordova extends CordovaPlugin
             }
         }
 
+        // Callback parameters
         for (int i = 0; i < callbackParameters.length; i +=2) {
             String key = callbackParameters[i];
             String value = callbackParameters[i+1];
@@ -507,6 +496,7 @@ public class AdjustCordova extends CordovaPlugin
             adjustEvent.addCallbackParameter(key, value);
         }
 
+        // Partner parameters
         for (int i = 0; i < partnerParameters.length; i += 2) {
             String key = partnerParameters[i];
             String value = partnerParameters[i+1];
@@ -514,6 +504,7 @@ public class AdjustCordova extends CordovaPlugin
             adjustEvent.addPartnerParameter(key, value);
         }
 
+        // Order ID
         if (isFieldValid(transactionId)) {
             adjustEvent.setOrderId(transactionId);
         }
