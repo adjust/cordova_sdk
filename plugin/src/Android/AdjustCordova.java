@@ -477,10 +477,9 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // Revenue and currency
-        if (isFieldValid(revenue)) {
+        if (isFieldValid(revenue) && isFieldValid(currency)) {
             try {
                 double revenueValue = Double.parseDouble(revenue);
-
                 adjustEvent.setRevenue(revenueValue, currency);
             } catch (Exception e) {
                 ILogger logger = AdjustFactory.getLogger();
