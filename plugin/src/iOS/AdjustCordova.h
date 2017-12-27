@@ -24,6 +24,7 @@
 - (void)getAdid:(CDVInvokedUrlCommand *)command;
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
+- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
 
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;

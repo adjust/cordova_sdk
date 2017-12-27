@@ -310,6 +310,8 @@
 
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {}
 
+- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {}
+
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command {
     [Adjust sendFirstPackages];
 }
