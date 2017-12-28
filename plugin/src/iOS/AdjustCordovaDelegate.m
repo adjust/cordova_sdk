@@ -1,9 +1,9 @@
 //
 //  AdjustCordovaDelegate.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by uerceg on 11/16/16.
-//  Copyright (c) 2012-2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
+//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -92,19 +92,17 @@
     }
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"trackerToken" value:attribution.trackerToken];
-    [self addValueOrEmpty:dictionary key:@"trackerName" value:attribution.trackerName];
-    [self addValueOrEmpty:dictionary key:@"network" value:attribution.network];
-    [self addValueOrEmpty:dictionary key:@"campaign" value:attribution.campaign];
-    [self addValueOrEmpty:dictionary key:@"creative" value:attribution.creative];
-    [self addValueOrEmpty:dictionary key:@"adgroup" value:attribution.adgroup];
-    [self addValueOrEmpty:dictionary key:@"clickLabel" value:attribution.clickLabel];
-    [self addValueOrEmpty:dictionary key:@"adid" value:attribution.adid];
+    [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.network withKey:@"network" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.campaign withKey:@"campaign" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionCallbackId];
 }
 
@@ -114,16 +112,14 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"message" value:eventSuccessResponseData.message];
-    [self addValueOrEmpty:dictionary key:@"timestamp" value:eventSuccessResponseData.timeStamp];
-    [self addValueOrEmpty:dictionary key:@"adid" value:eventSuccessResponseData.adid];
-    [self addValueOrEmpty:dictionary key:@"eventToken" value:eventSuccessResponseData.eventToken];
-    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:eventSuccessResponseData.jsonResponse];
+    [self addValueOrEmpty:eventSuccessResponseData.message withKey:@"message" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventSucceededCallbackId];
 }
 
@@ -133,17 +129,15 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"message" value:eventFailureResponseData.message];
-    [self addValueOrEmpty:dictionary key:@"timestamp" value:eventFailureResponseData.timeStamp];
-    [self addValueOrEmpty:dictionary key:@"adid" value:eventFailureResponseData.adid];
-    [self addValueOrEmpty:dictionary key:@"eventToken" value:eventFailureResponseData.eventToken];
+    [self addValueOrEmpty:eventFailureResponseData.message withKey:@"message" toDictionary:dictionary];
+    [self addValueOrEmpty:eventFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:eventFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:eventFailureResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:eventFailureResponseData.jsonResponse];
+    [self addValueOrEmpty:eventFailureResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventFailedCallbackId];
 }
 
@@ -153,15 +147,13 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"message" value:sessionSuccessResponseData.message];
-    [self addValueOrEmpty:dictionary key:@"timestamp" value:sessionSuccessResponseData.timeStamp];
-    [self addValueOrEmpty:dictionary key:@"adid" value:sessionSuccessResponseData.adid];
-    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:sessionSuccessResponseData.jsonResponse];
+    [self addValueOrEmpty:sessionSuccessResponseData.message withKey:@"message" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionSuccessResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionSucceededCallbackId];
 }
 
@@ -171,25 +163,21 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"message" value:sessionFailureResponseData.message];
-    [self addValueOrEmpty:dictionary key:@"timestamp" value:sessionFailureResponseData.timeStamp];
-    [self addValueOrEmpty:dictionary key:@"adid" value:sessionFailureResponseData.adid];
+    [self addValueOrEmpty:sessionFailureResponseData.message withKey:@"message" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-    [self addValueOrEmpty:dictionary key:@"jsonResponse" value:sessionFailureResponseData.jsonResponse];
+    [self addValueOrEmpty:sessionFailureResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionFailedCallbackId];
 }
 
 - (BOOL)adjustDeeplinkResponseWannabe:(NSURL *)deeplink {
     NSString *path = [deeplink absoluteString];
-
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_deferredDeeplinkCallbackId];
 
     return _shouldLaunchDeferredDeeplink;
@@ -217,9 +205,9 @@
     }
 }
 
-- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
-                    key:(NSString *)key
-                  value:(NSObject *)value {
+- (void)addValueOrEmpty:(NSObject *)value
+                withKey:(NSString *)key
+           toDictionary:(NSMutableDictionary *)dictionary {
     if (nil != value) {
         [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
     } else {

@@ -1,9 +1,9 @@
 //
 //  AdjustCordova.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 04/03/14.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
+//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDVPluginResult.h>
@@ -30,7 +30,7 @@
 #define KEY_SHOULD_LAUNCH_DEEPLINK  @"shouldLaunchDeeplink"
 #define KEY_SEND_IN_BACKGROUND      @"sendInBackground"
 #define KEY_DELAY_START             @"delayStart"
-#define KEY_IS_DEVICE_KNOWN         @"isDeviceKnown"
+#define KEY_DEVICE_KNOWN            @"isDeviceKnown"
 #define KEY_SECRET_ID               @"secretId"
 #define KEY_INFO_1                  @"info1"
 #define KEY_INFO_2                  @"info2"
@@ -46,6 +46,8 @@
     NSString *deferredDeeplinkCallbackId;
 }
 
+#pragma mark - Object lifecycle methods
+
 - (void)pluginInitialize {
     attributionCallbackId = nil;
     eventFailedCallbackId = nil;
@@ -54,6 +56,8 @@
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
 }
+
+#pragma mark - Public methods
 
 - (void)create:(CDVInvokedUrlCommand *)command {
     NSString *arguments = [command.arguments objectAtIndex:0];
@@ -66,32 +70,37 @@
     NSString *logLevel              = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
     NSString *sdkPrefix             = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     NSString *defaultTracker        = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
-    NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
-    NSNumber *sendInBackground      = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
-    NSNumber *shouldLaunchDeeplink  = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
+
     NSString *userAgent             = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
-    NSNumber *delayStart            = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSString *secretId              = [[jsonObject valueForKey:KEY_SECRET_ID] objectAtIndex:0];
     NSString *info1                 = [[jsonObject valueForKey:KEY_INFO_1] objectAtIndex:0];
     NSString *info2                 = [[jsonObject valueForKey:KEY_INFO_2] objectAtIndex:0];
     NSString *info3                 = [[jsonObject valueForKey:KEY_INFO_3] objectAtIndex:0];
     NSString *info4                 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
-    NSNumber *isDeviceKnown         = [[jsonObject valueForKey:KEY_IS_DEVICE_KNOWN] objectAtIndex:0];
+
+    NSNumber *delayStart            = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
+    NSNumber *isDeviceKnown         = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
+    NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
+    NSNumber *sendInBackground      = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
+    NSNumber *shouldLaunchDeeplink  = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = false;
 
-    // Log level
+    // Check for SUPPRESS log level
     if ([self isFieldValid:logLevel]) {
         if ([ADJLogger logLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
             allowSuppressLogLevel = true;
         }
     }
 
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken
+                                                environment:environment
+                                      allowSuppressLogLevel:allowSuppressLogLevel];
 
     if (![adjustConfig isValid]) {
         return;
     }
+
     // Log level
     if ([self isFieldValid:logLevel]) {
         [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
@@ -112,39 +121,6 @@
         [adjustConfig setDefaultTracker:defaultTracker];
     }
 
-    BOOL isAttributionCallbackImplemented = attributionCallbackId != nil ? YES : NO;
-    BOOL isEventSucceededCallbackImplemented = eventSucceededCallbackId != nil ? YES : NO;
-    BOOL isEventFailedCallbackImplemented = eventFailedCallbackId != nil ? YES : NO;
-    BOOL isSessionSucceededCallbackImplemented = sessionSucceededCallbackId != nil ? YES : NO;
-    BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
-    BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
-    BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
-
-    // Attribution delegate & other delegates
-    if (isAttributionCallbackImplemented ||
-        isEventSucceededCallbackImplemented ||
-        isEventFailedCallbackImplemented ||
-        isSessionSucceededCallbackImplemented ||
-        isSessionFailedCallbackImplemented ||
-        isDeferredDeeplinkCallbackImplemented) 
-    {
-        [adjustConfig setDelegate:
-            [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
-                                                        eventSucceededCallback:isEventSucceededCallbackImplemented
-                                                           eventFailedCallback:isEventFailedCallbackImplemented
-                                                      sessionSucceededCallback:isSessionSucceededCallbackImplemented
-                                                         sessionFailedCallback:isSessionFailedCallbackImplemented
-                                                      deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
-                                                      andAttributionCallbackId:attributionCallbackId
-                                                      eventSucceededCallbackId:eventSucceededCallbackId
-                                                         eventFailedCallbackId:eventFailedCallbackId
-                                                    sessionSucceededCallbackId:sessionSucceededCallbackId
-                                                       sessionFailedCallbackId:sessionFailedCallbackId
-                                                    deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
-                                                  shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
-                                                           withCommandDelegate:self.commandDelegate]];
-    }
-
     // Send in background
     if ([self isFieldValid:sendInBackground]) {
         [adjustConfig setSendInBackground:[sendInBackground boolValue]];
@@ -160,29 +136,54 @@
         [adjustConfig setDelayStart:[delayStart doubleValue]];
     }
 
-    // App Secret
-    if ([self isFieldValid:secretId_str]
-        && [self isFieldValid:info1_str]
-        && [self isFieldValid:info2_str]
-        && [self isFieldValid:info3_str]
-        && [self isFieldValid:info4_str]
-        ) {
-        NSNumber *secretId = [NSNumber numberWithLongLong: [secretId_str longLongValue]];
-        NSNumber *info1 = [NSNumber numberWithLongLong: [info1_str longLongValue]];
-        NSNumber *info2 = [NSNumber numberWithLongLong: [info2_str longLongValue]];
-        NSNumber *info3 = [NSNumber numberWithLongLong: [info3_str longLongValue]];
-        NSNumber *info4 = [NSNumber numberWithLongLong: [info4_str longLongValue]];
-
-        [adjustConfig setAppSecret:secretId.unsignedIntegerValue
-                            info1:info1.unsignedIntegerValue
-                             info2:info2.unsignedIntegerValue
-                             info3:info3.unsignedIntegerValue
-                             info4:info4.unsignedIntegerValue];
-    }
-
-    // is device known
+    // Device known
     if ([self isFieldValid:isDeviceKnown]) {
         [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
+    }
+
+    // App Secret
+    if ([self isFieldValid:secretId]
+        && [self isFieldValid:info1]
+        && [self isFieldValid:info2]
+        && [self isFieldValid:info3]
+        && [self isFieldValid:info4]) {
+        [adjustConfig setAppSecret:[[NSNumber numberWithLongLong:[secretId longLongValue]] unsignedIntegerValue]
+                             info1:[[NSNumber numberWithLongLong:[info1 longLongValue]] unsignedIntegerValue]
+                             info2:[[NSNumber numberWithLongLong:[info2 longLongValue]] unsignedIntegerValue]
+                             info3:[[NSNumber numberWithLongLong:[info3 longLongValue]] unsignedIntegerValue]
+                             info4:[[NSNumber numberWithLongLong:[info4 longLongValue]] unsignedIntegerValue]];
+    }
+
+    BOOL isAttributionCallbackImplemented = attributionCallbackId != nil ? YES : NO;
+    BOOL isEventSucceededCallbackImplemented = eventSucceededCallbackId != nil ? YES : NO;
+    BOOL isEventFailedCallbackImplemented = eventFailedCallbackId != nil ? YES : NO;
+    BOOL isSessionSucceededCallbackImplemented = sessionSucceededCallbackId != nil ? YES : NO;
+    BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
+    BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
+    BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
+
+    // Attribution delegate & other delegates
+    if (isAttributionCallbackImplemented
+        || isEventSucceededCallbackImplemented
+        || isEventFailedCallbackImplemented
+        || isSessionSucceededCallbackImplemented
+        || isSessionFailedCallbackImplemented
+        || isDeferredDeeplinkCallbackImplemented) {
+        [adjustConfig setDelegate:
+            [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
+                                                        eventSucceededCallback:isEventSucceededCallbackImplemented
+                                                           eventFailedCallback:isEventFailedCallbackImplemented
+                                                      sessionSucceededCallback:isSessionSucceededCallbackImplemented
+                                                         sessionFailedCallback:isSessionFailedCallbackImplemented
+                                                      deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
+                                                      andAttributionCallbackId:attributionCallbackId
+                                                      eventSucceededCallbackId:eventSucceededCallbackId
+                                                         eventFailedCallbackId:eventFailedCallbackId
+                                                    sessionSucceededCallbackId:sessionSucceededCallbackId
+                                                       sessionFailedCallbackId:sessionFailedCallbackId
+                                                    deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
+                                                  shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
+                                                           withCommandDelegate:self.commandDelegate]];
     }
 
     [Adjust appDidLaunch:adjustConfig];
@@ -219,12 +220,14 @@
         return;
     }
 
+    // Revenue and currency
     if ([self isFieldValid:revenue]) {
         double revenueValue = [revenue doubleValue];
 
         [adjustEvent setRevenue:revenueValue currency:currency];
     }
 
+    // Callback parameters
     for (int i = 0; i < [callbackParameters count]; i += 2) {
         NSString *key = [callbackParameters objectAtIndex:i];
         NSObject *value = [callbackParameters objectAtIndex:(i+1)];
@@ -232,6 +235,7 @@
         [adjustEvent addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
+    // Partner parameters
     for (int i = 0; i < [partnerParameters count]; i += 2) {
         NSString *key = [partnerParameters objectAtIndex:i];
         NSObject *value = [partnerParameters objectAtIndex:(i+1)];
@@ -239,6 +243,8 @@
         [adjustEvent addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
+    // Deprecated
+    // Transaction ID and receipt
     BOOL isTransactionIdSet = false;
 
     if ([self isFieldValid:isReceiptSet]) {
@@ -272,6 +278,16 @@
     [Adjust setOfflineMode:[isEnabledNumber boolValue]];
 }
 
+- (void)setPushToken:(CDVInvokedUrlCommand *)command {
+    NSString *token = [command argumentAtIndex:0 withDefault:nil];
+
+    if (!([self isFieldValid:token])) {
+        return;
+    }
+
+    [Adjust setDeviceToken:[token dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command {
     NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
 
@@ -279,24 +295,29 @@
         return;
     }
 
-    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url;
+
+    if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
+        url = [NSURL URLWithString:[urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }
+#pragma clang diagnostic pop
 
     [Adjust appWillOpenUrl:url];
 }
 
 - (void)getIdfa:(CDVInvokedUrlCommand *)command {
     NSString *idfa = [Adjust idfa];
-
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
-
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)getAdid:(CDVInvokedUrlCommand *)command {
     NSString *adid = [Adjust adid];
-
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
-
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -308,18 +329,16 @@
     }
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-    [self addValueOrEmpty:dictionary key:@"trackerToken" value:attribution.trackerToken];
-    [self addValueOrEmpty:dictionary key:@"trackerName" value:attribution.trackerName];
-    [self addValueOrEmpty:dictionary key:@"network" value:attribution.network];
-    [self addValueOrEmpty:dictionary key:@"campaign" value:attribution.campaign];
-    [self addValueOrEmpty:dictionary key:@"creative" value:attribution.creative];
-    [self addValueOrEmpty:dictionary key:@"adgroup" value:attribution.adgroup];
-    [self addValueOrEmpty:dictionary key:@"clickLabel" value:attribution.clickLabel];
-    [self addValueOrEmpty:dictionary key:@"adid" value:attribution.adid];
+    [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.network withKey:@"network" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.campaign withKey:@"campaign" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
-
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -335,19 +354,9 @@
 
 - (void)isEnabled:(CDVInvokedUrlCommand *)command {
     BOOL isEnabled = [Adjust isEnabled];
-
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isEnabled];
-
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
-
-- (void)onPause:(CDVInvokedUrlCommand *)command {}
-
-- (void)onResume:(CDVInvokedUrlCommand *)command {}
-
-- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {}
-
-- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {}
 
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command {
     [Adjust sendFirstPackages];
@@ -427,23 +436,34 @@
     [Adjust resetSessionPartnerParameters];
 }
 
-- (void)setPushToken:(CDVInvokedUrlCommand *)command {
-    NSString *token = [command argumentAtIndex:0 withDefault:nil];
+// Android methods
+- (void)onPause:(CDVInvokedUrlCommand *)command {}
 
-    if (!([self isFieldValid:token])) {
-        return;
-    }
+- (void)onResume:(CDVInvokedUrlCommand *)command {}
 
-    [Adjust setDeviceToken:[token dataUsingEncoding:NSUTF8StringEncoding]];
+- (void)setReferrer:(CDVInvokedUrlCommand *)command {}
+
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
+    NSString *googleAdId = @"";
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:googleAdId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
+
+- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {
+    NSString *amazonAdId = @"";
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:amazonAdId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+#pragma mark - Private & helper methods
 
 - (BOOL)isFieldValid:(NSObject *)field {
     return field != nil && ![field isKindOfClass:[NSNull class]];
 }
 
-- (void)addValueOrEmpty:(NSMutableDictionary *)dictionary
-                    key:(NSString *)key
-                  value:(NSObject *)value {
+- (void)addValueOrEmpty:(NSObject *)value
+                withKey:(NSString *)key
+           toDictionary:(NSMutableDictionary *)dictionary {
     if (nil != value) {
         [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
     } else {

@@ -1,9 +1,9 @@
 //
 //  AdjustCordovaDelegate.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by uerceg on 11/16/16.
-//  Copyright (c) 2012-2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
+//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>
