@@ -1,0 +1,10 @@
+{
+    "name": "com.adjust.examples",
+    "version": "1.0.0",
+    "displayName": "HelloCordova",
+    "cordova": {
+        "platforms": [],
+        "plugins": {}
+    },
+    "dependencies": {}
+}
