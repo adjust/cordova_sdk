@@ -1,4 +1,4 @@
-### Version 4.12.0 (28th December 2017)
+### Version 4.12.0 (29th December 2017)
 #### Native changes:
 - **[iOS]** https://github.com/adjust/ios_sdk/blob/master/CHANGELOG.md#version-4120-13th-december-2017
 - **[iOS]** https://github.com/adjust/ios_sdk/blob/master/CHANGELOG.md#version-4121-13th-december-2017
