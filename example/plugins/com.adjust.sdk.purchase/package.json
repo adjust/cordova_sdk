@@ -1,0 +1,31 @@
+{
+    "version": "1.0.0",
+    "name": "com.adjust.sdk.purchase",
+    "cordova_name": "Adjust Purchase SDK Cordova Plugin",
+    "description": "Cordova plugin for the Adjust Purchase SDK 1.0.0",
+    "license": "MIT License",
+    "platforms": [
+        "ios",
+        "android"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        },
+        {
+            "name": "cordova-ios",
+            "version": ">=3.0.0"
+        },
+        {
+            "name": "cordova-android",
+            "version": ">=4.0.0"
+        }
+    ],
+    "keywords": [
+        "adjust",
+        "purchase",
+        "sdk",
+        "ecosystem:cordova"
+    ]
+}

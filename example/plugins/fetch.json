@@ -1,1 +1,10 @@
-{}
+{
+  "com.adjust.sdk.purchase": {
+    "source": {
+      "type": "registry",
+      "id": "com.adjust.sdk.purchase"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
+}

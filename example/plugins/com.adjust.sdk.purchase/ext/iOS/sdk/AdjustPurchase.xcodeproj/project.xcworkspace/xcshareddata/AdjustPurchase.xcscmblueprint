@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "7E50917677E7A57DEE2193C464B01201A9FD5222",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7E50917677E7A57DEE2193C464B01201A9FD5222" : 0,
+    "8092C8C7FB5C3FF769ACA4A4D09F354B1F39375F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "EE17FCAE-3E20-4754-919D-F59C34CA2C33",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7E50917677E7A57DEE2193C464B01201A9FD5222" : "ios_purchase_sdk\/",
+    "8092C8C7FB5C3FF769ACA4A4D09F354B1F39375F" : "ios_purchase_sdk\/OpenSSL\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AdjustPurchase",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "AdjustPurchase.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:adjust\/ios_purchase_sdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7E50917677E7A57DEE2193C464B01201A9FD5222"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:x2on\/OpenSSL-for-iPhone.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8092C8C7FB5C3FF769ACA4A4D09F354B1F39375F"
+    }
+  ]
+}

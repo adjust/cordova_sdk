@@ -1,0 +1,3 @@
+[submodule "ext/OpenSSL"]
+	path = ext/OpenSSL
+	url = git@github.com:x2on/OpenSSL-for-iPhone.git

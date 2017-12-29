@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.adjust.sdk.purchase"
+    version="1.0.0">
+
+    <name>AdjustPurchase</name>
+    <description>Adjust purchase plugin for Cordova</description>
+    <license>MIT License</license>
+    <keywords>adjust</keywords>
+    <author>adjust</author>
+
+    <engines>
+        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-ios" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/adjust_purchase.js" name="AdjustPurchase">
+        <clobbers target="AdjustPurchase" />
+    </js-module>
+    <js-module src="www/adjust_purchase_config.js" name="ADJPConfig">
+        <clobbers target="ADJPConfig" />
+    </js-module>
+
+    <!-- Android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AdjustPurchase">
+                <param name="android-package" value="com.adjust.sdk.purchase.AdjustPurchaseCordova"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/Android/AdjustPurchaseCordova.java" target-dir="src/com/adjust/sdk/purchase" />
+        <source-file src="src/Android/adjust-purchase-android.jar" target-dir="libs" />
+    </platform>
+
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AdjustPurchase">
+                <param name="ios-package" value="AdjustPurchaseCordova"/>
+                <param name="onload" value="true" />
+          </feature>
+        </config-file>
+
+        <header-file src="src/iOS/AdjustPurchaseCordova.h" />
+        <source-file src="src/iOS/AdjustPurchaseCordova.m" />
+
+        <framework src="src/iOS/AdjustPurchaseSdk.framework" custom="true" />
+    </platform>
+</plugin>
