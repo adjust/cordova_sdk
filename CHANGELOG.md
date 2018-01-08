@@ -9,7 +9,7 @@
 - **[iOS]** [iOS@v4.12.1][ios_sdk_v4.12.1]
 - **[AND]** [Android@v4.12.0][android_sdk_v4.12.0]
 
---
+---
 
 ### Version 4.12.0 (29th December 2017)
 #### Native changes:
