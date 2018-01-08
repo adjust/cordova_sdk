@@ -1,3 +1,16 @@
+### Version 4.12.1 (8th January 2018)
+#### Added
+- Added symlink to `README` inside of `plugin` folder to have `README` up to date on `npm` repository.
+
+#### Fixed
+- Fixed typo in `ProGuard` section of `README`.
+
+#### Native SDKs
+- **[iOS]** [iOS@v4.12.1][ios_sdk_v4.12.1]
+- **[AND]** [Android@v4.12.0][android_sdk_v4.12.0]
+
+---
+
 ### Version 4.12.0 (29th December 2017)
 #### Native changes:
 - **[iOS]** https://github.com/adjust/ios_sdk/blob/master/CHANGELOG.md#version-4120-13th-december-2017

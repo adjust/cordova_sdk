@@ -2,7 +2,7 @@
 
 This is the Cordova SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
 
-N.B. At the moment, SDK 4.12.0 for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version `3.0.0 and higher`. Windows platform is **not supported** at the moment.
+N.B. At the moment, SDK 4.12.1 for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version `3.0.0 and higher`. Windows platform is **not supported** at the moment.
 
 ## Table of contents
 
@@ -191,7 +191,7 @@ If you are using Proguard, add these lines to your Proguard file:
     java.lang.String CPU_ABI;
 }
 -keep class android.content.res.Configuration {
-    android.os.LocaledList getLocales();
+    android.os.LocaleList getLocales();
     java.util.Locale locale;
 }
 -keep class android.os.LocaledList {

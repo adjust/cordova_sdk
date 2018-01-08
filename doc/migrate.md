@@ -1,4 +1,4 @@
-## Migrate your adjust SDK for Cordova to 4.12.0 from 3.4.1
+## Migrate your adjust SDK for Cordova to 4.12.1 from 3.4.1
 
 ### Migration procedure
 
