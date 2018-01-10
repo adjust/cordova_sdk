@@ -1,6 +1,6 @@
 ### Version 4.12.2 (10th January 2018)
 #### Changed
-- Put plugin contents in root directory instead of subdirectory
+- Moved plugin contents in root directory instead of subdirectory.
 
 #### Native SDKs
 - **[iOS]** [iOS@v4.12.1][ios_sdk_v4.12.1]
