@@ -50,8 +50,8 @@
             </feature>
         </config-file>
 
-        <source-file src="src/Android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
-        <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
+        <source-file src="src/Android/AdjustCordova.java" target-dir="app/src/main/java/com/adjust/sdk" />
+        <source-file src="src/Android/adjust-android.jar" target-dir="app/libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
         <framework src="com.android.installreferrer:installreferrer:1.0" />
