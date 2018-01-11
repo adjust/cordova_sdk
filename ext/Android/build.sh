@@ -22,7 +22,7 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 BUILD_DIR=sdk/Adjust
-JAR_OUT_DIR=plugin/src/Android
+JAR_OUT_DIR=src/Android
 
 RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color

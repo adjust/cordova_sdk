@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.adjust.sdk"
+    version="4.12.2">
+
+    <name>Adjust</name>
+    <description>Adjust plugin for Cordova</description>
+    <license>MIT License</license>
+    <keywords>adjust</keywords>
+    <author>adjust</author>
+
+    <engines>
+        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-ios" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/adjust.js" name="Adjust">
+        <clobbers target="Adjust" />
+    </js-module>
+    <js-module src="www/adjust_config.js" name="AdjustConfig">
+        <clobbers target="AdjustConfig" />
+    </js-module>
+    <js-module src="www/adjust_event.js" name="AdjustEvent">
+        <clobbers target="AdjustEvent" />
+    </js-module>
+
+    <!-- Android -->
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver
+                android:name="com.adjust.sdk.AdjustReferrerReceiver"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="com.android.vending.INSTALL_REFERRER" />
+                </intent-filter>
+            </receiver>
+        </config-file>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Adjust">
+                <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/Android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
+        <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
+
+        <framework src="com.google.android.gms:play-services-analytics:+" />
+        <framework src="com.android.installreferrer:installreferrer:1.0" />
+    </platform>
+
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Adjust">
+                <param name="ios-package" value="AdjustCordova"/>
+                <param name="onload" value="true" />
+          </feature>
+        </config-file>
+
+        <header-file src="src/iOS/AdjustCordova.h" />
+        <source-file src="src/iOS/AdjustCordova.m" />
+        <header-file src="src/iOS/AdjustCordovaDelegate.h" />
+        <source-file src="src/iOS/AdjustCordovaDelegate.m" />
+
+        <framework src="src/iOS/AdjustSdk.framework" custom="true" />
+        <framework src="AdSupport.framework" weak="true" />
+        <framework src="iAd.framework" weak="true" />
+        <framework src="CoreTelephony.framework" weak="true" />
+    </platform>
+</plugin>
