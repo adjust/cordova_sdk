@@ -1,4 +1,4 @@
-### Version 4.12.2 (10th January 2018)
+### Version 4.12.2 (11th January 2018)
 #### Changed
 - Moved plugin contents in root directory instead of subdirectory.
 
