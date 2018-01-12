@@ -1,3 +1,14 @@
+### Version 4.12.3 (12th January 2018)
+#### Changed
+- Rebuilt `AdjustSdk.framework` for pre Xcode 9 support.
+- Removed symlinks from `AdjustSdk.framework`.
+
+#### Native SDKs
+- **[iOS]** [iOS@v4.12.1][ios_sdk_v4.12.1]
+- **[AND]** [Android@v4.12.0][android_sdk_v4.12.0]
+
+---
+
 ### Version 4.12.2 (11th January 2018)
 #### Changed
 - Moved plugin contents in root directory instead of subdirectory.
