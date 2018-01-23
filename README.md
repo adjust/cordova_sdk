@@ -249,6 +249,7 @@ The Google Play Store `INSTALL_REFERRER` intent should be captured with a broadc
 <config-file target="AndroidManifest.xml" parent="/manifest/application">
     <receiver
         android:name="com.adjust.sdk.AdjustReferrerReceiver"
+        android:permission="android.permission.INSTALL_PACKAGES"
         android:exported="true">
         <intent-filter>
             <action android:name="com.android.vending.INSTALL_REFERRER" />
