@@ -38,7 +38,7 @@ echo Success
 
 echo -e "${GREEN}>>> Installing Android platform ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
-cordova platform add android || true
+cordova platform add android@6.4.0 || true
 
 echo -e "${GREEN}>>> Re-installing plugins ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
