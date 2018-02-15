@@ -34,7 +34,6 @@ var app = {
 
         //AdjustTesting.addTestDirectory("current/isInactive/");
         //AdjustTesting.addTest("current/offlineMode/Test_OfflineMode");
-        //AdjustTesting.addTestDirectory("current/sdkInfo/");
 
         AdjustTesting.startTestSession(baseUrl, function(json) {
             var commandDict = JSON.parse(json);

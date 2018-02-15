@@ -1,14 +1,36 @@
 'use strict';
 
-function CommandExecutor(baseUrl) {
-    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl);
-};
+/* 
+ * A note on scheduling:
+ *
+ * Callbacks sent from Java -> Javascript through PluginResult are by nature not ordered.
+ *  scheduleCommand(command) tries to receive commands and schedule them in an array (this.savedCommand)
+ *  that would be executed based on what `this.nextToSendCounter` specifies.
+ * 
+ * Sorting mechanism goes as follows
+ * - When receiving a new command...
+ *   * if the new command is in order, send it immediately.
+ *   * If the new command is not in order
+ *     * Store it in a list
+ *     * Check the list if it contains the next command to send
+ * - After sending a command...
+ *     * Check the list if it contains the next command to send
+ * 
+ * So this system is rechecking the list for items to send on two events:
+ * - When a new not-in-order object is added.
+ * - After a successful send
+ */
 
+// A wrapper for a command received from test server
 function AdjustCommand(functionName, params, order) {
     this.functionName = functionName;
     this.params = params;
     this.order = order;
 }
+
+function CommandExecutor(baseUrl) {
+    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl);
+};
 
 CommandExecutor.prototype.executeCommand = function(className, functionName, params, order) {
     switch (className) {
@@ -20,51 +42,54 @@ CommandExecutor.prototype.executeCommand = function(className, functionName, par
 };
 
 function AdjustCommandExecutor(baseUrl) {
-    this.baseUrl = baseUrl;
-    this.basePath = null;
-    this.savedEvents = {};
-    this.savedConfigs = {};
-    this.savedCommands = [];
-    this.sendCounter = 0;
+    this.baseUrl           = baseUrl;
+    this.basePath          = null;
+    this.savedEvents       = {};
+    this.savedConfigs      = {};
+    this.savedCommands     = [];
+    this.nextToSendCounter = 0;
 };
 
+// First point of entry for scheduling commands. Takes a 'AdjustCommand {command}' parameter
 AdjustCommandExecutor.prototype.scheduleCommand = function(command) {
     console.log(`scheduleCommand(): ${JSON.stringify(command)}`);
 
-    // If the counter is in order, send immediately
-    if (command.order === this.sendCounter) {
-        //console.log(`Received in-order command: [${command.order}]. Sending immediately`);
+    // If the command is in order, send in immediately
+    if (command.order === this.nextToSendCounter) {
         this.executeCommand(command, -1);
         return;
     }
 
-    // Not in order, schedule it in the list
-    //console.log(`Command not in-order: [${command.order}]. stashing...`);
+    // Not in order, schedule it
     this.savedCommands.push(command);
 
     // Recheck list
     this.checkList();
 }
 
+// Check the list of commands to see which one is in order
+// TODO: Could be made functional?
 AdjustCommandExecutor.prototype.checkList = function() {
-    //console.log(`checkList(): counter === ${this.sendCounter}`);
     for (var i = 0; i < this.savedCommands.length; i++ ) {
         var command = this.savedCommands[i];
-        //console.log(`    checkList(): scanning command [${command.order}]`);
-        if (command.order === this.sendCounter) {
-            //console.log(`    checkList: Found in-order command: [${command.order}]`);
+
+        if (command.order === this.nextToSendCounter) {
             this.executeCommand(command, i);
             return;
         }
     }
-    //console.log(`checkList(): found nothing`);
 }
 
+// Execute the command. This will always be invoked either from:
+//  - checkList() after scheduling a command
+//  - scheduleCommand() only if the package was in order
+//
+// (AdjustCommand {command}) : The command to be executed
+// (Number {idx})            : index of the command in the schedule list. -1 if it was sent directly
 AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
     console.log(`[*] executeCommand(): ${JSON.stringify(command)}`);
     //console.log("[*] executeCommand method: " + command.functionName);
     switch (command.functionName) {
-            //case "factory"                        : this.factory(params); break;
         case "testOptions"                    : this.testOptions(command.params); break;
         case "config"                         : this.config(command.params); break;
         case "start"                          : this.start(command.params); break;
@@ -83,43 +108,20 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case "resetSessionCallbackParameters" : this.resetSessionCallbackParameters(command.params); break;
         case "resetSessionPartnerParameters"  : this.resetSessionPartnerParameters(command.params); break;
         case "setPushToken"                   : this.setPushToken(command.params); break;
-        //case "teardown"                       : this.teardown(command.params); break;
         case "openDeeplink"                   : this.openDeeplink(command.params); break;
         case "sendReferrer"                   : this.sendReferrer(command.params); break;
-        //case "testBegin"                      : this.testBegin(command.params); break;
-        //case "testEnd"                        : this.testEnd(command.params); break;
     }
 
-    // After a send...
-    this.sendCounter++;
+    this.nextToSendCounter++;
+
+    // If idx != -1, it means it was not sent directly. Delete its instance from the scheduling array
     if (idx != -1) {
         this.savedCommands.splice(idx, 1);
     }
 
+    // Recheck the list
     this.checkList();
 };
-
-//AdjustCommandExecutor.prototype.factory = function(params) {
-//if ('basePath' in params) {
-//this.basePath = getFirstParameterValue(params, 'basePath');
-//}
-
-//if ('timerInterval' in params) {
-//Adjust.setTimerInterval(parseFloat(getFirstParameterValue(params, 'timerInterval')));
-//}
-
-//if ('timerStart' in params) {
-//Adjust.setTimerStart(parseFloat(getFirstParameterValue(params, 'timerStart')));
-//}
-
-//if ('sessionInterval' in params) {
-//Adjust.setSessionInterval(parseFloat(getFirstParameterValue(params, 'sessionInterval')));
-//}
-
-//if ('subsessionInterval' in params) {
-//Adjust.setSubsessionInterval(parseFloat(getFirstParameterValue(params, 'subsessionInterval')));
-//}
-//};
 
 AdjustCommandExecutor.prototype.testOptions = function(params) {
     var testOptions = new AdjustTestOptions();
@@ -183,13 +185,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     Adjust.teardown();
 };
 
-//AdjustCommandExecutor.prototype.teardown = function(params) {
-//if ('deleteState' in params) {
-//var deleteState = getFirstParameterValue(params, 'deleteState') == 'true';
-//Adjust.teardown(deleteState);
-//}
-//};
-
 AdjustCommandExecutor.prototype.config = function(params) {
     var configNumber = 0;
     if ('configName' in params) {
@@ -199,12 +194,8 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     var adjustConfig;
     if (configNumber in this.savedConfigs) {
-        console.log("]]] not starting a new adjustconfig");
-        console.log("]]] this.savedConfigs: " + JSON.stringify(this.savedConfigs));
         adjustConfig = this.savedConfigs[configNumber];
     } else {
-        console.log("]]] new adjustconfig");
-        console.log("]]] this.savedConfigs: " + JSON.stringify(this.savedConfigs));
         var environment = getFirstParameterValue(params, "environment");
         var appToken = getFirstParameterValue(params, "appToken");
 
@@ -214,7 +205,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         this.savedConfigs[configNumber] = adjustConfig;
     }
 
-    console.log(`]]] Using saved adjustConfig: ${JSON.stringify(adjustConfig)}`);
     if ('logLevel' in params) {
         var logLevelS = getFirstParameterValue(params, 'logLevel');
         var logLevel = null;
@@ -370,9 +360,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
     }
-
-    console.log(`]]] params: ${JSON.stringify(params)}`);
-    console.log(`]]] adjustConfig: ${JSON.stringify(adjustConfig)}`);
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {
@@ -384,7 +371,6 @@ AdjustCommandExecutor.prototype.start = function(params) {
     }
 
     var adjustConfig = this.savedConfigs[configNumber];
-
     Adjust.create(adjustConfig);
 
     delete this.savedConfigs[0];
@@ -446,7 +432,6 @@ AdjustCommandExecutor.prototype.trackEvent = function(params) {
     }
 
     var adjustEvent = this.savedEvents[eventNumber];
-    console.log("command_executor: event: " + adjustEvent.eventToken);
     Adjust.trackEvent(adjustEvent);
 
     delete this.savedEvents[0];
@@ -534,44 +519,18 @@ AdjustCommandExecutor.prototype.resetSessionPartnerParameters = function(params)
 };
 
 AdjustCommandExecutor.prototype.setPushToken = function(params) {
-    console.log("[*] setPushToken");
-
     var token = getFirstParameterValue(params, 'pushToken');
     Adjust.setPushToken(token);
 };
 
 AdjustCommandExecutor.prototype.openDeeplink = function(params) {
-    console.log("[*] openDeeplink");
-
     var deeplink = getFirstParameterValue(params, "deeplink");
     Adjust.appWillOpenUrl(deeplink);
 };
 
 AdjustCommandExecutor.prototype.sendReferrer = function(params) {
     var referrer = getFirstParameterValue(params, 'referrer');
-
-    console.log("[*] sendReferrer: " + referrer);
     Adjust.setReferrer(referrer);
-};
-
-//AdjustCommandExecutor.prototype.testBegin = function(params) {
-//console.log("[*] testBegin");
-
-//if ('basePath' in params) {
-//this.basePath = getFirstParameterValue(params, "basePath");
-//}
-
-//Adjust.teardown(true);
-//Adjust.setTimerInterval(-1);
-//Adjust.setTimerStart(-1);
-//Adjust.setSessionInterval(-1);
-//Adjust.setSubsessionInterval(-1);
-//};
-
-AdjustCommandExecutor.prototype.testEnd = function(params) {
-    console.log("[*] testEnd");
-
-    Adjust.teardown(true);
 };
 
 //Util
