@@ -155,10 +155,6 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
     this.shouldLaunchDeeplink = shouldLaunchDeeplink;
 };
 
-AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
-    this.sdkPrefix = sdkPrefix;
-};
-
 // @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info");

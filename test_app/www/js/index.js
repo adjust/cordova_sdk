@@ -34,7 +34,9 @@ var app = {
 
         //AdjustTesting.addTestDirectory("current/isInactive/");
         //AdjustTesting.addTest("current/offlineMode/Test_OfflineMode");
-
+        
+        // TODO: current/sdkPrefix will fail since adjust_config.js does not have setSdkPrefix() method
+        
         AdjustTesting.startTestSession(baseUrl, function(json) {
             var commandDict = JSON.parse(json);
             var className = commandDict['className'];
