@@ -83,7 +83,7 @@ var Adjust = {
     },
 
     setReferrer: function(referrer) {
-        callCordova('setReferrer');
+        callCordova('setReferrer', referrer);
     },
 
     isEnabled: function(callback) {
