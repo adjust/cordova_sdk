@@ -49,6 +49,15 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_INFO_4                         = "info4";
     private static final String KEY_DEVICE_KNOWN                   = "isDeviceKnown";
     private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
+    private static final String KEY_BASE_URL                       = "baseUrl";
+    private static final String KEY_BASE_PATH                      = "basePath";
+    private static final String KEY_USE_TEST_CONNECTION_OPTIONS    = "useTestConnectionOptions";
+    private static final String KEY_TIMER_INTERVAL                 = "timerIntervalInMilliseconds";
+    private static final String KEY_TIMER_START                    = "timerStartInMilliseconds";
+    private static final String KEY_SESSION_INTERVAL               = "sessionIntervalInMilliseconds";
+    private static final String KEY_SUBSESSION_INTERVAL            = "subsessionIntervalInMilliseconds";
+    private static final String KEY_TEARDOWN                       = "teardown";
+    private static final String KEY_HAS_CONTEXT                    = "hasContext";
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
@@ -78,6 +87,8 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
     private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
     private static final String COMMAND_SET_REFERRER                             = "setReferrer";
+    private static final String COMMAND_SET_TEST_OPTIONS                         = "setTestOptions";
+    private static final String COMMAND_TEARDOWN                                 = "teardown";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN   = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME    = "trackerName";
@@ -523,12 +534,107 @@ public class AdjustCordova extends CordovaPlugin
             adjustEvent.setOrderId(transactionId);
         }
 
+        Log.wtf("AdjustCordova", "executeTrackEvent: " + adjustEvent);
         Adjust.trackEvent(adjustEvent);
+    }
+
+    // TODO: Remap the following s* values to proper JSONObject functions. If a value is not a string,
+    // make it have an opt*() method: https://developer.android.com/reference/org/json/JSONObject.html
+    private void executeSetTestOptions(final JSONArray args) throws JSONException {
+        JSONObject jsonParameters = args.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        final AdjustTestOptions testOptions = new AdjustTestOptions();
+
+        if (!jsonParameters.isNull(KEY_HAS_CONTEXT)) {
+            try {
+                boolean value = jsonParameters.getBoolean(KEY_HAS_CONTEXT);
+                if (value) {
+                    testOptions.context = this.cordova.getActivity().getApplicationContext();
+                }
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse has context");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_BASE_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_BASE_URL);
+                testOptions.baseUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse base url");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_BASE_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_BASE_PATH);
+                testOptions.basePath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse base path");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_USE_TEST_CONNECTION_OPTIONS)) {
+            try {
+                boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
+                testOptions.useTestConnectionOptions = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse use test connection options");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TIMER_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_TIMER_INTERVAL);
+                testOptions.timerIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse timer interval");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TIMER_START)) {
+            try {
+                long value = jsonParameters.getLong(KEY_TIMER_START);
+                testOptions.timerStartInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse timer start");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_SESSION_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_SESSION_INTERVAL);
+                testOptions.sessionIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse session interval");
+            }
+        } 
+
+        if (!jsonParameters.isNull(KEY_SUBSESSION_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_SUBSESSION_INTERVAL);
+                testOptions.subsessionIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse subsession interval");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TEARDOWN)) {
+            try {
+                boolean teardown = jsonParameters.getBoolean(KEY_TEARDOWN);
+                testOptions.teardown = teardown;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse teardown");
+            }
+        }
+
+        Adjust.setTestOptions(testOptions);
     }
 
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        if (AdjustCordova.attributionCallbackContext == null) {
+        if (attributionCallbackContext == null) {
             return;
         }
 
