@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.adjust.sdktesting"
+    version="4.12.4">
+
+    <name>Adjust Testing</name>
+    <description>Adjust plugin for Cordova CI testing</description>
+    <license>MIT License</license>
+    <keywords>adjust</keywords>
+    <author>adjust</author>
+
+    <engines>
+        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-ios" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/adjust_testing.js" name="AdjustTesting">
+        <clobbers target="AdjustTesting" />
+    </js-module>
+
+    <!-- Android -->
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        </config-file>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AdjustTesting">
+                <param name="android-package" value="com.adjust.sdktesting.AdjustTestingCordova"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/Android/AdjustTestingCordova.java" target-dir="src/com/adjust/sdktesting" />
+        <source-file src="src/Android/CommandListener.java" target-dir="src/com/adjust/sdktesting" />
+        <source-file src="src/Android/adjust-testing.jar" target-dir="libs" />
+        <source-file src="src/Android/gson-2.8.0.jar" target-dir="libs" />
+    </platform>
+</plugin>
