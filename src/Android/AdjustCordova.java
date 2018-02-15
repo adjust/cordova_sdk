@@ -243,7 +243,7 @@ public class AdjustCordova extends CordovaPlugin
             return true;
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
-            Adjust.setPushToken(token);
+            Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
             
             return true;
         } else if (action.equals(COMMAND_ON_PAUSE)) {
