@@ -1,0 +1,14 @@
+{
+    "name": "com.adjust.testapp",
+    "version": "1.0.0",
+    "displayName": "HelloCordova",
+    "cordova": {
+        "platforms": [],
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        }
+    },
+    "dependencies": {
+        "cordova-plugin-whitelist": "1"
+    }
+}
