@@ -525,8 +525,34 @@
 
 #pragma mark - Private & helper methods
 
+- (NSNumber *)convertMilliStringToNumber:(NSString *)milliS {
+    NSNumber * number = [NSNumber numberWithInt:[milliS intValue]];
+    return number;
+}
+
 - (BOOL)isFieldValid:(NSObject *)field {
-    return field != nil && ![field isKindOfClass:[NSNull class]];
+    if (field == nil) {
+        return false;
+    }
+    
+    // Check if its an instance of the singleton NSNull
+    if ([field isKindOfClass:[NSNull class]]) {
+        return false;
+    }
+    
+    // If `field` can be converted to a string, check if it has any content.
+    NSString *str = [NSString stringWithFormat:@"%@", field];
+    if (str != nil) {
+        if ([str length] == 0) {
+            return false;
+        }
+        
+        if ([str isEqualToString:@"null"]) {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 - (void)addValueOrEmpty:(NSObject *)value
