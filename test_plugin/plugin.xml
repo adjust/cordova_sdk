@@ -39,4 +39,23 @@
         <source-file src="src/Android/adjust-testing.jar" target-dir="libs" />
         <source-file src="src/Android/gson-2.8.0.jar" target-dir="libs" />
     </platform>
+
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AdjustTesting">
+                <param name="ios-package" value="AdjustTestingCordova"/>
+                <param name="onload" value="true" />
+          </feature>
+        </config-file>
+
+        <header-file src="src/iOS/AdjustTestingCordova.h" />
+        <source-file src="src/iOS/AdjustTestingCordova.m" />
+
+        <header-file src="src/iOS/AdjustTestingCordovaCommandListener.h" />
+        <source-file src="src/iOS/AdjustTestingCordovaCommandListener.m" />
+
+        <framework src="src/iOS/AdjustTestLibrary.framework" custom="true" />
+        <!--<source-file src="src/iOS/libAdjustTestLibrary.a" framework="true" />-->
+    </platform>
 </plugin>
