@@ -32,7 +32,7 @@ function CommandExecutor(baseUrl) {
     this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl);
 };
 
-CommandExecutor.prototype.executeCommand = function(className, functionName, params, order) {
+CommandExecutor.prototype.scheduleCommand = function(className, functionName, params, order) {
     switch (className) {
         case "Adjust":
             var command = new AdjustCommand(functionName, params, order);
@@ -159,10 +159,10 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('resetTest' === option) {
                 this.savedEvents = {};
                 this.savedConfigs = {};
-                testOptions.timerIntervalInMilliseconds      = -1;
-                testOptions.timerStartInMilliseconds         = -1;
-                testOptions.sessionIntervalInMilliseconds    = -1;
-                testOptions.subsessionIntervalInMilliseconds = -1;
+                testOptions.timerIntervalInMilliseconds      = (-1).toString();
+                testOptions.timerStartInMilliseconds         = (-1).toString();
+                testOptions.sessionIntervalInMilliseconds    = (-1).toString();
+                testOptions.subsessionIntervalInMilliseconds = (-1).toString();
             }
             if ('sdk' === option) {
                 testOptions.teardown                 = true;
@@ -172,10 +172,10 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('test' === option) {
                 this.savedEvents                             = null;
                 this.savedConfigs                            = null;
-                testOptions.timerIntervalInMilliseconds      = -1;
-                testOptions.timerStartInMilliseconds         = -1;
-                testOptions.sessionIntervalInMilliseconds    = -1;
-                testOptions.subsessionIntervalInMilliseconds = -1;
+                testOptions.timerIntervalInMilliseconds      = (-1).toString();
+                testOptions.timerStartInMilliseconds         = (-1).toString();
+                testOptions.sessionIntervalInMilliseconds    = (-1).toString();
+                testOptions.subsessionIntervalInMilliseconds = (-1).toString();
             }
         }
     }

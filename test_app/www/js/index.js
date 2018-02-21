@@ -28,12 +28,17 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-        var baseUrl = "https://10.0.2.2:8443";
+
+        var baseUrl = "";
+        if (device.platform === "Android") {
+            baseUrl = "https://10.0.2.2:8443";
+        } else if (device.platform === "iOS") {
+            baseUrl = "http://127.0.0.1:8080";
+        }
 
         var commandExecutor = new CommandExecutor(baseUrl);
-
-        //AdjustTesting.addTestDirectory("current/isInactive/");
-        //AdjustTesting.addTest("current/offlineMode/Test_OfflineMode");
+        //AdjustTesting.addTest("current/sessionEventCallbacks/Test_SessionCallback_failure");
+        //AdjustTesting.addTestDirectory("current/sessionParams/");
         
         // TODO: current/sdkPrefix will fail since adjust_config.js does not have setSdkPrefix() method
         
@@ -45,7 +50,7 @@ var app = {
             var order = commandDict['order'];
             console.log("index json: " + json);
 
-            commandExecutor.executeCommand(className, functionName, params, order);
+            commandExecutor.scheduleCommand(className, functionName, params, order);
         });
     },
 
