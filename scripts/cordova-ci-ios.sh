@@ -22,13 +22,10 @@ NC='\033[0m' 		# No Color
 
 echo -e ">>> START ${NC}"
 
-echo -e "${GREEN}>>> Removing app from test device ${NC}"
-adb uninstall ${TEST_APP_PACKAGE} || true
-
-echo -e "${GREEN}>>> Running Android build script ${NC}"
+echo -e "${GREEN}>>> Running iOS build script ${NC}"
 cd ${ROOT_DIR}
-ext/Android/build.sh release
-ext/Android/build_test_lib.sh
+ext/iOS/build.sh
+ext/iOS/build_test_lib.sh
 
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}
@@ -36,9 +33,9 @@ rm -rf $TEMP_PLUGIN_DIR; mkdir $TEMP_PLUGIN_DIR
 rsync -a . $TEMP_PLUGIN_DIR --exclude=example --exclude=ext --exclude=scripts --exclude=doc --exclude=test_app --exclude=test_plugin --exclude=temp_plugin
 echo Success
 
-echo -e "${GREEN}>>> Installing Android platform ${NC}"
+echo -e "${GREEN}>>> Installing iOS platform ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
-cordova platform add android@6.4.0 || true
+cordova platform add ios || true
 
 echo -e "${GREEN}>>> Re-installing plugins ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
@@ -50,8 +47,8 @@ cordova plugin add --verbose ../${TESTING_PLUGIN_DIR} --nofetch
 
 echo -e "${GREEN}>>> Running Cordova build ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
-cordova build android --verbose
-adb install -r platforms/android/build/outputs/apk/debug/android-debug.apk
-adb shell monkey -p ${TEST_APP_PACKAGE} 1
+cordova build ios --verbose
+
+echo -e "${GREEN}>>> Build successful. Run it from Xcode (${PROJECT_DIR}/platforms/ios/) ${NC}"
 
 echo -e ">>> END ${NC}"
