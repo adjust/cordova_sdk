@@ -15,7 +15,7 @@ function callCordovaCallback(action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
 
     cordova.exec(callback,
-        function errorHandler(err) { },
+        function errorHandler(err) { console.log("AdjustTesting: Could not execute call: " + err); },
         'AdjustTesting',
         action,
         args
