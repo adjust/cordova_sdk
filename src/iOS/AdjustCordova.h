@@ -41,7 +41,9 @@
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 
-// Android methods
+- (void)setTestOptions:(CDVInvokedUrlCommand *)command;
+- (void)teardown:(CDVInvokedUrlCommand *)command;
+
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
 - (void)setReferrer:(CDVInvokedUrlCommand *)command;

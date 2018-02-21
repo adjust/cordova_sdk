@@ -558,8 +558,6 @@ public class AdjustCordova extends CordovaPlugin
         Adjust.trackEvent(adjustEvent);
     }
 
-    // TODO: Remap the following s* values to proper JSONObject functions. If a value is not a string,
-    // make it have an opt*() method: https://developer.android.com/reference/org/json/JSONObject.html
     private void executeSetTestOptions(final JSONArray args) throws JSONException {
         JSONObject jsonParameters = args.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
