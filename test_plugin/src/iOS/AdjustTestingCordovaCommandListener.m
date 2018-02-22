@@ -46,7 +46,13 @@
     [dict setObject:_num forKey:@"order"];
     orderCounter++;
     
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    // Making a JSON string from dictionary: this step is necessary, using `messageAsDictionary` with `resultWithStatus` method below
+    // produced extra objects in the string that were not necessary.
+    NSError * err;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
+    NSString * myString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:myString];
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.commandExecutorCallbackId];
 }
