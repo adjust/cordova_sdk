@@ -38,7 +38,7 @@ var app = {
 
         var commandExecutor = new CommandExecutor(baseUrl);
         //AdjustTesting.addTest("current/sessionEventCallbacks/Test_SessionCallback_failure");
-        //AdjustTesting.addTestDirectory("current/sessionParams/");
+        //AdjustTesting.addTestDirectory("current/offlineMode/");
         
         // TODO: current/sdkPrefix will fail since adjust_config.js does not have setSdkPrefix() method
         
@@ -48,7 +48,6 @@ var app = {
             var functionName = commandDict['functionName'];
             var params = commandDict['params'];
             var order = commandDict['order'];
-            console.log("index json: " + json);
 
             commandExecutor.scheduleCommand(className, functionName, params, order);
         });

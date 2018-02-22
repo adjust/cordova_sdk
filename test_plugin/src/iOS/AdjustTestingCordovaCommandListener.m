@@ -39,15 +39,14 @@
                                                          options:NSJSONReadingMutableContainers
                                                            error:&jsonError];
     
+    // Order of packages sent through PluginResult is not reliable, this is solved
+    //  through a scheduling mechanism in command_executor.js#scheduleCommand() side.
+    // The 'order' entry is used to schedule commands
     NSNumber *_num = [NSNumber numberWithInt:orderCounter];
     [dict setObject:_num forKey:@"order"];
     orderCounter++;
     
-    NSError * err;
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
-    NSString * myString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:myString];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.commandExecutorCallbackId];
 }

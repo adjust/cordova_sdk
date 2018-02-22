@@ -52,8 +52,6 @@ function AdjustCommandExecutor(baseUrl) {
 
 // First point of entry for scheduling commands. Takes a 'AdjustCommand {command}' parameter
 AdjustCommandExecutor.prototype.scheduleCommand = function(command) {
-    console.log(`scheduleCommand(): ${JSON.stringify(command)}`);
-
     // If the command is in order, send in immediately
     if (command.order === this.nextToSendCounter) {
         this.executeCommand(command, -1);
@@ -68,7 +66,6 @@ AdjustCommandExecutor.prototype.scheduleCommand = function(command) {
 }
 
 // Check the list of commands to see which one is in order
-// TODO: Could be made functional?
 AdjustCommandExecutor.prototype.checkList = function() {
     for (var i = 0; i < this.savedCommands.length; i++ ) {
         var command = this.savedCommands[i];
@@ -88,7 +85,6 @@ AdjustCommandExecutor.prototype.checkList = function() {
 // (Number {idx})            : index of the command in the schedule list. -1 if it was sent directly
 AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
     console.log(`[*] executeCommand(): ${JSON.stringify(command)}`);
-    //console.log("[*] executeCommand method: " + command.functionName);
     switch (command.functionName) {
         case "testOptions"                    : this.testOptions(command.params); break;
         case "config"                         : this.config(command.params); break;
@@ -180,7 +176,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         }
     }
 
-    console.log("]]] testOptions: " + JSON.stringify(testOptions));
     Adjust.setTestOptions(testOptions);
     Adjust.teardown();
 };
@@ -471,8 +466,6 @@ AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
         var key = list[i];
         var value = list[i+1];
 
-        console.log(`[*] addSessionCallbackParameter: key ${key} value ${value}`);
-
         Adjust.addSessionCallbackParameter(key, value);
     }
 };
@@ -483,8 +476,6 @@ AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
     for (var i = 0; i < list.length; i = i+2){
         var key = list[i];
         var value = list[i+1];
-
-        console.log(`[*] addSessionPartnerParameter: key ${key} value ${value}`);
 
         Adjust.addSessionPartnerParameter(key, value);
     }
