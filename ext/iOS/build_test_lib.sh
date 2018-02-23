@@ -11,6 +11,7 @@ ROOT_DIR="$(dirname "$ROOT_DIR")"
 
 TEST_LIBRARY_PROJECT_DIR=ext/iOS/sdk/AdjustTests/AdjustTestLibrary
 LIB_OUT_DIR=test_plugin/src/iOS
+FRAMEWORKS_DIR=ext/iOS/sdk/Frameworks/Static/
 
 RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color
@@ -23,10 +24,10 @@ echo Success
 
 echo -e "${GREEN}>>> building new framework ${NC}"
 cd ${ROOT_DIR}/${TEST_LIBRARY_PROJECT_DIR}/
-xcodebuild -target AdjustTestLibraryStatic -configuration Release clean build
+xcodebuild -target AdjustTestLibraryStatic -configuration Debug clean build
 echo Success
 
 echo -e "${GREEN}>>> Copy built framework to designated location ${NC}"
-cd ${ROOT_DIR}/${TEST_LIBRARY_PROJECT_DIR}/
-\cp -Rv build/Release-universal/AdjustTestLibrary.framework ${ROOT_DIR}/${LIB_OUT_DIR}
+cd ${ROOT_DIR}/${FRAMEWORKS_DIR}/
+\cp -Rv AdjustTestLibrary.framework ${ROOT_DIR}/${LIB_OUT_DIR}
 echo Success
