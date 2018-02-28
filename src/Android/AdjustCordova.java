@@ -314,7 +314,6 @@ public class AdjustCordova extends CordovaPlugin
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             
-            Log.wtf("AdjustCordova", "setReferrer: with " + referrer);
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
             
             return true;
@@ -554,7 +553,6 @@ public class AdjustCordova extends CordovaPlugin
             adjustEvent.setOrderId(transactionId);
         }
 
-        Log.wtf("AdjustCordova", "executeTrackEvent: " + adjustEvent);
         Adjust.trackEvent(adjustEvent);
     }
 
