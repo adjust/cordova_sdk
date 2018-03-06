@@ -10,6 +10,9 @@
 #import <Cordova/CDVPluginResult.h>
 #import "AdjustCordovaDelegate.h"
 
+static dispatch_once_t onceToken;
+static AdjustCordovaDelegate *defaultInstance = nil;
+
 @implementation AdjustCordovaDelegate
 
 + (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
@@ -26,8 +29,6 @@
                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
-    static dispatch_once_t onceToken;
-    static AdjustCordovaDelegate *defaultInstance = nil;
     
     dispatch_once(&onceToken, ^{
         defaultInstance = [[AdjustCordovaDelegate alloc] init];
@@ -213,6 +214,11 @@
     } else {
         [dictionary setObject:@"" forKey:key];
     }
+}
+
++ (void)teardown {
+    defaultInstance = nil;
+    onceToken = 0;
 }
 
 @end

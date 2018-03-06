@@ -499,6 +499,7 @@
     sessionFailedCallbackId    = nil;
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
+    [AdjustCordovaDelegate teardown];
 }
 
 - (void)onPause:(CDVInvokedUrlCommand *)command {

@@ -36,4 +36,6 @@
 					 shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
 					          withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate;
 
++ (void)teardown;
+
 @end
