@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.12.4">
+    version="4.12.5">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -36,6 +36,7 @@
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <receiver
                 android:name="com.adjust.sdk.AdjustReferrerReceiver"
+                android:permission="android.permission.INSTALL_PACKAGES"
                 android:exported="true">
                 <intent-filter>
                     <action android:name="com.android.vending.INSTALL_REFERRER" />
