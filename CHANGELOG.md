@@ -1,3 +1,13 @@
+### Version 4.12.5 (12th March 2018)
+#### Native changes
+- https://github.com/adjust/android_sdk/blob/master/CHANGELOG.md#version-4124-9th-march-2018
+
+#### Native SDKs
+- [iOS@v4.12.3][ios_sdk_v4.12.3]
+- [Android@v4.12.4][android_sdk_v4.12.4]
+
+---
+
 ### Version 4.12.4 (1st February 2018)
 #### Native changes
 - https://github.com/adjust/android_sdk/blob/master/CHANGELOG.md#version-4121-31st-january-2018
@@ -347,6 +357,7 @@
 [ios_sdk_v4.11.4]: https://github.com/adjust/ios_sdk/tree/v4.11.4
 [ios_sdk_v4.11.5]: https://github.com/adjust/ios_sdk/tree/v4.11.5
 [ios_sdk_v4.12.1]: https://github.com/adjust/ios_sdk/tree/v4.12.1
+[ios_sdk_v4.12.3]: https://github.com/adjust/ios_sdk/tree/v4.12.3
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -361,3 +372,4 @@
 [android_sdk_v4.11.4]: https://github.com/adjust/android_sdk/tree/v4.11.4
 [android_sdk_v4.12.0]: https://github.com/adjust/android_sdk/tree/v4.12.0
 [android_sdk_v4.12.1]: https://github.com/adjust/android_sdk/tree/v4.12.1
+[android_sdk_v4.12.4]: https://github.com/adjust/android_sdk/tree/v4.12.4
