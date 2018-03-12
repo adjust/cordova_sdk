@@ -1,6 +1,7 @@
 ### Version 4.12.5 (12th March 2018)
 #### Native changes
-- https://github.com/adjust/android_sdk/blob/master/CHANGELOG.md#version-4124-9th-march-2018
+- Updated iOS SDK to `v4.12.3`.
+- Updated Android SDK to `v4.12.4`.
 
 #### Native SDKs
 - [iOS@v4.12.3][ios_sdk_v4.12.3]
