@@ -6,3 +6,5 @@ doc/
 ext/
 scripts/
 example/
+test_app/
+test_plugin/
