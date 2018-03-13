@@ -146,6 +146,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                 testOptions.teardown                 = true;
                 testOptions.basePath                 = this.basePath;
                 testOptions.useTestConnectionOptions = true;
+                Adjust.teardown();
             }
 
             if ('deleteState' === option) {
@@ -164,6 +165,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                 testOptions.teardown                 = true;
                 testOptions.basePath                 = null;
                 testOptions.useTestConnectionOptions = false;
+                Adjust.teardown();
             }
             if ('test' === option) {
                 this.savedEvents                             = null;
@@ -177,7 +179,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     }
 
     Adjust.setTestOptions(testOptions);
-    Adjust.teardown();
 };
 
 AdjustCommandExecutor.prototype.config = function(params) {
