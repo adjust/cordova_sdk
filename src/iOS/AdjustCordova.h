@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>

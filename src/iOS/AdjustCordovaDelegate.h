@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>
@@ -12,7 +12,6 @@
 @interface AdjustCordovaDelegate : NSObject<AdjustDelegate>
 
 @property (nonatomic) BOOL shouldLaunchDeferredDeeplink;
-
 @property (nonatomic, copy) NSString *attributionCallbackId;
 @property (nonatomic, copy) NSString *eventSucceededCallbackId;
 @property (nonatomic, copy) NSString *eventFailedCallbackId;

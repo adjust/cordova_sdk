@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -14,6 +14,20 @@ static dispatch_once_t onceToken;
 static AdjustCordovaDelegate *defaultInstance = nil;
 
 @implementation AdjustCordovaDelegate
+
+#pragma mark - Object lifecycle methods
+
+- (id)init {
+    self = [super init];
+
+    if (nil == self) {
+        return nil;
+    }
+
+    return self;
+}
+
+#pragma mark - Public methods
 
 + (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
                            eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
@@ -29,7 +43,6 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
-    
     dispatch_once(&onceToken, ^{
         defaultInstance = [[AdjustCordovaDelegate alloc] init];
 
@@ -77,21 +90,18 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     return defaultInstance;
 }
 
-- (id)init {
-    self = [super init];
-    
-    if (nil == self) {
-        return nil;
-    }
-    
-    return self;
++ (void)teardown {
+    defaultInstance = nil;
+    onceToken = 0;
 }
+
+#pragma mark - Private & helper methods
 
 - (void)adjustAttributionChangedWannabe:(ADJAttribution *)attribution {
     if (attribution == nil) {
         return;
     }
-    
+
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
@@ -214,11 +224,6 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     } else {
         [dictionary setObject:@"" forKey:key];
     }
-}
-
-+ (void)teardown {
-    defaultInstance = nil;
-    onceToken = 0;
 }
 
 @end

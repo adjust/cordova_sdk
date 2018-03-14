@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDVPluginResult.h>
@@ -93,12 +93,12 @@
     NSNumber *sendInBackground      = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink  = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
 
-    BOOL allowSuppressLogLevel = false;
+    BOOL allowSuppressLogLevel = NO;
 
     // Check for SUPPRESS log level
     if ([self isFieldValid:logLevel]) {
         if ([ADJLogger logLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
-            allowSuppressLogLevel = true;
+            allowSuppressLogLevel = YES;
         }
     }
 
@@ -254,7 +254,7 @@
 
     // Deprecated
     // Transaction ID and receipt
-    BOOL isTransactionIdSet = false;
+    BOOL isTransactionIdSet = NO;
 
     if ([self isFieldValid:isReceiptSet]) {
         if ([isReceiptSet boolValue]) {
@@ -533,27 +533,23 @@
 
 - (BOOL)isFieldValid:(NSObject *)field {
     if (field == nil) {
-        return false;
+        return NO;
     }
     
     // Check if its an instance of the singleton NSNull
     if ([field isKindOfClass:[NSNull class]]) {
-        return false;
+        return NO;
     }
     
-    // If `field` can be converted to a string, check if it has any content.
+    // If field can be converted to a string, check if it has any content.
     NSString *str = [NSString stringWithFormat:@"%@", field];
     if (str != nil) {
         if ([str length] == 0) {
-            return false;
-        }
-        
-        if ([str isEqualToString:@"null"]) {
-            return false;
+            return NO;
         }
     }
     
-    return true;
+    return YES;
 }
 
 - (void)addValueOrEmpty:(NSObject *)value
