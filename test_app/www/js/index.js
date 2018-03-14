@@ -37,10 +37,8 @@ var app = {
         }
 
         var commandExecutor = new CommandExecutor(baseUrl);
-        //AdjustTesting.addTest("current/sessionEventCallbacks/Test_SessionCallback_failure");
-        //AdjustTesting.addTestDirectory("current/offlineMode/");
-        
-        // TODO: current/sdkPrefix will fail since adjust_config.js does not have setSdkPrefix() method
+        // AdjustTesting.addTest("current/subsessionCount/Test_SubsessionCount");
+        // AdjustTesting.addTestDirectory("current/offlineMode/");
         
         AdjustTesting.startTestSession(baseUrl, function(json) {
             var commandDict = JSON.parse(json);
