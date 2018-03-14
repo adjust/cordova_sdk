@@ -33,7 +33,7 @@ ext/Android/build_test_lib.sh
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}
 rm -rf $TEMP_PLUGIN_DIR; mkdir $TEMP_PLUGIN_DIR
-rsync -a . $TEMP_PLUGIN_DIR --exclude=example --exclude=ext --exclude=scripts --exclude=doc --exclude=test_app --exclude=test_plugin --exclude=temp_plugin
+rsync -a . $TEMP_PLUGIN_DIR --exclude=example --exclude=ext --exclude=scripts --exclude=doc --exclude=test_app --exclude=test_plugin --exclude=temp_plugin --exclude=.git
 echo Success
 
 echo -e "${GREEN}>>> Installing Android platform ${NC}"
