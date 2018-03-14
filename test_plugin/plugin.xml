@@ -34,7 +34,7 @@
         <source-file src="src/Android/AdjustTestingCordova.java" target-dir="src/com/adjust/sdktesting"/>
         <source-file src="src/Android/CommandListener.java" target-dir="src/com/adjust/sdktesting"/>
         <source-file src="src/Android/adjust-testing.jar" target-dir="libs"/>
-        <source-file src="src/Android/gson-2.8.0.jar" target-dir="libs"/>
+        <framework src="com.google.code.gson:gson:2.8.0" /> 
     </platform>
 
     <!-- iOS -->
