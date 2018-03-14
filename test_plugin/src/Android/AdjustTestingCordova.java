@@ -38,7 +38,7 @@ public class AdjustTestingCordova extends CordovaPlugin {
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_START_TEST_SESSION)) {
             final String baseUrl = args.getString(0);
-            //Log.d(TAG, "startTestSession() with baseUrl[" + baseUrl + "]");
+            // Log.d(TAG, "startTestSession() with baseUrl[" + baseUrl + "]");
 
             this.commandCallbackContext = callbackContext;
 
@@ -48,10 +48,9 @@ public class AdjustTestingCordova extends CordovaPlugin {
                         this.commandCallbackContext)
                     );
 
-            for(int i = 0; i < selectedTests.size(); i++) {
+            for (int i = 0; i < selectedTests.size(); i++) {
                 testLibrary.addTest(selectedTests.get(i));
             }
-
             for(int i = 0; i < selectedTestDirs.size(); i++) {
                 testLibrary.addTestDirectory(selectedTestDirs.get(i));
             }
@@ -61,18 +60,18 @@ public class AdjustTestingCordova extends CordovaPlugin {
         } else if (action.equals(COMMAND_ADD_INFO_TO_SEND)) {
             final String key = args.getString(0);
             final String value = args.getString(1);
-            //Log.d(TAG, "AddInfoToSend() with key[" + key + "] and value[" + value + "]");
+            // Log.d(TAG, "AddInfoToSend() with key[" + key + "] and value[" + value + "]");
 
-            if(testLibrary != null) {
+            if (testLibrary != null) {
                 testLibrary.addInfoToSend(key, value);
             }
 
             return true;
         } else if (action.equals(COMMAND_SEND_INFO_TO_SERVER)) {
             final String basePath = args.getString(0);
-            //Log.d(TAG, "sendInfoToServer(): " + basePath);
+            // Log.d(TAG, "sendInfoToServer(): " + basePath);
 
-            if(testLibrary != null) {
+            if (testLibrary != null) {
                 testLibrary.sendInfoToServer(basePath);
             }
 
