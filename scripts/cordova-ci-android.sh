@@ -47,6 +47,7 @@ cordova plugin remove ${TESTING_PLUGIN_NAME} || true
 
 cordova plugin add --verbose ../${TEMP_PLUGIN_DIR} --nofetch
 cordova plugin add --verbose ../${TESTING_PLUGIN_DIR} --nofetch
+cordova plugin add --verbose cordova-plugin-device
 
 echo -e "${GREEN}>>> Running Cordova build ${NC}"
 cd ${ROOT_DIR}/${PROJECT_DIR}
