@@ -55,4 +55,7 @@ cordova build android --verbose
 adb install -r platforms/android/build/outputs/apk/debug/android-debug.apk
 adb shell monkey -p ${TEST_APP_PACKAGE} 1
 
+cd ${ROOT_DIR}
+rm -rf $TEMP_PLUGIN_DIR
+
 echo -e ">>> END ${NC}"
