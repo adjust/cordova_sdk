@@ -703,7 +703,7 @@ Adjust.getAttribution(function(attribution) {
 To send us the push notification token, add the following call to Adjust **whenever you get your token in the app or when it gets updated**:
 
 ```js
-Adjust.setDeviceToken("YourPushNotificationToken");
+Adjust.setPushToken("YourPushNotificationsToken");
 ```
 
 Push tokens are used for Audience Builder and client callbacks, and they are required for the upcoming uninstall tracking feature.
