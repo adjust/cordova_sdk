@@ -100,3 +100,9 @@ sample/platforms/*
 !sample/plugins/fetch.json
 !sample/platforms/platforms.json
 temp_plugin/
+example/node_modules
+example/platforms
+example/plugins
+test_app/node_modules
+test_app/platforms
+test_app/plugins
