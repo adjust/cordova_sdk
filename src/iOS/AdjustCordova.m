@@ -318,6 +318,10 @@
     [Adjust appWillOpenUrl:url];
 }
 
+- (void)gdprForgetMe:(CDVInvokedUrlCommand *)command {
+    [Adjust gdprForgetMe];
+}
+
 - (void)getIdfa:(CDVInvokedUrlCommand *)command {
     NSString *idfa = [Adjust idfa];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];

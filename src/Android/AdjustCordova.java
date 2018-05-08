@@ -74,6 +74,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_IS_ENABLED                               = "isEnabled";
     private static final String COMMAND_SET_ENABLED                              = "setEnabled";
     private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
+    private static final String COMMAND_GDPR_FORGET_ME                           = "gdprForgetMe";
     private static final String COMMAND_GET_IDFA                                 = "getIdfa";
     private static final String COMMAND_GET_ADID                                 = "getAdid";
     private static final String COMMAND_GET_ATTRIBUTION                          = "getAttribution";
@@ -309,6 +310,10 @@ public class AdjustCordova extends CordovaPlugin
             return true;
         } else if (action.equals(COMMAND_SEND_FIRST_PACKAGES)) {
             Adjust.sendFirstPackages();
+            
+            return true;
+        } else if (action.equals(COMMAND_GDPR_FORGET_ME)) {
+            Adjust.gdprForgetMe(this.cordova.getActivity().getApplicationContext());
             
             return true;
         } else if (action.equals(COMMAND_SET_REFERRER)) {

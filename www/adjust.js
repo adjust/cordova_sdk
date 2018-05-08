@@ -90,6 +90,10 @@ var Adjust = {
         callCordovaCallback('isEnabled', callback);
     },
 
+    gdprForgetMe: function() {
+        callCordova('gdprForgetMe');
+    },
+
     getGoogleAdId: function(callback) {
         callCordovaCallback('getGoogleAdId', callback);
     },

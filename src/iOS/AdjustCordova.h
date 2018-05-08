@@ -25,6 +25,8 @@
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
 
+- (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
