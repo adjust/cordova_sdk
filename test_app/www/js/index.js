@@ -39,9 +39,9 @@ var app = {
             gdprUrl = "http://127.0.0.1:8080";
         }
 
-        var commandExecutor = new CommandExecutor(baseUrl);
-        // AdjustTesting.addTest("current/subsessionCount/Test_SubsessionCount");
-        // AdjustTesting.addTestDirectory("current/offlineMode/");
+        var commandExecutor = new CommandExecutor(baseUrl, gdprUrl);
+        // AdjustTesting.addTest("current/gdpr/Test_GdprForgetMe_after_install");
+        AdjustTesting.addTestDirectory("current/gdpr");
         
         AdjustTesting.startTestSession(baseUrl, function(json) {
             var commandDict = JSON.parse(json);
