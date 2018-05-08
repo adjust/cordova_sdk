@@ -28,8 +28,8 @@ function AdjustCommand(functionName, params, order) {
     this.order = order;
 }
 
-function CommandExecutor(baseUrl) {
-    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl);
+function CommandExecutor(baseUrl, gdprUrl) {
+    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl, gdprUrl);
 };
 
 CommandExecutor.prototype.scheduleCommand = function(className, functionName, params, order) {
@@ -41,9 +41,11 @@ CommandExecutor.prototype.scheduleCommand = function(className, functionName, pa
     }
 };
 
-function AdjustCommandExecutor(baseUrl) {
+function AdjustCommandExecutor(baseUrl, gdprUrl) {
     this.baseUrl           = baseUrl;
+    this.gdprUrl           = gdprUrl;
     this.basePath          = null;
+    this.gdprPath          = null;
     this.savedEvents       = {};
     this.savedConfigs      = {};
     this.savedCommands     = [];
@@ -106,6 +108,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case "setPushToken"                   : this.setPushToken(command.params); break;
         case "openDeeplink"                   : this.openDeeplink(command.params); break;
         case "sendReferrer"                   : this.sendReferrer(command.params); break;
+        case "gdprForgetMe"                   : this.gdprForgetMe(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -122,8 +125,10 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
 AdjustCommandExecutor.prototype.testOptions = function(params) {
     var testOptions = new AdjustTestOptions();
     testOptions.baseUrl = this.baseUrl;
+    testOptions.gdprUrl = this.gdprUrl;
     if ('basePath' in params) {
         this.basePath = getFirstParameterValue(params, 'basePath');
+        this.gdprPath = getFirstParameterValue(params, 'basePath');
     }
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstParameterValue(params, 'timerInterval').toString();
@@ -145,6 +150,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('resetSdk' === option) {
                 testOptions.teardown                 = true;
                 testOptions.basePath                 = this.basePath;
+                testOptions.gdprPath                 = this.gdprPath;
                 testOptions.useTestConnectionOptions = true;
                 Adjust.teardown();
             }
@@ -164,6 +170,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('sdk' === option) {
                 testOptions.teardown                 = true;
                 testOptions.basePath                 = null;
+                testOptions.gdprPath                 = null;
                 testOptions.useTestConnectionOptions = false;
                 Adjust.teardown();
             }
@@ -459,6 +466,10 @@ AdjustCommandExecutor.prototype.setOfflineMode = function(params) {
 AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
     Adjust.sendFirstPackages();
 };
+
+AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
+    Adjust.gdprForgetMe();
+}
 
 AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
     var list = getValueFromKey(params, "KeyValue");

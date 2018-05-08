@@ -30,10 +30,13 @@ var app = {
         this.receivedEvent('deviceready');
 
         var baseUrl = "";
+        var gdprUrl = "";
         if (device.platform === "Android") {
             baseUrl = "https://10.0.2.2:8443";
+            gdprUrl = "https://10.0.2.2:8443";
         } else if (device.platform === "iOS") {
             baseUrl = "http://127.0.0.1:8080";
+            gdprUrl = "http://127.0.0.1:8080";
         }
 
         var commandExecutor = new CommandExecutor(baseUrl);
