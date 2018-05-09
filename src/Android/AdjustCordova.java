@@ -50,7 +50,9 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_DEVICE_KNOWN                   = "isDeviceKnown";
     private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
     private static final String KEY_BASE_URL                       = "baseUrl";
+    private static final String KEY_GDPR_URL                       = "gdprUrl";
     private static final String KEY_BASE_PATH                      = "basePath";
+    private static final String KEY_GDPR_PATH                      = "gdprPath";
     private static final String KEY_USE_TEST_CONNECTION_OPTIONS    = "useTestConnectionOptions";
     private static final String KEY_TIMER_INTERVAL                 = "timerIntervalInMilliseconds";
     private static final String KEY_TIMER_START                    = "timerStartInMilliseconds";
@@ -587,12 +589,30 @@ public class AdjustCordova extends CordovaPlugin
             }
         }
 
+        if (!jsonParameters.isNull(KEY_GDPR_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_GDPR_URL);
+                testOptions.gdprUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse gdpr url");
+            }
+        }
+
         if (!jsonParameters.isNull(KEY_BASE_PATH)) {
             try {
                 String value = jsonParameters.getString(KEY_BASE_PATH);
                 testOptions.basePath = value;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("Unable to parse base path");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_GDPR_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_GDPR_PATH);
+                testOptions.gdprPath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse gdpr path");
             }
         }
 

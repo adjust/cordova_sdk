@@ -37,7 +37,9 @@
 #define KEY_INFO_3                      @"info3"
 #define KEY_INFO_4                      @"info4"
 #define KEY_BASE_URL                    @"baseUrl"
+#define KEY_GDPR_URL                    @"gdprUrl"
 #define KEY_BASE_PATH                   @"basePath"
+#define KEY_GDPR_PATH                   @"gdprPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL              @"timerIntervalInMilliseconds"
 #define KEY_TIMER_START                 @"timerStartInMilliseconds"
@@ -452,7 +454,9 @@
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext         = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl            = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
+    NSString *gdprUrl            = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
     NSString *basePath           = [[command.arguments valueForKey:KEY_BASE_PATH] objectAtIndex:0];
+    NSString *gdprPath           = [[command.arguments valueForKey:KEY_GDPR_PATH] objectAtIndex:0];
     NSString *timerInterval      = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
     NSString *timerStart         = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
     NSString *sessionInterval    = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
@@ -464,9 +468,17 @@
     if ([self isFieldValid:baseUrl]) {
         testOptions.baseUrl = baseUrl;
     }
+
+    if ([self isFieldValid:gdprUrl]) {
+        testOptions.gdprUrl = gdprUrl;
+    }
     
     if ([self isFieldValid:basePath]) {
         testOptions.basePath = basePath;
+    }
+
+    if ([self isFieldValid:gdprPath]) {
+        testOptions.gdprPath = gdprPath;
     }
     
     if ([self isFieldValid:timerInterval]) {
