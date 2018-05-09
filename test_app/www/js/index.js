@@ -41,7 +41,7 @@ var app = {
 
         var commandExecutor = new CommandExecutor(baseUrl, gdprUrl);
         // AdjustTesting.addTest("current/gdpr/Test_GdprForgetMe_after_install");
-        AdjustTesting.addTestDirectory("current/gdpr");
+        // AdjustTesting.addTestDirectory("current/gdpr");
         
         AdjustTesting.startTestSession(baseUrl, function(json) {
             var commandDict = JSON.parse(json);
