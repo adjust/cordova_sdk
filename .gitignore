@@ -106,3 +106,4 @@ example/plugins
 test_app/node_modules
 test_app/platforms
 test_app/plugins
+test_plugin
