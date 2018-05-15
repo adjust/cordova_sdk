@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.adjust.sdktesting"
+    version="4.12.5">
+
+    <name>Adjust Testing</name>
+    <description>Adjust plugin for Cordova CI testing</description>
+    <license>MIT License</license>
+    <keywords>adjust</keywords>
+    <author>adjust</author>
+
+    <engines>
+        <engine name="cordova-android" version=">=4.0.0"/>
+        <engine name="cordova-ios" version=">=3.0.0"/>
+    </engines>
+
+    <js-module src="www/adjust_testing.js" name="AdjustTesting">
+        <clobbers target="AdjustTesting"/>
+    </js-module>
+
+    <!-- Android -->
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest"/>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AdjustTesting">
+                <param name="android-package" value="com.adjust.sdktesting.AdjustTestingCordova"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/Android/AdjustTestingCordova.java" target-dir="src/com/adjust/sdktesting"/>
+        <source-file src="src/Android/CommandListener.java" target-dir="src/com/adjust/sdktesting"/>
+        <source-file src="src/Android/adjust-testing.jar" target-dir="libs"/>
+        <framework src="com.google.code.gson:gson:2.8.0" /> 
+    </platform>
+
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AdjustTesting">
+                <param name="ios-package" value="AdjustTestingCordova"/>
+                <param name="onload" value="true" />
+          </feature>
+        </config-file>
+
+        <header-file src="src/iOS/AdjustTestingCordova.h"/>
+        <source-file src="src/iOS/AdjustTestingCordova.m"/>
+        <header-file src="src/iOS/AdjustTestingCordovaCommandListener.h"/>
+        <source-file src="src/iOS/AdjustTestingCordovaCommandListener.m"/>
+        <framework src="src/iOS/AdjustTestLibrary.framework" custom="true"/>
+    </platform>
+</plugin>

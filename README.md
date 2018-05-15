@@ -2,7 +2,7 @@
 
 This is the Cordova SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
 
-N.B. At the moment, SDK 4.12.5 for Cordova supports Android platform version `from 4.0.0 until 6.4.0` (more information about newer Android platforms can be found in [here](#cordova-android7.0.0)) and iOS platform version `3.0.0 and higher`. Windows platform is **not supported** at the moment.
+N.B. At the moment, SDK 4.13.0 for Cordova supports Android platform version `from 4.0.0 until 6.4.0` (more information about newer Android platforms can be found in [here](#cordova-android7.0.0)) and iOS platform version `3.0.0 and higher`. Windows platform is **not supported** at the moment.
 
 ## Table of contents
 
@@ -27,32 +27,33 @@ N.B. At the moment, SDK 4.12.5 for Cordova supports Android platform version `fr
       * [In-App Purchase verification](#iap-verification)
       * [Callback parameters](#callback-parameters)
       * [Partner parameters](#partner-parameters)
-    * [Session parameters](#session-parameters)
+   * [Session parameters](#session-parameters)
       * [Session callback parameters](#session-callback-parameters)
       * [Session partner parameters](#session-partner-parameters)
       * [Delay start](#delay-start)
-    * [Attribution callback](#attribution-callback)
-    * [Session and event callbacks](#session-event-callbacks)
-    * [Disable tracking](#disable-tracking)
-    * [Offline mode](#offline-mode)
-    * [Event buffering](#event-buffering)
-    * [SDK signature](#sdk-signature)
-    * [Background tracking](#background-tracking)
-    * [Device IDs](#device-ids)
+   * [Attribution callback](#attribution-callback)
+   * [Session and event callbacks](#session-event-callbacks)
+   * [Disable tracking](#disable-tracking)
+   * [Offline mode](#offline-mode)
+   * [Event buffering](#event-buffering)
+   * [GDPR right to be forgotten](#gdpr-forget-me)
+   * [SDK signature](#sdk-signature)
+   * [Background tracking](#background-tracking)
+   * [Device IDs](#device-ids)
       * [iOS advertising identifier](#di-idfa)
       * [Google Play Services advertising identifier](#di-gps-adid)
       * [Amazon advertising identifier](#di-fire-adid)
       * [Adjust device identifier](#di-adid)
-    * [User attribution](#user-attribution)
-    * [Push token](#push-token)
-    * [Track additional device identifiers](#track-additional-ids)
-    * [Pre-installed trackers](#pre-installed-trackers)
-    * [Deep linking](#deeplinking)
-        * [Standard deep linking scenario](#deeplinking-standard)
-        * [Deep linking on Android & iOS 8 and earlier](#deeplinking-android-ios-old)
-        * [Deep linking on iOS 9 and later](#deeplinking-ios-new)
-        * [Deferred deep linking scenario](#deeplinking-deferred)
-        * [Reattribution via deep links](#deeplinking-reattribution)
+   * [User attribution](#user-attribution)
+   * [Push token](#push-token)
+   * [Track additional device identifiers](#track-additional-ids)
+   * [Pre-installed trackers](#pre-installed-trackers)
+   * [Deep linking](#deeplinking)
+      * [Standard deep linking scenario](#deeplinking-standard)
+      * [Deep linking on Android & iOS 8 and earlier](#deeplinking-android-ios-old)
+      * [Deep linking on iOS 9 and later](#deeplinking-ios-new)
+      * [Deferred deep linking scenario](#deeplinking-deferred)
+      * [Reattribution via deep links](#deeplinking-reattribution)
 * [License](#license)
 
 
@@ -604,6 +605,16 @@ adjustConfig.setEventBufferingEnabled(true);
 
 Adjust.create(adjustConfig);
 ```
+
+### <a id="gdpr-forget-me"></a>GDPR right to be forgotten
+
+In accordance with article 17 of the EU's General Data Protection Regulation (GDPR), you can notify Adjust when a user has exercised their right to be forgotten. Calling the following method will instruct the Adjust SDK to communicate the user's choice to be forgotten to the Adjust backend:
+
+```js
+Adjust.gdprForgetMe();
+```
+
+Upon receiving this information, Adjust will erase the user's data and the Adjust SDK will stop tracking the user. No requests from this device will be sent to Adjust in the future.
 
 ### <a id="sdk-signature"></a>SDK signature
 

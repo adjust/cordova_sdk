@@ -119,6 +119,7 @@ var app = {
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
 
+        var btnGdprForgetMe = document.getElementById("btnGdprForgetMe");
         var btnTrackSimpleEvent = document.getElementById("btnTrackSimpleEvent"); 
         var btnTrackRevenueEvent = document.getElementById("btnTrackRevenueEvent");
         var btnTrackCallbackEvent = document.getElementById("btnTrackCallbackEvent");
@@ -187,6 +188,10 @@ var app = {
                     navigator.notification.alert('No, it is not enabled.', null, 'Is SDK Enabled?', 'OK');
                 }
             });
+        }, false);
+
+        btnGdprForgetMe.addEventListener('click', function() {
+            Adjust.gdprForgetMe();
         }, false);
 
         btnGetIds.addEventListener('click', function() {

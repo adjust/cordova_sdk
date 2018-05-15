@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>
@@ -25,6 +25,8 @@
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
 
+- (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
@@ -41,7 +43,9 @@
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 
-// Android methods
+- (void)setTestOptions:(CDVInvokedUrlCommand *)command;
+- (void)teardown:(CDVInvokedUrlCommand *)command;
+
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
 - (void)setReferrer:(CDVInvokedUrlCommand *)command;

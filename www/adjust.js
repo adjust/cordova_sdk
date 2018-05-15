@@ -83,11 +83,15 @@ var Adjust = {
     },
 
     setReferrer: function(referrer) {
-        callCordova('setReferrer');
+        callCordova('setReferrer', referrer);
     },
 
     isEnabled: function(callback) {
         callCordovaCallback('isEnabled', callback);
+    },
+
+    gdprForgetMe: function() {
+        callCordova('gdprForgetMe');
     },
 
     getGoogleAdId: function(callback) {
@@ -136,6 +140,22 @@ var Adjust = {
 
     sendFirstPackages: function() {
         callCordova('sendFirstPackages');
+    },
+
+    setTestOptions: function(testOptions) {
+        callCordova('setTestOptions', testOptions);
+    },
+
+    teardown: function() {
+        callCordova('teardown');
+    },
+
+    onResume: function() {
+        callCordova('onResume');
+    },
+
+    onPause: function() {
+        callCordova('onPause');
     }
 };
 

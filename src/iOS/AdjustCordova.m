@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDVPluginResult.h>
@@ -11,31 +11,42 @@
 #import "AdjustCordova.h"
 #import "AdjustCordovaDelegate.h"
 
-#define KEY_APP_TOKEN               @"appToken"
-#define KEY_ENVIRONMENT             @"environment"
-#define KEY_LOG_LEVEL               @"logLevel"
-#define KEY_SDK_PREFIX              @"sdkPrefix"
-#define KEY_DEFAULT_TRACKER         @"defaultTracker"
-#define KEY_EVENT_BUFFERING_ENABLED @"eventBufferingEnabled"
-#define KEY_EVENT_TOKEN             @"eventToken"
-#define KEY_REVENUE                 @"revenue"
-#define KEY_CURRENCY                @"currency"
-#define KEY_RECEIPT                 @"receipt"
-#define KEY_TRANSACTION_ID          @"transactionId"
-#define KEY_CALLBACK_PARAMETERS     @"callbackParameters"
-#define KEY_PARTNER_PARAMETERS      @"partnerParameters"
-#define KEY_IS_RECEIPT_SET          @"isReceiptSet"
-#define KEY_USER_AGENT              @"userAgent"
-#define KEY_REFERRER                @"referrer"
-#define KEY_SHOULD_LAUNCH_DEEPLINK  @"shouldLaunchDeeplink"
-#define KEY_SEND_IN_BACKGROUND      @"sendInBackground"
-#define KEY_DELAY_START             @"delayStart"
-#define KEY_DEVICE_KNOWN            @"isDeviceKnown"
-#define KEY_SECRET_ID               @"secretId"
-#define KEY_INFO_1                  @"info1"
-#define KEY_INFO_2                  @"info2"
-#define KEY_INFO_3                  @"info3"
-#define KEY_INFO_4                  @"info4"
+#define KEY_DEFAULT_TRACKER             @"defaultTracker"
+#define KEY_APP_TOKEN                   @"appToken"
+#define KEY_ENVIRONMENT                 @"environment"
+#define KEY_LOG_LEVEL                   @"logLevel"
+#define KEY_SDK_PREFIX                  @"sdkPrefix"
+#define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
+#define KEY_EVENT_TOKEN                 @"eventToken"
+#define KEY_REVENUE                     @"revenue"
+#define KEY_CURRENCY                    @"currency"
+#define KEY_RECEIPT                     @"receipt"
+#define KEY_TRANSACTION_ID              @"transactionId"
+#define KEY_CALLBACK_PARAMETERS         @"callbackParameters"
+#define KEY_PARTNER_PARAMETERS          @"partnerParameters"
+#define KEY_IS_RECEIPT_SET              @"isReceiptSet"
+#define KEY_USER_AGENT                  @"userAgent"
+#define KEY_REFERRER                    @"referrer"
+#define KEY_SHOULD_LAUNCH_DEEPLINK      @"shouldLaunchDeeplink"
+#define KEY_SEND_IN_BACKGROUND          @"sendInBackground"
+#define KEY_DELAY_START                 @"delayStart"
+#define KEY_DEVICE_KNOWN                @"isDeviceKnown"
+#define KEY_SECRET_ID                   @"secretId"
+#define KEY_INFO_1                      @"info1"
+#define KEY_INFO_2                      @"info2"
+#define KEY_INFO_3                      @"info3"
+#define KEY_INFO_4                      @"info4"
+#define KEY_BASE_URL                    @"baseUrl"
+#define KEY_GDPR_URL                    @"gdprUrl"
+#define KEY_BASE_PATH                   @"basePath"
+#define KEY_GDPR_PATH                   @"gdprPath"
+#define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
+#define KEY_TIMER_INTERVAL              @"timerIntervalInMilliseconds"
+#define KEY_TIMER_START                 @"timerStartInMilliseconds"
+#define KEY_SESSION_INTERVAL            @"sessionIntervalInMilliseconds"
+#define KEY_SUBSESSION_INTERVAL         @"subsessionIntervalInMilliseconds"
+#define KEY_TEARDOWN                    @"teardown"
+#define KEY_HAS_CONTEXT                 @"hasContext"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -49,10 +60,10 @@
 #pragma mark - Object lifecycle methods
 
 - (void)pluginInitialize {
-    attributionCallbackId = nil;
-    eventFailedCallbackId = nil;
-    eventSucceededCallbackId = nil;
-    sessionFailedCallbackId = nil;
+    attributionCallbackId      = nil;
+    eventFailedCallbackId      = nil;
+    eventSucceededCallbackId   = nil;
+    sessionFailedCallbackId    = nil;
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
 }
@@ -84,12 +95,12 @@
     NSNumber *sendInBackground      = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink  = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
 
-    BOOL allowSuppressLogLevel = false;
+    BOOL allowSuppressLogLevel = NO;
 
     // Check for SUPPRESS log level
     if ([self isFieldValid:logLevel]) {
         if ([ADJLogger logLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
-            allowSuppressLogLevel = true;
+            allowSuppressLogLevel = YES;
         }
     }
 
@@ -245,7 +256,7 @@
 
     // Deprecated
     // Transaction ID and receipt
-    BOOL isTransactionIdSet = false;
+    BOOL isTransactionIdSet = NO;
 
     if ([self isFieldValid:isReceiptSet]) {
         if ([isReceiptSet boolValue]) {
@@ -307,6 +318,10 @@
 #pragma clang diagnostic pop
 
     [Adjust appWillOpenUrl:url];
+}
+
+- (void)gdprForgetMe:(CDVInvokedUrlCommand *)command {
+    [Adjust gdprForgetMe];
 }
 
 - (void)getIdfa:(CDVInvokedUrlCommand *)command {
@@ -436,10 +451,80 @@
     [Adjust resetSessionPartnerParameters];
 }
 
-// Android methods
-- (void)onPause:(CDVInvokedUrlCommand *)command {}
+- (void)setTestOptions:(CDVInvokedUrlCommand *)command {
+    NSString *hasContext         = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
+    NSString *baseUrl            = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
+    NSString *gdprUrl            = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
+    NSString *basePath           = [[command.arguments valueForKey:KEY_BASE_PATH] objectAtIndex:0];
+    NSString *gdprPath           = [[command.arguments valueForKey:KEY_GDPR_PATH] objectAtIndex:0];
+    NSString *timerInterval      = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
+    NSString *timerStart         = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
+    NSString *sessionInterval    = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
+    NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
+    NSString *teardown           = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
+    
+    AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
+    
+    if ([self isFieldValid:baseUrl]) {
+        testOptions.baseUrl = baseUrl;
+    }
 
-- (void)onResume:(CDVInvokedUrlCommand *)command {}
+    if ([self isFieldValid:gdprUrl]) {
+        testOptions.gdprUrl = gdprUrl;
+    }
+    
+    if ([self isFieldValid:basePath]) {
+        testOptions.basePath = basePath;
+    }
+
+    if ([self isFieldValid:gdprPath]) {
+        testOptions.gdprPath = gdprPath;
+    }
+    
+    if ([self isFieldValid:timerInterval]) {
+        testOptions.timerIntervalInMilliseconds = [self convertMilliStringToNumber:timerInterval];
+    }
+    
+    if ([self isFieldValid:timerStart]) {
+        testOptions.timerStartInMilliseconds = [self convertMilliStringToNumber:timerStart];
+    }
+    
+    if ([self isFieldValid:sessionInterval]) {
+        testOptions.sessionIntervalInMilliseconds = [self convertMilliStringToNumber:sessionInterval];
+    }
+    
+    if ([self isFieldValid:subsessionInterval]) {
+        testOptions.subsessionIntervalInMilliseconds = [self convertMilliStringToNumber:subsessionInterval];
+    }
+    
+    if ([self isFieldValid:teardown]) {
+        testOptions.teardown = [teardown boolValue];
+    }
+    
+    if ([self isFieldValid:hasContext]) {
+        testOptions.deleteState = [hasContext boolValue];
+    }
+    
+    [Adjust setTestOptions:testOptions];
+}
+
+- (void)teardown:(CDVInvokedUrlCommand *)command {
+    attributionCallbackId      = nil;
+    eventFailedCallbackId      = nil;
+    eventSucceededCallbackId   = nil;
+    sessionFailedCallbackId    = nil;
+    sessionSucceededCallbackId = nil;
+    deferredDeeplinkCallbackId = nil;
+    [AdjustCordovaDelegate teardown];
+}
+
+- (void)onPause:(CDVInvokedUrlCommand *)command {
+    [Adjust trackSubsessionEnd];
+}
+
+- (void)onResume:(CDVInvokedUrlCommand *)command {
+    [Adjust trackSubsessionStart];
+}
 
 - (void)setReferrer:(CDVInvokedUrlCommand *)command {}
 
@@ -457,8 +542,30 @@
 
 #pragma mark - Private & helper methods
 
+- (NSNumber *)convertMilliStringToNumber:(NSString *)milliS {
+    NSNumber * number = [NSNumber numberWithInt:[milliS intValue]];
+    return number;
+}
+
 - (BOOL)isFieldValid:(NSObject *)field {
-    return field != nil && ![field isKindOfClass:[NSNull class]];
+    if (field == nil) {
+        return NO;
+    }
+    
+    // Check if its an instance of the singleton NSNull
+    if ([field isKindOfClass:[NSNull class]]) {
+        return NO;
+    }
+    
+    // If field can be converted to a string, check if it has any content.
+    NSString *str = [NSString stringWithFormat:@"%@", field];
+    if (str != nil) {
+        if ([str length] == 0) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 - (void)addValueOrEmpty:(NSObject *)value

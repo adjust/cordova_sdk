@@ -3,14 +3,31 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2012-2017 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
 #import <Cordova/CDVPluginResult.h>
 #import "AdjustCordovaDelegate.h"
 
+static dispatch_once_t onceToken;
+static AdjustCordovaDelegate *defaultInstance = nil;
+
 @implementation AdjustCordovaDelegate
+
+#pragma mark - Object lifecycle methods
+
+- (id)init {
+    self = [super init];
+
+    if (nil == self) {
+        return nil;
+    }
+
+    return self;
+}
+
+#pragma mark - Public methods
 
 + (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
                            eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
@@ -26,9 +43,6 @@
                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
-    static dispatch_once_t onceToken;
-    static AdjustCordovaDelegate *defaultInstance = nil;
-    
     dispatch_once(&onceToken, ^{
         defaultInstance = [[AdjustCordovaDelegate alloc] init];
 
@@ -76,21 +90,18 @@
     return defaultInstance;
 }
 
-- (id)init {
-    self = [super init];
-    
-    if (nil == self) {
-        return nil;
-    }
-    
-    return self;
++ (void)teardown {
+    defaultInstance = nil;
+    onceToken = 0;
 }
+
+#pragma mark - Private & helper methods
 
 - (void)adjustAttributionChangedWannabe:(ADJAttribution *)attribution {
     if (attribution == nil) {
         return;
     }
-    
+
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];

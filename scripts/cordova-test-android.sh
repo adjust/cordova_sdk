@@ -50,3 +50,5 @@ cd ${ROOT_DIR}/${EXAMPLE_DIR}
 cordova run android
 
 echo -e "${GREEN}>>> Build successful. ${NC}"
+cd ${ROOT_DIR}
+rm -rf $TEMP_PLUGIN_DIR

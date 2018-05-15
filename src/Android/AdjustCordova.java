@@ -49,6 +49,17 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_INFO_4                         = "info4";
     private static final String KEY_DEVICE_KNOWN                   = "isDeviceKnown";
     private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
+    private static final String KEY_BASE_URL                       = "baseUrl";
+    private static final String KEY_GDPR_URL                       = "gdprUrl";
+    private static final String KEY_BASE_PATH                      = "basePath";
+    private static final String KEY_GDPR_PATH                      = "gdprPath";
+    private static final String KEY_USE_TEST_CONNECTION_OPTIONS    = "useTestConnectionOptions";
+    private static final String KEY_TIMER_INTERVAL                 = "timerIntervalInMilliseconds";
+    private static final String KEY_TIMER_START                    = "timerStartInMilliseconds";
+    private static final String KEY_SESSION_INTERVAL               = "sessionIntervalInMilliseconds";
+    private static final String KEY_SUBSESSION_INTERVAL            = "subsessionIntervalInMilliseconds";
+    private static final String KEY_TEARDOWN                       = "teardown";
+    private static final String KEY_HAS_CONTEXT                    = "hasContext";
 
     private static final String COMMAND_CREATE                                   = "create";
     private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
@@ -65,6 +76,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_IS_ENABLED                               = "isEnabled";
     private static final String COMMAND_SET_ENABLED                              = "setEnabled";
     private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
+    private static final String COMMAND_GDPR_FORGET_ME                           = "gdprForgetMe";
     private static final String COMMAND_GET_IDFA                                 = "getIdfa";
     private static final String COMMAND_GET_ADID                                 = "getAdid";
     private static final String COMMAND_GET_ATTRIBUTION                          = "getAttribution";
@@ -78,6 +90,8 @@ public class AdjustCordova extends CordovaPlugin
     private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
     private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
     private static final String COMMAND_SET_REFERRER                             = "setReferrer";
+    private static final String COMMAND_SET_TEST_OPTIONS                         = "setTestOptions";
+    private static final String COMMAND_TEARDOWN                                 = "teardown";
 
     private static final String ATTRIBUTION_TRACKER_TOKEN   = "trackerToken";
     private static final String ATTRIBUTION_TRACKER_NAME    = "trackerName";
@@ -112,17 +126,17 @@ public class AdjustCordova extends CordovaPlugin
     private static final String SESSION_FAILED_WILL_RETRY       = "willRetry";
     private static final String SESSION_FAILED_JSON_RESPONSE    = "jsonResponse";
 
-    private static CallbackContext attributionCallbackContext;
-    private static CallbackContext eventTrackingSucceededCallbackContext;
-    private static CallbackContext eventTrackingFailedCallbackContext;
-    private static CallbackContext sessionTrackingSucceededCallbackContext;
-    private static CallbackContext sessionTrackingFailedCallbackContext;
-    private static CallbackContext deferredDeeplinkCallbackContext;
-    private static CallbackContext getAdidCallbackContext;
-    private static CallbackContext getIdfaCallbackContext;
-    private static CallbackContext getGoogleAdIdCallbackContext;
-    private static CallbackContext getAmazonAdidCallbackContext;
-    private static CallbackContext getAttributionCallbackContext;
+    private CallbackContext attributionCallbackContext;
+    private CallbackContext eventTrackingSucceededCallbackContext;
+    private CallbackContext eventTrackingFailedCallbackContext;
+    private CallbackContext sessionTrackingSucceededCallbackContext;
+    private CallbackContext sessionTrackingFailedCallbackContext;
+    private CallbackContext deferredDeeplinkCallbackContext;
+    private CallbackContext getAdidCallbackContext;
+    private CallbackContext getIdfaCallbackContext;
+    private CallbackContext getGoogleAdIdCallbackContext;
+    private CallbackContext getAmazonAdidCallbackContext;
+    private CallbackContext getAttributionCallbackContext;
 
     private boolean shouldLaunchDeeplink = false;
 
@@ -133,31 +147,31 @@ public class AdjustCordova extends CordovaPlugin
 
             return true;
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
-            AdjustCordova.attributionCallbackContext = callbackContext;
+            attributionCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK)) {
-            AdjustCordova.eventTrackingSucceededCallbackContext = callbackContext;
+            eventTrackingSucceededCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK)) {
-            AdjustCordova.eventTrackingFailedCallbackContext = callbackContext;
+            eventTrackingFailedCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK)) {
-            AdjustCordova.sessionTrackingSucceededCallbackContext = callbackContext;
+            sessionTrackingSucceededCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK)) {
-            AdjustCordova.sessionTrackingFailedCallbackContext = callbackContext;
+            sessionTrackingFailedCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
-            AdjustCordova.deferredDeeplinkCallbackContext = callbackContext;
+            deferredDeeplinkCallbackContext = callbackContext;
 
             return true;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
-            AdjustCordova.getGoogleAdIdCallbackContext = callbackContext;
+            getGoogleAdIdCallbackContext = callbackContext;
 
             // Google Ad Id callback
             if (null != getGoogleAdIdCallbackContext) {
@@ -166,7 +180,7 @@ public class AdjustCordova extends CordovaPlugin
 
             return true;
         } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
-            AdjustCordova.getAmazonAdidCallbackContext = callbackContext;
+            getAmazonAdidCallbackContext = callbackContext;
 
             if (null != getAmazonAdidCallbackContext) {
                 String amazonAdId = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
@@ -178,12 +192,12 @@ public class AdjustCordova extends CordovaPlugin
                 PluginResult pluginResult = new PluginResult(Status.OK, amazonAdId);
                 pluginResult.setKeepCallback(true);
 
-                AdjustCordova.getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
+                getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
             }
 
             return true;
         } else if (action.equals(COMMAND_GET_ADID)) {
-            AdjustCordova.getAdidCallbackContext = callbackContext;
+            getAdidCallbackContext = callbackContext;
 
             if (null != getAdidCallbackContext) {
                 final String adid = Adjust.getAdid();
@@ -191,12 +205,12 @@ public class AdjustCordova extends CordovaPlugin
                 PluginResult pluginResult = new PluginResult(Status.OK, adid);
                 pluginResult.setKeepCallback(true);
 
-                AdjustCordova.getAdidCallbackContext.sendPluginResult(pluginResult);
+                getAdidCallbackContext.sendPluginResult(pluginResult);
             }
 
             return true;
         } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
-            AdjustCordova.getAttributionCallbackContext = callbackContext;
+            getAttributionCallbackContext = callbackContext;
 
             if (null != getAttributionCallbackContext) {
                 final AdjustAttribution attribution = Adjust.getAttribution();
@@ -205,12 +219,12 @@ public class AdjustCordova extends CordovaPlugin
                 PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
                 pluginResult.setKeepCallback(true);
 
-                AdjustCordova.getAttributionCallbackContext.sendPluginResult(pluginResult);
+                getAttributionCallbackContext.sendPluginResult(pluginResult);
             }
 
             return true;
         } else if (action.equals(COMMAND_GET_IDFA)) {
-            AdjustCordova.getIdfaCallbackContext = callbackContext;
+            getIdfaCallbackContext = callbackContext;
 
             // Send empty string for IDFA
             final String idfa = "";
@@ -218,7 +232,7 @@ public class AdjustCordova extends CordovaPlugin
             PluginResult pluginResult = new PluginResult(Status.OK, idfa);
             pluginResult.setKeepCallback(true);
 
-            AdjustCordova.getIdfaCallbackContext.sendPluginResult(pluginResult);
+            getIdfaCallbackContext.sendPluginResult(pluginResult);
 
             return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
@@ -232,7 +246,7 @@ public class AdjustCordova extends CordovaPlugin
             return true;
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
-            Adjust.setPushToken(token);
+            Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
             
             return true;
         } else if (action.equals(COMMAND_ON_PAUSE)) {
@@ -300,10 +314,33 @@ public class AdjustCordova extends CordovaPlugin
             Adjust.sendFirstPackages();
             
             return true;
+        } else if (action.equals(COMMAND_GDPR_FORGET_ME)) {
+            Adjust.gdprForgetMe(this.cordova.getActivity().getApplicationContext());
+            
+            return true;
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
+            
+            return true;
+        } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
+            executeSetTestOptions(args);
+            
+            return true;
+        } else if (action.equals(COMMAND_TEARDOWN)) {
+            attributionCallbackContext              = null;
+            eventTrackingSucceededCallbackContext   = null;
+            eventTrackingFailedCallbackContext      = null;
+            sessionTrackingSucceededCallbackContext = null;
+            sessionTrackingFailedCallbackContext    = null;
+            deferredDeeplinkCallbackContext         = null;
+            getAdidCallbackContext                  = null;
+            getIdfaCallbackContext                  = null;
+            getGoogleAdIdCallbackContext            = null;
+            getAmazonAdidCallbackContext            = null;
+            getAttributionCallbackContext           = null;
+            shouldLaunchDeeplink                    = false;
             
             return true;
         }
@@ -433,32 +470,32 @@ public class AdjustCordova extends CordovaPlugin
         }
 
         // Attribution callback
-        if (AdjustCordova.attributionCallbackContext != null) {
+        if (attributionCallbackContext != null) {
             adjustConfig.setOnAttributionChangedListener(this);
         }
 
         // Event tracking succeeded callback
-        if (AdjustCordova.eventTrackingSucceededCallbackContext != null) {
+        if (eventTrackingSucceededCallbackContext != null) {
             adjustConfig.setOnEventTrackingSucceededListener(this);
         }
 
         // Event tracking failed callback
-        if (AdjustCordova.eventTrackingFailedCallbackContext != null) {
+        if (eventTrackingFailedCallbackContext != null) {
             adjustConfig.setOnEventTrackingFailedListener(this);
         }
 
         // Session tracking succeeded callback
-        if (AdjustCordova.sessionTrackingSucceededCallbackContext != null) {
+        if (sessionTrackingSucceededCallbackContext != null) {
             adjustConfig.setOnSessionTrackingSucceededListener(this);
         }
 
         // Session tracking failed callback
-        if (AdjustCordova.sessionTrackingFailedCallbackContext != null) {
+        if (sessionTrackingFailedCallbackContext != null) {
             adjustConfig.setOnSessionTrackingFailedListener(this);
         }
 
         // Deferred deeplink callback listener
-        if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
+        if (deferredDeeplinkCallbackContext != null) {
             adjustConfig.setOnDeeplinkResponseListener(this);
         }
 
@@ -526,9 +563,119 @@ public class AdjustCordova extends CordovaPlugin
         Adjust.trackEvent(adjustEvent);
     }
 
+    private void executeSetTestOptions(final JSONArray args) throws JSONException {
+        JSONObject jsonParameters = args.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        final AdjustTestOptions testOptions = new AdjustTestOptions();
+
+        if (!jsonParameters.isNull(KEY_HAS_CONTEXT)) {
+            try {
+                boolean value = jsonParameters.getBoolean(KEY_HAS_CONTEXT);
+                if (value) {
+                    testOptions.context = this.cordova.getActivity().getApplicationContext();
+                }
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse has context");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_BASE_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_BASE_URL);
+                testOptions.baseUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse base url");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_GDPR_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_GDPR_URL);
+                testOptions.gdprUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse gdpr url");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_BASE_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_BASE_PATH);
+                testOptions.basePath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse base path");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_GDPR_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_GDPR_PATH);
+                testOptions.gdprPath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse gdpr path");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_USE_TEST_CONNECTION_OPTIONS)) {
+            try {
+                boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
+                testOptions.useTestConnectionOptions = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse use test connection options");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TIMER_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_TIMER_INTERVAL);
+                testOptions.timerIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse timer interval");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TIMER_START)) {
+            try {
+                long value = jsonParameters.getLong(KEY_TIMER_START);
+                testOptions.timerStartInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse timer start");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_SESSION_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_SESSION_INTERVAL);
+                testOptions.sessionIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse session interval");
+            }
+        } 
+
+        if (!jsonParameters.isNull(KEY_SUBSESSION_INTERVAL)) {
+            try {
+                long value = jsonParameters.getLong(KEY_SUBSESSION_INTERVAL);
+                testOptions.subsessionIntervalInMilliseconds = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse subsession interval");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_TEARDOWN)) {
+            try {
+                boolean teardown = jsonParameters.getBoolean(KEY_TEARDOWN);
+                testOptions.teardown = teardown;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse teardown");
+            }
+        }
+
+        Adjust.setTestOptions(testOptions);
+    }
+
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        if (AdjustCordova.attributionCallbackContext == null) {
+        if (attributionCallbackContext == null) {
             return;
         }
 
@@ -536,12 +683,12 @@ public class AdjustCordova extends CordovaPlugin
         PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.attributionCallbackContext.sendPluginResult(pluginResult);
+        attributionCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedEventTrackingSucceeded(AdjustEventSuccess event) {
-        if (AdjustCordova.eventTrackingSucceededCallbackContext == null) {
+        if (eventTrackingSucceededCallbackContext == null) {
             return;
         }
 
@@ -549,12 +696,12 @@ public class AdjustCordova extends CordovaPlugin
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        eventTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedEventTrackingFailed(AdjustEventFailure event) {
-        if (AdjustCordova.eventTrackingFailedCallbackContext == null) {
+        if (eventTrackingFailedCallbackContext == null) {
             return;
         }
 
@@ -562,12 +709,12 @@ public class AdjustCordova extends CordovaPlugin
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        eventTrackingFailedCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedSessionTrackingSucceeded(AdjustSessionSuccess session) {
-        if (AdjustCordova.sessionTrackingSucceededCallbackContext == null) {
+        if (sessionTrackingSucceededCallbackContext == null) {
             return;
         }
 
@@ -575,12 +722,12 @@ public class AdjustCordova extends CordovaPlugin
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
+        sessionTrackingSucceededCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public void onFinishedSessionTrackingFailed(AdjustSessionFailure session) {
-        if (AdjustCordova.sessionTrackingFailedCallbackContext == null) {
+        if (sessionTrackingFailedCallbackContext == null) {
             return;
         }
 
@@ -588,16 +735,16 @@ public class AdjustCordova extends CordovaPlugin
         PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
+        sessionTrackingFailedCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        if (AdjustCordova.deferredDeeplinkCallbackContext != null) {
+        if (deferredDeeplinkCallbackContext != null) {
             PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
             pluginResult.setKeepCallback(true);
 
-            AdjustCordova.deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
+            deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
         }
 
         return this.shouldLaunchDeeplink;
@@ -605,14 +752,14 @@ public class AdjustCordova extends CordovaPlugin
 
     @Override
     public void onGoogleAdIdRead(String playAdId) {
-        if (AdjustCordova.getGoogleAdIdCallbackContext == null) {
+        if (getGoogleAdIdCallbackContext == null) {
             return;
         }
 
         PluginResult pluginResult = new PluginResult(Status.OK, playAdId);
         pluginResult.setKeepCallback(true);
 
-        AdjustCordova.getGoogleAdIdCallbackContext.sendPluginResult(pluginResult);
+        getGoogleAdIdCallbackContext.sendPluginResult(pluginResult);
     }
 
     boolean isFieldValid(String field) {

@@ -47,3 +47,5 @@ cd ${ROOT_DIR}/${EXAMPLE_DIR}
 cordova build ios
 
 echo -e "${GREEN}>>> Build successful. Run it from Xcode (platforms/ios/) ${NC}"
+cd ${ROOT_DIR}
+rm -rf $TEMP_PLUGIN_DIR
