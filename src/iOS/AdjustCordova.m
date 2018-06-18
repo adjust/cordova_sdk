@@ -46,6 +46,7 @@
 #define KEY_SESSION_INTERVAL            @"sessionIntervalInMilliseconds"
 #define KEY_SUBSESSION_INTERVAL         @"subsessionIntervalInMilliseconds"
 #define KEY_TEARDOWN                    @"teardown"
+#define KEY_NO_BACKOFF_WAIT             @"noBackoffWait"
 #define KEY_HAS_CONTEXT                 @"hasContext"
 
 @implementation AdjustCordova {
@@ -296,7 +297,7 @@
         return;
     }
 
-    [Adjust setDeviceToken:[token dataUsingEncoding:NSUTF8StringEncoding]];
+    [Adjust setPushToken:token];
 }
 
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command {
@@ -462,6 +463,7 @@
     NSString *sessionInterval    = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
     NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
     NSString *teardown           = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
+    NSString *noBackoffWait      = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
     
     AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
     
@@ -499,6 +501,10 @@
     
     if ([self isFieldValid:teardown]) {
         testOptions.teardown = [teardown boolValue];
+    }
+
+    if ([self isFieldValid:noBackoffWait]) {
+        testOptions.noBackoffWait = [noBackoffWait boolValue];
     }
     
     if ([self isFieldValid:hasContext]) {
