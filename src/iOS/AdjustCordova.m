@@ -296,7 +296,7 @@
         return;
     }
 
-    [Adjust setDeviceToken:[token dataUsingEncoding:NSUTF8StringEncoding]];
+    [Adjust setPushToken:token];
 }
 
 - (void)appWillOpenUrl:(CDVInvokedUrlCommand *)command {
