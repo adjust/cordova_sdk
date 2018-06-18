@@ -59,6 +59,7 @@ public class AdjustCordova extends CordovaPlugin
     private static final String KEY_SESSION_INTERVAL               = "sessionIntervalInMilliseconds";
     private static final String KEY_SUBSESSION_INTERVAL            = "subsessionIntervalInMilliseconds";
     private static final String KEY_TEARDOWN                       = "teardown";
+    private static final String KEY_NO_BACKOFF_WAIT                = "noBackoffWait";
     private static final String KEY_HAS_CONTEXT                    = "hasContext";
 
     private static final String COMMAND_CREATE                                   = "create";
@@ -667,6 +668,15 @@ public class AdjustCordova extends CordovaPlugin
                 testOptions.teardown = teardown;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("Unable to parse teardown");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_NO_BACKOFF_WAIT)) {
+            try {
+                boolean noBackoffWait = jsonParameters.getBoolean(KEY_NO_BACKOFF_WAIT);
+                testOptions.noBackoffWait = noBackoffWait;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("Unable to parse noBackoffWait");
             }
         }
 
