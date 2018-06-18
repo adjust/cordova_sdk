@@ -273,7 +273,7 @@ public class AdjustCordova extends CordovaPlugin
             String url = args.getString(0);
             final Uri uri = Uri.parse(url);
             
-            Adjust.appWillOpenUrl(uri);
+            Adjust.appWillOpenUrl(uri, this.cordova.getActivity().getApplicationContext());
             
             return true;
         } else if (action.equals(COMMAND_ADD_SESSION_CALLBACK_PARAMETER)) {
