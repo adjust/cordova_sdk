@@ -12,4 +12,5 @@ function AdjustTestOptions() {
     this.sessionIntervalInMilliseconds    = null;
     this.subsessionIntervalInMilliseconds = null;
     this.teardown                         = null;
+    this.noBackoffWait                    = null;
 };
