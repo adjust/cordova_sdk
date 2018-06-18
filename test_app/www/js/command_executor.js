@@ -142,6 +142,10 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('subsessionInterval' in params) {
         testOptions.subsessionIntervalInMilliseconds = getFirstParameterValue(params, 'subsessionInterval').toString();
     }
+    if ('noBackoffWait' in params) {
+        var noBackoffWait = getFirstParameterValue(params, 'noBackoffWait');
+        testOptions.noBackoffWait = noBackoffWait == 'true';
+    }
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
         for (var i = 0; i < teardownOptions.length; i++) {
