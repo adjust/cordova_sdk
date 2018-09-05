@@ -9,7 +9,7 @@ SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR="$(dirname "$SCRIPTS_DIR")"
 
 # Relative directories
-SRC_DIR=src/iOS
+SRC_DIR=src/ios
 
 echo ">>><<<"
 echo ">>> Symlink_fix started"

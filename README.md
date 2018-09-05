@@ -272,7 +272,7 @@ Adjust SDK plugin adds three iOS frameworks to your generated Xcode project:
 Settings for this can also be found in `plugin.xml` file of the Adjust SDK plugin:
 
 ```xml
-<framework src="src/iOS/AdjustSdk.framework" custom="true" />
+<framework src="src/ios/AdjustSdk.framework" custom="true" />
 <framework src="AdSupport.framework" weak="true" />
 <framework src="iAd.framework" weak="true" />
 <framework src="CoreTelephony.framework" weak="true" />

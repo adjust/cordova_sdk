@@ -18,7 +18,7 @@ NC='\033[0m' 		# No Color
 
 echo -e "${GREEN}>>> Running iOS build script ${NC}"
 cd ${ROOT_DIR}
-ext/iOS/build.sh
+ext/ios/build.sh
 
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}

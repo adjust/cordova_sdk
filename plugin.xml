@@ -51,8 +51,8 @@
             </feature>
         </config-file>
 
-        <source-file src="src/Android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
-        <source-file src="src/Android/adjust-android.jar" target-dir="libs" />
+        <source-file src="src/android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
+        <source-file src="src/android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
         <framework src="com.android.installreferrer:installreferrer:1.0" />
@@ -67,12 +67,12 @@
           </feature>
         </config-file>
 
-        <header-file src="src/iOS/AdjustCordova.h" />
-        <source-file src="src/iOS/AdjustCordova.m" />
-        <header-file src="src/iOS/AdjustCordovaDelegate.h" />
-        <source-file src="src/iOS/AdjustCordovaDelegate.m" />
+        <header-file src="src/ios/AdjustCordova.h" />
+        <source-file src="src/ios/AdjustCordova.m" />
+        <header-file src="src/ios/AdjustCordovaDelegate.h" />
+        <source-file src="src/ios/AdjustCordovaDelegate.m" />
 
-        <framework src="src/iOS/AdjustSdk.framework" custom="true" />
+        <framework src="src/ios/AdjustSdk.framework" custom="true" />
         <framework src="AdSupport.framework" weak="true" />
         <framework src="iAd.framework" weak="true" />
         <framework src="CoreTelephony.framework" weak="true" />

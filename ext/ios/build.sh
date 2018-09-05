@@ -9,8 +9,8 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 
-EXT_DIR=ext/iOS/sdk
-LIB_OUT_DIR=src/iOS
+EXT_DIR=ext/ios/sdk
+LIB_OUT_DIR=src/ios
 SCRIPTS_DIR=scripts
 
 RED='\033[0;31m' # Red color

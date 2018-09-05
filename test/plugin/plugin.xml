@@ -31,9 +31,9 @@
             </feature>
         </config-file>
 
-        <source-file src="src/Android/AdjustTestingCordova.java" target-dir="src/com/adjust/sdktesting"/>
-        <source-file src="src/Android/CommandListener.java" target-dir="src/com/adjust/sdktesting"/>
-        <source-file src="src/Android/adjust-testing.jar" target-dir="libs"/>
+        <source-file src="src/android/AdjustTestingCordova.java" target-dir="src/com/adjust/sdktesting"/>
+        <source-file src="src/android/CommandListener.java" target-dir="src/com/adjust/sdktesting"/>
+        <source-file src="src/android/adjust-testing.jar" target-dir="libs"/>
         <framework src="com.google.code.gson:gson:2.8.0" /> 
     </platform>
 
@@ -46,10 +46,10 @@
           </feature>
         </config-file>
 
-        <header-file src="src/iOS/AdjustTestingCordova.h"/>
-        <source-file src="src/iOS/AdjustTestingCordova.m"/>
-        <header-file src="src/iOS/AdjustTestingCordovaCommandListener.h"/>
-        <source-file src="src/iOS/AdjustTestingCordovaCommandListener.m"/>
-        <framework src="src/iOS/AdjustTestLibrary.framework" custom="true"/>
+        <header-file src="src/ios/AdjustTestingCordova.h"/>
+        <source-file src="src/ios/AdjustTestingCordova.m"/>
+        <header-file src="src/ios/AdjustTestingCordovaCommandListener.h"/>
+        <source-file src="src/ios/AdjustTestingCordovaCommandListener.m"/>
+        <framework src="src/ios/AdjustTestLibrary.framework" custom="true"/>
     </platform>
 </plugin>

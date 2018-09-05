@@ -27,8 +27,8 @@ adb uninstall ${TEST_APP_PACKAGE} || true
 
 echo -e "${GREEN}>>> Running Android build script ${NC}"
 cd ${ROOT_DIR}
-ext/Android/build.sh release
-ext/Android/build_test_lib.sh
+ext/android/build.sh release
+ext/android/build_test_lib.sh
 
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}

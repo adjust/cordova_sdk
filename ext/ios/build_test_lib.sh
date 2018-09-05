@@ -9,9 +9,9 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 
-TEST_LIBRARY_PROJECT_DIR=ext/iOS/sdk/AdjustTests/AdjustTestLibrary
-LIB_OUT_DIR=test/plugin/src/iOS
-FRAMEWORKS_DIR=ext/iOS/sdk/Frameworks/Static/
+TEST_LIBRARY_PROJECT_DIR=ext/ios/sdk/AdjustTests/AdjustTestLibrary
+LIB_OUT_DIR=test/plugin/src/ios
+FRAMEWORKS_DIR=ext/ios/sdk/Frameworks/Static/
 
 RED='\033[0;31m' # Red color
 GREEN='\033[0;32m' # Green color

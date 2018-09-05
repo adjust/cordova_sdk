@@ -24,8 +24,8 @@ echo -e ">>> START ${NC}"
 
 echo -e "${GREEN}>>> Running iOS build script ${NC}"
 cd ${ROOT_DIR}
-ext/iOS/build.sh
-ext/iOS/build_test_lib.sh
+ext/ios/build.sh
+ext/ios/build_test_lib.sh
 
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}

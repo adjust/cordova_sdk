@@ -9,8 +9,8 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Traverse up to get to the root directory
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
-BUILD_DIR=ext/Android/sdk/Adjust
-JAR_OUT_DIR=test/plugin/src/Android
+BUILD_DIR=ext/android/sdk/Adjust
+JAR_OUT_DIR=test/plugin/src/android
 JAR_IN_DIR=ext/android/sdk/Adjust/testlibrary/build/outputs
 
 RED='\033[0;31m' # Red color

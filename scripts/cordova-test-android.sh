@@ -21,7 +21,7 @@ adb uninstall com.adjust.examples || true
 
 echo -e "${GREEN}>>> Running Android build script ${NC}"
 cd ${ROOT_DIR}
-ext/Android/build.sh release
+ext/android/build.sh release
 
 echo -e "${GREEN}>>> Packaging plugin content to custom directory ${NC}"
 cd ${ROOT_DIR}
