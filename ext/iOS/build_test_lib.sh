@@ -10,7 +10,7 @@ ROOT_DIR="$(dirname "$ROOT_DIR")"
 ROOT_DIR="$(dirname "$ROOT_DIR")"
 
 TEST_LIBRARY_PROJECT_DIR=ext/iOS/sdk/AdjustTests/AdjustTestLibrary
-LIB_OUT_DIR=test_plugin/src/iOS
+LIB_OUT_DIR=test/plugin/src/iOS
 FRAMEWORKS_DIR=ext/iOS/sdk/Frameworks/Static/
 
 RED='\033[0;31m' # Red color

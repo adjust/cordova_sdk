@@ -103,6 +103,6 @@ temp_plugin/
 example/node_modules
 example/platforms
 example/plugins
-test_app/node_modules
-test_app/platforms
-test_app/plugins
+test/app/node_modules
+test/app/platforms
+test/app/plugins

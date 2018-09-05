@@ -1,0 +1,28 @@
+{
+  "name": "com.adjust.testapp",
+  "version": "1.0.0",
+  "displayName": "HelloCordova",
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "com.adjust.sdk": {},
+      "com.adjust.sdktesting": {}
+    }
+  },
+  "dependencies": {
+    "cordova-android": "^6.4.0",
+    "cordova-ios": "^4.5.5",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-device": "^2.0.1",
+    "cordova-plugin-whitelist": "1",
+    "ios-sim": "^6.1.2",
+    "com.adjust.sdk": "../../temp_plugin",
+    "com.adjust.sdktesting": "../../test/plugin"
+  }
+}

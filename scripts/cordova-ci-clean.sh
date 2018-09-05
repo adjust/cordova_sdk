@@ -8,7 +8,7 @@ SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Traverse up to get to the root directory
 ROOT_DIR="$(dirname "$SCRIPTS_DIR")"
-EXAMPLE_DIR=test_app
+EXAMPLE_DIR=test/app
 SDK_NAME=com.adjust.sdk
 TEST_PLUGIN_NAME=com.adjust.sdktesting
 
