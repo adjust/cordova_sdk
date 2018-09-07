@@ -50,7 +50,7 @@ try:
             set_log_tag('IOS-SDK-BUILD')
             check_submodule_dir('iOS', ios_submodule_dir + '/sdk')
             ios_builder.build(root_dir, ios_submodule_dir, with_test_lib)
-        elif args.type == 'run' or args.type == 'br':
+        if args.type == 'run' or args.type == 'br':
             set_log_tag('IOS-SDK-RUN')
             ios_runner.run(root_dir, ios_submodule_dir, args.apptype)
     else:
@@ -58,7 +58,7 @@ try:
             set_log_tag('ANROID-SDK-BUILD')
             check_submodule_dir('Android', android_submodule_dir + '/sdk')
             android_builder.build(root_dir, android_submodule_dir, with_test_lib)
-        elif args.type == 'run' or args.type == 'br':
+        if args.type == 'run' or args.type == 'br':
             set_log_tag('ANDROID-SDK-RUN')
             android_runner.run(root_dir, android_submodule_dir, args.apptype)
 finally:
