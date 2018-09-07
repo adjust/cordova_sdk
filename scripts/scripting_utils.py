@@ -1,7 +1,7 @@
 ##
 ##  Various util python methods which can be utilized and shared among different scripts
 ##
-import os, shutil, glob, time, sys, platform
+import os, shutil, glob, time, sys, platform, subprocess
 from distutils.dir_util import copy_tree
 
 def set_log_tag(t):
@@ -120,11 +120,14 @@ def debug_green(msg):
     else:
         print(('* [{0}][INFO]: {1}').format(TAG, msg))
 
-def error(msg):
+def error(msg, do_exit=False):
     if not is_windows():
         print(('{0}* [{1}][ERROR]:{2} {3}{4}{5}').format(CBOLD, TAG, CEND, CRED, msg, CEND))
     else:
         print(('* [{0}][ERROR]: {1}').format(TAG, msg))
+
+    if do_exit:
+        exit()
 
 ############################################################
 ### util
@@ -149,6 +152,48 @@ def replace_text_in_file(file_path, substring, replace_with):
     # Write the file out again
     with open(file_path, 'w') as file:
         file.write(filedata)
+
+############################################################
+### cordova specific
+
+def _remove_platforms():
+    debug_green('Removing platforms ...')
+    subprocess.call(['cordova', 'platform', 'remove', 'ios'])
+    subprocess.call(['cordova', 'platform', 'remove', 'android'])
+
+def clean_test_app(root_dir):
+    example_dir             = '{0}/example'.format(root_dir)
+    sdk_name                = 'com.adjust.sdk'
+    adjust_sdk_plugin_dir   = '{0}/plugins/com.adjust.sdk'.format(example_dir)
+
+    debug_green('Removing cordova plugins ...')
+    os.chdir(example_dir)
+    subprocess.call(['cordova', 'plugin', 'rm', sdk_name])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-plugin-console'])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-plugin-customurlscheme'])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-plugin-dialogs'])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-plugin-whitelist'])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-plugin-device'])
+    subprocess.call(['cordova', 'plugin', 'rm', 'cordova-universal-links-plugin'])
+
+    remove_dir_if_exists(adjust_sdk_plugin_dir)
+    _remove_platforms()
+
+def clean_example_app(root_dir):
+    test_dir                    = '{0}/test/app'.format(root_dir)
+    sdk_name                    = 'com.adjust.sdk'
+    test_plugin_name            = 'com.adjust.sdktesting'
+    adjust_sdk_plugin_dir       = '{0}/plugins/com.adjust.sdk'.format(test_dir)
+    adjust_sdk_test_plugin_dir  = '{0}/plugins/com.adjust.sdktesting'.format(test_dir)
+
+    debug_green('Removing cordova plugins ...')
+    os.chdir(test_dir)
+    subprocess.call(['cordova', 'plugin', 'rm', sdk_name])
+    subprocess.call(['cordova', 'plugin', 'rm', test_plugin_name])
+
+    remove_dir_if_exists(adjust_sdk_plugin_dir)
+    remove_dir_if_exists(adjust_sdk_test_plugin_dir)
+    _remove_platforms()
 
 ############################################################
 ### nonsense, eyecandy and such
