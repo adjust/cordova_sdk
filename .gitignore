@@ -106,3 +106,4 @@ example/plugins
 test/app/node_modules
 test/app/platforms
 test/app/plugins
+*.pyc

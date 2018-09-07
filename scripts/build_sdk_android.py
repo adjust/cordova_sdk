@@ -25,7 +25,7 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
     # ------------------------------------------------------------------
     # Moving Android SDK JAR from jarIn to jarOut dir
     debug_green('Moving Android SDK JAR from {0} to {1} dir ...'.format(jar_in_dir, jar_out_dir))
-    clear_dir(jar_out_dir)
+    remove_file_if_exists('{0}/adjust-android.jar'.format(jar_out_dir))
     copy_files('*.jar', jar_in_dir, jar_out_dir)
     rename_file('*.jar', 'adjust-android.jar', jar_out_dir)
 
