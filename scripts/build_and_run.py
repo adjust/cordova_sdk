@@ -46,7 +46,7 @@ try:
             ios_builder.build(root_dir, ios_submodule_dir, with_test_lib)
         elif args.type == 'run' or args.type == 'b&r':
             set_log_tag('IOS-SDK-RUN')
-            ios_runner.run(args.type)
+            ios_runner.run(root_dir, ios_submodule_dir, args.apptype)
     else:
         if args.type == 'build' or args.type == 'b&r':
             set_log_tag('ANROID-SDK-BUILD')
