@@ -1,10 +1,8 @@
-import os, subprocess
 from scripting_utils import *
 
 if __name__ == "__main__":
     set_log_tag('RUN-ANDROID')
-    error('Error. Do not run this script explicitly, but rather through "build_and_run.py" script.')
-    exit()
+    error('Error. Do not run this script explicitly, but rather through "build_and_run.py" script.', do_exit=True)
 
 def run(root_dir, android_submodule_dir, apptype):
     if apptype == 'example':
@@ -22,7 +20,7 @@ def _run_example(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Removing app from test device
     debug_green('Removing app from test device ...')
-    subprocess.call(['adb', 'uninstall', 'com.adjust.examples'])
+    adb_uninstall('com.adjust.examples')
 
     # ------------------------------------------------------------------
     # Packaging plugin content to custom directory
@@ -32,25 +30,25 @@ def _run_example(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Installing Android platform
     debug_green('Installing Android platform ...')
-    os.chdir(example_dir)
-    subprocess.call(['cordova', 'platform', 'add', 'android'])
+    change_dir(example_dir)
+    cordova_add_platform('android')
 
     # ------------------------------------------------------------------
     # Re-installing plugins
     debug_green('Re-installing plugins ...')
-    subprocess.call(['cordova', 'plugin', 'remove', sdk_name])
-    subprocess.call(['cordova', 'plugin', 'add', temp_plugin_dir])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-console'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-customurlscheme', '--variable', 'URL_SCHEME=adjustExample'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-dialogs'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-whitelist'])
-    subprocess.call(['cordova', 'plugin', 'add', 'https://github.com/apache/cordova-plugin-device.git'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-universal-links-plugin'])
+    cordova_remove_plugin(sdk_name)
+    cordova_add_plugin(temp_plugin_dir)
+    cordova_add_plugin('cordova-plugin-console')
+    cordova_add_plugin('cordova-plugin-customurlscheme', options=['--variable', 'URL_SCHEME=adjustExample'])
+    cordova_add_plugin('cordova-plugin-dialogs')
+    cordova_add_plugin('cordova-plugin-whitelist')
+    cordova_add_plugin('https://github.com/apache/cordova-plugin-device.git')
+    cordova_add_plugin('cordova-universal-links-plugin')
 
     # ------------------------------------------------------------------
     # Building cordova project
     debug_green('Building cordova project ...')
-    subprocess.call(['cordova', 'run', 'android'])
+    cordova_run('android')
 
     # ------------------------------------------------------------------
     # Build successful!
@@ -60,18 +58,18 @@ def _run_example(root_dir, android_submodule_dir):
 def _run_testapp(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # paths
-    project_dir = '{0}/test/app'.format(root_dir)
-    sdk_plugin_name = 'com.adjust.sdk'
+    project_dir         = '{0}/test/app'.format(root_dir)
+    sdk_plugin_name     = 'com.adjust.sdk'
     testing_plugin_name = 'com.adjust.sdktesting'
-    testing_plugin_dir = '{0}/test/plugin'.format(root_dir)
-    scripts_dir = '{0}/scripts'.format(root_dir)
-    temp_plugin_dir = '{0}/temp_plugin'.format(root_dir)
-    test_app_package = 'com.adjust.testapp'
+    testing_plugin_dir  = '{0}/test/plugin'.format(root_dir)
+    scripts_dir         = '{0}/scripts'.format(root_dir)
+    temp_plugin_dir     = '{0}/temp_plugin'.format(root_dir)
+    test_app_package    = 'com.adjust.testapp'
 
     # ------------------------------------------------------------------
     # Removing app from test device
     debug_green('Removing app package [{0}] from test device ...'.format(test_app_package))
-    subprocess.call(['adb', 'uninstall', test_app_package])
+    adb_uninstall(test_app_package)
 
     # ------------------------------------------------------------------
     # Packaging plugin content to custom directory
@@ -81,24 +79,24 @@ def _run_testapp(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Installing Android platform
     debug_green('Installing Android platform in [{0}] ...'.format(project_dir))
-    os.chdir(project_dir)
-    subprocess.call(['cordova', 'platform', 'add', 'android'])
+    change_dir(project_dir)
+    cordova_add_platform('android')
 
     # ------------------------------------------------------------------
     # Re-installing plugins
     debug_green('Re-installing plugins ...')
-    subprocess.call(['cordova', 'plugin', 'remove', sdk_plugin_name])
-    subprocess.call(['cordova', 'plugin', 'remove', testing_plugin_name])
-    subprocess.call(['cordova', 'plugin', 'add', '--verbose', temp_plugin_dir, '--nofetch'])
-    subprocess.call(['cordova', 'plugin', 'add', '--verbose', testing_plugin_dir, '--nofetch'])
-    subprocess.call(['cordova', 'plugin', 'add', '--verbose', 'cordova-plugin-device'])
+    cordova_remove_plugin(sdk_plugin_name)
+    cordova_remove_plugin(testing_plugin_name)
+    cordova_add_plugin(temp_plugin_dir, options=['--verbose', '--nofetch'])
+    cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
+    cordova_add_plugin('cordova-plugin-device', options=['--verbose'])
     
     # ------------------------------------------------------------------
     # Running Cordova build
     debug_green('Running Cordova build ...')
-    subprocess.call(['cordova', 'build', 'android', '--verbose'])
-    subprocess.call(['adb', 'install', '-r', 'platforms/android/build/outputs/apk/debug/android-debug.apk'])
-    subprocess.call(['adb', 'shell', '-p', test_app_package, '1'])
+    cordova_build('android', options=['--verbose'])
+    adb_install_apk('platforms/android/build/outputs/apk/debug/android-debug.apk')
+    adb_shell(test_app_package)
 
     # ------------------------------------------------------------------
     # Build successful!

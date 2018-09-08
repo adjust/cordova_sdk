@@ -1,4 +1,3 @@
-import os, subprocess
 from scripting_utils import *
 
 def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
@@ -9,18 +8,18 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
     jar_out_dir     = '{0}/src/android'.format(root_dir)
     jar_in_dir      = ''
 
-    os.chdir(build_dir)
+    change_dir(build_dir)
 
     # ------------------------------------------------------------------
     # Running make*Jar Gradle task ...
     if is_release:
         debug_green('Running makeReleaseJar Gradle task ...')
         jar_in_dir = '{0}/adjust/build/intermediates/bundles/release'.format(build_dir)
-        subprocess.call(['./gradlew', 'makeReleaseJar'])
+        gradle_make_release_jar()
     else:
         debug_green('Running makeDebugJar Gradle task ...')
         jar_in_dir = '{0}/adjust/build/intermediates/bundles/debug'.format(build_dir)
-        subprocess.call(['./gradlew', 'makeDebugJar'])
+        gradle_make_debug_jar()
 
     # ------------------------------------------------------------------
     # Moving Android SDK JAR from jarIn to jarOut dir
@@ -38,14 +37,13 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
         test_jar_in_dir  = '{0}/testlibrary/build/outputs'.format(build_dir)
         test_jar_out_dir = '{0}/test/plugin/src/android'.format(root_dir)
 
-        if not os.path.exists(test_jar_out_dir):
-            os.makedirs(test_jar_out_dir)
+        create_dir_if_not_exist(test_jar_out_dir)
 
         # ------------------------------------------------------------------
         # Running Gradle tasks: clean testlibrary:makeJar ...
         debug_green('Running Gradle tasks: clean testlibrary:makeJar ...')
-        os.chdir(build_dir)
-        subprocess.call(['./gradlew', 'clean', ':testlibrary:makeJar'])
+        change_dir(build_dir)
+        gradle_run(['clean', ':testlibrary:makeJar'])
 
         # ------------------------------------------------------------------
         # Moving the generated Android SDK JAR from jar in to jar out dir ...

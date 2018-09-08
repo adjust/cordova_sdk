@@ -82,10 +82,6 @@ def rename_file(fileNamePattern, newFileName, sourceDir):
         debug('rename: {0} -> {1}'.format(file, newFileName))
         os.rename(file, sourceDir + '/' + newFileName)
 
-def clear_dir(dir):
-    shutil.rmtree(dir)
-    os.mkdir(dir)
-
 def remove_dir_if_exists(path):
     if os.path.exists(path):
         debug('deleting dir: ' + path)
@@ -100,10 +96,18 @@ def remove_file_if_exists(path):
     else:
         debug('canot delete {0}. file does not exist'.format(path))
 
+def clear_dir(dir):
+    shutil.rmtree(dir)
+    os.mkdir(dir)
+
 def recreate_dir(dir):
     if os.path.exists(dir):
         shutil.rmtree(dir)
     os.mkdir(dir)
+
+def create_dir_if_not_exist(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
 
 ############################################################
 ### debug messages util methods
@@ -159,21 +163,45 @@ def replace_text_in_file(file_path, substring, replace_with):
     with open(file_path, 'w') as file:
         file.write(filedata)
 
+def execute_command(cmd_params, log=True):
+    if log:
+        debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
+
 def change_dir(dir):
     os.chdir(dir)
 
 def xcode_build(target, configuration='Release'):
-    cmd_params = ['xcodebuild', '-target', target, '-configuration', configuration, 'clean', 'build']
-    debug_blue('Executing: ' + str(cmd_params))
-    subprocess.call(cmd_params)
+    execute_command(['xcodebuild', '-target', target, '-configuration', configuration, 'clean', 'build'])
+
+def adb_uninstall(package):
+    execute_command(['adb', 'uninstall', package])
+
+def adb_install_apk(path):
+    execute_command(['adb', 'install', '-r', path])
+
+def adb_shell(app_package):
+    execute_command(['adb', 'shell', 'monkey', '-p', app_package, '1'])
+
+def gradle_make_release_jar():
+    execute_command(['./gradlew', 'makeReleaseJar'])
+
+def gradle_make_debug_jar():
+    execute_command(['./gradlew', 'makeDebugJar'])
+
+def gradle_run(options):
+    cmd_params = ['./gradlew']
+    for opt in options:
+        cmd_params.append(opt)
+    execute_command(cmd_params)
 
 ############################################################
 ### cordova specific
 
 def _remove_platforms():
     debug_green('Removing platforms ...')
-    subprocess.call(['cordova', 'platform', 'remove', 'ios'])
-    subprocess.call(['cordova', 'platform', 'remove', 'android'])
+    cordova_remove_platform('android')
+    cordova_remove_platform('ios')
 
 def clean_test_app(root_dir):
     example_dir             = '{0}/example'.format(root_dir)
@@ -214,26 +242,26 @@ def cordova_add_plugin(plugin_name, options=None):
     if not options == None:
         for opt in options:
             cmd_params.append(opt)
-    debug_blue('Executing: ' + str(cmd_params))
-    subprocess.call(cmd_params)
+    execute_command(cmd_params)
 
 def cordova_remove_plugin(plugin_name):
-    cmd_params = ['cordova', 'plugin', 'remove', plugin_name]
-    debug_blue('Executing: ' + str(cmd_params))
-    subprocess.call(cmd_params)
+    execute_command(['cordova', 'plugin', 'remove', plugin_name])
 
 def cordova_build(platform, options=None):
     cmd_params = ['cordova', 'build', platform]
     if not options == None:
         for opt in options:
             cmd_params.append(opt)
-    debug_blue('Executing: ' + str(cmd_params))
-    subprocess.call(cmd_params)
+    execute_command(cmd_params)
+
+def cordova_run(platform):
+    execute_command(['cordova', 'run', platform])
 
 def cordova_add_platform(platform):
-    cmd_params = ['cordova', 'platform', 'add', platform]
-    debug_blue('Executing: ' + str(cmd_params))
-    subprocess.call(cmd_params)
+    execute_command(['cordova', 'platform', 'add', platform])
+
+def cordova_remove_platform(platform):
+    execute_command(['cordova', 'platform', 'remove', platform])
 
 ############################################################
 ### nonsense, eyecandy and such
