@@ -120,6 +120,12 @@ def debug_green(msg):
     else:
         print(('* [{0}][INFO]: {1}').format(TAG, msg))
 
+def debug_blue(msg):
+    if not is_windows():
+        print(('{0}* [{1}][INFO]:{2} {3}{4}{5}').format(CBOLD, TAG, CEND, CBLUE, msg, CEND))
+    else:
+        print(('* [{0}][INFO]: {1}').format(TAG, msg))
+
 def error(msg, do_exit=False):
     if not is_windows():
         print(('{0}* [{1}][ERROR]:{2} {3}{4}{5}').format(CBOLD, TAG, CEND, CRED, msg, CEND))
@@ -152,6 +158,14 @@ def replace_text_in_file(file_path, substring, replace_with):
     # Write the file out again
     with open(file_path, 'w') as file:
         file.write(filedata)
+
+def change_dir(dir):
+    os.chdir(dir)
+
+def xcode_build(target, configuration='Release'):
+    cmd_params = ['xcodebuild', '-target', target, '-configuration', configuration, 'clean', 'build']
+    debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
 
 ############################################################
 ### cordova specific
@@ -194,6 +208,32 @@ def clean_example_app(root_dir):
     remove_dir_if_exists(adjust_sdk_plugin_dir)
     remove_dir_if_exists(adjust_sdk_test_plugin_dir)
     _remove_platforms()
+
+def cordova_add_plugin(plugin_name, options=None):
+    cmd_params = ['cordova', 'plugin', 'add', plugin_name]
+    if not options == None:
+        for opt in options:
+            cmd_params.append(opt)
+    debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
+
+def cordova_remove_plugin(plugin_name):
+    cmd_params = ['cordova', 'plugin', 'remove', plugin_name]
+    debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
+
+def cordova_build(platform, options=None):
+    cmd_params = ['cordova', 'build', platform]
+    if not options == None:
+        for opt in options:
+            cmd_params.append(opt)
+    debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
+
+def cordova_add_platform(platform):
+    cmd_params = ['cordova', 'platform', 'add', platform]
+    debug_blue('Executing: ' + str(cmd_params))
+    subprocess.call(cmd_params)
 
 ############################################################
 ### nonsense, eyecandy and such

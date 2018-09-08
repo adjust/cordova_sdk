@@ -1,10 +1,8 @@
-import os, subprocess
 from scripting_utils import *
 
 if __name__ == "__main__":
     set_log_tag('RUN-IOS')
-    error('Error. Do not run this script explicitly, but rather through "build_and_run.py" script.')
-    exit()
+    error('Error. Do not run this script explicitly, but rather through "build_and_run.py" script.', do_exit=True)
 
 def run(root_dir, ios_submodule_dir, apptype):
     if apptype == 'example':
@@ -27,24 +25,24 @@ def _run_example(root_dir, ios_submodule_dir):
     # ------------------------------------------------------------------
     # Installing iOS platform
     debug_green('Installing iOS platform ...')
-    os.chdir(example_dir)
-    subprocess.call(['cordova', 'platform', 'add', 'ios'])
+    change_dir(example_dir)
+    cordova_add_platform('ios')
 
     # ------------------------------------------------------------------
     # Re-installing plugins
     debug_green('Re-installing plugins ...')
-    subprocess.call(['cordova', 'plugin', 'remove', sdk_name])
-    subprocess.call(['cordova', 'plugin', 'add', temp_plugin_dir])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-console'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-customurlscheme', '--variable', 'URL_SCHEME=adjustExample'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-dialogs'])
-    subprocess.call(['cordova', 'plugin', 'add', 'cordova-plugin-whitelist'])
-    subprocess.call(['cordova', 'plugin', 'add', 'https://github.com/apache/cordova-plugin-device.git'])
+    cordova_remove_plugin(sdk_name)
+    cordova_add_plugin(temp_plugin_dir)
+    cordova_add_plugin('cordova-plugin-console')
+    cordova_add_plugin('cordova-plugin-customurlscheme', options=['--variable', 'URL_SCHEME=adjustExample'])
+    cordova_add_plugin('cordova-plugin-dialogs')
+    cordova_add_plugin('cordova-plugin-whitelist')
+    cordova_add_plugin('https://github.com/apache/cordova-plugin-device.git')
 
     # ------------------------------------------------------------------
     # Building cordova project
     debug_green('Building cordova project ...')
-    subprocess.call(['cordova', 'build', 'ios'])
+    cordova_build('ios')
 
     # ------------------------------------------------------------------
     # Build successful!
@@ -61,7 +59,7 @@ def _run_testapp(root_dir, ios_submodule_dir):
     scripts_dir         = '{0}/scripts'.format(root_dir)
     test_plugin_dir     = '{0}/temp_plugin'.format(root_dir)
     test_app_package    = 'com.adjust.testapp'
-    temp_plugin_dir = '{0}/temp_plugin'.format(root_dir)
+    temp_plugin_dir     = '{0}/temp_plugin'.format(root_dir)
 
     # ------------------------------------------------------------------
     # Packaging plugin content to custom directory
@@ -71,21 +69,21 @@ def _run_testapp(root_dir, ios_submodule_dir):
     # ------------------------------------------------------------------
     # Installing Android platform
     debug_green('Installing Android platform in [{0}] ...'.format(project_dir))
-    os.chdir(project_dir)
-    subprocess.call(['cordova', 'platform', 'add', 'ios'])
+    change_dir(project_dir)
+    cordova_add_platform('ios')
 
     # ------------------------------------------------------------------
     # Re-installing plugins
     debug_green('Re-installing plugins ...')
-    subprocess.call(['cordova', 'plugin', 'remove', sdk_plugin_name])
-    subprocess.call(['cordova', 'plugin', 'remove', testing_plugin_name])
-    subprocess.call(['cordova', 'plugin', 'add', '--verbose', temp_plugin_dir, '--nofetch'])
-    subprocess.call(['cordova', 'plugin', 'add', '--verbose', testing_plugin_dir, '--nofetch'])
+    cordova_remove_plugin(sdk_plugin_name)
+    cordova_remove_plugin(testing_plugin_name)
+    cordova_add_plugin(temp_plugin_dir, options=['--verbose', '--nofetch'])
+    cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
 
     # ------------------------------------------------------------------
     # Running Cordova build
     debug_green('Running Cordova build ...')
-    subprocess.call(['cordova', 'build', 'ios', '--verbose'])
+    cordova_build('ios', options=['--verbose'])
     
     # ------------------------------------------------------------------
     # Build successful!

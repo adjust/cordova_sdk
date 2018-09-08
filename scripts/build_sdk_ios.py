@@ -1,4 +1,3 @@
-import os, subprocess
 from scripting_utils import *
 
 def build(root_dir, ios_submodule_dir, with_test_lib):
@@ -15,8 +14,8 @@ def build(root_dir, ios_submodule_dir, with_test_lib):
     # ------------------------------------------------------------------
     # Building new framework
     debug_green('Building new framework ...')
-    os.chdir(ext_dir)
-    subprocess.call(['xcodebuild', '-target', 'AdjustStatic', '-configuration', 'Release', 'clean', 'build'])
+    change_dir(ext_dir)
+    xcode_build('AdjustStatic')
 
     # ------------------------------------------------------------------
     # Copy built framework to designated location
@@ -33,7 +32,7 @@ def build(root_dir, ios_submodule_dir, with_test_lib):
     copy_file('{0}/AdjustSdk.framework/Versions/A/AdjustSdk'.format(lib_out_dir), '{0}/AdjustSdk.framework/AdjustSdk'.format(lib_out_dir))
     copy_dir_contents('{0}/AdjustSdk.framework/Versions/A/Headers'.format(lib_out_dir), '{0}/AdjustSdk.framework/Headers'.format(lib_out_dir))
     # Remove Versions folder
-    shutil.rmtree('{0}/AdjustSdk.framework/Versions'.format(lib_out_dir))
+    remove_dir_if_exists('{0}/AdjustSdk.framework/Versions'.format(lib_out_dir))
 
     if with_test_lib:
         # ------------------------------------------------------------------
@@ -53,8 +52,8 @@ def build(root_dir, ios_submodule_dir, with_test_lib):
         # ------------------------------------------------------------------
         # Building new framework
         debug_green('Building new framework ...')
-        os.chdir(test_lib_project_dir)
-        subprocess.call(['xcodebuild', '-target', 'AdjustTestLibraryStatic', '-configuration', 'Debug', 'clean', 'build'])
+        change_dir(test_lib_project_dir)
+        xcode_build('AdjustTestLibraryStatic', configuration='Debug')
 
         # ------------------------------------------------------------------
         # Copy built framework to designated location
