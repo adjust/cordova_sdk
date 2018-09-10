@@ -13,14 +13,15 @@ def run(root_dir, android_submodule_dir, apptype):
 def _run_example(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # paths
-    temp_plugin_dir = '{0}/temp_plugin'.format(root_dir)
-    example_dir     = '{0}/example'.format(root_dir)
-    sdk_name        = 'com.adjust.sdk'
+    temp_plugin_dir     = '{0}/temp_plugin'.format(root_dir)
+    example_dir         = '{0}/example'.format(root_dir)
+    sdk_name            = 'com.adjust.sdk'
+    examples_package    = 'com.adjust.examples'
 
     # ------------------------------------------------------------------
     # Removing app from test device
     debug_green('Removing app from test device ...')
-    adb_uninstall('com.adjust.examples')
+    adb_uninstall(examples_package)
 
     # ------------------------------------------------------------------
     # Packaging plugin content to custom directory
@@ -48,7 +49,14 @@ def _run_example(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Building cordova project
     debug_green('Building cordova project ...')
-    cordova_run('android')
+    cordova_build('android', options=['--verbose'])
+
+    # ------------------------------------------------------------------
+    # Running examle
+    # cordova_run('android') # <-- does not seem to work, some cordova specific error
+    debug_green('Install & Run cordova example app ...')
+    adb_install_apk('platforms/android/build/outputs/apk/android-debug.apk')
+    adb_shell(examples_package)
 
     # ------------------------------------------------------------------
     # Build successful!
@@ -90,11 +98,15 @@ def _run_testapp(root_dir, android_submodule_dir):
     cordova_add_plugin(temp_plugin_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin('cordova-plugin-device', options=['--verbose'])
+
+    # ------------------------------------------------------------------
+    # Building cordova project
+    debug_green('Building cordova project ...')
+    cordova_build('android', options=['--verbose'])
     
     # ------------------------------------------------------------------
-    # Running Cordova build
-    debug_green('Running Cordova build ...')
-    cordova_build('android', options=['--verbose'])
+    # Running Cordova test app
+    debug_green('Install & Run Cordova test app ...')
     adb_install_apk('platforms/android/build/outputs/apk/debug/android-debug.apk')
     adb_shell(test_app_package)
 
