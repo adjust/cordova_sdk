@@ -13,4 +13,5 @@ function AdjustTestOptions() {
     this.subsessionIntervalInMilliseconds = null;
     this.teardown                         = null;
     this.noBackoffWait                    = null;
+    this.iAdFrameworkEnabled              = false;
 };

@@ -48,6 +48,7 @@
 #define KEY_TEARDOWN                    @"teardown"
 #define KEY_NO_BACKOFF_WAIT             @"noBackoffWait"
 #define KEY_HAS_CONTEXT                 @"hasContext"
+#define KEY_IAD_ENABLED                 @"iAdFrameworkEnabled"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -453,17 +454,18 @@
 }
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
-    NSString *hasContext         = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
-    NSString *baseUrl            = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
-    NSString *gdprUrl            = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
-    NSString *basePath           = [[command.arguments valueForKey:KEY_BASE_PATH] objectAtIndex:0];
-    NSString *gdprPath           = [[command.arguments valueForKey:KEY_GDPR_PATH] objectAtIndex:0];
-    NSString *timerInterval      = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
-    NSString *timerStart         = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
-    NSString *sessionInterval    = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
-    NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
-    NSString *teardown           = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
-    NSString *noBackoffWait      = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
+    NSString *hasContext          = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
+    NSString *baseUrl             = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
+    NSString *gdprUrl             = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
+    NSString *basePath            = [[command.arguments valueForKey:KEY_BASE_PATH] objectAtIndex:0];
+    NSString *gdprPath            = [[command.arguments valueForKey:KEY_GDPR_PATH] objectAtIndex:0];
+    NSString *timerInterval       = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
+    NSString *timerStart          = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
+    NSString *sessionInterval     = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
+    NSString *subsessionInterval  = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
+    NSString *teardown            = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
+    NSString *noBackoffWait       = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
+    NSString *iAdFrameworkEnabled = [[command.arguments valueForKey:KEY_IAD_ENABLED] objectAtIndex:0];
     
     AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
     
@@ -509,6 +511,10 @@
     
     if ([self isFieldValid:hasContext]) {
         testOptions.deleteState = [hasContext boolValue];
+    }
+
+    if ([self isFieldValid:iAdFrameworkEnabled]) {
+        testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
     }
     
     [Adjust setTestOptions:testOptions];

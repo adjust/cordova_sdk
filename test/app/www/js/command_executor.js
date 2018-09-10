@@ -146,6 +146,11 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         var noBackoffWait = getFirstParameterValue(params, 'noBackoffWait');
         testOptions.noBackoffWait = noBackoffWait == 'true';
     }
+    if ('iAdFrameworkEnabled' in params)
+    {
+        var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
+        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+    }
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
         for (var i = 0; i < teardownOptions.length; i++) {
