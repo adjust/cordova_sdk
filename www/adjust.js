@@ -146,15 +146,24 @@ var Adjust = {
         callCordova('setTestOptions', testOptions);
     },
 
-    teardown: function() {
+    teardown: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('teardown');
     },
 
-    onResume: function() {
+    onResume: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('onResume');
     },
 
-    onPause: function() {
+    onPause: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('onPause');
     }
 };
