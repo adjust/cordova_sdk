@@ -59,3 +59,4 @@ def build(root_dir, ios_submodule_dir, with_test_lib):
         # Copy built framework to designated location
         debug_green('Copy built framework to designated location ...')
         copy_dir_contents('{0}/AdjustTestLibrary.framework'.format(frameworks_dir), '{0}/AdjustTestLibrary.framework'.format(test_lib_out_dir))
+        remove_dir_if_exists('{0}/AdjustTestLibrary.framework/Versions'.format(test_lib_out_dir))
