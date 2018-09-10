@@ -127,7 +127,9 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
-    [self addValueOrEmpty:eventSuccessResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
+    if (eventSuccessResponseData.jsonResponse != nil) {
+        [dictionary setObject:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+    }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -145,7 +147,9 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-    [self addValueOrEmpty:eventFailureResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
+    if (eventFailureResponseData.jsonResponse != nil) {
+        [dictionary setObject:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+    }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -161,7 +165,9 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:sessionSuccessResponseData.message withKey:@"message" toDictionary:dictionary];
     [self addValueOrEmpty:sessionSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:sessionSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
-    [self addValueOrEmpty:sessionSuccessResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
+    if (sessionSuccessResponseData.jsonResponse != nil) {
+        [dictionary setObject:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+    }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -178,7 +184,9 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:sessionFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:sessionFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
-    [self addValueOrEmpty:sessionFailureResponseData.jsonResponse withKey:@"jsonResponse" toDictionary:dictionary];
+    if (sessionFailureResponseData.jsonResponse != nil) {
+        [dictionary setObject:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+    }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];

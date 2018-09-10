@@ -320,7 +320,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("timestamp", sessionSuccess.timestamp);
             AdjustTesting.addInfoToSend("adid", sessionSuccess.adid);
             if (sessionSuccess.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", sessionSuccess.jsonResponse.toString());
+                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(sessionSuccess.jsonResponse));
             }
 
             AdjustTesting.sendInfoToServer(_this.basePath);
@@ -335,7 +335,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("adid", sessionFailed.adid);
             AdjustTesting.addInfoToSend("willRetry", sessionFailed.willRetry);
             if (sessionFailed.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", sessionFailed.jsonResponse.toString());
+                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(sessionFailed.jsonResponse));
             }
 
             AdjustTesting.sendInfoToServer(_this.basePath);
@@ -350,7 +350,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("adid", eventSuccess.adid);
             AdjustTesting.addInfoToSend("eventToken", eventSuccess.eventToken);
             if (eventSuccess.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", eventSuccess.jsonResponse.toString());
+                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(eventSuccess.jsonResponse));
             }
 
             AdjustTesting.sendInfoToServer(_this.basePath);
@@ -366,8 +366,8 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("eventToken", eventFailed.eventToken);
             AdjustTesting.addInfoToSend("willRetry", eventFailed.willRetry);
             if (eventFailed.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", eventFailed.jsonResponse.toString());
-            }
+                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(eventFailed.jsonResponse));
+            } 
 
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
