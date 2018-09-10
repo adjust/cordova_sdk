@@ -14,7 +14,7 @@ def _run_example(root_dir, ios_submodule_dir):
     # ------------------------------------------------------------------
     # paths
     temp_plugin_dir = '{0}/temp_plugin'.format(root_dir)
-    example_dir     = '{0}/example'.format(root_dir)
+    project_dir     = '{0}/example'.format(root_dir)
     sdk_name        = 'com.adjust.sdk'
 
     # ------------------------------------------------------------------
@@ -25,7 +25,7 @@ def _run_example(root_dir, ios_submodule_dir):
     # ------------------------------------------------------------------
     # Installing iOS platform
     debug_green('Installing iOS platform ...')
-    change_dir(example_dir)
+    change_dir(project_dir)
     cordova_add_platform('ios')
 
     # ------------------------------------------------------------------
@@ -40,13 +40,13 @@ def _run_example(root_dir, ios_submodule_dir):
     cordova_add_plugin('https://github.com/apache/cordova-plugin-device.git')
 
     # ------------------------------------------------------------------
-    # Building cordova project
-    debug_green('Building cordova project ...')
-    cordova_build('ios')
+    # Running examle
+    debug_green('Running cordova example project ...')
+    cordova_run('ios')
 
     # ------------------------------------------------------------------
     # Build successful!
-    debug_green('Build successful! Run it from Xcode (platforms/ios/).')
+    debug_green('Build successful! (You can also run it from Xcode ({0}/platforms/ios/)).'.format(project_dir))
     remove_dir_if_exists(temp_plugin_dir)
 
 def _run_testapp(root_dir, ios_submodule_dir):
@@ -81,13 +81,13 @@ def _run_testapp(root_dir, ios_submodule_dir):
     cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
 
     # ------------------------------------------------------------------
-    # Running Cordova build
-    debug_green('Running Cordova build ...')
-    cordova_build('ios', options=['--verbose'])
+    # Running examle
+    debug_green('Running cordova example project ...')
+    cordova_run('ios')
     
     # ------------------------------------------------------------------
     # Build successful!
-    debug_green('Build successful! Run it from Xcode ({0}/platforms/ios/)'.format(project_dir))
+    debug_green('Build successful! (You can also run it from Xcode ({0}/platforms/ios/))'.format(project_dir))
     remove_dir_if_exists(temp_plugin_dir)
 
 def _recreate_temp_plugin_dir(root_dir, temp_plugin_dir):
