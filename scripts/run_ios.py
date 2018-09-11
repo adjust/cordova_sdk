@@ -77,6 +77,7 @@ def _run_testapp(root_dir, ios_submodule_dir):
     debug_green('Re-installing plugins ...')
     cordova_remove_plugin(sdk_plugin_name)
     cordova_remove_plugin(testing_plugin_name)
+    cordova_add_plugin('cordova-plugin-customurlscheme', options=['--variable', 'URL_SCHEME=adjust-test'])
     cordova_add_plugin(temp_plugin_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
 

@@ -98,6 +98,7 @@ def _run_testapp(root_dir, android_submodule_dir):
     cordova_add_plugin(temp_plugin_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin(testing_plugin_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin('cordova-plugin-device', options=['--verbose'])
+    cordova_add_plugin('cordova-universal-links-plugin')
 
     # ------------------------------------------------------------------
     # Building cordova project

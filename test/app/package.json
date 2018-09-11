@@ -11,6 +11,13 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-console": {},
       "cordova-plugin-device": {},
+      "cordova-plugin-customurlscheme": {
+        "URL_SCHEME": "adjust-test",
+        "ANDROID_SCHEME": " ",
+        "ANDROID_HOST": " ",
+        "ANDROID_PATHPREFIX": "/"
+      },
+      "cordova-universal-links-plugin": {},
       "com.adjust.sdk": {},
       "com.adjust.sdktesting": {}
     }
@@ -19,8 +26,10 @@
     "cordova-android": "^6.4.0",
     "cordova-ios": "^4.5.5",
     "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-customurlscheme": "^4.3.0",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-whitelist": "1",
+    "cordova-universal-links-plugin": "^1.2.1",
     "ios-sim": "^6.1.2",
     "com.adjust.sdk": "../../temp_plugin",
     "com.adjust.sdktesting": "../../test/plugin"

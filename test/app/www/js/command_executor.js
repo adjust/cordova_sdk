@@ -372,6 +372,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
     }
+
+    if ('deferredDeeplinkCallback' in params) {
+        var _this = this;
+        var launchDeferredDeeplinkS = getFirstParameterValue(params, 'deferredDeeplinkCallback');
+        var launchDeferredDeeplink = launchDeferredDeeplinkS === 'true';
+        console.log(`[*] Launch deferred deeplink set to: ${launchDeferredDeeplink}`);
+        adjustConfig.setShouldLaunchDeeplink(launchDeferredDeeplink);
+        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+            AdjustTesting.addInfoToSend("deeplink", uri);
+            AdjustTesting.sendInfoToServer(_this.basePath);
+        });
+    }
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {

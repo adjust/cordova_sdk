@@ -29,4 +29,11 @@
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
     <plugin name="com.adjust.sdk" spec="../../temp_plugin" />
     <plugin name="com.adjust.sdktesting" spec="../../test/plugin" />
+    <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
+        <variable name="URL_SCHEME" value="adjust-test" />
+        <variable name="ANDROID_SCHEME" value=" " />
+        <variable name="ANDROID_HOST" value=" " />
+        <variable name="ANDROID_PATHPREFIX" value="/" />
+    </plugin>
+    <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
 </widget>

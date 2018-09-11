@@ -16,6 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+function handleOpenURL(url) {
+    setTimeout(function() {
+        console.log(`TestApp, handleOpenURL: initiate Adjust.appWillOpenUrl, with URL = ${url}`);
+        Adjust.appWillOpenUrl(url);
+    }, 0);
+}
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -28,6 +36,11 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+
+        // Register for universal links
+        if (device.platform == 'iOS') {
+            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+        }
 
         var baseUrl = "";
         var gdprUrl = "";
@@ -52,6 +65,11 @@ var app = {
 
             commandExecutor.scheduleCommand(className, functionName, params, order);
         });
+    },
+
+    didLaunchAppFromLink: function(eventData) {
+        console.log(`TestApp, didLaunchAppFromLink: initiate Adjust.appWillOpenUrl, with URL = ${eventData.url}`);
+        Adjust.appWillOpenUrl(eventData.url);
     },
 
     // Update DOM on a Received Event
