@@ -148,8 +148,9 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     }
     if ('iAdFrameworkEnabled' in params)
     {
-        var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
-        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+        // TODO: available from 4.14.2 >
+        // var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
+        // testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
     }
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
