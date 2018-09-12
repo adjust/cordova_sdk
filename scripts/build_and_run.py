@@ -27,7 +27,7 @@ args = parser.parse_args()
 if args.type != 'clean' and args.platform == None:
     error('Error. Platform [ android | ios ] not selected!', do_exit=True)
 if (args.type == 'run' or args.type == 'br' or args.type == 'clean') and args.apptype == None:
-    error('Error. App type [ example | test ] not selected!', do_exit=True)
+    args.apptype = 'example' # -> default application type is 'example'
 
 # ------------------------------------------------------------------
 # common paths
@@ -41,8 +41,8 @@ ios_submodule_dir       = '{0}/ext/ios'.format(root_dir)
 with_test_lib = args.withtestlib or (args.type == 'br' and args.apptype == 'test')
 try:
     if args.type == 'clean':
-        if args.apptype == 'example':   clean_example_app(root_dir)
-        else:                           clean_test_app(root_dir)
+        if args.apptype == 'example': clean_example_app(root_dir)
+        else: clean_test_app(root_dir)
         exit()
 
     if args.platform == 'ios':
