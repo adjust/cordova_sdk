@@ -59,14 +59,18 @@ N.B. At the moment, SDK 4.14.0 for Cordova supports Android platform version `fr
 
 ## <a id="example-app"></a>Example app
 
-There is example inside the [`example` directory][example]. In there you can check how to integrate the Adjust SDK into your app. The example app has been uploaded without platforms being added due to size considerations, so after downloading the app, please run appropriate script from `scripts` folder to build the app for desired platform:
+There is example inside the [`example` directory][example]. In there you can check how to integrate the Adjust SDK into your app. The example app has been uploaded without platforms being added due to size considerations, so after downloading the app, please run appropriate script from `scripts` folder to build and run the app for desired platform:
 
+To run iOS example app:
 ```
-sh cordova-test-ios.sh
-sh cordova-test-android.sh
+python build_and_run.py run -p ios
+```
+To run Android example app:
+```
+python build_and_run.py run -p android
 ```
 
-**Note**: Please have in mind that after building the example app for the first time for iOS platform, you will get the code signing error which requires you to open your app's Xcode project and choose your `Team` in `Signing` part of your Xcode project settings. After that, either run your app from Xcode or re-run the build script.
+**Note**: Please have in mind that after building the example app for the first time for iOS platform, you may get the code signing error which requires you to open your app's Xcode project and choose your `Team` in `Signing` part of your Xcode project settings. After that, either run your app from Xcode or re-run the script.
 
 ## <a id="basic-integration"></a>Basic integration
 
