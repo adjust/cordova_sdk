@@ -320,9 +320,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("message", sessionSuccess.message);
             AdjustTesting.addInfoToSend("timestamp", sessionSuccess.timestamp);
             AdjustTesting.addInfoToSend("adid", sessionSuccess.adid);
-            if (sessionSuccess.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(sessionSuccess.jsonResponse));
-            }
+            addJsonResponseInfo(sessionSuccess);
 
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
@@ -335,9 +333,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("timestamp", sessionFailed.timestamp);
             AdjustTesting.addInfoToSend("adid", sessionFailed.adid);
             AdjustTesting.addInfoToSend("willRetry", sessionFailed.willRetry);
-            if (sessionFailed.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(sessionFailed.jsonResponse));
-            }
+            addJsonResponseInfo(sessionFailed);
 
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
@@ -350,9 +346,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("timestamp", eventSuccess.timestamp);
             AdjustTesting.addInfoToSend("adid", eventSuccess.adid);
             AdjustTesting.addInfoToSend("eventToken", eventSuccess.eventToken);
-            if (eventSuccess.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(eventSuccess.jsonResponse));
-            }
+            addJsonResponseInfo(eventSuccess);
 
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
@@ -366,9 +360,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTesting.addInfoToSend("adid", eventFailed.adid);
             AdjustTesting.addInfoToSend("eventToken", eventFailed.eventToken);
             AdjustTesting.addInfoToSend("willRetry", eventFailed.willRetry);
-            if (eventFailed.jsonResponse != null) {
-                AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(eventFailed.jsonResponse));
-            } 
+            addJsonResponseInfo(eventFailed);
 
             AdjustTesting.sendInfoToServer(_this.basePath);
         });
@@ -560,6 +552,19 @@ AdjustCommandExecutor.prototype.sendReferrer = function(params) {
 
 //Util
 //======================
+
+function addJsonResponseInfo(event) {
+    if (event.jsonResponse == null) {
+        return;
+    }
+
+    if (device.platform === "Android") {
+        AdjustTesting.addInfoToSend("jsonResponse", event.jsonResponse);
+    } else {
+        AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(event.jsonResponse));
+    }
+}
+
 function getValueFromKey(params, key) {
     if (key in params) {
         return params[key];
