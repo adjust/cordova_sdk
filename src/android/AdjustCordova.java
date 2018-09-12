@@ -16,6 +16,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
 
+import static com.adjust.sdk.AdjustCordovaUtils.*;
 
 public class AdjustCordova extends CordovaPlugin 
     implements OnAttributionChangedListener, 
@@ -25,107 +26,6 @@ public class AdjustCordova extends CordovaPlugin
                OnSessionTrackingFailedListener,
                OnDeeplinkResponseListener, 
                OnDeviceIdsRead {
-    private static final String KEY_APP_TOKEN                      = "appToken";
-    private static final String KEY_ENVIRONMENT                    = "environment";
-    private static final String KEY_LOG_LEVEL                      = "logLevel";
-    private static final String KEY_SDK_PREFIX                     = "sdkPrefix";
-    private static final String KEY_PROCESS_NAME                   = "processName";
-    private static final String KEY_DEFAULT_TRACKER                = "defaultTracker";
-    private static final String KEY_EVENT_BUFFERING_ENABLED        = "eventBufferingEnabled";
-    private static final String KEY_EVENT_TOKEN                    = "eventToken";
-    private static final String KEY_REVENUE                        = "revenue";
-    private static final String KEY_CURRENCY                       = "currency";
-    private static final String KEY_TRANSACTION_ID                 = "transactionId";
-    private static final String KEY_CALLBACK_PARAMETERS            = "callbackParameters";
-    private static final String KEY_PARTNER_PARAMETERS             = "partnerParameters";
-    private static final String KEY_SEND_IN_BACKGROUND             = "sendInBackground";
-    private static final String KEY_SHOULD_LAUNCH_DEEPLINK         = "shouldLaunchDeeplink";
-    private static final String KEY_USER_AGENT                     = "userAgent";
-    private static final String KEY_DELAY_START                    = "delayStart";
-    private static final String KEY_SECRET_ID                      = "secretId";
-    private static final String KEY_INFO_1                         = "info1";
-    private static final String KEY_INFO_2                         = "info2";
-    private static final String KEY_INFO_3                         = "info3";
-    private static final String KEY_INFO_4                         = "info4";
-    private static final String KEY_DEVICE_KNOWN                   = "isDeviceKnown";
-    private static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
-    private static final String KEY_BASE_URL                       = "baseUrl";
-    private static final String KEY_GDPR_URL                       = "gdprUrl";
-    private static final String KEY_BASE_PATH                      = "basePath";
-    private static final String KEY_GDPR_PATH                      = "gdprPath";
-    private static final String KEY_USE_TEST_CONNECTION_OPTIONS    = "useTestConnectionOptions";
-    private static final String KEY_TIMER_INTERVAL                 = "timerIntervalInMilliseconds";
-    private static final String KEY_TIMER_START                    = "timerStartInMilliseconds";
-    private static final String KEY_SESSION_INTERVAL               = "sessionIntervalInMilliseconds";
-    private static final String KEY_SUBSESSION_INTERVAL            = "subsessionIntervalInMilliseconds";
-    private static final String KEY_TEARDOWN                       = "teardown";
-    private static final String KEY_NO_BACKOFF_WAIT                = "noBackoffWait";
-    private static final String KEY_HAS_CONTEXT                    = "hasContext";
-
-    private static final String COMMAND_CREATE                                   = "create";
-    private static final String COMMAND_SET_ATTRIBUTION_CALLBACK                 = "setAttributionCallback";
-    private static final String COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK    = "setEventTrackingSucceededCallback";
-    private static final String COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK       = "setEventTrackingFailedCallback";
-    private static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK  = "setSessionTrackingSucceededCallback";
-    private static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK     = "setSessionTrackingFailedCallback";
-    private static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK           = "setDeferredDeeplinkCallback";
-    private static final String COMMAND_SET_PUSH_TOKEN                           = "setPushToken";
-    private static final String COMMAND_TRACK_EVENT                              = "trackEvent";
-    private static final String COMMAND_SET_OFFLINE_MODE                         = "setOfflineMode";
-    private static final String COMMAND_ON_RESUME                                = "onResume";
-    private static final String COMMAND_ON_PAUSE                                 = "onPause";
-    private static final String COMMAND_IS_ENABLED                               = "isEnabled";
-    private static final String COMMAND_SET_ENABLED                              = "setEnabled";
-    private static final String COMMAND_APP_WILL_OPEN_URL                        = "appWillOpenUrl";
-    private static final String COMMAND_GDPR_FORGET_ME                           = "gdprForgetMe";
-    private static final String COMMAND_GET_IDFA                                 = "getIdfa";
-    private static final String COMMAND_GET_ADID                                 = "getAdid";
-    private static final String COMMAND_GET_ATTRIBUTION                          = "getAttribution";
-    private static final String COMMAND_GET_GOOGLE_AD_ID                         = "getGoogleAdId";
-    private static final String COMMAND_GET_AMAZON_AD_ID                         = "getAmazonAdId";
-    private static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER           = "addSessionCallbackParameter";
-    private static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER        = "removeSessionCallbackParameter";
-    private static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS        = "resetSessionCallbackParameters";
-    private static final String COMMAND_ADD_SESSION_PARTNER_PARAMETER            = "addSessionPartnerParameter";
-    private static final String COMMAND_REMOVE_SESSION_PARTNER_PARAMETER         = "removeSessionPartnerParameter";
-    private static final String COMMAND_RESET_SESSION_PARTNER_PARAMETERS         = "resetSessionPartnerParameters";
-    private static final String COMMAND_SEND_FIRST_PACKAGES                      = "sendFirstPackages";
-    private static final String COMMAND_SET_REFERRER                             = "setReferrer";
-    private static final String COMMAND_SET_TEST_OPTIONS                         = "setTestOptions";
-    private static final String COMMAND_TEARDOWN                                 = "teardown";
-
-    private static final String ATTRIBUTION_TRACKER_TOKEN   = "trackerToken";
-    private static final String ATTRIBUTION_TRACKER_NAME    = "trackerName";
-    private static final String ATTRIBUTION_NETWORK         = "network";
-    private static final String ATTRIBUTION_CAMPAIGN        = "campaign";
-    private static final String ATTRIBUTION_ADGROUP         = "adgroup";
-    private static final String ATTRIBUTION_CREATIVE        = "creative";
-    private static final String ATTRIBUTION_CLICK_LABEL     = "clickLabel";
-    private static final String ATTRIBUTION_ADID            = "adid";
-
-    private static final String EVENT_SUCCESS_MESSAGE       = "message";
-    private static final String EVENT_SUCCESS_TIMESTAMP     = "timestamp";
-    private static final String EVENT_SUCCESS_ADID          = "adid";
-    private static final String EVENT_SUCCESS_EVENT_TOKEN   = "eventToken";
-    private static final String EVENT_SUCCESS_JSON_RESPONSE = "jsonResponse";
-
-    private static final String EVENT_FAILED_MESSAGE        = "message";
-    private static final String EVENT_FAILED_TIMESTAMP      = "timestamp";
-    private static final String EVENT_FAILED_ADID           = "adid";
-    private static final String EVENT_FAILED_EVENT_TOKEN    = "eventToken";
-    private static final String EVENT_FAILED_WILL_RETRY     = "willRetry";
-    private static final String EVENT_FAILED_JSON_RESPONSE  = "jsonResponse";
-
-    private static final String SESSION_SUCCESS_MESSAGE         = "message";
-    private static final String SESSION_SUCCESS_TIMESTAMP       = "timestamp";
-    private static final String SESSION_SUCCESS_ADID            = "adid";
-    private static final String SESSION_SUCCESS_JSON_RESPONSE   = "jsonResponse";
-
-    private static final String SESSION_FAILED_MESSAGE          = "message";
-    private static final String SESSION_FAILED_TIMESTAMP        = "timestamp";
-    private static final String SESSION_FAILED_ADID             = "adid";
-    private static final String SESSION_FAILED_WILL_RETRY       = "willRetry";
-    private static final String SESSION_FAILED_JSON_RESPONSE    = "jsonResponse";
 
     private CallbackContext attributionCallbackContext;
     private CallbackContext eventTrackingSucceededCallbackContext;
@@ -145,45 +45,29 @@ public class AdjustCordova extends CordovaPlugin
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
             executeCreate(args);
-
-            return true;
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
             attributionCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK)) {
             eventTrackingSucceededCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK)) {
             eventTrackingFailedCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK)) {
             sessionTrackingSucceededCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK)) {
             sessionTrackingFailedCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
             deferredDeeplinkCallbackContext = callbackContext;
-
-            return true;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             getGoogleAdIdCallbackContext = callbackContext;
 
             // Google Ad Id callback
-            if (null != getGoogleAdIdCallbackContext) {
+            if (getGoogleAdIdCallbackContext != null) {
                 Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), this);
             }
-
-            return true;
         } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
             getAmazonAdidCallbackContext = callbackContext;
 
-            if (null != getAmazonAdidCallbackContext) {
+            if (getAmazonAdidCallbackContext != null) {
                 String amazonAdId = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
 
                 if (amazonAdId == null) {
@@ -195,12 +79,10 @@ public class AdjustCordova extends CordovaPlugin
 
                 getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
             }
-
-            return true;
         } else if (action.equals(COMMAND_GET_ADID)) {
             getAdidCallbackContext = callbackContext;
 
-            if (null != getAdidCallbackContext) {
+            if (getAdidCallbackContext != null) {
                 final String adid = Adjust.getAdid();
 
                 PluginResult pluginResult = new PluginResult(Status.OK, adid);
@@ -208,12 +90,10 @@ public class AdjustCordova extends CordovaPlugin
 
                 getAdidCallbackContext.sendPluginResult(pluginResult);
             }
-
-            return true;
         } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
             getAttributionCallbackContext = callbackContext;
 
-            if (null != getAttributionCallbackContext) {
+            if (getAttributionCallbackContext != null) {
                 final AdjustAttribution attribution = Adjust.getAttribution();
 
                 JSONObject attributionJsonData = new JSONObject(getAttributionDictionary(attribution));
@@ -222,8 +102,6 @@ public class AdjustCordova extends CordovaPlugin
 
                 getAttributionCallbackContext.sendPluginResult(pluginResult);
             }
-
-            return true;
         } else if (action.equals(COMMAND_GET_IDFA)) {
             getIdfaCallbackContext = callbackContext;
 
@@ -234,101 +112,56 @@ public class AdjustCordova extends CordovaPlugin
             pluginResult.setKeepCallback(true);
 
             getIdfaCallbackContext.sendPluginResult(pluginResult);
-
-            return true;
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
             executeTrackEvent(args);
-
-            return true;
         } else if (action.equals(COMMAND_SET_OFFLINE_MODE)) {
             final Boolean enabled = args.getBoolean(0);
             Adjust.setOfflineMode(enabled);
-            
-            return true;
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
-            
-            return true;
         } else if (action.equals(COMMAND_ON_PAUSE)) {
             Adjust.onPause();
-            
-            return true;
         } else if (action.equals(COMMAND_ON_RESUME)) {
             Adjust.onResume();
-            
-            return true;
         } else if (action.equals(COMMAND_SET_ENABLED)) {
             final Boolean enabled = args.getBoolean(0);
             Adjust.setEnabled(enabled);
-            
-            return true;
         } else if (action.equals(COMMAND_IS_ENABLED)) {
             final Boolean isEnabled = Adjust.isEnabled();
             PluginResult pluginResult = new PluginResult(Status.OK, isEnabled);
-            
             callbackContext.sendPluginResult(pluginResult);
-
-            return true;
         } else if (action.equals(COMMAND_APP_WILL_OPEN_URL)) {
             String url = args.getString(0);
             final Uri uri = Uri.parse(url);
-            
             Adjust.appWillOpenUrl(uri, this.cordova.getActivity().getApplicationContext());
-            
-            return true;
         } else if (action.equals(COMMAND_ADD_SESSION_CALLBACK_PARAMETER)) {
             final String key = args.getString(0);
             final String value = args.getString(1);
-            
             Adjust.addSessionCallbackParameter(key, value);
-            
-            return true;
         } else if (action.equals(COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER)) {
             final String key = args.getString(0);
-            
             Adjust.removeSessionCallbackParameter(key);
-            
-            return true;
         } else if (action.equals(COMMAND_RESET_SESSION_CALLBACK_PARAMETERS)) {
             Adjust.resetSessionCallbackParameters();
-            
-            return true;
         } else if (action.equals(COMMAND_ADD_SESSION_PARTNER_PARAMETER)) {
             final String key = args.getString(0);
             final String value = args.getString(1);
-            
             Adjust.addSessionPartnerParameter(key, value);
-            
-            return true;
         } else if (action.equals(COMMAND_REMOVE_SESSION_PARTNER_PARAMETER)) {
             final String key = args.getString(0);
-            
             Adjust.removeSessionPartnerParameter(key);
-            
-            return true;
         } else if (action.equals(COMMAND_RESET_SESSION_PARTNER_PARAMETERS)) {
             Adjust.resetSessionPartnerParameters();
-            
-            return true;
         } else if (action.equals(COMMAND_SEND_FIRST_PACKAGES)) {
             Adjust.sendFirstPackages();
-            
-            return true;
         } else if (action.equals(COMMAND_GDPR_FORGET_ME)) {
             Adjust.gdprForgetMe(this.cordova.getActivity().getApplicationContext());
-            
-            return true;
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
-            
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
-            
-            return true;
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
-            
-            return true;
         } else if (action.equals(COMMAND_TEARDOWN)) {
             attributionCallbackContext              = null;
             eventTrackingSucceededCallbackContext   = null;
@@ -342,16 +175,13 @@ public class AdjustCordova extends CordovaPlugin
             getAmazonAdidCallbackContext            = null;
             getAttributionCallbackContext           = null;
             shouldLaunchDeeplink                    = false;
-            
-            return true;
+        } else {
+            Logger logger = (Logger)AdjustFactory.getLogger();
+            logger.error(String.format("Invalid call (%s)", action));
+            return false;    
         }
 
-        String errorMessage = String.format("Invalid call (%s)", action);
-        Logger logger = (Logger)AdjustFactory.getLogger();
-
-        logger.error(errorMessage);
-
-        return false;
+        return true;
     }
 
     private void executeCreate(final JSONArray args) throws JSONException {
@@ -772,106 +602,56 @@ public class AdjustCordova extends CordovaPlugin
         getGoogleAdIdCallbackContext.sendPluginResult(pluginResult);
     }
 
-    boolean isFieldValid(String field) {
-        return field != null && !field.equals("") && !field.equals("null");
-    }
-
-    private String[] jsonArrayToArray(JSONArray jsonArray) throws JSONException {
-        if (jsonArray == null) {
-            return null;
-        }
-
-        String[] array = new String[jsonArray.length()];
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            array[i] = jsonArray.get(i).toString();
-        }
-
-        return array;
-    }
-
-    private Map<String, Object> jsonObjectToMap(JSONObject jsonObject) throws JSONException {
-        Map<String, Object> map = new HashMap<String, Object>(jsonObject.length());
-
-        @SuppressWarnings("unchecked")
-        Iterator<String> jsonObjectIterator = jsonObject.keys();
-
-        while (jsonObjectIterator.hasNext()) {
-            String key = jsonObjectIterator.next();
-            map.put(key, jsonObject.get(key));
-        }
-
-        return map;
-    }
-
     private Map<String, String> getEventTrackingSucceededDictionary(AdjustEventSuccess event) {
         Map<String, String> dict = new HashMap<String, String>();
-
-        addValueOrEmpty(dict, EVENT_SUCCESS_MESSAGE, event.message);
-        addValueOrEmpty(dict, EVENT_SUCCESS_TIMESTAMP, event.timestamp);
-        addValueOrEmpty(dict, EVENT_SUCCESS_ADID, event.adid);
-        addValueOrEmpty(dict, EVENT_SUCCESS_EVENT_TOKEN, event.eventToken);
-        addValueOrEmpty(dict, EVENT_SUCCESS_JSON_RESPONSE, event.jsonResponse);
-
+        addValueOrEmpty(dict, KEY_MESSAGE, event.message);
+        addValueOrEmpty(dict, KEY_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, KEY_ADID, event.adid);
+        addValueOrEmpty(dict, KEY_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, KEY_JSON_RESPONSE, event.jsonResponse);
         return dict;
     }
 
     private Map<String, String> getEventTrackingFailedDictionary(AdjustEventFailure event) {
         Map<String, String> dict = new HashMap<String, String>();
-
-        addValueOrEmpty(dict, EVENT_FAILED_MESSAGE, event.message);
-        addValueOrEmpty(dict, EVENT_FAILED_TIMESTAMP, event.timestamp);
-        addValueOrEmpty(dict, EVENT_FAILED_ADID, event.adid);
-        addValueOrEmpty(dict, EVENT_FAILED_EVENT_TOKEN, event.eventToken);
-        addValueOrEmpty(dict, EVENT_FAILED_WILL_RETRY, event.willRetry ? "true" : "false");;
-        addValueOrEmpty(dict, EVENT_FAILED_JSON_RESPONSE, event.jsonResponse);
-
+        addValueOrEmpty(dict, KEY_MESSAGE, event.message);
+        addValueOrEmpty(dict, KEY_TIMESTAMP, event.timestamp);
+        addValueOrEmpty(dict, KEY_ADID, event.adid);
+        addValueOrEmpty(dict, KEY_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(dict, KEY_WILL_RETRY, event.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, KEY_JSON_RESPONSE, event.jsonResponse);
         return dict;
     }
 
     private Map<String, String> getAttributionDictionary(AdjustAttribution attribution) {
         Map<String, String> dict = new HashMap<String, String>();
-
-        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_TOKEN, attribution.trackerToken);
-        addValueOrEmpty(dict, ATTRIBUTION_TRACKER_NAME, attribution.trackerName);
-        addValueOrEmpty(dict, ATTRIBUTION_NETWORK, attribution.network);
-        addValueOrEmpty(dict, ATTRIBUTION_CAMPAIGN, attribution.campaign);
-        addValueOrEmpty(dict, ATTRIBUTION_ADGROUP, attribution.adgroup);
-        addValueOrEmpty(dict, ATTRIBUTION_CREATIVE, attribution.creative);
-        addValueOrEmpty(dict, ATTRIBUTION_CLICK_LABEL, attribution.clickLabel);
-        addValueOrEmpty(dict, ATTRIBUTION_ADID, attribution.adid);
-
+        addValueOrEmpty(dict, KEY_TRACKER_TOKEN, attribution.trackerToken);
+        addValueOrEmpty(dict, KEY_TRACKER_NAME, attribution.trackerName);
+        addValueOrEmpty(dict, KEY_NETWORK, attribution.network);
+        addValueOrEmpty(dict, KEY_CAMPAIGN, attribution.campaign);
+        addValueOrEmpty(dict, KEY_ADGROUP, attribution.adgroup);
+        addValueOrEmpty(dict, KEY_CREATIVE, attribution.creative);
+        addValueOrEmpty(dict, KEY_CLICK_LABEL, attribution.clickLabel);
+        addValueOrEmpty(dict, KEY_ADID, attribution.adid);
         return dict;
     }
 
     private Map<String, String> getSessionTrackingSucceededDictionary(AdjustSessionSuccess session) {
         Map<String, String> dict = new HashMap<String, String>();
-
-        addValueOrEmpty(dict, SESSION_SUCCESS_MESSAGE, session.message);
-        addValueOrEmpty(dict, SESSION_SUCCESS_TIMESTAMP, session.timestamp);
-        addValueOrEmpty(dict, SESSION_SUCCESS_ADID, session.adid);
-        addValueOrEmpty(dict, SESSION_SUCCESS_JSON_RESPONSE, session.jsonResponse);
-
+        addValueOrEmpty(dict, KEY_MESSAGE, session.message);
+        addValueOrEmpty(dict, KEY_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, KEY_ADID, session.adid);
+        addValueOrEmpty(dict, KEY_JSON_RESPONSE, session.jsonResponse);
         return dict;
     }
 
     private Map<String, String> getSessionTrackingFailedDictionary(AdjustSessionFailure session) {
         Map<String, String> dict = new HashMap<String, String>();
-
-        addValueOrEmpty(dict, SESSION_FAILED_MESSAGE, session.message);
-        addValueOrEmpty(dict, SESSION_FAILED_TIMESTAMP, session.timestamp);
-        addValueOrEmpty(dict, SESSION_FAILED_ADID, session.adid);
-        addValueOrEmpty(dict, SESSION_FAILED_WILL_RETRY, session.willRetry ? "true" : "false");;
-        addValueOrEmpty(dict, SESSION_FAILED_JSON_RESPONSE, session.jsonResponse);
-
+        addValueOrEmpty(dict, KEY_MESSAGE, session.message);
+        addValueOrEmpty(dict, KEY_TIMESTAMP, session.timestamp);
+        addValueOrEmpty(dict, KEY_ADID, session.adid);
+        addValueOrEmpty(dict, KEY_WILL_RETRY, session.willRetry ? "true" : "false");;
+        addValueOrEmpty(dict, KEY_JSON_RESPONSE, session.jsonResponse);
         return dict;
-    }
-
-    private void addValueOrEmpty(Map<String, String> dict, String key, Object value){
-        if (value != null) {
-            dict.put(key, value.toString());
-        } else {
-            dict.put(key, "");
-        }
     }
 }
