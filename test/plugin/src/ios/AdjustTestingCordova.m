@@ -8,7 +8,6 @@
 
 #import <Cordova/CDVPluginResult.h>
 #import <AdjustTestLibrary/ATLTestLibrary.h>
-
 #import "AdjustTestingCordova.h"
 #import "AdjustTestingCordovaCommandListener.h"
 
@@ -34,8 +33,6 @@
 #pragma mark - Public methods
 
 - (void)startTestSession:(CDVInvokedUrlCommand *)command {
-    NSLog(@"startTestSession():");
-
     NSString *baseUrl = [command.arguments objectAtIndex:0];
     if (![self isFieldValid:baseUrl]) {
         return;
@@ -59,31 +56,25 @@
 - (void)addInfoToSend:(CDVInvokedUrlCommand *)command {
     NSString *key = [command.arguments objectAtIndex:0];
     NSString *value = [command.arguments objectAtIndex:1];
-
     if (self.testLibrary != nil) {
-        NSLog(@"addInfoToSend(): with key %@ and %@", key, value);
         [self.testLibrary addInfoToSend:key value:value];
     }
 }
 
 - (void)sendInfoToServer:(CDVInvokedUrlCommand *)command {
     NSString *basePath = [command.arguments objectAtIndex:0];
-
     if (self.testLibrary != nil) {
-        NSLog(@"sendInfoToServer(): with basePath %@", basePath);
         [self.testLibrary sendInfoToServer:basePath];
     }
 }
 
 - (void)addTest:(CDVInvokedUrlCommand *)command {
     NSString *testToAdd = [command.arguments objectAtIndex:0];
-    NSLog(@"addtest(): %@", testToAdd);
     [selectedTests addObject:testToAdd];
 }
 
 - (void)addTestDirectory:(CDVInvokedUrlCommand *)command {
     NSString *testDirToAdd = [command.arguments objectAtIndex:0];
-    NSLog(@"addtestDir(): %@", testDirToAdd);
     [selectedTestDirs addObject:testDirToAdd];
 }
 

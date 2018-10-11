@@ -14,21 +14,16 @@
 
 - (id)initWithCallbackId:(NSString *)callbackId andCommandDelegate:(id<CDVCommandDelegate>)commandDelegate {
     self = [super init];
-
     if (self == nil) {
         return nil;
     }
-
     orderCounter = 0;
     self.commandExecutorCallbackId = callbackId;
     self.commandDelegate = commandDelegate;
-
     return self;
 }
 
 - (void)executeCommandRawJson:(NSString *)json {
-    NSLog(@"executeCommandRawJson: %@", json);
-
     NSError *jsonError;
     NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData

@@ -1,12 +1,9 @@
 function AdjustConfig(appToken, environment) {
-    // iOS & Android
     this.sdkPrefix = "cordova4.14.0";
 
     this.appToken = appToken;
     this.environment = environment;
-
     this.delayStart = 0.0;
-
     this.logLevel = null;
     this.referrer = null;
     this.userAgent = null;
@@ -15,20 +12,17 @@ function AdjustConfig(appToken, environment) {
     this.sendInBackground = null;
     this.shouldLaunchDeeplink = null;
     this.eventBufferingEnabled = null;
-
     this.attributionCallback = null;
     this.eventTrackingSucceededCallback = null;
     this.eventTrackingFailedCallback = null;
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
-
     this.secretId = null;
     this.info1 = null;
     this.info2 = null;
     this.info3 = null;
     this.info4 = null;
-
     // Android only
     this.processName = null;
     this.readMobileEquipmentIdentity = null;
@@ -36,7 +30,6 @@ function AdjustConfig(appToken, environment) {
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
-
 AdjustConfig.LogLevelVerbose       = "VERBOSE";
 AdjustConfig.LogLevelDebug         = "DEBUG";
 AdjustConfig.LogLevelInfo          = "INFO";
@@ -121,19 +114,15 @@ AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, in
     if (secretId != null) {
         this.secretId = secretId.toString();
     }
-
     if (info1 != null) {
         this.info1 = info1.toString();
     }
-
     if (info2 != null) {
         this.info2 = info2.toString();
     }
-
     if (info3 != null) {
         this.info3 = info3.toString();
     }
-
     if (info4 != null) {
         this.info4 = info4.toString();
     }
@@ -158,7 +147,6 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
 // @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
     console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info");
-    
     this.attributionCallbackListener = attributionCallbackListener;
 };
 
@@ -189,7 +177,6 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
-    
     return this.attributionCallbackListener != null;
 };
 
