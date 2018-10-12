@@ -185,7 +185,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean isDeviceKnown = parameters.get(KEY_DEVICE_KNOWN).toString() == "true" ? true : false;
         boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
         boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-        boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
+        // boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -248,9 +248,10 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 adjustConfig.setAppSecret(lSecretId, lInfo1, lInfo2, lInfo3, lInfo4);
             } catch(NumberFormatException ignored) {}
         }
-        
+
+        // Deprecated.
         // Read mobile equipment identity.
-        adjustConfig.setReadMobileEquipmentIdentity(readMobileEquipmentIdentity);
+        // adjustConfig.setReadMobileEquipmentIdentity(readMobileEquipmentIdentity);
 
         // Event buffering.
         adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);

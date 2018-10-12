@@ -106,8 +106,10 @@ AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
     this.isDeviceKnown = isDeviceKnown;
 }
 
+// @deprecated
 AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
-    this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
+    console.warn("Calling deprecated function! This functionality has been removed from the SDK.");
+    // this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
 }
 
 AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
@@ -146,7 +148,7 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
 
 // @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
-    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info");
+    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info.");
     this.attributionCallbackListener = attributionCallbackListener;
 };
 

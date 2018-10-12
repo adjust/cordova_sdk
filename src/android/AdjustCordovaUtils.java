@@ -31,7 +31,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_INFO_3 = "info3";
     public static final String KEY_INFO_4 = "info4";
     public static final String KEY_DEVICE_KNOWN = "isDeviceKnown";
-    public static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
+    // public static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
     public static final String KEY_BASE_URL = "baseUrl";
     public static final String KEY_GDPR_URL = "gdprUrl";
     public static final String KEY_BASE_PATH = "basePath";
