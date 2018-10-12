@@ -147,6 +147,7 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_TIMESTAMP, event.timestamp);
         addValueOrEmpty(map, KEY_ADID, event.adid);
         addValueOrEmpty(map, KEY_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(map, KEY_CALLBACK_ID, event.callbackId);
         addValueOrEmpty(map, KEY_JSON_RESPONSE, event.jsonResponse);
         return map;
     }
@@ -157,6 +158,7 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_TIMESTAMP, event.timestamp);
         addValueOrEmpty(map, KEY_ADID, event.adid);
         addValueOrEmpty(map, KEY_EVENT_TOKEN, event.eventToken);
+        addValueOrEmpty(map, KEY_CALLBACK_ID, event.callbackId);
         addValueOrEmpty(map, KEY_WILL_RETRY, event.willRetry ? "true" : "false");;
         addValueOrEmpty(map, KEY_JSON_RESPONSE, event.jsonResponse);
         return map;
