@@ -22,6 +22,7 @@
 #define KEY_CURRENCY @"currency"
 #define KEY_RECEIPT @"receipt"
 #define KEY_TRANSACTION_ID @"transactionId"
+#define KEY_CALLBACK_ID @"callbackId"
 #define KEY_CALLBACK_PARAMETERS @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS @"partnerParameters"
 #define KEY_IS_RECEIPT_SET @"isReceiptSet"
@@ -212,6 +213,7 @@
     NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
     NSString *receipt = [[jsonObject valueForKey:KEY_RECEIPT] objectAtIndex:0];
     NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
+    NSString *callbackId = [[jsonObject valueForKey:KEY_CALLBACK_ID] objectAtIndex:0];
     NSNumber *isReceiptSet = [[jsonObject valueForKey:KEY_IS_RECEIPT_SET] objectAtIndex:0];
     NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
     NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
@@ -267,6 +269,11 @@
         if ([self isFieldValid:transactionId]) {
             [adjustEvent setTransactionId:transactionId];
         }
+    }
+
+    // Callback ID.
+    if ([self isFieldValid:callbackId]) {
+        [adjustEvent setCallbackId:callbackId];
     }
 
     // Track event.

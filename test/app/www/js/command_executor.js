@@ -257,7 +257,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var info2    = appSecretArray[2].toString();
         var info3    = appSecretArray[3].toString();
         var info4    = appSecretArray[4].toString();
-
         adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
     }
 
@@ -335,6 +334,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend("timestamp", eventSuccess.timestamp);
             AdjustTest.addInfoToSend("adid", eventSuccess.adid);
             AdjustTest.addInfoToSend("eventToken", eventSuccess.eventToken);
+            AdjustTest.addInfoToSend("callbackId", eventSuccess.callbackId);
             addJsonResponseInfo(eventSuccess);
             AdjustTest.sendInfoToServer(_this.basePath);
         });
@@ -347,6 +347,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend("timestamp", eventFailed.timestamp);
             AdjustTest.addInfoToSend("adid", eventFailed.adid);
             AdjustTest.addInfoToSend("eventToken", eventFailed.eventToken);
+            AdjustTest.addInfoToSend("callbackId", eventFailed.callbackId);
             AdjustTest.addInfoToSend("willRetry", eventFailed.willRetry);
             addJsonResponseInfo(eventFailed);
             AdjustTest.sendInfoToServer(_this.basePath);
@@ -424,6 +425,11 @@ AdjustCommandExecutor.prototype.event = function(params) {
     if ('orderId' in params) {
         var orderId = getFirstParameterValue(params, 'orderId');
         adjustEvent.setTransactionId(orderId);
+    }
+
+    if ('callbackId' in params) {
+        var callbackId = getFirstParameterValue(params, 'callbackId');
+        adjustEvent.setCallbackId(callbackId);
     }
 };
 

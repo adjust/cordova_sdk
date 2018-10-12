@@ -3,6 +3,7 @@ function AdjustEvent(eventToken) {
     this.revenue = null;
     this.currency = null;
     this.transactionId = null;
+    this.callbackId = null;
     this.callbackParameters = [];
     this.partnerParameters = [];
     // iOS only
@@ -27,6 +28,10 @@ AdjustEvent.prototype.addPartnerParameter = function(key, value) {
 
 AdjustEvent.prototype.setTransactionId = function(transactionId) {
     this.transactionId = transactionId;
+}
+
+AdjustEvent.prototype.setCallbackId = function(callbackId) {
+    this.callbackId = callbackId;
 }
 
 // @deprecated

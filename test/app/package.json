@@ -4,7 +4,6 @@
   "displayName": "HelloCordova",
   "cordova": {
     "platforms": [
-      "android",
       "ios"
     ],
     "plugins": {

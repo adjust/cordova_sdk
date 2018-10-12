@@ -120,6 +120,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     if (eventSuccessResponseData.jsonResponse != nil) {
         [dictionary setObject:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
     }
@@ -139,6 +140,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
+    [self addValueOrEmpty:eventFailureResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
     if (eventFailureResponseData.jsonResponse != nil) {
         [dictionary setObject:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];

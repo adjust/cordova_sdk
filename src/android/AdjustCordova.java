@@ -320,6 +320,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String revenue = parameters.get(KEY_REVENUE).toString();
         String currency = parameters.get(KEY_CURRENCY).toString();
         String transactionId = parameters.get(KEY_TRANSACTION_ID).toString();
+        String callbackId = parameters.get(KEY_CALLBACK_ID).toString();
         JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
         JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
         String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
@@ -358,6 +359,11 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Order ID.
         if (isFieldValid(transactionId)) {
             adjustEvent.setOrderId(transactionId);
+        }
+
+        // Callback ID.
+        if (isFieldValid(callbackId)) {
+            adjustEvent.setCallbackId(callbackId);
         }
 
         // Track event.

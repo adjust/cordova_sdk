@@ -19,6 +19,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_REVENUE = "revenue";
     public static final String KEY_CURRENCY = "currency";
     public static final String KEY_TRANSACTION_ID = "transactionId";
+    public static final String KEY_CALLBACK_ID = "callbackId";
     public static final String KEY_CALLBACK_PARAMETERS = "callbackParameters";
     public static final String KEY_PARTNER_PARAMETERS = "partnerParameters";
     public static final String KEY_SEND_IN_BACKGROUND = "sendInBackground";
