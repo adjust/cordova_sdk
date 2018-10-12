@@ -58,7 +58,10 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
             getAmazonAdidCallbackContext = callbackContext;
             if (getAmazonAdidCallbackContext != null) {
-                final String amazonAdId = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+                String amazonAdId = Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext());
+                if (amazonAdId == null) {
+                    amazonAdId = "";
+                }
                 PluginResult pluginResult = new PluginResult(Status.OK, amazonAdId);
                 pluginResult.setKeepCallback(true);
                 getAmazonAdidCallbackContext.sendPluginResult(pluginResult);
@@ -82,6 +85,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         } else if (action.equals(COMMAND_GET_IDFA)) {
             getIdfaCallbackContext = callbackContext;
+            final String idfa = "";
             PluginResult pluginResult = new PluginResult(Status.OK, idfa);
             pluginResult.setKeepCallback(true);
             getIdfaCallbackContext.sendPluginResult(pluginResult);

@@ -1,24 +1,24 @@
 //
-//  AdjustTestingCordova.m
+//  ADJCordovaTest.m
 //  Adjust SDK
 //
 //  Created by Abdullah Obaied (@obaied) on 20th February 2018.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDVPluginResult.h>
 #import <AdjustTestLibrary/ATLTestLibrary.h>
-#import "AdjustTestingCordova.h"
-#import "AdjustTestingCordovaCommandListener.h"
+#import "ADJCordovaTest.h"
+#import "ADJCommandListener.h"
 
-@interface AdjustTestingCordova ()
+@interface ADJCordovaTest ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
-@property (nonatomic, strong) AdjustTestingCordovaCommandListener *adjustCommandListener;
+@property (nonatomic, strong) ADJCommandListener *adjustCommandListener;
 
 @end
 
-@implementation AdjustTestingCordova {
+@implementation ADJCordovaTest {
     NSMutableArray *selectedTests;
     NSMutableArray *selectedTestDirs;
 }
@@ -38,8 +38,8 @@
         return;
     }
 
-    self.adjustCommandListener = [[AdjustTestingCordovaCommandListener alloc] initWithCallbackId:command.callbackId
-                                                                              andCommandDelegate:self.commandDelegate];
+    self.adjustCommandListener = [[ADJCommandListener alloc] initWithCallbackId:command.callbackId
+                                                             andCommandDelegate:self.commandDelegate];
     self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
                                            andCommandDelegate:self.adjustCommandListener];
 
@@ -50,7 +50,7 @@
         [self.testLibrary addTestDirectory:object];
     }
 
-    [self.testLibrary startTestSession:@"cordova4.14.0@ios4.14.1"];
+    [self.testLibrary startTestSession:@"cordova4.14.0@ios4.15.0"];
 }
 
 - (void)addInfoToSend:(CDVInvokedUrlCommand *)command {

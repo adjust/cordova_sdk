@@ -1,14 +1,14 @@
 //
-//  AdjustTestingCordovaCommandListener.m
+//  ADJCommandListener.m
 //  Adjust SDK
 //
 //  Created by Abdullah Obaied (@obaied) on 20th February 2018.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2018 Adjust GmbH. All rights reserved.
 //
 
-#import "AdjustTestingCordovaCommandListener.h"
+#import "ADJCommandListener.h"
 
-@implementation AdjustTestingCordovaCommandListener {
+@implementation ADJCommandListener {
     int orderCounter;
 }
 
@@ -17,9 +17,11 @@
     if (self == nil) {
         return nil;
     }
+
     orderCounter = 0;
     self.commandExecutorCallbackId = callbackId;
     self.commandDelegate = commandDelegate;
+
     return self;
 }
 
@@ -32,7 +34,7 @@
 
     // Order of packages sent through PluginResult is not reliable, this is solved
     // through a scheduling mechanism in command_executor.js#scheduleCommand() side.
-    // The 'order' entry is used to schedule commands
+    // The 'order' entry is used to schedule commands.
     NSNumber *num = [NSNumber numberWithInt:orderCounter];
     [dict setObject:num forKey:@"order"];
     orderCounter++;

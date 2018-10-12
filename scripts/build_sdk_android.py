@@ -2,7 +2,7 @@ from scripting_utils import *
 
 def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
     # ------------------------------------------------------------------
-    # paths]
+    # Paths
     sdk_adjust_dir  = '{0}/ext/android/sdk'.format(root_dir)
     build_dir       = '{0}/Adjust'.format(sdk_adjust_dir)
     jar_out_dir     = '{0}/src/android'.format(root_dir)
@@ -11,7 +11,7 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
     change_dir(build_dir)
 
     # ------------------------------------------------------------------
-    # Running make*Jar Gradle task ...
+    # Running make*Jar Gradle task.
     if is_release:
         debug_green('Running makeReleaseJar Gradle task ...')
         jar_in_dir = '{0}/adjust/build/intermediates/bundles/release'.format(build_dir)

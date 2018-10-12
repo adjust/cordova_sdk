@@ -21,7 +21,7 @@
  * - After a successful send
  */
 
-// A wrapper for a command received from test server
+// A wrapper for a command received from test server.
 function AdjustCommand(functionName, params, order) {
     this.functionName = functionName;
     this.params = params;
@@ -42,36 +42,35 @@ CommandExecutor.prototype.scheduleCommand = function(className, functionName, pa
 };
 
 function AdjustCommandExecutor(baseUrl, gdprUrl) {
-    this.baseUrl           = baseUrl;
-    this.gdprUrl           = gdprUrl;
-    this.basePath          = null;
-    this.gdprPath          = null;
-    this.savedEvents       = {};
-    this.savedConfigs      = {};
-    this.savedCommands     = [];
+    this.baseUrl = baseUrl;
+    this.gdprUrl = gdprUrl;
+    this.basePath = null;
+    this.gdprPath = null;
+    this.savedEvents = {};
+    this.savedConfigs = {};
+    this.savedCommands = [];
     this.nextToSendCounter = 0;
 };
 
-// First point of entry for scheduling commands. Takes a 'AdjustCommand {command}' parameter
+// First point of entry for scheduling commands. Takes a 'AdjustCommand {command}' parameter.
 AdjustCommandExecutor.prototype.scheduleCommand = function(command) {
-    // If the command is in order, send in immediately
+    // If the command is in order, send in immediately.
     if (command.order === this.nextToSendCounter) {
         this.executeCommand(command, -1);
         return;
     }
 
-    // Not in order, schedule it
+    // Not in order, schedule it.
     this.savedCommands.push(command);
 
-    // Recheck list
+    // Recheck list.
     this.checkList();
 }
 
-// Check the list of commands to see which one is in order
+// Check the list of commands to see which one is in order.
 AdjustCommandExecutor.prototype.checkList = function() {
     for (var i = 0; i < this.savedCommands.length; i++ ) {
         var command = this.savedCommands[i];
-
         if (command.order === this.nextToSendCounter) {
             this.executeCommand(command, i);
             return;
@@ -88,37 +87,37 @@ AdjustCommandExecutor.prototype.checkList = function() {
 AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
     console.log(`[*] executeCommand(): ${JSON.stringify(command)}`);
     switch (command.functionName) {
-        case "testOptions"                    : this.testOptions(command.params); break;
-        case "config"                         : this.config(command.params); break;
-        case "start"                          : this.start(command.params); break;
-        case "event"                          : this.event(command.params); break;
-        case "trackEvent"                     : this.trackEvent(command.params); break;
-        case "resume"                         : this.resume(command.params); break;
-        case "pause"                          : this.pause(command.params); break;
-        case "setEnabled"                     : this.setEnabled(command.params); break;
-        case "setReferrer"                    : this.setReferrer(command.params); break;
-        case "setOfflineMode"                 : this.setOfflineMode(command.params); break;
-        case "sendFirstPackages"              : this.sendFirstPackages(command.params); break;
-        case "addSessionCallbackParameter"    : this.addSessionCallbackParameter(command.params); break;
-        case "addSessionPartnerParameter"     : this.addSessionPartnerParameter(command.params); break;
+        case "testOptions" : this.testOptions(command.params); break;
+        case "config" : this.config(command.params); break;
+        case "start" : this.start(command.params); break;
+        case "event" : this.event(command.params); break;
+        case "trackEvent" : this.trackEvent(command.params); break;
+        case "resume" : this.resume(command.params); break;
+        case "pause" : this.pause(command.params); break;
+        case "setEnabled" : this.setEnabled(command.params); break;
+        case "setReferrer" : this.setReferrer(command.params); break;
+        case "setOfflineMode" : this.setOfflineMode(command.params); break;
+        case "sendFirstPackages" : this.sendFirstPackages(command.params); break;
+        case "addSessionCallbackParameter" : this.addSessionCallbackParameter(command.params); break;
+        case "addSessionPartnerParameter" : this.addSessionPartnerParameter(command.params); break;
         case "removeSessionCallbackParameter" : this.removeSessionCallbackParameter(command.params); break;
-        case "removeSessionPartnerParameter"  : this.removeSessionPartnerParameter(command.params); break;
+        case "removeSessionPartnerParameter" : this.removeSessionPartnerParameter(command.params); break;
         case "resetSessionCallbackParameters" : this.resetSessionCallbackParameters(command.params); break;
-        case "resetSessionPartnerParameters"  : this.resetSessionPartnerParameters(command.params); break;
-        case "setPushToken"                   : this.setPushToken(command.params); break;
-        case "openDeeplink"                   : this.openDeeplink(command.params); break;
-        case "sendReferrer"                   : this.sendReferrer(command.params); break;
-        case "gdprForgetMe"                   : this.gdprForgetMe(command.params); break;
+        case "resetSessionPartnerParameters" : this.resetSessionPartnerParameters(command.params); break;
+        case "setPushToken" : this.setPushToken(command.params); break;
+        case "openDeeplink" : this.openDeeplink(command.params); break;
+        case "sendReferrer" : this.sendReferrer(command.params); break;
+        case "gdprForgetMe" : this.gdprForgetMe(command.params); break;
     }
 
     this.nextToSendCounter++;
 
-    // If idx != -1, it means it was not sent directly. Delete its instance from the scheduling array
+    // If idx != -1, it means it was not sent directly. Delete its instance from the scheduling array.
     if (idx != -1) {
         this.savedCommands.splice(idx, 1);
     }
 
-    // Recheck the list
+    // Recheck the list.
     this.checkList();
 };
 
@@ -146,50 +145,45 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         var noBackoffWait = getFirstParameterValue(params, 'noBackoffWait');
         testOptions.noBackoffWait = noBackoffWait == 'true';
     }
-    if ('iAdFrameworkEnabled' in params)
-    {
-        // TODO: available from 4.14.2 >
-        // var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
-        // testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+    if ('iAdFrameworkEnabled' in params) {
+        var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
+        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
     }
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
         for (var i = 0; i < teardownOptions.length; i++) {
             var option = teardownOptions[i];
-
             if ('resetSdk' === option) {
-                testOptions.teardown                 = true;
-                testOptions.basePath                 = this.basePath;
-                testOptions.gdprPath                 = this.gdprPath;
+                testOptions.teardown = true;
+                testOptions.basePath = this.basePath;
+                testOptions.gdprPath = this.gdprPath;
                 testOptions.useTestConnectionOptions = true;
                 Adjust.teardown('test');
             }
-
             if ('deleteState' === option) {
                 testOptions.hasContext = true;
             }
-
             if ('resetTest' === option) {
                 this.savedEvents = {};
                 this.savedConfigs = {};
-                testOptions.timerIntervalInMilliseconds      = (-1).toString();
-                testOptions.timerStartInMilliseconds         = (-1).toString();
-                testOptions.sessionIntervalInMilliseconds    = (-1).toString();
+                testOptions.timerIntervalInMilliseconds = (-1).toString();
+                testOptions.timerStartInMilliseconds = (-1).toString();
+                testOptions.sessionIntervalInMilliseconds = (-1).toString();
                 testOptions.subsessionIntervalInMilliseconds = (-1).toString();
             }
             if ('sdk' === option) {
-                testOptions.teardown                 = true;
-                testOptions.basePath                 = null;
-                testOptions.gdprPath                 = null;
+                testOptions.teardown = true;
+                testOptions.basePath = null;
+                testOptions.gdprPath = null;
                 testOptions.useTestConnectionOptions = false;
                 Adjust.teardown('test');
             }
             if ('test' === option) {
-                this.savedEvents                             = null;
-                this.savedConfigs                            = null;
-                testOptions.timerIntervalInMilliseconds      = (-1).toString();
-                testOptions.timerStartInMilliseconds         = (-1).toString();
-                testOptions.sessionIntervalInMilliseconds    = (-1).toString();
+                this.savedEvents = null;
+                this.savedConfigs = null;
+                testOptions.timerIntervalInMilliseconds = (-1).toString();
+                testOptions.timerStartInMilliseconds = (-1).toString();
+                testOptions.sessionIntervalInMilliseconds = (-1).toString();
                 testOptions.subsessionIntervalInMilliseconds = (-1).toString();
             }
         }
@@ -211,10 +205,8 @@ AdjustCommandExecutor.prototype.config = function(params) {
     } else {
         var environment = getFirstParameterValue(params, "environment");
         var appToken = getFirstParameterValue(params, "appToken");
-
         adjustConfig = new AdjustConfig(appToken, environment);
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-
         this.savedConfigs[configNumber] = adjustConfig;
     }
 
@@ -301,68 +293,63 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('attributionCallbackSendAll' in params) {
         var _this = this;
         adjustConfig.setAttributionCallbackListener(function(attribution) {
-            AdjustTesting.addInfoToSend("trackerToken", attribution.trackerToken);
-            AdjustTesting.addInfoToSend("trackerName", attribution.trackerName);
-            AdjustTesting.addInfoToSend("network", attribution.network);
-            AdjustTesting.addInfoToSend("campaign", attribution.campaign);
-            AdjustTesting.addInfoToSend("adgroup", attribution.adgroup);
-            AdjustTesting.addInfoToSend("creative", attribution.creative);
-            AdjustTesting.addInfoToSend("clickLabel", attribution.clickLabel);
-            AdjustTesting.addInfoToSend("adid", attribution.adid);
-
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.addInfoToSend("trackerToken", attribution.trackerToken);
+            AdjustTest.addInfoToSend("trackerName", attribution.trackerName);
+            AdjustTest.addInfoToSend("network", attribution.network);
+            AdjustTest.addInfoToSend("campaign", attribution.campaign);
+            AdjustTest.addInfoToSend("adgroup", attribution.adgroup);
+            AdjustTest.addInfoToSend("creative", attribution.creative);
+            AdjustTest.addInfoToSend("clickLabel", attribution.clickLabel);
+            AdjustTest.addInfoToSend("adid", attribution.adid);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 
     if ('sessionCallbackSendSuccess' in params) {
         var _this = this;
         adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
-            AdjustTesting.addInfoToSend("message", sessionSuccess.message);
-            AdjustTesting.addInfoToSend("timestamp", sessionSuccess.timestamp);
-            AdjustTesting.addInfoToSend("adid", sessionSuccess.adid);
+            AdjustTest.addInfoToSend("message", sessionSuccess.message);
+            AdjustTest.addInfoToSend("timestamp", sessionSuccess.timestamp);
+            AdjustTest.addInfoToSend("adid", sessionSuccess.adid);
             addJsonResponseInfo(sessionSuccess);
-
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 
     if ('sessionCallbackSendFailure' in params) {
         var _this = this;
         adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
-            AdjustTesting.addInfoToSend("message", sessionFailed.message);
-            AdjustTesting.addInfoToSend("timestamp", sessionFailed.timestamp);
-            AdjustTesting.addInfoToSend("adid", sessionFailed.adid);
-            AdjustTesting.addInfoToSend("willRetry", sessionFailed.willRetry);
+            AdjustTest.addInfoToSend("message", sessionFailed.message);
+            AdjustTest.addInfoToSend("timestamp", sessionFailed.timestamp);
+            AdjustTest.addInfoToSend("adid", sessionFailed.adid);
+            AdjustTest.addInfoToSend("willRetry", sessionFailed.willRetry);
             addJsonResponseInfo(sessionFailed);
-
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 
     if ('eventCallbackSendSuccess' in params) {
         var _this = this;
         adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
-            AdjustTesting.addInfoToSend("message", eventSuccess.message);
-            AdjustTesting.addInfoToSend("timestamp", eventSuccess.timestamp);
-            AdjustTesting.addInfoToSend("adid", eventSuccess.adid);
-            AdjustTesting.addInfoToSend("eventToken", eventSuccess.eventToken);
+            AdjustTest.addInfoToSend("message", eventSuccess.message);
+            AdjustTest.addInfoToSend("timestamp", eventSuccess.timestamp);
+            AdjustTest.addInfoToSend("adid", eventSuccess.adid);
+            AdjustTest.addInfoToSend("eventToken", eventSuccess.eventToken);
             addJsonResponseInfo(eventSuccess);
-
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 
     if ('eventCallbackSendFailure' in params) {
         var _this = this;
         adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
-            AdjustTesting.addInfoToSend("message", eventFailed.message);
-            AdjustTesting.addInfoToSend("timestamp", eventFailed.timestamp);
-            AdjustTesting.addInfoToSend("adid", eventFailed.adid);
-            AdjustTesting.addInfoToSend("eventToken", eventFailed.eventToken);
-            AdjustTesting.addInfoToSend("willRetry", eventFailed.willRetry);
+            AdjustTest.addInfoToSend("message", eventFailed.message);
+            AdjustTest.addInfoToSend("timestamp", eventFailed.timestamp);
+            AdjustTest.addInfoToSend("adid", eventFailed.adid);
+            AdjustTest.addInfoToSend("eventToken", eventFailed.eventToken);
+            AdjustTest.addInfoToSend("willRetry", eventFailed.willRetry);
             addJsonResponseInfo(eventFailed);
-
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 
@@ -373,8 +360,8 @@ AdjustCommandExecutor.prototype.config = function(params) {
         console.log(`[*] Launch deferred deeplink set to: ${launchDeferredDeeplink}`);
         adjustConfig.setShouldLaunchDeeplink(launchDeferredDeeplink);
         adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
-            AdjustTesting.addInfoToSend("deeplink", uri);
-            AdjustTesting.sendInfoToServer(_this.basePath);
+            AdjustTest.addInfoToSend("deeplink", uri);
+            AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
 };
@@ -550,8 +537,7 @@ AdjustCommandExecutor.prototype.sendReferrer = function(params) {
     Adjust.setReferrer(referrer);
 };
 
-//Util
-//======================
+// Util methods //
 
 function addJsonResponseInfo(event) {
     if (event.jsonResponse == null) {
@@ -559,9 +545,9 @@ function addJsonResponseInfo(event) {
     }
 
     if (device.platform === "Android") {
-        AdjustTesting.addInfoToSend("jsonResponse", event.jsonResponse);
+        AdjustTest.addInfoToSend("jsonResponse", event.jsonResponse);
     } else {
-        AdjustTesting.addInfoToSend("jsonResponse", JSON.stringify(event.jsonResponse));
+        AdjustTest.addInfoToSend("jsonResponse", JSON.stringify(event.jsonResponse));
     }
 }
 

@@ -2,10 +2,9 @@
 
 function callCordova(action) {
     var args = Array.prototype.slice.call(arguments, 1);
-
     cordova.exec(function callback(data) { },
-        function errorHandler(err) { },
-        'AdjustTesting',
+        function errorHandler(err) { console.log("[AdjustTest]: Could not execute call inside of 'callCordova': " + err); },
+        'AdjustTest',
         action,
         args
     );
@@ -13,16 +12,15 @@ function callCordova(action) {
 
 function callCordovaCallback(action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
-
     cordova.exec(callback,
-        function errorHandler(err) { console.log("AdjustTesting: Could not execute call: " + err); },
-        'AdjustTesting',
+        function errorHandler(err) { console.log("[AdjustTest]: Could not execute call inside of 'callCordovaCallback': " + err); },
+        'AdjustTest',
         action,
         args
     );
 }
 
-var AdjustTesting = {
+var AdjustTest = {
     startTestSession: function(baseUrl, callback) {
         callCordovaCallback('startTestSession', callback, baseUrl);
     },
@@ -44,4 +42,4 @@ var AdjustTesting = {
     }
 };
 
-module.exports = AdjustTesting;
+module.exports = AdjustTest;

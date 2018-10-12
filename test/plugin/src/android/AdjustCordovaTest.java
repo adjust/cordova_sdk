@@ -1,4 +1,4 @@
-package com.adjust.sdktesting;
+package com.adjust.test;
 
 import android.net.Uri;
 import android.util.Log;
@@ -16,16 +16,16 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
 import com.adjust.testlibrary.TestLibrary;
 
-public class AdjustTestingCordova extends CordovaPlugin {
-    private static final String TAG = "AdjustTestingCordova";
+public class AdjustCordovaTest extends CordovaPlugin {
+    private static final String TAG = "AdjustCordovaTest";
     private static final String COMMAND_START_TEST_SESSION = "startTestSession";
     private static final String COMMAND_ADD_INFO_TO_SEND = "addInfoToSend";
     private static final String COMMAND_SEND_INFO_TO_SERVER = "sendInfoToServer";
     private static final String COMMAND_ADD_TEST = "addTest";
     private static final String COMMAND_ADD_TEST_DIRECTORY = "addTestDirectory";
 
-    private CallbackContext commandCallbackContext;
     private TestLibrary testLibrary;
+    private CallbackContext commandCallbackContext;
     private List<String> selectedTests = new ArrayList<String>();
     private List<String> selectedTestDirs = new ArrayList<String>();
 
@@ -34,11 +34,11 @@ public class AdjustTestingCordova extends CordovaPlugin {
         if (action.equals(COMMAND_START_TEST_SESSION)) {
             final String baseUrl = args.getString(0);
             this.commandCallbackContext = callbackContext;
-            testLibrary = new TestLibrary(baseUrl, 
-                    new CommandListener(
-                        this.cordova.getActivity().getApplicationContext(), 
-                        this.commandCallbackContext)
-                    );
+            testLibrary = new TestLibrary(
+                baseUrl, 
+                new CommandListener(
+                    this.cordova.getActivity().getApplicationContext(),
+                    this.commandCallbackContext));
 
             for (int i = 0; i < selectedTests.size(); i++) {
                 testLibrary.addTest(selectedTests.get(i));
@@ -47,7 +47,7 @@ public class AdjustTestingCordova extends CordovaPlugin {
                 testLibrary.addTestDirectory(selectedTestDirs.get(i));
             }
 
-            testLibrary.startTestSession("cordova4.14.0@android4.14.0");
+            testLibrary.startTestSession("cordova4.14.0@android4.15.0");
             return true;
         } else if (action.equals(COMMAND_ADD_INFO_TO_SEND)) {
             final String key = args.getString(0);

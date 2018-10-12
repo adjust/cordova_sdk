@@ -172,7 +172,7 @@ def change_dir(dir):
     os.chdir(dir)
 
 def xcode_build(target, configuration='Release'):
-    execute_command(['xcodebuild', '-target', target, '-configuration', configuration, 'clean', 'build'])
+    execute_command(['xcodebuild', '-target', target, '-configuration', configuration, 'clean', 'build', '-UseModernBuildSystem=NO'])
 
 def adb_uninstall(package):
     execute_command(['adb', 'uninstall', package])
@@ -224,9 +224,9 @@ def clean_test_app(root_dir):
 def clean_example_app(root_dir):
     test_dir                    = '{0}/test/app'.format(root_dir)
     sdk_name                    = 'com.adjust.sdk'
-    test_plugin_name            = 'com.adjust.sdktesting'
+    test_plugin_name            = 'com.adjust.test'
     adjust_sdk_plugin_dir       = '{0}/plugins/com.adjust.sdk'.format(test_dir)
-    adjust_sdk_test_plugin_dir  = '{0}/plugins/com.adjust.sdktesting'.format(test_dir)
+    adjust_sdk_test_plugin_dir  = '{0}/plugins/com.adjust.test'.format(test_dir)
 
     debug_green('Removing cordova plugins ...')
     os.chdir(test_dir)

@@ -22,18 +22,18 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="android" spec="^6.4.0" />
-    <engine name="ios" spec="^4.5.5" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
-    <plugin name="cordova-plugin-device" spec="^2.0.1" />
-    <plugin name="com.adjust.sdk" spec="../../temp_plugin" />
-    <plugin name="com.adjust.sdktesting" spec="../../test/plugin" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
     <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
         <variable name="URL_SCHEME" value="adjust-test" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
-    <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
+    <plugin name="com.adjust.sdk" spec="/Users/uerceg/Github/cordova_sdk_dev/temp_plugin" />
+    <plugin name="com.adjust.test" spec="/Users/uerceg/Github/cordova_sdk_dev/test/plugin" />
+    <engine name="android" spec="^6.4.0" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

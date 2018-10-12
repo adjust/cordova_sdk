@@ -1,4 +1,4 @@
-package com.adjust.sdktesting;
+package com.adjust.test;
 
 import android.util.Log;
 import android.content.Context;
