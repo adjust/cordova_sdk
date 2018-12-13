@@ -47,7 +47,7 @@ public class AdjustCordovaTest extends CordovaPlugin {
                 testLibrary.addTestDirectory(selectedTestDirs.get(i));
             }
 
-            testLibrary.startTestSession("cordova4.15.0@android4.15.0");
+            testLibrary.startTestSession("cordova4.17.0@android4.17.0");
             return true;
         } else if (action.equals(COMMAND_ADD_INFO_TO_SEND)) {
             final String key = args.getString(0);

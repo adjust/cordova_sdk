@@ -50,7 +50,7 @@
         [self.testLibrary addTestDirectory:object];
     }
 
-    [self.testLibrary startTestSession:@"cordova4.15.0@ios4.15.0"];
+    [self.testLibrary startTestSession:@"cordova4.17.0@ios4.17.0"];
 }
 
 - (void)addInfoToSend:(CDVInvokedUrlCommand *)command {
