@@ -87,14 +87,14 @@ def remove_dir_if_exists(path):
         debug('deleting dir: ' + path)
         shutil.rmtree(path)
     else:
-        debug('canot delete {0}. dir does not exist'.format(path))
+        debug('cannot delete {0}. dir does not exist'.format(path))
 
 def remove_file_if_exists(path):
     if os.path.exists(path):
         debug('deleting: ' + path)
         os.remove(path)
     else:
-        debug('canot delete {0}. file does not exist'.format(path))
+        debug('cannot delete {0}. file does not exist'.format(path))
 
 def clear_dir(dir):
     shutil.rmtree(dir)
@@ -184,10 +184,10 @@ def adb_shell(app_package):
     execute_command(['adb', 'shell', 'monkey', '-p', app_package, '1'])
 
 def gradle_make_release_jar():
-    execute_command(['./gradlew', 'makeReleaseJar'])
+    execute_command(['./gradlew', 'adjustSdkNonNativeJarRelease'])
 
 def gradle_make_debug_jar():
-    execute_command(['./gradlew', 'makeDebugJar'])
+    execute_command(['./gradlew', 'adjustSdkNonNativeJarDebug'])
 
 def gradle_run(options):
     cmd_params = ['./gradlew']
