@@ -58,6 +58,8 @@
     NSString *sessionFailedCallbackId;
     NSString *sessionSucceededCallbackId;
     NSString *deferredDeeplinkCallbackId;
+
+    NSString *sdkPrefix;
 }
 
 #pragma mark - Object lifecycle methods
@@ -82,7 +84,6 @@
     NSString *appToken = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
     NSString *environment = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
     NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
-    NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSString *userAgent = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
     NSString *secretId = [[jsonObject valueForKey:KEY_SECRET_ID] objectAtIndex:0];
@@ -95,6 +96,7 @@
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
+    sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     BOOL allowSuppressLogLevel = NO;
 
     // Check for SUPPRESS log level.
@@ -346,6 +348,12 @@
     [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
+    NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix , [Adjust sdkVersion]];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sdkVersion];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

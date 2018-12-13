@@ -79,6 +79,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
     public static final String COMMAND_GET_GOOGLE_AD_ID = "getGoogleAdId";
     public static final String COMMAND_GET_AMAZON_AD_ID = "getAmazonAdId";
+    public static final String COMMAND_GET_SDK_VERSION = "getSdkVersion";
     public static final String COMMAND_ADD_SESSION_CALLBACK_PARAMETER = "addSessionCallbackParameter";
     public static final String COMMAND_REMOVE_SESSION_CALLBACK_PARAMETER = "removeSessionCallbackParameter";
     public static final String COMMAND_RESET_SESSION_CALLBACK_PARAMETERS = "resetSessionCallbackParameters";

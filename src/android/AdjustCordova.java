@@ -34,6 +34,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext getAmazonAdidCallbackContext;
     private CallbackContext getAttributionCallbackContext;
 
+    private String sdkPrefix = "";
+
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
@@ -89,6 +91,10 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             PluginResult pluginResult = new PluginResult(Status.OK, idfa);
             pluginResult.setKeepCallback(true);
             getIdfaCallbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
+            final String sdkVersion = this.sdkPrefix + "@" + Adjust.getSdkVersion();
+            PluginResult pluginResult = new PluginResult(Status.OK, sdkVersion);
+            callbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
             executeTrackEvent(args);
         } else if (action.equals(COMMAND_SET_OFFLINE_MODE)) {
@@ -171,9 +177,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String environment = parameters.get(KEY_ENVIRONMENT).toString();
         String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
         String processName = parameters.get(KEY_PROCESS_NAME).toString();
-        String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
         String delayStart = parameters.get(KEY_DELAY_START).toString();
-        String logLevel = parameters.get(KEY_LOG_LEVEL).toString();
+        String logLevel = parameters.get(KEY_LOG_LEVEL).toString().toUpperCase();
         String userAgent = parameters.get(KEY_USER_AGENT).toString();
         String secretId = parameters.get(KEY_SECRET_ID).toString();
         String info1 = parameters.get(KEY_INFO_1).toString();
@@ -185,7 +190,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean isDeviceKnown = parameters.get(KEY_DEVICE_KNOWN).toString() == "true" ? true : false;
         boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
         boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-        // boolean readMobileEquipmentIdentity = parameters.get(KEY_READ_MOBILE_EQUIPMENT_IDENTITY).toString() == "true" ? true : false;
+        this.sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -218,8 +223,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
 
         // SDK prefix.
-        if (isFieldValid(sdkPrefix)) {
-            adjustConfig.setSdkPrefix(sdkPrefix);
+        if (isFieldValid(this.sdkPrefix)) {
+            adjustConfig.setSdkPrefix(this.sdkPrefix);
         }
 
         // Main process name.

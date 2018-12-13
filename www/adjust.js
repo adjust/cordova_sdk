@@ -114,6 +114,10 @@ var Adjust = {
         callCordovaCallback('getAttribution', callback);
     },
 
+    getSdkVersion: function(callback) {
+        callCordovaCallback('getSdkVersion', callback);
+    },
+
     addSessionCallbackParameter: function(key, value) {
         callCordova('addSessionCallbackParameter', key, value);
     },

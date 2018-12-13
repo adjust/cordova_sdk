@@ -20,6 +20,7 @@
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getAdid:(CDVInvokedUrlCommand *)command;
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
+- (void)getSdkVersion:(CDVInvokedUrlCommand *)command;
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)sendFirstPackages:(CDVInvokedUrlCommand *)command;
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
