@@ -60,7 +60,7 @@ def _run_example(root_dir, android_submodule_dir):
     # Running Cordova example app.
     # cordova_run('android') # <-- Does not seem to work, some Cordova specific error.
     debug_green('Installing & running Cordova example app ...')
-    adb_install_apk('platforms/android/build/outputs/apk/android-debug.apk')
+    adb_install_apk('platforms/android/build/outputs/apk/debug/android-debug.apk')
     adb_shell(example_app_package)
 
     # ------------------------------------------------------------------
