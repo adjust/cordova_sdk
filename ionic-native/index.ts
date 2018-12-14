@@ -222,10 +222,10 @@ export enum AdjustLogLevel {
  */
 @Plugin({
   pluginName: 'Adjust',
-  plugin: 'com.adjust.sdk', // npm package name, example: cordova-plugin-camera
-  pluginRef: 'Adjust', // the variable reference to call the plugin, example: navigator.geolocation (refers to the where on window the underlying Cordova plugin is normally exposed)
-  repo: 'https://github.com/adjust/cordova_sdk', // the github repository URL for the plugin
-  platforms: ['Android', 'iOS'] // Array of platforms supported, example: ['Android', 'iOS']
+  plugin: 'com.adjust.sdk',
+  pluginRef: 'Adjust',
+  repo: 'https://github.com/adjust/cordova_sdk',
+  platforms: ['Android', 'iOS']
 })
 @Injectable()
 export class Adjust extends IonicNativePlugin {
@@ -265,15 +265,32 @@ export class Adjust extends IonicNativePlugin {
   @Cordova({ sync: true })
   setEnabled(enabled: boolean): void {}
 
+  /**
+   * To send us the push notification token, add the following call to Adjust whenever you get your token in the app or when it gets updated.
+   * Push tokens are used for Audience Builder and client callbacks, and they are required for the upcoming uninstall tracking feature.
+   * @param {string} pushToken push token value
+   */
   @Cordova({ sync: true })
   setPushToken(pushToken: string): void {}
 
+  /**
+   *
+   * @param {string} referrer referrer value
+   */
   @Cordova({ sync: true })
   setReferrer(referrer: string): void {}
 
+  /**
+   * Check if the Adjust SDK is currently enabled by calling this function
+   * @returns {Promise<boolean>}
+   */
   @Cordova()
   isEnabled(): Promise<boolean> { return; }
 
+  /**
+   * In accordance with article 17 of the EU's General Data Protection Regulation (GDPR), you can notify Adjust when a user has exercised their right to be forgotten.
+   * Calling the following method will instruct the Adjust SDK to communicate the user's choice to be forgotten to the Adjust backend
+   */
   @Cordova({ sync: true })
   gdprForgetMe(): void {}
 
@@ -284,36 +301,80 @@ export class Adjust extends IonicNativePlugin {
   @Cordova()
   getGoogleAdId(): Promise<string> { return; }
 
+  /**
+   * If you need to obtain the Amazon Advertising ID, you can make a call to this function.
+   * @return {Promise<string>} Returns a promise with anazib adv. ID
+   */
   @Cordova()
   getAmazonAdId(): Promise<string> { return; }
 
+  /**
+   * To obtain the IDFA, call this function
+   * @return {Promise<string>} Returns a promise with IDFA string value
+   */
   @Cordova()
   getIdfa(): Promise<string> { return; }
 
+  /**
+   * For every device with your app installed on it, the Adjust backend generates a unique Adjust device identifier (adid).
+   * In order to obtain this identifier, call this function
+   * @return {Promise<string>} Returns a promise with adid value
+   */
   @Cordova()
   getAdid(): Promise<string> { return; }
 
+  /**
+   * If you want to access information about a user's current attribution whenever you need it, you can make a call to this function
+   * @return {Promise<AdjustAttribution>} Returns a promise with AdjustAttribution object
+   */
   @Cordova()
   getAttribution(): Promise<AdjustAttribution> { return; }
 
+  /**
+   * Method used to add session callback parameters
+   * @param key key
+   * @param value value
+   */
   @Cordova({ sync: true })
   addSessionCallbackParameter(key: string, value: string): void {}
 
+  /**
+   * Remove a specific session callback parameter by passing the desiring key to this method
+   * @param key key
+   */
   @Cordova({ sync: true })
   removeSessionCallbackParameter(key: string): void {}
 
+  /**
+   * If all keys and values from the session callback parameters have to be removed, call this method
+   */
   @Cordova({ sync: true })
   resetSessionCallbackParameters(): void {}
 
+  /**
+   * Method used to add session partner parameters
+   * @param key key
+   * @param value value
+   */
   @Cordova({ sync: true })
   addSessionPartnerParameter(key: string, value: string): void {}
 
+  /**
+   * Remove a specific session partner parameter by passing the desiring key to this method
+   * @param key key
+   */
   @Cordova({ sync: true })
   removeSessionPartnerParameter(key: string): void {}
 
+  /**
+   * If all keys and values from the session partner parameters have to be removed, call this method
+   */
   @Cordova({ sync: true })
   resetSessionPartnerParameters(): void {}
 
+  /**
+   * This method call will make the Adjust SDK send the initial install session and any events created, if they were not sent after delay start was set and it's delay expired.
+   */
   @Cordova({ sync: true })
   sendFirstPackages(): void {}
 
