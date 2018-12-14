@@ -113,19 +113,19 @@ AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquip
 }
 
 AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
-    if (secretId != null) {
+    if (secretId !== null) {
         this.secretId = secretId.toString();
     }
-    if (info1 != null) {
+    if (info1 !== null) {
         this.info1 = info1.toString();
     }
-    if (info2 != null) {
+    if (info2 !== null) {
         this.info2 = info2.toString();
     }
-    if (info3 != null) {
+    if (info3 !== null) {
         this.info3 = info3.toString();
     }
-    if (info4 != null) {
+    if (info4 !== null) {
         this.info4 = info4.toString();
     }
 };
@@ -179,31 +179,31 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
-    return this.attributionCallbackListener != null;
+    return this.attributionCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasAttributionListener = function() {
-    return this.attributionCallbackListener != null;
+    return this.attributionCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasEventTrackingSucceededListener = function() {
-    return this.eventTrackingSucceededCallbackListener != null;
+    return this.eventTrackingSucceededCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasEventTrackingFailedListener = function() {
-    return this.eventTrackingFailedCallbackListener != null;
+    return this.eventTrackingFailedCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasSessionTrackingSucceededListener = function() {
-    return this.sessionTrackingSucceededCallbackListener != null;
+    return this.sessionTrackingSucceededCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
-    return this.sessionTrackingFailedCallbackListener != null;
+    return this.sessionTrackingFailedCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
-    return this.deferredDeeplinkCallbackListener != null;
+    return this.deferredDeeplinkCallbackListener !== null;
 };
 
 module.exports = AdjustConfig;

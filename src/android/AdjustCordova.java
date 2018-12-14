@@ -173,24 +173,73 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
-        String appToken = parameters.get(KEY_APP_TOKEN).toString();
-        String environment = parameters.get(KEY_ENVIRONMENT).toString();
-        String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
-        String processName = parameters.get(KEY_PROCESS_NAME).toString();
-        String delayStart = parameters.get(KEY_DELAY_START).toString();
-        String logLevel = parameters.get(KEY_LOG_LEVEL).toString().toUpperCase();
-        String userAgent = parameters.get(KEY_USER_AGENT).toString();
-        String secretId = parameters.get(KEY_SECRET_ID).toString();
-        String info1 = parameters.get(KEY_INFO_1).toString();
-        String info2 = parameters.get(KEY_INFO_2).toString();
-        String info3 = parameters.get(KEY_INFO_3).toString();
-        String info4 = parameters.get(KEY_INFO_4).toString();
-        boolean isLogLevelSuppress = false;
-        boolean eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
-        boolean isDeviceKnown = parameters.get(KEY_DEVICE_KNOWN).toString() == "true" ? true : false;
-        boolean sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
-        boolean shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+        String appToken = null;
+        String environment = null;
+        String defaultTracker = null;
+        String processName = null;
+        String delayStart = null;
+        String logLevel = null;
+        String userAgent = null;
+        String secretId = null;
+        String info1 = null;
+        String info2 = null;
+        String info3 = null;
+        String info4 = null;
+        boolean eventBufferingEnabled = false;
+        boolean isDeviceKnown = false;
+        boolean sendInBackground = false;
+        boolean shouldLaunchDeeplink = false;
+
+        if (parameters.containsKey(KEY_APP_TOKEN)) {
+            appToken = parameters.get(KEY_APP_TOKEN).toString();
+        }
+        if (parameters.containsKey(KEY_ENVIRONMENT)) {
+            environment = parameters.get(KEY_ENVIRONMENT).toString();
+        }
+        if (parameters.containsKey(KEY_DEFAULT_TRACKER)) {
+            defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
+        }
+        if (parameters.containsKey(KEY_PROCESS_NAME)) {
+            processName = parameters.get(KEY_PROCESS_NAME).toString();
+        }
+        if (parameters.containsKey(KEY_DELAY_START)) {
+            delayStart = parameters.get(KEY_DELAY_START).toString();
+        }
+        if (parameters.containsKey(KEY_LOG_LEVEL)) {
+            logLevel = parameters.get(KEY_LOG_LEVEL).toString().toUpperCase();
+        }
+        if (parameters.containsKey(KEY_USER_AGENT)) {
+            userAgent = parameters.get(KEY_USER_AGENT).toString();
+        }
+        if (parameters.containsKey(KEY_SECRET_ID)) {
+            secretId = parameters.get(KEY_SECRET_ID).toString();
+        }
+        if (parameters.containsKey(KEY_INFO_1)) {
+            info1 = parameters.get(KEY_INFO_1).toString();
+        }
+        if (parameters.containsKey(KEY_INFO_2)) {
+            info2 = parameters.get(KEY_INFO_2).toString();
+        }
+        if (parameters.containsKey(KEY_INFO_3)) {
+            info3 = parameters.get(KEY_INFO_3).toString();
+        }
+        if (parameters.containsKey(KEY_INFO_4)) {
+            info4 = parameters.get(KEY_INFO_4).toString();
+        }
+        if (parameters.containsKey(KEY_EVENT_BUFFERING_ENABLED)) {
+            eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_DEVICE_KNOWN)) {
+            isDeviceKnown = parameters.get(KEY_DEVICE_KNOWN).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_SEND_IN_BACKGROUND)) {
+            sendInBackground = parameters.get(KEY_SEND_IN_BACKGROUND).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_SHOULD_LAUNCH_DEEPLINK)) {
+            shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+        }
         this.sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
+        boolean isLogLevelSuppress = false;
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -321,11 +370,28 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
-        String eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
-        String revenue = parameters.get(KEY_REVENUE).toString();
-        String currency = parameters.get(KEY_CURRENCY).toString();
-        String transactionId = parameters.get(KEY_TRANSACTION_ID).toString();
-        String callbackId = parameters.get(KEY_CALLBACK_ID).toString();
+        String eventToken = null;
+        String revenue = null;
+        String currency = null;
+        String transactionId = null;
+        String callbackId = null;
+
+        if (parameters.containsKey(KEY_EVENT_TOKEN)) {
+            eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
+        }
+        if (parameters.containsKey(KEY_REVENUE)) {
+            revenue = parameters.get(KEY_REVENUE).toString();
+        }
+        if (parameters.containsKey(KEY_CURRENCY)) {
+            currency = parameters.get(KEY_CURRENCY).toString();
+        }
+        if (parameters.containsKey(KEY_TRANSACTION_ID)) {
+            transactionId = parameters.get(KEY_TRANSACTION_ID).toString();
+        }
+        if (parameters.containsKey(KEY_CALLBACK_ID)) {
+            callbackId = parameters.get(KEY_CALLBACK_ID).toString();
+        }
+
         JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
         JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
         String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
