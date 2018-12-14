@@ -13,7 +13,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.adjust.testlibrary.ICommandRawJsonListener;
+import com.adjust.test.ICommandRawJsonListener;
 
 public class CommandListener implements ICommandRawJsonListener {
     private Context mContext;

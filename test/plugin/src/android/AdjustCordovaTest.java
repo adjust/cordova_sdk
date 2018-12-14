@@ -14,7 +14,7 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
-import com.adjust.testlibrary.TestLibrary;
+import com.adjust.test.TestLibrary;
 
 public class AdjustCordovaTest extends CordovaPlugin {
     private static final String TAG = "AdjustCordovaTest";
