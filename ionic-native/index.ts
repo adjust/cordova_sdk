@@ -331,6 +331,13 @@ export class Adjust extends IonicNativePlugin {
   getAttribution(): Promise<AdjustAttribution> { return; }
 
   /**
+   * Get the information about version of the SDK used
+   * @return {Promise<string>} Returns a promise with sdk version information
+   */
+  @Cordova()
+  getSdkVersion(): Promise<string> { return; }
+
+  /**
    * Method used to add session callback parameters
    * @param key key
    * @param value value
