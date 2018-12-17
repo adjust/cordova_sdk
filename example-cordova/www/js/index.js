@@ -156,7 +156,7 @@ var app = {
         btnTrackPartnerEvent.addEventListener('click',function() {
             var adjustEvent = new AdjustEvent("w788qs");
 
-            adjustEvent.addPartnerParameter("foo", bar);
+            adjustEvent.addPartnerParameter("foo", "bar");
             adjustEvent.addPartnerParameter("x", "y");
             adjustEvent.addPartnerParameter("foo", "foot");
             adjustEvent.addPartnerParameter("x", "z");
