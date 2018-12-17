@@ -34,6 +34,7 @@
 
 - (void)startTestSession:(CDVInvokedUrlCommand *)command {
     NSString *baseUrl = [command.arguments objectAtIndex:0];
+    NSString *sdkVersion = [command.arguments objectAtIndex:1];
     if (![self isFieldValid:baseUrl]) {
         return;
     }
@@ -50,7 +51,7 @@
         [self.testLibrary addTestDirectory:object];
     }
 
-    [self.testLibrary startTestSession:@"cordova4.17.0@ios4.17.1"];
+    [self.testLibrary startTestSession:sdkVersion];
 }
 
 - (void)addInfoToSend:(CDVInvokedUrlCommand *)command {

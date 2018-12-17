@@ -33,6 +33,7 @@ public class AdjustCordovaTest extends CordovaPlugin {
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_START_TEST_SESSION)) {
             final String baseUrl = args.getString(0);
+            final String sdkVersion = args.getString(1);
             this.commandCallbackContext = callbackContext;
             testLibrary = new TestLibrary(
                 baseUrl, 
@@ -47,7 +48,7 @@ public class AdjustCordovaTest extends CordovaPlugin {
                 testLibrary.addTestDirectory(selectedTestDirs.get(i));
             }
 
-            testLibrary.startTestSession("cordova4.17.0@android4.17.0");
+            testLibrary.startTestSession(sdkVersion);
             return true;
         } else if (action.equals(COMMAND_ADD_INFO_TO_SEND)) {
             final String key = args.getString(0);

@@ -13,29 +13,32 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 
-        // Register for universal links.
-        if (device.platform == 'iOS') {
-            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-        }
+        Adjust.getSdkVersion(function(sdkVersion) {
+            // Register for universal links.
+            if (device.platform == 'iOS') {
+                universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+            }
 
-        var baseUrl = "";
-        var gdprUrl = "";
-        if (device.platform === "Android") {
-            baseUrl = "https://10.0.2.2:8443";
-            gdprUrl = "https://10.0.2.2:8443";
-        } else if (device.platform === "iOS") {
-            baseUrl = "http://127.0.0.1:8080";
-            gdprUrl = "http://127.0.0.1:8080";
-        }
+            var baseUrl = "";
+            var gdprUrl = "";
+            var ipAddress = "192.168.8.206";
+            if (device.platform === "Android") {
+                baseUrl = "https://" + ipAddress + ":8443";
+                gdprUrl = "https://" + ipAddress + ":8443";
+            } else if (device.platform === "iOS") {
+                baseUrl = "http://" + ipAddress + ":8080";
+                gdprUrl = "http://" + ipAddress + ":8080";
+            }
 
-        var commandExecutor = new CommandExecutor(baseUrl, gdprUrl);
-        AdjustTest.startTestSession(baseUrl, function(json) {
-            var commandDict = JSON.parse(json);
-            var className = commandDict['className'];
-            var functionName = commandDict['functionName'];
-            var params = commandDict['params'];
-            var order = commandDict['order'];
-            commandExecutor.scheduleCommand(className, functionName, params, order);
+            var commandExecutor = new CommandExecutor(baseUrl, gdprUrl);
+            AdjustTest.startTestSession(baseUrl, sdkVersion, function(json) {
+                var commandDict = JSON.parse(json);
+                var className = commandDict['className'];
+                var functionName = commandDict['functionName'];
+                var params = commandDict['params'];
+                var order = commandDict['order'];
+                commandExecutor.scheduleCommand(className, functionName, params, order);
+            });
         });
     },
 
