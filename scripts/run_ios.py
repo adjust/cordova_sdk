@@ -14,7 +14,7 @@ def _run_example(root_dir, ios_submodule_dir):
     # ------------------------------------------------------------------
     # paths
     temp_plugin_dir    = '{0}/temp_plugin'.format(root_dir)
-    example_app_dir    = '{0}/example'.format(root_dir)
+    example_app_dir    = '{0}/example-cordova'.format(root_dir)
     sdk_plugin_package = 'com.adjust.sdk'
 
     # ------------------------------------------------------------------
