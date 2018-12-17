@@ -351,6 +351,9 @@
 
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
     NSString *sdkVersion = [Adjust sdkVersion];
+    if (sdkVersion == nil) {
+        sdkVersion = @"";
+    }
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sdkVersion];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }

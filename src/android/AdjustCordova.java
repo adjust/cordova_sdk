@@ -91,6 +91,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             getIdfaCallbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
             final String sdkVersion = Adjust.getSdkVersion();
+            if (sdkVersion == null) {
+                sdkVersion = "";
+            }
             PluginResult pluginResult = new PluginResult(Status.OK, sdkVersion);
             callbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
