@@ -99,4 +99,15 @@ export class HomePage {
       alert.present();
     });
   }
+
+  getSdkVersion() {
+    this.adjust.getSdkVersion().then((sdkVersion) => {
+      let alert = this.alertCtrl.create({
+        title: 'SDK Version',
+        subTitle: sdkVersion,
+        buttons: ['OK']
+      });
+      alert.present();
+    });
+  }
 }
