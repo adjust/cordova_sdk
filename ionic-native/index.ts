@@ -377,14 +377,4 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   sendFirstPackages(): void {}
-
-  // not gonna be needed until we have a testapp for ionic ////////////////
-  // @Cordova({ sync: true })
-  // setTestOptions(testOptions: any): void {}
-  // @Cordova({ sync: true })
-  // teardown(testParam: string): void {}
-  // @Cordova({ sync: true })
-  // onResume(testParam: string): void {}
-  // @Cordova({ sync: true })
-  // onPause(testParam: string): void {}
 }
