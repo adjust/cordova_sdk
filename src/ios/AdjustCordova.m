@@ -58,8 +58,6 @@
     NSString *sessionFailedCallbackId;
     NSString *sessionSucceededCallbackId;
     NSString *deferredDeeplinkCallbackId;
-
-    NSString *sdkPrefix;
 }
 
 #pragma mark - Object lifecycle methods
@@ -96,7 +94,7 @@
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
-    sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
+    NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     BOOL allowSuppressLogLevel = NO;
 
     // Check for SUPPRESS log level.
@@ -352,7 +350,7 @@
 }
 
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
-    NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix , [Adjust sdkVersion]];
+    NSString *sdkVersion = [Adjust sdkVersion];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sdkVersion];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }

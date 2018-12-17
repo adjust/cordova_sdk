@@ -34,8 +34,6 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext getAmazonAdidCallbackContext;
     private CallbackContext getAttributionCallbackContext;
 
-    private String sdkPrefix = "";
-
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_CREATE)) {
@@ -92,7 +90,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             pluginResult.setKeepCallback(true);
             getIdfaCallbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
-            final String sdkVersion = this.sdkPrefix + "@" + Adjust.getSdkVersion();
+            final String sdkVersion = Adjust.getSdkVersion();
             PluginResult pluginResult = new PluginResult(Status.OK, sdkVersion);
             callbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
@@ -180,6 +178,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String delayStart = null;
         String logLevel = null;
         String userAgent = null;
+        String sdkPrefix = null;
         String secretId = null;
         String info1 = null;
         String info2 = null;
@@ -214,6 +213,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         if (parameters.containsKey(KEY_SECRET_ID)) {
             secretId = parameters.get(KEY_SECRET_ID).toString();
         }
+        if (parameters.containsKey(KEY_SDK_PREFIX)) {
+            sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
+        }
         if (parameters.containsKey(KEY_INFO_1)) {
             info1 = parameters.get(KEY_INFO_1).toString();
         }
@@ -238,7 +240,6 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         if (parameters.containsKey(KEY_SHOULD_LAUNCH_DEEPLINK)) {
             shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
         }
-        this.sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
         boolean isLogLevelSuppress = false;
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -272,8 +273,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
 
         // SDK prefix.
-        if (isFieldValid(this.sdkPrefix)) {
-            adjustConfig.setSdkPrefix(this.sdkPrefix);
+        if (isFieldValid(sdkPrefix)) {
+            adjustConfig.setSdkPrefix(sdkPrefix);
         }
 
         // Main process name.

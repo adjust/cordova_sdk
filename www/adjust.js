@@ -115,7 +115,9 @@ var Adjust = {
     },
 
     getSdkVersion: function(callback) {
-        callCordovaCallback('getSdkVersion', callback);
+        callCordovaCallback('getSdkVersion', function(sdkVersion) {
+            callback("cordova4.17.0" + "@" + sdkVersion);
+        });
     },
 
     addSessionCallbackParameter: function(key, value) {
