@@ -5,8 +5,8 @@ export class AdjustEvent {
   private eventToken: string;
   private revenue: number;
   private currency: string;
-  transactionId: string;
-  callbackId: string;
+  private transactionId: string;
+  private callbackId: string;
   // // iOS only
   receipt: string;
   // // iOS only
@@ -33,21 +33,29 @@ export class AdjustEvent {
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
   }
+
+  setTransactionId(transactionId: string) {
+    this.transactionId = transactionId;
+  }
+
+  setCallbackId(callbackId: string) {
+    this.callbackId = callbackId;
+  }
 }
 
 export class AdjustConfig {
+  sdkPrefix = 'cordova4.17.0';
   private appToken: string;
   private environment: AdjustEnvironment;
-  sdkPrefix = 'cordova4.17.0';
-  delayStart = 0.0;
-  logLevel: AdjustLogLevel = null;
+  private delayStart = 0.0;
+  private logLevel: AdjustLogLevel = null;
+  private defaultTracker: string = null;
+  private sendInBackground: boolean = null;
+  private shouldLaunchDeeplink: boolean = null;
+  private eventBufferingEnabled: boolean = null;
   referrer: string = null;
   userAgent: string = null;
   isDeviceKnown: boolean = null;
-  defaultTracker: string = null;
-  sendInBackground: boolean = null;
-  shouldLaunchDeeplink: boolean = null;
-  eventBufferingEnabled: boolean = null;
   // Android only
   processName: string = null;
   readMobileEquipmentIdentity: boolean = null;
@@ -76,6 +84,30 @@ export class AdjustConfig {
     this.info2 = info2;
     this.info3 = info3;
     this.info4 = info4;
+  }
+
+  setDelayStart(delayStart: number) {
+    this.delayStart = delayStart;
+  }
+
+  setLogLevel(logLevel: AdjustLogLevel) {
+    this.logLevel = logLevel;
+  }
+
+  setDefaultTracker(defaultTracker: string) {
+    this.defaultTracker = defaultTracker;
+  }
+
+  setSendInBackground(sendInBackground: boolean) {
+    this.sendInBackground = sendInBackground;
+  }
+
+  setShouldLaunchDeeplink(shouldLaunchDeeplink: boolean) {
+    this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+  }
+
+  setEventBufferingEnabled(eventBufferingEnabled: boolean) {
+    this.eventBufferingEnabled = eventBufferingEnabled;
   }
 
   private getAttributionCallback() {

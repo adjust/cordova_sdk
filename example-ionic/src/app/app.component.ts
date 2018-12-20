@@ -19,8 +19,8 @@ export class MyApp {
       splashScreen.hide();
 
       const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
-      config.logLevel = AdjustLogLevel.Verbose;
-      config.shouldLaunchDeeplink = true;
+      config.setLogLevel(AdjustLogLevel.Verbose);
+      config.setShouldLaunchDeeplink(true);
       config.attributionCallback = (attribution: AdjustAttribution) => {
         console.log("### Attribution callback received");
 
