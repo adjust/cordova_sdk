@@ -41,6 +41,7 @@ export class MyApp {
         console.log("Adid: " + eventFailed.adid);
         console.log("Event token: " + eventFailed.eventToken);
         console.log("Will retry: " + eventFailed.willRetry);
+        console.log("Callback Id: " + eventFailed.callbackId);
         console.log("JSON response: " + eventFailed.jsonResponse);
       }
       config.eventTrackingSucceededCallback = (eventSuccess: AdjustEventSuccess) => {
@@ -50,6 +51,7 @@ export class MyApp {
         console.log("Timestamp: " + eventSuccess.timestamp);
         console.log("Adid: " + eventSuccess.adid);
         console.log("Event token: " + eventSuccess.eventToken);
+        console.log("Callback Id: " + eventSuccess.callbackId);
         console.log("JSON response: " + eventSuccess.jsonResponse);
       }
       config.sessionTrackingSucceededCallback = (sessionSuccess: AdjustSessionSuccess) => {

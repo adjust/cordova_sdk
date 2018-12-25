@@ -55,6 +55,7 @@ var app = {
             console.log("Timestamp: " + eventSuccess.timestamp);
             console.log("Adid: " + eventSuccess.adid);
             console.log("Event token: " + eventSuccess.eventToken);
+            console.log("Callback Id: " + eventSuccess.callbackId);
             console.log("JSON response: " + eventSuccess.jsonResponse);
         });
 
@@ -66,6 +67,7 @@ var app = {
             console.log("Adid: " + eventFailed.adid);
             console.log("Event token: " + eventFailed.eventToken);
             console.log("Will retry: " + eventFailed.willRetry);
+            console.log("Callback Id: " + eventFailed.callbackId);
             console.log("JSON response: " + eventFailed.jsonResponse);
         });
 
@@ -120,7 +122,8 @@ var app = {
         console.log('Received Event: ' + id);
 
         var btnGdprForgetMe = document.getElementById("btnGdprForgetMe");
-        var btnTrackSimpleEvent = document.getElementById("btnTrackSimpleEvent"); 
+        var btnTrackSimpleEvent = document.getElementById("btnTrackSimpleEvent");
+        var btnTrackSimpleEventWithCallbackId = document.getElementById("btnTrackSimpleEventWithCallbackId");
         var btnTrackRevenueEvent = document.getElementById("btnTrackRevenueEvent");
         var btnTrackCallbackEvent = document.getElementById("btnTrackCallbackEvent");
         var btnTrackPartnerEvent = document.getElementById("btnTrackPartnerEvent");
@@ -131,6 +134,12 @@ var app = {
         btnTrackSimpleEvent.addEventListener('click', function() {
             var adjustEvent = new AdjustEvent("g3mfiw");
             
+            Adjust.trackEvent(adjustEvent);
+        }, false);
+
+        btnTrackSimpleEventWithCallbackId.addEventListener('click', function() {
+            var adjustEvent = new AdjustEvent("g3mfiw");
+            adjustEvent.setCallbackId("test-callback-id");
             Adjust.trackEvent(adjustEvent);
         }, false);
 

@@ -17,6 +17,12 @@ export class HomePage {
     this.adjust.trackEvent(adjustEvent);
   }
 
+  trackSimpleEventWithCallbackId() {
+    const adjustEvent: AdjustEvent = new AdjustEvent('g3mfiw');
+    adjustEvent.setCallbackId("test-callback-id");
+    this.adjust.trackEvent(adjustEvent);
+  }
+
   trackRevenueEvent() {
     const adjustEvent: AdjustEvent = new AdjustEvent('a4fd35');
     adjustEvent.setRevenue(0.01, 'USD');
