@@ -7,10 +7,6 @@ export class AdjustEvent {
   private currency: string;
   private transactionId: string;
   private callbackId: string;
-  // // iOS only
-  receipt: string;
-  // // iOS only
-  isReceiptSet = false;
 
   private callbackParameters: string[] = [];
   private partnerParameters: string[] = [];
@@ -190,6 +186,7 @@ export interface AdjustEventSuccess {
   timestamp: string;
   adid: string;
   eventToken: string;
+  callbackId: string;
   jsonResponse: string;
 }
 
@@ -199,6 +196,7 @@ export interface AdjustEventFailure {
   adid: string;
   eventToken: string;
   willRetry: boolean;
+  callbackId: string;
   jsonResponse: string;
 }
 
