@@ -1,5 +1,5 @@
 function AdjustConfig(appToken, environment) {
-    this.sdkPrefix = "cordova4.17.0";
+    this.sdkPrefix = Adjust.sdkPrefix;
 
     this.appToken = appToken;
     this.environment = environment;

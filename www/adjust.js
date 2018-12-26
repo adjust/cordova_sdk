@@ -34,6 +34,8 @@ function callCordovaCallback(action, callback) {
 }
 
 var Adjust = {
+    sdkPrefix: 'cordova4.17.0',
+
     create: function(adjustConfig) {
         if (adjustConfig.hasAttributionListener()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
@@ -116,7 +118,7 @@ var Adjust = {
 
     getSdkVersion: function(callback) {
         callCordovaCallback('getSdkVersion', function(sdkVersion) {
-            callback("cordova4.17.0" + "@" + sdkVersion);
+            callback(this.sdkPrefix + "@" + sdkVersion);
         });
     },
 
