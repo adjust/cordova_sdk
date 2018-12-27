@@ -118,7 +118,7 @@ var Adjust = {
 
     getSdkVersion: function(callback) {
         callCordovaCallback('getSdkVersion', function(sdkVersion) {
-            callback(this.sdkPrefix + "@" + sdkVersion);
+            callback(Adjust.sdkPrefix + "@" + sdkVersion);
         });
     },
 
