@@ -49,10 +49,10 @@ export class AdjustConfig {
   private sendInBackground: boolean = null;
   private shouldLaunchDeeplink: boolean = null;
   private eventBufferingEnabled: boolean = null;
-  userAgent: string = null;
-  isDeviceKnown: boolean = null;
+  private userAgent: string = null;
+  private isDeviceKnown: boolean = null;
   // Android only
-  processName: string = null;
+  private processName: string = null;
 
   attributionCallback: (attribution: AdjustAttribution) => void = null;
   eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -102,6 +102,18 @@ export class AdjustConfig {
 
   setEventBufferingEnabled(eventBufferingEnabled: boolean) {
     this.eventBufferingEnabled = eventBufferingEnabled;
+  }
+
+  setUserAgent(userAgent: string) {
+    this.userAgent = userAgent;
+  }
+
+  setIsDeviceKnown(isDeviceKnown: boolean) {
+    this.isDeviceKnown = isDeviceKnown;
+  }
+
+  setProcessName(processName: string) {
+    this.processName = processName;
   }
 
   private getAttributionCallback() {
