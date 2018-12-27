@@ -49,12 +49,10 @@ export class AdjustConfig {
   private sendInBackground: boolean = null;
   private shouldLaunchDeeplink: boolean = null;
   private eventBufferingEnabled: boolean = null;
-  referrer: string = null;
   userAgent: string = null;
   isDeviceKnown: boolean = null;
   // Android only
   processName: string = null;
-  readMobileEquipmentIdentity: boolean = null;
 
   attributionCallback: (attribution: AdjustAttribution) => void = null;
   eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -302,13 +300,6 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   setPushToken(pushToken: string): void {}
-
-  /**
-   *
-   * @param {string} referrer referrer value
-   */
-  @Cordova({ sync: true })
-  setReferrer(referrer: string): void {}
 
   /**
    * Check if the Adjust SDK is currently enabled by calling this function
