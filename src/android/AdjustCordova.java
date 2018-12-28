@@ -161,7 +161,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             shouldLaunchDeeplink = true;
         } else {
             Logger logger = (Logger)AdjustFactory.getLogger();
-            logger.error(String.format("[AdjustCordova]: Invalid call (%s)", action));
+            logger.error(String.format("[AdjustCordova]: Invalid call (%s).", action));
             return false;    
         }
 
@@ -187,6 +187,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String info2 = null;
         String info3 = null;
         String info4 = null;
+        boolean isLogLevelSuppress = false;
         boolean eventBufferingEnabled = false;
         boolean isDeviceKnown = false;
         boolean sendInBackground = false;
@@ -243,7 +244,6 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         if (parameters.containsKey(KEY_SHOULD_LAUNCH_DEEPLINK)) {
             shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
         }
-        boolean isLogLevelSuppress = false;
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -413,7 +413,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 adjustEvent.setRevenue(revenueValue, currency);
             } catch (Exception e) {
                 ILogger logger = AdjustFactory.getLogger();
-                logger.error("[AdjustCordova]: Unable to parse revenue");
+                logger.error("[AdjustCordova]: Unable to parse revenue.");
             }
         }
 
@@ -431,7 +431,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             adjustEvent.addPartnerParameter(key, value);
         }
 
-        // Order ID.
+        // Transaction ID.
         if (isFieldValid(transactionId)) {
             adjustEvent.setOrderId(transactionId);
         }
@@ -457,7 +457,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                     testOptions.context = this.cordova.getActivity().getApplicationContext();
                 }
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse context");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse context.");
             }
         }
 
@@ -466,7 +466,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 String value = jsonParameters.getString(KEY_BASE_URL);
                 testOptions.baseUrl = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base URL");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base URL.");
             }
         }
 
@@ -475,7 +475,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 String value = jsonParameters.getString(KEY_GDPR_URL);
                 testOptions.gdprUrl = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR URL");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR URL.");
             }
         }
 
@@ -484,7 +484,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 String value = jsonParameters.getString(KEY_BASE_PATH);
                 testOptions.basePath = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base path");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base path.");
             }
         }
 
@@ -493,7 +493,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 String value = jsonParameters.getString(KEY_GDPR_PATH);
                 testOptions.gdprPath = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR path");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR path.");
             }
         }
 
@@ -502,7 +502,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
                 testOptions.useTestConnectionOptions = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse use test connection options");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse use test connection options.");
             }
         }
 
@@ -511,7 +511,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 long value = jsonParameters.getLong(KEY_TIMER_INTERVAL);
                 testOptions.timerIntervalInMilliseconds = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse timer interval");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse timer interval.");
             }
         }
 
@@ -520,7 +520,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 long value = jsonParameters.getLong(KEY_TIMER_START);
                 testOptions.timerStartInMilliseconds = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse timer start");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse timer start.");
             }
         }
 
@@ -529,7 +529,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 long value = jsonParameters.getLong(KEY_SESSION_INTERVAL);
                 testOptions.sessionIntervalInMilliseconds = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse session interval");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse session interval.");
             }
         } 
 
@@ -538,7 +538,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 long value = jsonParameters.getLong(KEY_SUBSESSION_INTERVAL);
                 testOptions.subsessionIntervalInMilliseconds = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subsession interval");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subsession interval.");
             }
         }
 
@@ -547,7 +547,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 boolean teardown = jsonParameters.getBoolean(KEY_TEARDOWN);
                 testOptions.teardown = teardown;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse teardown");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse teardown.");
             }
         }
 
@@ -556,7 +556,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 boolean noBackoffWait = jsonParameters.getBoolean(KEY_NO_BACKOFF_WAIT);
                 testOptions.noBackoffWait = noBackoffWait;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse noBackoffWait");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse noBackoffWait.");
             }
         }
 

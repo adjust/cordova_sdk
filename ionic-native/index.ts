@@ -7,7 +7,6 @@ export class AdjustEvent {
   private currency: string;
   private transactionId: string;
   private callbackId: string;
-
   private callbackParameters: string[] = [];
   private partnerParameters: string[] = [];
 
@@ -117,27 +116,27 @@ export class AdjustConfig {
   }
 
   private getAttributionCallback() {
-      return this.attributionCallback;
+    return this.attributionCallback;
   }
 
   private getEventTrackingSucceededCallback() {
-      return this.eventTrackingSucceededCallback;
+    return this.eventTrackingSucceededCallback;
   }
 
   private getEventTrackingFailedCallback() {
-      return this.eventTrackingFailedCallback;
+    return this.eventTrackingFailedCallback;
   }
 
   private getSessionTrackingSucceededCallback() {
-      return this.sessionTrackingSucceededCallback;
+    return this.sessionTrackingSucceededCallback;
   }
 
   private getSessionTrackingFailedCallback() {
-      return this.sessionTrackingFailedCallback;
+    return this.sessionTrackingFailedCallback;
   }
 
   private getDeferredDeeplinkCallback() {
-      return this.deferredDeeplinkCallback;
+    return this.deferredDeeplinkCallback;
   }
 
   private hasAttributionListener() {

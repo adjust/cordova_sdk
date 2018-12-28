@@ -251,7 +251,7 @@
         [adjustEvent addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
-    // Deprecated
+    // Deprecated.
     // Transaction ID and receipt.
     BOOL isTransactionIdSet = NO;
     if ([self isFieldValid:isReceiptSet]) {
