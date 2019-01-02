@@ -1,16 +1,8 @@
-### Version 4.17.0 (14th December 2018)
+### Version 4.17.0 (xxth January 2019)
 #### Added
+- Added support for `Ionic Native`.
 - Added `getSdkVersion()` method to `Adjust` interface to obtain current SDK version string.
-
-#### Native SDKs
-- [iOS@v4.17.1][ios_sdk_v4.17.1]
-- [Android@v4.17.0][android_sdk_v4.17.0]
-
----
-
-### Version 4.15.0 (14th December 2018)
-#### Added
-- Added `setCallbackId` method on `AdjustEvent` object for users to set custom ID on event object which will later be reported in event success/failure callbacks.
+- Added `setCallbackId` method to `AdjustEvent` interface for users to set custom ID on event object which will later be reported in event success/failure callbacks.
 - Added `callbackId` field to event tracking success callback object.
 - Added `callbackId` field to event tracking failure callback object.
 
@@ -19,8 +11,8 @@
 - SDK will now fire attribution request each time upon session tracking finished in case it lacks attribution info.
 
 #### Native SDKs
-- [iOS@v4.15.0][ios_sdk_v4.15.0]
-- [Android@v4.15.0][android_sdk_v4.15.0]
+- [iOS@v4.17.1][ios_sdk_v4.17.1]
+- [Android@v4.17.0][android_sdk_v4.17.0]
 
 ---
 
