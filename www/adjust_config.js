@@ -1,6 +1,4 @@
 function AdjustConfig(appToken, environment) {
-    this.sdkPrefix = Adjust.sdkPrefix;
-
     this.appToken = appToken;
     this.environment = environment;
     this.delayStart = 0.0;
@@ -18,6 +16,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
+    this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
     this.info2 = null;
@@ -105,6 +104,14 @@ AdjustConfig.prototype.setUserAgent = function(userAgent) {
 AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
     this.isDeviceKnown = isDeviceKnown;
 }
+
+AdjustConfig.prototype.getSdkPrefix = function() {
+    return this.sdkPrefix;
+};
+
+AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
+    this.sdkPrefix = sdkPrefix;
+};
 
 // @deprecated
 AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {

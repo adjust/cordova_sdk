@@ -34,9 +34,12 @@ function callCordovaCallback(action, callback) {
 }
 
 var Adjust = {
-    sdkPrefix: 'cordova4.17.0',
-
     create: function(adjustConfig) {
+        this.adjustConfig = adjustConfig;
+        if (adjustConfig && !adjustConfig.getSdkPrefix()) {
+            adjustConfig.setSdkPrefix(this.getSdkPrefix());
+        }
+
         if (adjustConfig.hasAttributionListener()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
@@ -117,9 +120,18 @@ var Adjust = {
     },
 
     getSdkVersion: function(callback) {
+        var sdkPrefix = this.getSdkPrefix();
         callCordovaCallback('getSdkVersion', function(sdkVersion) {
-            callback(Adjust.sdkPrefix + "@" + sdkVersion);
+            callback(sdkPrefix + "@" + sdkVersion);
         });
+    },
+
+    getSdkPrefix: function () {
+        if (this.adjustConfig) {
+            return this.adjustConfig.getSdkPrefix();
+        } else {
+            return 'cordova4.17.0';
+        }
     },
 
     addSessionCallbackParameter: function(key, value) {
