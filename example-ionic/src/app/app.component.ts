@@ -21,7 +21,7 @@ export class MyApp {
       const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
       config.setLogLevel(AdjustLogLevel.Verbose);
       config.setShouldLaunchDeeplink(true);
-      config.attributionCallback = (attribution: AdjustAttribution) => {
+      config.setAttributionCallback((attribution: AdjustAttribution) => {
         console.log("### Attribution callback received");
 
         console.log("Tracker token = " + attribution.trackerToken);
@@ -32,8 +32,8 @@ export class MyApp {
         console.log("Creative = " + attribution.creative);
         console.log("Click label = " + attribution.clickLabel);
         console.log("Adid = " + attribution.adid);
-      }
-      config.eventTrackingFailedCallback = (eventFailed: AdjustEventFailure) => {
+      });
+      config.setEventTrackingFailedCallback((eventFailed: AdjustEventFailure) => {
         console.log("### Event tracking failed callback received");
 
         console.log("Message: " + eventFailed.message);
@@ -43,8 +43,8 @@ export class MyApp {
         console.log("Will retry: " + eventFailed.willRetry);
         console.log("Callback Id: " + eventFailed.callbackId);
         console.log("JSON response: " + eventFailed.jsonResponse);
-      }
-      config.eventTrackingSucceededCallback = (eventSuccess: AdjustEventSuccess) => {
+      });
+      config.setEventTrackingSucceededCallback((eventSuccess: AdjustEventSuccess) => {
         console.log("### Event tracking succeeded callback received");
 
         console.log("Message: " + eventSuccess.message);
@@ -53,16 +53,16 @@ export class MyApp {
         console.log("Event token: " + eventSuccess.eventToken);
         console.log("Callback Id: " + eventSuccess.callbackId);
         console.log("JSON response: " + eventSuccess.jsonResponse);
-      }
-      config.sessionTrackingSucceededCallback = (sessionSuccess: AdjustSessionSuccess) => {
+      });
+      config.setSessionTrackingSucceededCallback((sessionSuccess: AdjustSessionSuccess) => {
         console.log("### Session tracking succeeded callback received");
 
         console.log("Message: " + sessionSuccess.message);
         console.log("Timestamp: " + sessionSuccess.timestamp);
         console.log("Adid: " + sessionSuccess.adid);
         console.log("JSON response: " + sessionSuccess.jsonResponse);
-      }
-      config.sessionTrackingFailedCallback = (sessionFailed: AdjustSessionFailure) => {
+      });
+      config.setSessionTrackingFailedCallback((sessionFailed: AdjustSessionFailure) => {
         console.log("### Session tracking failed callback received");
 
         console.log("Message: " + sessionFailed.message);
@@ -70,12 +70,12 @@ export class MyApp {
         console.log("Adid: " + sessionFailed.adid);
         console.log("Will retry: " + sessionFailed.willRetry);
         console.log("JSON response: " + sessionFailed.jsonResponse);
-      }
-      config.deferredDeeplinkCallback = (uri: string) => {
+      });
+      config.setDeferredDeeplinkCallback((uri: string) => {
         console.log("### Deferred Deeplink Callback received");
 
         console.log("URL: " + uri);
-      }
+      });
 
       adjust.create(config);
     });

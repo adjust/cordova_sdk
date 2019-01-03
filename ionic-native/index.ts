@@ -53,12 +53,12 @@ export class AdjustConfig {
   // Android only
   private processName: string = null;
 
-  attributionCallback: (attribution: AdjustAttribution) => void = null;
-  eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
-  eventTrackingFailedCallback: (event: AdjustEventFailure) => void = null;
-  sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
-  sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
-  deferredDeeplinkCallback: (uri: string) => void = null;
+  private attributionCallback: (attribution: AdjustAttribution) => void = null;
+  private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
+  private eventTrackingFailedCallback: (event: AdjustEventFailure) => void = null;
+  private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
+  private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
+  private deferredDeeplinkCallback: (uri: string) => void = null;
 
   private secretId: number = null;
   private info1: number = null;
@@ -113,6 +113,30 @@ export class AdjustConfig {
 
   setProcessName(processName: string) {
     this.processName = processName;
+  }
+
+  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void) {
+    this.attributionCallback = attributionCallback;
+  }
+
+  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void) {
+    this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
+  }
+
+  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void) {
+    this.eventTrackingFailedCallback = eventTrackingFailedCallback;
+  }
+
+  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void) {
+    this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
+  }
+
+  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void) {
+    this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
+  }
+
+  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (uri: string) => void) {
+    this.deferredDeeplinkCallback = deferredDeeplinkCallback;
   }
 
   private getAttributionCallback() {
