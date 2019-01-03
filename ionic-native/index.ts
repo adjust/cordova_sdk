@@ -39,7 +39,7 @@ export class AdjustEvent {
 }
 
 export class AdjustConfig {
-  sdkPrefix = 'cordova4.17.0';
+  private sdkPrefix: string;
   private appToken: string;
   private environment: AdjustEnvironment;
   private delayStart = 0.0;
