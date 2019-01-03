@@ -127,11 +127,10 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        if (this.adjustConfig) {
+        if (this.adjustConfig && this.adjustConfig.getSdkPrefix()) {
             return this.adjustConfig.getSdkPrefix();
-        } else {
-            return 'cordova4.17.0';
         }
+        return 'cordova4.17.0';
     },
 
     addSessionCallbackParameter: function(key, value) {
