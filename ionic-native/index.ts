@@ -39,9 +39,9 @@ export class AdjustEvent {
 }
 
 export class AdjustConfig {
-  private sdkPrefix: string;
   private appToken: string;
   private environment: AdjustEnvironment;
+  private sdkPrefix: string;
   private delayStart = 0.0;
   private logLevel: AdjustLogLevel = null;
   private defaultTracker: string = null;
@@ -50,8 +50,12 @@ export class AdjustConfig {
   private eventBufferingEnabled: boolean = null;
   private userAgent: string = null;
   private isDeviceKnown: boolean = null;
-  // Android only
-  private processName: string = null;
+  private secretId: number = null;
+  private info1: number = null;
+  private info2: number = null;
+  private info3: number = null;
+  private info4: number = null;
+  private processName: string = null; // Android only
 
   private attributionCallback: (attribution: AdjustAttribution) => void = null;
   private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -59,12 +63,6 @@ export class AdjustConfig {
   private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
   private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
   private deferredDeeplinkCallback: (uri: string) => void = null;
-
-  private secretId: number = null;
-  private info1: number = null;
-  private info2: number = null;
-  private info3: number = null;
-  private info4: number = null;
 
   constructor(appToken: string, environment: AdjustEnvironment) {
     this.appToken = appToken;
