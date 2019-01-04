@@ -75,19 +75,19 @@ export class HomePage {
 
   getIds() {
     this.adjust.getIdfa().then((idfa) => {
-      console.log("IDFA = " + idfa);
+      console.log("[AdjustExample]: IDFA = " + idfa);
     });
 
     this.adjust.getGoogleAdId().then((gpsAdId) => {
-        console.log("Google Ad Id = " + gpsAdId);
+        console.log("[AdjustExample]: Google Ad Id = " + gpsAdId);
     });
 
     this.adjust.getAmazonAdId().then((gpsAdId) => {
-        console.log("Amazon Ad Id = " + gpsAdId);
+        console.log("[AdjustExample]: Amazon Ad Id = " + gpsAdId);
     });
 
     this.adjust.getAdid().then((adid) => {
-        console.log("Adid = " + adid);
+        console.log("[AdjustExample]: Adid = " + adid);
     });
   }
 

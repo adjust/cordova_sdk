@@ -22,59 +22,53 @@ export class MyApp {
       config.setLogLevel(AdjustLogLevel.Verbose);
       config.setShouldLaunchDeeplink(true);
       config.setAttributionCallback((attribution: AdjustAttribution) => {
-        console.log("### Attribution callback received");
-
-        console.log("Tracker token = " + attribution.trackerToken);
-        console.log("Tracker name = " + attribution.trackerName);
-        console.log("Network = " + attribution.network);
-        console.log("Campaign = " + attribution.campaign);
-        console.log("Adgroup = " + attribution.adgroup);
-        console.log("Creative = " + attribution.creative);
-        console.log("Click label = " + attribution.clickLabel);
-        console.log("Adid = " + attribution.adid);
+        console.log("[AdjustExample]: Attribution callback received.");
+        console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
+        console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
+        console.log("[AdjustExample]: Network = " + attribution.network);
+        console.log("[AdjustExample]: Campaign = " + attribution.campaign);
+        console.log("[AdjustExample]: Adgroup = " + attribution.adgroup);
+        console.log("[AdjustExample]: Creative = " + attribution.creative);
+        console.log("[AdjustExample]: Click label = " + attribution.clickLabel);
+        console.log("[AdjustExample]: Adid = " + attribution.adid);
       });
       config.setEventTrackingFailedCallback((eventFailed: AdjustEventFailure) => {
-        console.log("### Event tracking failed callback received");
-
-        console.log("Message: " + eventFailed.message);
-        console.log("Timestamp: " + eventFailed.timestamp);
-        console.log("Adid: " + eventFailed.adid);
-        console.log("Event token: " + eventFailed.eventToken);
-        console.log("Will retry: " + eventFailed.willRetry);
-        console.log("Callback Id: " + eventFailed.callbackId);
-        console.log("JSON response: " + eventFailed.jsonResponse);
+        console.log("[AdjustExample]: Event tracking failed callback received.");
+        console.log("[AdjustExample]: Message: " + eventFailed.message);
+        console.log("[AdjustExample]: Timestamp: " + eventFailed.timestamp);
+        console.log("[AdjustExample]: Adid: " + eventFailed.adid);
+        console.log("[AdjustExample]: Event token: " + eventFailed.eventToken);
+        console.log("[AdjustExample]: Will retry: " + eventFailed.willRetry);
+        console.log("[AdjustExample]: Callback Id: " + eventFailed.callbackId);
+        console.log("[AdjustExample]: JSON response: " + eventFailed.jsonResponse);
       });
       config.setEventTrackingSucceededCallback((eventSuccess: AdjustEventSuccess) => {
-        console.log("### Event tracking succeeded callback received");
-
-        console.log("Message: " + eventSuccess.message);
-        console.log("Timestamp: " + eventSuccess.timestamp);
-        console.log("Adid: " + eventSuccess.adid);
-        console.log("Event token: " + eventSuccess.eventToken);
-        console.log("Callback Id: " + eventSuccess.callbackId);
-        console.log("JSON response: " + eventSuccess.jsonResponse);
+        console.log("[AdjustExample]: Event tracking succeeded callback received.");
+        console.log("[AdjustExample]: Message: " + eventSuccess.message);
+        console.log("[AdjustExample]: Timestamp: " + eventSuccess.timestamp);
+        console.log("[AdjustExample]: Adid: " + eventSuccess.adid);
+        console.log("[AdjustExample]: Event token: " + eventSuccess.eventToken);
+        console.log("[AdjustExample]: Callback Id: " + eventSuccess.callbackId);
+        console.log("[AdjustExample]: JSON response: " + eventSuccess.jsonResponse);
       });
       config.setSessionTrackingSucceededCallback((sessionSuccess: AdjustSessionSuccess) => {
-        console.log("### Session tracking succeeded callback received");
-
-        console.log("Message: " + sessionSuccess.message);
-        console.log("Timestamp: " + sessionSuccess.timestamp);
-        console.log("Adid: " + sessionSuccess.adid);
-        console.log("JSON response: " + sessionSuccess.jsonResponse);
+        console.log("[AdjustExample]: Session tracking succeeded callback received.");
+        console.log("[AdjustExample]: Message: " + sessionSuccess.message);
+        console.log("[AdjustExample]: Timestamp: " + sessionSuccess.timestamp);
+        console.log("[AdjustExample]: Adid: " + sessionSuccess.adid);
+        console.log("[AdjustExample]: JSON response: " + sessionSuccess.jsonResponse);
       });
       config.setSessionTrackingFailedCallback((sessionFailed: AdjustSessionFailure) => {
-        console.log("### Session tracking failed callback received");
-
-        console.log("Message: " + sessionFailed.message);
-        console.log("Timestamp: " + sessionFailed.timestamp);
-        console.log("Adid: " + sessionFailed.adid);
-        console.log("Will retry: " + sessionFailed.willRetry);
-        console.log("JSON response: " + sessionFailed.jsonResponse);
+        console.log("[AdjustExample]: Session tracking failed callback received.");
+        console.log("[AdjustExample]: Message: " + sessionFailed.message);
+        console.log("[AdjustExample]: Timestamp: " + sessionFailed.timestamp);
+        console.log("[AdjustExample]: Adid: " + sessionFailed.adid);
+        console.log("[AdjustExample]: Will retry: " + sessionFailed.willRetry);
+        console.log("[AdjustExample]: JSON response: " + sessionFailed.jsonResponse);
       });
       config.setDeferredDeeplinkCallback((uri: string) => {
-        console.log("### Deferred Deeplink Callback received");
-
-        console.log("URL: " + uri);
+        console.log("[AdjustExample]: Deferred Deeplink Callback received.");
+        console.log("[AdjustExample]: URL: " + uri);
       });
 
       adjust.create(config);
