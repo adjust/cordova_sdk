@@ -105,7 +105,7 @@ export class AdjustConfig {
     this.userAgent = userAgent;
   }
 
-  setIsDeviceKnown(isDeviceKnown: boolean) {
+  setDeviceKnown(isDeviceKnown: boolean) {
     this.isDeviceKnown = isDeviceKnown;
   }
 
@@ -113,27 +113,27 @@ export class AdjustConfig {
     this.processName = processName;
   }
 
-  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void) {
+  setAttributionCallbackListener(attributionCallback: (attribution: AdjustAttribution) => void) {
     this.attributionCallback = attributionCallback;
   }
 
-  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void) {
+  setEventTrackingSucceededCallbackListener(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void) {
     this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
   }
 
-  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void) {
+  setEventTrackingFailedCallbackListener(eventTrackingFailedCallback: (event: AdjustEventFailure) => void) {
     this.eventTrackingFailedCallback = eventTrackingFailedCallback;
   }
 
-  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void) {
+  setSessionTrackingSucceededCallbackListener(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void) {
     this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
   }
 
-  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void) {
+  setSessionTrackingFailedCallbackListener(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void) {
     this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
   }
 
-  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (uri: string) => void) {
+  setDeferredDeeplinkCallbackListener(deferredDeeplinkCallback: (uri: string) => void) {
     this.deferredDeeplinkCallback = deferredDeeplinkCallback;
   }
 
@@ -263,9 +263,8 @@ export enum AdjustLogLevel {
  *
  *  const config = new AdjustConfig('APP-TOKEN-HERE', AdjustEnvironment.Sandbox);
  *  config.logLevel = AdjustLogLevel.Verbose;
- *  // set other config properties ...
+ *  // Set other config properties.
  *  adjust.create(config);
- *  // ...
  *
  * ```
  * @interfaces
