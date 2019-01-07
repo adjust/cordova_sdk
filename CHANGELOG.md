@@ -1,4 +1,4 @@
-### Version 4.17.0 (xxth January 2019)
+### Version 4.17.0 (8th January 2019)
 #### Added
 - Added support for `Ionic Native`.
 - Added `getSdkVersion()` method to `Adjust` interface to obtain current SDK version string.
