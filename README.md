@@ -2,7 +2,7 @@
 
 This is the Cordova SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
 
-N.B. At the moment, SDK 4.17.0 for Cordova supports Android platform version `from 4.0.0 until 6.4.0` (more information about newer Android platforms can be found in [here](#cordova-android7.0.0)) and iOS platform version `3.0.0 and higher`. Windows platform is **not supported** at the moment.
+N.B. At the moment, SDK 4.17.0 for Cordova supports Android platform version `4.0.0 and higher` and iOS platform version `3.0.0 and higher`.
 
 ## Table of contents
 
@@ -100,12 +100,6 @@ Installing "com.adjust.sdk" for ios
 ```
 
 <a id="sdk-cocoon">**Note:** Starting from **Adjust SDK v4.10.2**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
-  
-<a id="cordova-android7.0.0">**Important**: Adjust SDK plugin in `npm` repository currently supports Cordova Android platforms between `cordova-android@4.0.0` and `cordova-android@6.4.0`. With introduction of `cordova-android@7.0.0` platform inside of Cordova 8.0.0 release, some breaking changes were introduced and Adjust SDK plugin from `npm` repository is not compatible with `cordova-android@7.0.0` and higher. If you are using `cordova-android@7.0.0` or higher, then please add Adjust SDK from Github repository, like this:
-  
-```
-cordova plugin add https://github.com/adjust/cordova_sdk.git#cordova-8
-```
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
@@ -115,7 +109,6 @@ In your `index.js` file after you have received the `deviceready` event, add the
 
 ```js
 var adjustConfig = new AdjustConfig("{YourAppToken}", AdjustConfig.EnvironmentSandbox);
-
 Adjust.create(adjustConfig);
 ```
 
@@ -152,7 +145,7 @@ Once the Adjust SDK has been added to your app, certain tweeks are being perform
 
 ### <a id="android-permissions"></a>Android permissions
 
-The Adjust SDK adds two permissions to your Android manifest file: `INTERNET` and `ACCESS_WIFI_STATE`. You can find this setting in the `plugin.xml` file of the Adjust SDK plugin:
+The Adjust SDK adds three permissions to your Android manifest file: `INTERNET`, `ACCESS_WIFI_STATE` and `ACCESS_NETWORK_STATE`. You can find this setting in the `plugin.xml` file of the Adjust SDK plugin:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -162,7 +155,7 @@ The Adjust SDK adds two permissions to your Android manifest file: `INTERNET` an
 </config-file>
 ```
 
-`INTERNET` permission is the permission that our SDK might need at any point in time. `ACCESS_WIFI_STATE` is the permission which the Adjust SDK needs in case your app is not targetting the Google Play Store and doesn't use Google Play Services. If you are targetting the Google Play Store and you are using Google Play Services, the Adjust SDK doesn't need this permission and, if you don't need it anywhere else in your app, you can remove it.
+`INTERNET` permission is the permission that our SDK might need at any point in time. `ACCESS_WIFI_STATE` is the permission which the Adjust SDK needs in case your app is not targetting the Google Play Store and doesn't use Google Play Services. If you are targetting the Google Play Store and you are using Google Play Services, the Adjust SDK doesn't need this permission and, if you don't need it anywhere else in your app, you can remove it. `ACCESS_NETWORK_STATE` is needed for reading MMC and MNC parameters.
 
 ### <a id="android-gps"></a>Google Play Services
 
@@ -289,9 +282,7 @@ If your users can generate revenue by tapping on advertisements or making In-App
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
-
 adjustEvent.setRevenue(0.01, "EUR");
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -306,10 +297,8 @@ If you want to track in-app purchases, please make sure to call the `trackEvent`
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
-
 adjustEvent.setRevenue(0.01, "EUR");
 adjustEvent.setTransactionId("{YourTransactionId}");
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -327,10 +316,8 @@ For example, suppose you have registered the URL `http://www.adjust.com/callback
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
-
 adjustEvent.addCallbackParameter("key", "value");
 adjustEvent.addCallbackParameter("foo", "bar");
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -352,10 +339,8 @@ This works similarly to the callback parameters mentioned above, but can be adde
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
-
 adjustEvent.addPartnerParameter("key", "value");
 adjustEvent.addPartnerParameter("foo", "bar");
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -367,9 +352,7 @@ You can also add custom string identifier to each event you want to track. This 
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
-
 adjustEvent.setCallbackId("Your-Custom-Id");
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -605,9 +588,7 @@ If your app makes heavy use of event tracking, you might want to delay some HTTP
 
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
-
 adjustConfig.setEventBufferingEnabled(true);
-
 Adjust.create(adjustConfig);
 ```
 
@@ -631,9 +612,7 @@ An App Secret is set by passing all secret parameters (`secretId`, `info1`, `inf
 
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
-
 adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
-
 Adjust.create(adjustConfig);
 ```
 
@@ -643,9 +622,7 @@ The default behaviour of the Adjust SDK is to **pause sending HTTP requests whil
 
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
-
 adjustConfig.setSendInBackground(true);
-
 Adjust.create(adjustConfig);
 ```
 
@@ -733,9 +710,7 @@ If you want to use the Adjust SDK to recognize users that found your app pre-ins
 
     ```js
     var adjustConfig = new AdjustConfig(appToken, environment);
-
     adjustConfig.setDefaultTracker("{TrackerToken}");
-    
     Adjust.create(adjustConfig);
     ```
 
@@ -961,7 +936,7 @@ var app = {
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2017 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
