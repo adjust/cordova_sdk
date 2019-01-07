@@ -99,7 +99,12 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
-<a id="sdk-cocoon">**Note:** Starting from **Adjust SDK v4.10.2**, `npm` plugin and `master` branch are compatible with `cocoon.io`. There is no need to use SDK from `cocoon` branch anymore.
+In case you are using Ionic Native, you can add our SDK from `ionic-native` repo:
+
+```
+> npm install @ionic-native/adjust --save
+> ionic cordova plugin add com.adjust.sdk
+```
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
