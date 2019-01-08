@@ -1,3 +1,21 @@
+### Version 4.17.0 (8th January 2019)
+#### Added
+- Added support for `Ionic Native`.
+- Added `getSdkVersion()` method to `Adjust` interface to obtain current SDK version string.
+- Added `setCallbackId` method to `AdjustEvent` interface for users to set custom ID on event object which will later be reported in event success/failure callbacks.
+- Added `callbackId` field to event tracking success callback object.
+- Added `callbackId` field to event tracking failure callback object.
+
+#### Changed
+- Marked `setReadMobileEquipmentIdentity` method of `AdjustConfig` object as deprecated.
+- SDK will now fire attribution request each time upon session tracking finished in case it lacks attribution info.
+
+#### Native SDKs
+- [iOS@v4.17.1][ios_sdk_v4.17.1]
+- [Android@v4.17.0][android_sdk_v4.17.0]
+
+---
+
 ### Version 4.14.0 (18th June 2018)
 #### Added
 - Added deep link caching in case `appWillOpenUrl` method is called natively before SDK is initialised.
@@ -384,6 +402,8 @@
 [ios_sdk_v4.12.3]: https://github.com/adjust/ios_sdk/tree/v4.12.3
 [ios_sdk_v4.13.0]: https://github.com/adjust/ios_sdk/tree/v4.13.0
 [ios_sdk_v4.14.1]: https://github.com/adjust/ios_sdk/tree/v4.14.1
+[ios_sdk_v4.15.0]: https://github.com/adjust/ios_sdk/tree/v4.15.0
+[ios_sdk_v4.17.1]: https://github.com/adjust/ios_sdk/tree/v4.17.1
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -401,3 +421,5 @@
 [android_sdk_v4.12.4]: https://github.com/adjust/android_sdk/tree/v4.12.4
 [android_sdk_v4.13.0]: https://github.com/adjust/android_sdk/tree/v4.13.0
 [android_sdk_v4.14.0]: https://github.com/adjust/android_sdk/tree/v4.14.0
+[android_sdk_v4.15.0]: https://github.com/adjust/android_sdk/tree/v4.15.0
+[android_sdk_v4.17.0]: https://github.com/adjust/android_sdk/tree/v4.17.0

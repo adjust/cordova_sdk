@@ -35,6 +35,11 @@ function callCordovaCallback(action, callback) {
 
 var Adjust = {
     create: function(adjustConfig) {
+        this.adjustConfig = adjustConfig;
+        if (adjustConfig && !adjustConfig.getSdkPrefix()) {
+            adjustConfig.setSdkPrefix(this.getSdkPrefix());
+        }
+
         if (adjustConfig.hasAttributionListener()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
@@ -114,6 +119,20 @@ var Adjust = {
         callCordovaCallback('getAttribution', callback);
     },
 
+    getSdkVersion: function(callback) {
+        var sdkPrefix = this.getSdkPrefix();
+        callCordovaCallback('getSdkVersion', function(sdkVersion) {
+            callback(sdkPrefix + "@" + sdkVersion);
+        });
+    },
+
+    getSdkPrefix: function () {
+        if (this.adjustConfig && this.adjustConfig.getSdkPrefix()) {
+            return this.adjustConfig.getSdkPrefix();
+        }
+        return 'cordova4.17.0';
+    },
+
     addSessionCallbackParameter: function(key, value) {
         callCordova('addSessionCallbackParameter', key, value);
     },
@@ -146,15 +165,24 @@ var Adjust = {
         callCordova('setTestOptions', testOptions);
     },
 
-    teardown: function() {
+    teardown: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('teardown');
     },
 
-    onResume: function() {
+    onResume: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('onResume');
     },
 
-    onPause: function() {
+    onPause: function(testParam) {
+        if(testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
         callCordova('onPause');
     }
 };

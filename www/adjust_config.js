@@ -1,12 +1,7 @@
 function AdjustConfig(appToken, environment) {
-    // iOS & Android
-    this.sdkPrefix = "cordova4.14.0";
-
     this.appToken = appToken;
     this.environment = environment;
-
     this.delayStart = 0.0;
-
     this.logLevel = null;
     this.referrer = null;
     this.userAgent = null;
@@ -15,20 +10,18 @@ function AdjustConfig(appToken, environment) {
     this.sendInBackground = null;
     this.shouldLaunchDeeplink = null;
     this.eventBufferingEnabled = null;
-
     this.attributionCallback = null;
     this.eventTrackingSucceededCallback = null;
     this.eventTrackingFailedCallback = null;
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
-
+    this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
     this.info2 = null;
     this.info3 = null;
     this.info4 = null;
-
     // Android only
     this.processName = null;
     this.readMobileEquipmentIdentity = null;
@@ -36,7 +29,6 @@ function AdjustConfig(appToken, environment) {
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
-
 AdjustConfig.LogLevelVerbose       = "VERBOSE";
 AdjustConfig.LogLevelDebug         = "DEBUG";
 AdjustConfig.LogLevelInfo          = "INFO";
@@ -113,28 +105,34 @@ AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
     this.isDeviceKnown = isDeviceKnown;
 }
 
+AdjustConfig.prototype.getSdkPrefix = function() {
+    return this.sdkPrefix;
+};
+
+AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
+    this.sdkPrefix = sdkPrefix;
+};
+
+// @deprecated
 AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
-    this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
+    console.warn("Calling deprecated function! This functionality has been removed from the SDK.");
+    // this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
 }
 
 AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
-    if (secretId != null) {
+    if (secretId !== null) {
         this.secretId = secretId.toString();
     }
-
-    if (info1 != null) {
+    if (info1 !== null) {
         this.info1 = info1.toString();
     }
-
-    if (info2 != null) {
+    if (info2 !== null) {
         this.info2 = info2.toString();
     }
-
-    if (info3 != null) {
+    if (info3 !== null) {
         this.info3 = info3.toString();
     }
-
-    if (info4 != null) {
+    if (info4 !== null) {
         this.info4 = info4.toString();
     }
 };
@@ -157,8 +155,7 @@ AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) 
 
 // @deprecated
 AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
-    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info");
-    
+    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info.");
     this.attributionCallbackListener = attributionCallbackListener;
 };
 
@@ -189,32 +186,31 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
-    
-    return this.attributionCallbackListener != null;
+    return this.attributionCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasAttributionListener = function() {
-    return this.attributionCallbackListener != null;
+    return this.attributionCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasEventTrackingSucceededListener = function() {
-    return this.eventTrackingSucceededCallbackListener != null;
+    return this.eventTrackingSucceededCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasEventTrackingFailedListener = function() {
-    return this.eventTrackingFailedCallbackListener != null;
+    return this.eventTrackingFailedCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasSessionTrackingSucceededListener = function() {
-    return this.sessionTrackingSucceededCallbackListener != null;
+    return this.sessionTrackingSucceededCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
-    return this.sessionTrackingFailedCallbackListener != null;
+    return this.sessionTrackingFailedCallbackListener !== null;
 };
 
 AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
-    return this.deferredDeeplinkCallbackListener != null;
+    return this.deferredDeeplinkCallbackListener !== null;
 };
 
 module.exports = AdjustConfig;
