@@ -59,18 +59,7 @@ N.B. At the moment, SDK 4.17.0 for Cordova supports Android platform version `4.
 
 ## <a id="example-app"></a>Example app
 
-There is example inside the [`example` directory][example]. In there you can check how to integrate the Adjust SDK into your app. The example app has been uploaded without platforms being added due to size considerations, so after downloading the app, please run appropriate script from `scripts` folder to build and run the app for desired platform:
-
-To run iOS example app:
-```
-python build_and_run.py run -p ios
-```
-To run Android example app:
-```
-python build_and_run.py run -p android
-```
-
-**Note**: Please have in mind that after building the example app for the first time for iOS platform, you may get the code signing error which requires you to open your app's Xcode project and choose your `Team` in `Signing` part of your Xcode project settings. After that, either run your app from Xcode or re-run the script.
+There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic` directory][example-ionic]. In there you can check how to integrate the Adjust SDK into your app.
 
 ## <a id="basic-integration"></a>Basic integration
 
@@ -105,6 +94,8 @@ In case you are using Ionic Native, you can add our SDK from `ionic-native` repo
 > npm install @ionic-native/adjust --save
 > ionic cordova plugin add com.adjust.sdk
 ```
+
+**Note**: Adjust SDK plugin support for Ionic Native [pull request](https://github.com/ionic-team/ionic-native/pull/2872) is still not merged into `ionic-native` repository. Once that is done, adding Adjust SDK plugin via `ionic-native` repo described above will be enabled.
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
@@ -914,9 +905,10 @@ var app = {
 [dashboard]:    http://adjust.com
 [adjust.com]:   http://adjust.com
 
-[example]:      ./example
-[releases]:     https://github.com/adjust/cordova_sdk/releases
-[npm-repo]:     https://www.npmjs.com/package/com.adjust.sdk
+[releases]:         https://github.com/adjust/cordova_sdk/releases
+[npm-repo]:         https://www.npmjs.com/package/com.adjust.sdk
+[example-ionic]:    ./example-ionic
+[example-cordova]:  ./example-cordova
 
 [google-ad-id]:         https://developer.android.com/google/play-services/id.html
 [enable-ulinks]:        https://github.com/adjust/ios_sdk#deeplinking-setup-new
