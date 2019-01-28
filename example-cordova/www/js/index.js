@@ -34,7 +34,7 @@ var app = {
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
-            console.log("[AdjustExample]: Attribution callback received.");=
+            console.log("[AdjustExample]: Attribution callback received.");
             console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
             console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
             console.log("[AdjustExample]: Network = " + attribution.network);
