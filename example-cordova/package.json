@@ -3,22 +3,26 @@
     "version": "1.0.0",
     "displayName": "HelloCordova",
     "cordova": {
-        "platforms": [],
+        "platforms": [
+            "android",
+            "ios"
+        ],
         "plugins": {
-            "com.adjust.sdk": {},
             "cordova-plugin-console": {},
             "cordova-plugin-customurlscheme": {
-                "URL_SCHEME": "adjustExample"
+                "URL_SCHEME": "adjust-example"
             },
             "cordova-plugin-dialogs": {},
             "cordova-plugin-whitelist": {},
             "cordova-plugin-device": {},
-            "cordova-universal-links-plugin": {}
+            "cordova-universal-links-plugin": {},
+            "com.adjust.sdk": {}
         }
     },
     "dependencies": {
         "com.adjust.sdk": "file:../temp_plugin",
-        "cordova-android": "^6.4.0",
+        "cordova-android": "^7.1.4",
+        "cordova-ios": "^4.5.5",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-customurlscheme": "^4.3.0",
         "cordova-plugin-device": "git+https://github.com/apache/cordova-plugin-device.git",

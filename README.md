@@ -95,8 +95,6 @@ In case you are using Ionic Native, you can add our SDK from `ionic-native` repo
 > ionic cordova plugin add com.adjust.sdk
 ```
 
-**Note**: Adjust SDK plugin support for Ionic Native [pull request](https://github.com/ionic-team/ionic-native/pull/2872) is still not merged into `ionic-native` repository. Once that is done, adding Adjust SDK plugin via `ionic-native` repo described above will be enabled.
-
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
 The Adjust SDK automatically registers with the Cordova events `deviceready`, `resume` and `pause`.
