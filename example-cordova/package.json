@@ -4,7 +4,8 @@
     "displayName": "HelloCordova",
     "cordova": {
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ],
         "plugins": {
             "cordova-plugin-console": {},
@@ -21,6 +22,7 @@
     "dependencies": {
         "com.adjust.sdk": "file:../temp_plugin",
         "cordova-android": "^7.1.4",
+        "cordova-ios": "^4.5.5",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-customurlscheme": "^4.3.0",
         "cordova-plugin-device": "git+https://github.com/apache/cordova-plugin-device.git",
