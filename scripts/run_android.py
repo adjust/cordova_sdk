@@ -37,7 +37,7 @@ def _run_example(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Installing 'android' platform in example app.
     debug_green('Installing \'android\' platform in example app ...')
-    cordova_add_platform('android@6.4.0')
+    cordova_add_platform('android')
 
     # ------------------------------------------------------------------
     # Re-installing plugins to example app.
@@ -60,7 +60,7 @@ def _run_example(root_dir, android_submodule_dir):
     # Running Cordova example app.
     # cordova_run('android') # <-- Does not seem to work, some Cordova specific error.
     debug_green('Installing & running Cordova example app ...')
-    adb_install_apk('platforms/android/build/outputs/apk/debug/android-debug.apk')
+    adb_install_apk('platforms/android/app/build/outputs/apk/debug/app-debug.apk')
     adb_shell(example_app_package)
 
     # ------------------------------------------------------------------
@@ -98,7 +98,7 @@ def _run_testapp(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Installing 'android' platform.
     debug_green('Installing \'android\' platform in [{0}] ...'.format(test_app_dir))
-    cordova_add_platform('android@6.4.0')
+    cordova_add_platform('android')
 
     # ------------------------------------------------------------------
     # Re-installing plugins to test app.
@@ -119,7 +119,7 @@ def _run_testapp(root_dir, android_submodule_dir):
     # ------------------------------------------------------------------
     # Running Cordova test app.
     debug_green('Installing & running Cordova test app ...')
-    adb_install_apk('platforms/android/build/outputs/apk/debug/android-debug.apk')
+    adb_install_apk('platforms/android/app/build/outputs/apk/debug/app-debug.apk')
     adb_shell(test_app_package)
 
     # ------------------------------------------------------------------
