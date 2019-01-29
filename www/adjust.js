@@ -35,8 +35,7 @@ function callCordovaCallback(action, callback) {
 
 var Adjust = {
     create: function(adjustConfig) {
-        this.adjustConfig = adjustConfig;
-        if (adjustConfig && !adjustConfig.sdkPrefix) {
+        if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
         }
 
@@ -127,9 +126,6 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        if (this.adjustConfig && this.adjustConfig.sdkPrefix) {
-            return this.adjustConfig.sdkPrefix;
-        }
         return 'cordova4.17.0';
     },
 
