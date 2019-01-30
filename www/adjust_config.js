@@ -105,18 +105,12 @@ AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
     this.isDeviceKnown = isDeviceKnown;
 }
 
-// @deprecated
 AdjustConfig.prototype.getSdkPrefix = function() {
-    console.warn(```
-        Calling deprecated function! This functionality has been removed from the SDK. 
-        For info about SDK version, use getSdkVersion() & getSdkPrefix() functions of the Adjust API.```);
-    // return this.sdkPrefix;
+    return this.sdkPrefix;
 };
 
-// @deprecated
 AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
-    console.warn("Calling deprecated function! This functionality has been removed from the SDK.");
-    // this.sdkPrefix = sdkPrefix;
+    this.sdkPrefix = sdkPrefix;
 };
 
 // @deprecated
