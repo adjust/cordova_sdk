@@ -1,3 +1,13 @@
+### Version 4.17.1 (31st January 2019)
+#### Fixed
+- Fixed occurance of exception due to usage attempt of `getSdkPrefix()` method for `ionic-native` users.
+
+#### Native SDKs
+- [iOS@v4.17.1][ios_sdk_v4.17.1]
+- [Android@v4.17.0][android_sdk_v4.17.0]
+
+---
+
 ### Version 4.17.0 (8th January 2019)
 #### Added
 - Added support for `Ionic Native`.
