@@ -23,7 +23,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <plugin name="com.adjust.sdk" spec="^4.17.0" />
+    <plugin name="com.adjust.sdk" spec="^4.17.1" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
