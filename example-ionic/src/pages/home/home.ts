@@ -91,10 +91,6 @@ export class HomePage {
     });
   }
 
-  gdprForgetMe() {
-    this.adjust.gdprForgetMe();
-  }
-
   getAttribution() {
     this.adjust.getAttribution().then((att) => {
       let alert = this.alertCtrl.create({

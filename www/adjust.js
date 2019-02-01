@@ -35,9 +35,8 @@ function callCordovaCallback(action, callback) {
 
 var Adjust = {
     create: function(adjustConfig) {
-        this.adjustConfig = adjustConfig;
-        if (adjustConfig && !adjustConfig.getSdkPrefix()) {
-            adjustConfig.setSdkPrefix(this.getSdkPrefix());
+        if (adjustConfig) {
+            adjustConfig.sdkPrefix = this.getSdkPrefix();
         }
 
         if (adjustConfig.hasAttributionListener()) {
@@ -127,10 +126,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        if (this.adjustConfig && this.adjustConfig.getSdkPrefix()) {
-            return this.adjustConfig.getSdkPrefix();
-        }
-        return 'cordova4.17.0';
+        return 'cordova4.17.1';
     },
 
     addSessionCallbackParameter: function(key, value) {

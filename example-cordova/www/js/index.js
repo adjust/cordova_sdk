@@ -34,7 +34,7 @@ var app = {
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
-            console.log("[AdjustExample]: Attribution callback received.");=
+            console.log("[AdjustExample]: Attribution callback received.");
             console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
             console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
             console.log("[AdjustExample]: Network = " + attribution.network);
@@ -113,7 +113,6 @@ var app = {
     receivedEvent: function(id) {
         console.log('[AdjustExample]: Received Event: ' + id);
 
-        var btnGdprForgetMe = document.getElementById("btnGdprForgetMe");
         var btnTrackSimpleEvent = document.getElementById("btnTrackSimpleEvent");
         var btnTrackSimpleEventWithCallbackId = document.getElementById("btnTrackSimpleEventWithCallbackId");
         var btnTrackRevenueEvent = document.getElementById("btnTrackRevenueEvent");
@@ -122,6 +121,7 @@ var app = {
         var btnEnableDisableOfflineMode = document.getElementById("btnEnableDisableOfflineMode");
         var btnEnableDisableSdk = document.getElementById("btnEnableDisableSdk");
         var btnIsSdkEnabled = document.getElementById("btnIsSdkEnabled");
+        var btnGetSdkVersion = document.getElementById("btnGetSdkVersion");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
             var adjustEvent = new AdjustEvent("g3mfiw");
@@ -185,10 +185,6 @@ var app = {
             });
         }, false);
 
-        btnGdprForgetMe.addEventListener('click', function() {
-            Adjust.gdprForgetMe();
-        }, false);
-
         btnGetIds.addEventListener('click', function() {
             Adjust.getIdfa(function(idfa) {
                 console.log("[AdjustExample]: IDFA = " + idfa);
@@ -215,6 +211,12 @@ var app = {
                 console.log("[AdjustExample]: Creative = " + attribution.creative);
                 console.log("[AdjustExample]: Click label = " + attribution.clickLabel);
                 console.log("[AdjustExample]: Adid = " + attribution.adid);
+            });
+        }, false);
+
+        btnGetSdkVersion.addEventListener('click', function() {
+            Adjust.getSdkVersion(function(sdkVersion) {
+                navigator.notification.alert(sdkVersion, null, 'SDK Version', 'OK');
             });
         }, false);
     }
