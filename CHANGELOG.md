@@ -1,4 +1,4 @@
-### Version 4.17.1 (31st January 2019)
+### Version 4.17.1 (1st February 2019)
 #### Fixed
 - Fixed occurance of exception due to usage attempt of `getSdkPrefix()` method for `ionic-native` users.
 
