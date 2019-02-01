@@ -121,6 +121,7 @@ var app = {
         var btnEnableDisableOfflineMode = document.getElementById("btnEnableDisableOfflineMode");
         var btnEnableDisableSdk = document.getElementById("btnEnableDisableSdk");
         var btnIsSdkEnabled = document.getElementById("btnIsSdkEnabled");
+        var btnGetSdkVersion = document.getElementById("btnGetSdkVersion");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
             var adjustEvent = new AdjustEvent("g3mfiw");
@@ -210,6 +211,12 @@ var app = {
                 console.log("[AdjustExample]: Creative = " + attribution.creative);
                 console.log("[AdjustExample]: Click label = " + attribution.clickLabel);
                 console.log("[AdjustExample]: Adid = " + attribution.adid);
+            });
+        }, false);
+
+        btnGetSdkVersion.addEventListener('click', function() {
+            Adjust.getSdkVersion(function(sdkVersion) {
+                navigator.notification.alert(sdkVersion, null, 'SDK Version', 'OK');
             });
         }, false);
     }
