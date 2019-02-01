@@ -17,7 +17,6 @@
     "cordova": {
         "plugins": {
             "cordova-plugin-whitelist": {},
-            "com.adjust.sdk": {},
             "cordova-plugin-device": {},
             "cordova-plugin-dialogs": {},
             "cordova-plugin-console": {},
@@ -27,7 +26,8 @@
                 "ANDROID_SCHEME": " ",
                 "ANDROID_HOST": " ",
                 "ANDROID_PATHPREFIX": "/"
-            }
+            },
+            "com.adjust.sdk": {}
         },
         "platforms": [
             "ios",
