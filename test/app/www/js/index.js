@@ -21,7 +21,7 @@ var app = {
 
             var baseUrl = "";
             var gdprUrl = "";
-            var ipAddress = "192.168.8.206";
+            var ipAddress = "192.168.8.98";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
@@ -29,9 +29,10 @@ var app = {
                 baseUrl = "http://" + ipAddress + ":8080";
                 gdprUrl = "http://" + ipAddress + ":8080";
             }
+            var controlUrl = "ws://" + ipAddress + ":1987";
 
             var commandExecutor = new CommandExecutor(baseUrl, gdprUrl);
-            AdjustTest.startTestSession(baseUrl, sdkVersion, function(json) {
+            AdjustTest.startTestSession(baseUrl, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];
                 var functionName = commandDict['functionName'];

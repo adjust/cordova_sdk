@@ -33,10 +33,12 @@ public class AdjustCordovaTest extends CordovaPlugin {
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals(COMMAND_START_TEST_SESSION)) {
             final String baseUrl = args.getString(0);
-            final String sdkVersion = args.getString(1);
+            final String controlUrl = args.getString(1);
+            final String sdkVersion = args.getString(2);
             this.commandCallbackContext = callbackContext;
             testLibrary = new TestLibrary(
                 baseUrl, 
+                controlUrl, 
                 new CommandListener(
                     this.cordova.getActivity().getApplicationContext(),
                     this.commandCallbackContext));

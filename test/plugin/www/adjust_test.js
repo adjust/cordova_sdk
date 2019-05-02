@@ -21,8 +21,8 @@ function callCordovaCallback(action, callback) {
 }
 
 var AdjustTest = {
-    startTestSession: function(baseUrl, sdkVersion, callback) {
-        callCordovaCallback('startTestSession', callback, baseUrl, sdkVersion);
+    startTestSession: function(baseUrl, controlUrl, sdkVersion, callback) {
+        callCordovaCallback('startTestSession', callback, baseUrl, controlUrl, sdkVersion);
     },
 
     addInfoToSend: function(key, value) {
