@@ -34,16 +34,16 @@
 
 - (void)startTestSession:(CDVInvokedUrlCommand *)command {
     NSString *baseUrl = [command.arguments objectAtIndex:0];
-    NSString *sdkVersion = [command.arguments objectAtIndex:1];
+    NSString *controlUrl = [command.arguments objectAtIndex:1];
+    NSString *sdkVersion = [command.arguments objectAtIndex:2];
     if (![self isFieldValid:baseUrl]) {
         return;
     }
 
     self.adjustCommandListener = [[ADJCommandListener alloc] initWithCallbackId:command.callbackId
                                                              andCommandDelegate:self.commandDelegate];
-    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
-                                           andCommandDelegate:self.adjustCommandListener];
-
+    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl andControlUrl:controlUrl andCommandDelegate:self.adjustCommandListener];
+    
     for (id object in selectedTests) {
         [self.testLibrary addTest:object];
     }
