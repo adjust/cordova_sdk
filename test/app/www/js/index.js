@@ -21,7 +21,7 @@ var app = {
 
             var baseUrl = "";
             var gdprUrl = "";
-            var ipAddress = "192.168.8.98";
+            var ipAddress = "192.168.9.78";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
