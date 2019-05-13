@@ -184,10 +184,10 @@ def adb_shell(app_package):
     execute_command(['adb', 'shell', 'monkey', '-p', app_package, '1'])
 
 def gradle_make_release_jar():
-    execute_command(['./gradlew', 'adjustSdkNonNativeJarRelease'])
+    execute_command(['./gradlew', 'adjustCoreJarRelease'])
 
 def gradle_make_debug_jar():
-    execute_command(['./gradlew', 'adjustSdkNonNativeJarDebug'])
+    execute_command(['./gradlew', 'adjustCoreJarDebug'])
 
 def gradle_run(options):
     cmd_params = ['./gradlew']
@@ -262,23 +262,3 @@ def cordova_add_platform(platform):
 
 def cordova_remove_platform(platform):
     execute_command(['cordova', 'platform', 'remove', platform])
-
-############################################################
-### nonsense, eyecandy and such
-
-def waiting_animation(duration, step):
-    if(duration <= step):
-        return
-
-    line = '-'
-    line_killer = '\b'
-    while duration >= 0:
-        duration -= step
-        sys.stdout.write(line)
-        sys.stdout.flush()
-        sys.stdout.write(line_killer)
-        line += '-'
-        line_killer += '\b'
-        if len(line) > 65:
-            line = '-'
-        time.sleep(step)
