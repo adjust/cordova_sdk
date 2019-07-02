@@ -38,7 +38,6 @@ def build(root_dir, ios_submodule_dir, with_test_lib):
         # ------------------------------------------------------------------
         # Test Library paths
         set_log_tag('ANROID-TEST-LIB-BUILD')
-        waiting_animation(duration=4.0, step=0.025)
         debug_green('Building Test Library started ...')
         test_lib_project_dir    = '{0}/AdjustTests/AdjustTestLibrary'.format(ext_dir)
         test_lib_out_dir        = '{0}/test/plugin/src/ios'.format(root_dir)

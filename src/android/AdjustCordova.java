@@ -144,6 +144,14 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
+        } else if (action.equals(COMMAND_TRACK_AD_REVENUE)) {
+            try {
+                JSONObject jsonPayload = new JSONObject(args.getString(1));
+                Adjust.trackAdRevenue(args.getString(0), jsonPayload);
+            } catch (JSONException err) {
+                Logger logger = (Logger)AdjustFactory.getLogger();
+                logger.error("Give ad revenue payload is not a valid JSON string");
+            }
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {

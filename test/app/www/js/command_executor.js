@@ -108,6 +108,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case "openDeeplink" : this.openDeeplink(command.params); break;
         case "sendReferrer" : this.sendReferrer(command.params); break;
         case "gdprForgetMe" : this.gdprForgetMe(command.params); break;
+        case "trackAdRevenue" : this.trackAdRevenue(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -541,6 +542,12 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
 AdjustCommandExecutor.prototype.sendReferrer = function(params) {
     var referrer = getFirstParameterValue(params, 'referrer');
     Adjust.setReferrer(referrer);
+};
+
+AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
+    var source = getFirstParameterValue(params, 'adRevenueSource');
+    var payload = getFirstParameterValue(params, 'adRevenueJsonString');
+    Adjust.trackAdRevenue(source, payload);
 };
 
 // Util methods //

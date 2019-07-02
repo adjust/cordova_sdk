@@ -377,6 +377,13 @@
     [Adjust sendFirstPackages];
 }
 
+- (void)trackAdRevenue:(CDVInvokedUrlCommand *)command {
+    NSString *source = [command argumentAtIndex:0 withDefault:nil];
+    NSString *payload = [command argumentAtIndex:1 withDefault:nil];
+    NSData *dataPayload = [payload dataUsingEncoding:NSUTF8StringEncoding];
+    [Adjust trackAdRevenue:source payload:dataPayload];
+}
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     attributionCallbackId = command.callbackId;
 }

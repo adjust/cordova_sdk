@@ -14,11 +14,11 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
     # ------------------------------------------------------------------
     # Running make*Jar Gradle task.
     if is_release:
-        debug_green('Running adjustSdkNonNativeJarRelease Gradle task ...')
+        debug_green('Running adjustCoreJarRelease Gradle task ...')
         jar_name = 'adjust-sdk-release.jar'
         gradle_make_release_jar()
     else:
-        debug_green('Running adjustSdkNonNativeJarDebug Gradle task ...')
+        debug_green('Running adjustCoreJarDebug Gradle task ...')
         jar_name = 'adjust-sdk-debug.jar'
         gradle_make_debug_jar()
 
@@ -32,7 +32,6 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
         # ------------------------------------------------------------------
         # Test Library paths
         set_log_tag('ANROID-TEST-LIB-BUILD')
-        waiting_animation(duration=4.0, step=0.025)
         debug_green('Building Test Library started ...')
         test_jar_in_dir  = '{0}/test-library/build/libs'.format(build_dir)
         test_jar_out_dir = '{0}/test/plugin/src/android'.format(root_dir)
@@ -41,11 +40,11 @@ def build(root_dir, android_submodule_dir, with_test_lib, is_release = True):
 
         # ------------------------------------------------------------------
         # Running Gradle tasks: clean testlibrary:makeJar ...
-        debug_green('Running Gradle tasks: clean test-library:adjustMakeJarRelease ...')
+        debug_green('Running Gradle tasks: clean test-library:adjustTestLibraryJarRelease ...')
         change_dir(build_dir)
-        gradle_run([':test-library:adjustMakeJarRelease'])
+        gradle_run([':test-library:adjustTestLibraryJarRelease'])
 
         # ------------------------------------------------------------------
         # Moving the generated Android SDK JAR from jar in to jar out dir ...
         debug_green('Moving the generated Android SDK JAR from {0} to {1} dir ...'.format(test_jar_in_dir, test_jar_out_dir))
-        copy_file('{0}/test-library-release.jar'.format(test_jar_in_dir), '{0}/adjust-testing.jar'.format(test_jar_out_dir))
+        copy_file('{0}/test-library-release.jar'.format(test_jar_in_dir), '{0}/adjust-test.jar'.format(test_jar_out_dir))

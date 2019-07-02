@@ -32,8 +32,4 @@
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
-    <plugin name="com.adjust.sdk" spec="/Users/2beens/Documents/projects/cordova_sdk_dev/temp_plugin" />
-    <plugin name="com.adjust.test" spec="/Users/2beens/Documents/projects/cordova_sdk_dev/test/plugin" />
-    <engine name="android" spec="^7.1.4" />
-    <engine name="ios" spec="^4.5.5" />
 </widget>
