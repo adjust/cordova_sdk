@@ -100,7 +100,7 @@ var Adjust = {
 
     trackAdRevenue: function(source, payload) {
         callCordova('trackAdRevenue', source, payload);
-    }
+    },
 
     getGoogleAdId: function(callback) {
         callCordovaCallback('getGoogleAdId', callback);
