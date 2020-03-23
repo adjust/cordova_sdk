@@ -21,13 +21,13 @@ var app = {
 
             var baseUrl = "";
             var gdprUrl = "";
-            var ipAddress = "192.168.8.196";
+            var ipAddress = "192.168.2.101";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
             } else if (device.platform === "iOS") {
-                baseUrl = "http://" + ipAddress + ":9000";
-                gdprUrl = "http://" + ipAddress + ":9000";
+                baseUrl = "http://" + ipAddress + ":8080";
+                gdprUrl = "http://" + ipAddress + ":8080";
             }
             var controlUrl = "ws://" + ipAddress + ":1987";
 
