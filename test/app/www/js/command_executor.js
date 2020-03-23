@@ -69,7 +69,7 @@ AdjustCommandExecutor.prototype.scheduleCommand = function(command) {
 
 // Check the list of commands to see which one is in order.
 AdjustCommandExecutor.prototype.checkList = function() {
-    for (var i = 0; i < this.savedCommands.length; i++ ) {
+    for (var i = 0; i < this.savedCommands.length; i += 1) {
         var command = this.savedCommands[i];
         if (command.order === this.nextToSendCounter) {
             this.executeCommand(command, i);
@@ -109,6 +109,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case "sendReferrer" : this.sendReferrer(command.params); break;
         case "gdprForgetMe" : this.gdprForgetMe(command.params); break;
         case "trackAdRevenue" : this.trackAdRevenue(command.params); break;
+        case "disableThirdPartySharing" : this.disableThirdPartySharing(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -251,13 +252,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setDefaultTracker(defaultTracker);
     }
 
+    if ('externalDeviceId' in params) {
+        var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
+        adjustConfig.setExternalDeviceId(externalDeviceId);
+    }
+
     if ('appSecret' in params) {
         var appSecretArray = getValueFromKey(params, 'appSecret');
         var secretId = appSecretArray[0].toString();
-        var info1    = appSecretArray[1].toString();
-        var info2    = appSecretArray[2].toString();
-        var info3    = appSecretArray[3].toString();
-        var info4    = appSecretArray[4].toString();
+        var info1 = appSecretArray[1].toString();
+        var info2 = appSecretArray[2].toString();
+        var info3 = appSecretArray[3].toString();
+        var info4 = appSecretArray[4].toString();
         adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
     }
 
@@ -288,6 +294,16 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('userAgent' in params) {
         var userAgent = getFirstParameterValue(params, 'userAgent');
         adjustConfig.setUserAgent(userAgent);
+    }
+
+    if ('allowiAdInfoReading' in params) {
+        var allowiAdInfoReading = getFirstParameterValue(params, 'allowiAdInfoReading');
+        adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
+    }
+
+    if ('allowIdfaReading' in params) {
+        var allowIdfaReading = getFirstParameterValue(params, 'allowIdfaReading');
+        adjustConfig.setAllowIdfaReading(allowIdfaReading);
     }
 
     if ('attributionCallbackSendAll' in params) {
@@ -394,6 +410,11 @@ AdjustCommandExecutor.prototype.event = function(params) {
         adjustEvent = this.savedEvents[eventNumber];
     } else {
         var eventToken = getFirstParameterValue(params, 'eventToken');
+        // weird behaviour with null value
+        // double check this later to handle it on event instance level
+        if (typeof eventToken !== 'string') {
+            return;
+        }
         adjustEvent = new AdjustEvent(eventToken);
         this.savedEvents[eventNumber] = adjustEvent;
     }
@@ -407,18 +428,18 @@ AdjustCommandExecutor.prototype.event = function(params) {
 
     if ('callbackParams' in params) {
         var callbackParams = getValueFromKey(params, "callbackParams");
-        for (var i = 0; i < callbackParams.length; i = i + 2) {
+        for (var i = 0; i < callbackParams.length; i += 2) {
             var key = callbackParams[i];
-            var value = callbackParams[i + 1];
+            var value = callbackParams[i+1];
             adjustEvent.addCallbackParameter(key, value);
         }
     }
 
     if ('partnerParams' in params) {
         var partnerParams = getValueFromKey(params, "partnerParams");
-        for (var i = 0; i < partnerParams.length; i = i + 2) {
+        for (var i = 0; i < partnerParams.length; i += 2) {
             var key = partnerParams[i];
-            var value = partnerParams[i + 1];
+            var value = partnerParams[i+1];
             adjustEvent.addPartnerParameter(key, value);
         }
     }
@@ -477,26 +498,26 @@ AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
     Adjust.gdprForgetMe();
-}
+};
+
+AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
+    Adjust.disableThirdPartySharing();
+};
 
 AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
     var list = getValueFromKey(params, "KeyValue");
-
-    for (var i = 0; i < list.length; i = i+2){
+    for (var i = 0; i < list.length; i += 2) {
         var key = list[i];
         var value = list[i+1];
-
         Adjust.addSessionCallbackParameter(key, value);
     }
 };
 
 AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
     var list = getValueFromKey(params, "KeyValue");
-
-    for (var i = 0; i < list.length; i = i+2){
+    for (var i = 0; i < list.length; i += 2) {
         var key = list[i];
         var value = list[i+1];
-
         Adjust.addSessionPartnerParameter(key, value);
     }
 };
@@ -504,8 +525,7 @@ AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
 AdjustCommandExecutor.prototype.removeSessionCallbackParameter = function(params) {
     if ('key' in params) {
         var list = getValueFromKey(params, 'key');
-
-        for (var i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i += 1) {
             Adjust.removeSessionCallbackParameter(list[i]);
         }
     }
@@ -514,8 +534,7 @@ AdjustCommandExecutor.prototype.removeSessionCallbackParameter = function(params
 AdjustCommandExecutor.prototype.removeSessionPartnerParameter = function(params) {
     if ('key' in params) {
         var list = getValueFromKey(params, 'key');
-
-        for (var i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i += 1) {
             Adjust.removeSessionPartnerParameter(list[i]);
         }
     }
@@ -550,7 +569,7 @@ AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
     Adjust.trackAdRevenue(source, payload);
 };
 
-// Util methods //
+// Util methods
 
 function addJsonResponseInfo(event) {
     if (event.jsonResponse == null) {
@@ -576,7 +595,7 @@ function getFirstParameterValue(params, key) {
     if (key in params) {
         var param = params[key];
 
-        if(param != null && param.length >= 1) {
+        if (param != null && param.length >= 1) {
             return param[0];
         }
     }
