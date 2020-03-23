@@ -141,6 +141,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             Adjust.sendFirstPackages();
         } else if (action.equals(COMMAND_GDPR_FORGET_ME)) {
             Adjust.gdprForgetMe(this.cordova.getActivity().getApplicationContext());
+        } else if (action.equals(COMMAND_DISABLE_THIRD_PARTY_SHARING)) {
+            Adjust.disableThirdPartySharing(this.cordova.getActivity().getApplicationContext());
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());

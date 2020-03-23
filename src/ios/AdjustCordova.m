@@ -32,6 +32,8 @@
 #define KEY_SEND_IN_BACKGROUND @"sendInBackground"
 #define KEY_DELAY_START @"delayStart"
 #define KEY_DEVICE_KNOWN @"isDeviceKnown"
+#define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
+#define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
 #define KEY_SECRET_ID @"secretId"
 #define KEY_INFO_1 @"info1"
 #define KEY_INFO_2 @"info2"
@@ -91,6 +93,8 @@
     NSString *info4 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
     NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSNumber *isDeviceKnown = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
+    NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
+    NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
@@ -150,6 +154,16 @@
     // Device known.
     if ([self isFieldValid:isDeviceKnown]) {
         [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
+    }
+
+    // iAd info reading.
+    if ([self isFieldValid:allowiAdInfoReading]) {
+        [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
+    }
+
+    // IDFA reading.
+    if ([self isFieldValid:allowIdfaReading]) {
+        [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
     }
 
     // App Secret.
@@ -316,6 +330,10 @@
 
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command {
     [Adjust gdprForgetMe];
+}
+
+- (void)disableThirdPartySharing:(CDVInvokedUrlCommand *)command {
+    [Adjust disableThirdPartySharing];
 }
 
 - (void)getIdfa:(CDVInvokedUrlCommand *)command {

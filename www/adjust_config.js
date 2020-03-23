@@ -25,6 +25,9 @@ function AdjustConfig(appToken, environment) {
     // Android only
     this.processName = null;
     this.readMobileEquipmentIdentity = null;
+    // iOS only
+    this.allowiAdInfoReading = null;
+    this.allowIdfaReading = null;
 };
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
@@ -99,11 +102,11 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 
 AdjustConfig.prototype.setUserAgent = function(userAgent) {
     this.userAgent = userAgent;
-}
+};
 
 AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
     this.isDeviceKnown = isDeviceKnown;
-}
+};
 
 AdjustConfig.prototype.getSdkPrefix = function() {
     return this.sdkPrefix;
@@ -113,11 +116,19 @@ AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
     this.sdkPrefix = sdkPrefix;
 };
 
+AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
+    this.allowiAdInfoReading = allowiAdInfoReading;
+};
+
+AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
+    this.allowIdfaReading = allowIdfaReading;
+};
+
 // @deprecated
 AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
     console.warn("Calling deprecated function! This functionality has been removed from the SDK.");
     // this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
-}
+};
 
 AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
     if (secretId !== null) {
@@ -139,7 +150,7 @@ AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, in
 
 AdjustConfig.prototype.setDelayStart = function(delayStart) {
     this.delayStart = delayStart;
-}
+};
 
 AdjustConfig.prototype.setReferrer = function(referrer) {
     this.referrer = referrer;

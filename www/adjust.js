@@ -98,6 +98,10 @@ var Adjust = {
         callCordova('gdprForgetMe');
     },
 
+    disableThirdPartySharing: function() {
+        callCordova('disableThirdPartySharing');
+    },
+
     trackAdRevenue: function(source, payload) {
         callCordova('trackAdRevenue', source, payload);
     },

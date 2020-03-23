@@ -74,6 +74,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_ENABLED = "setEnabled";
     public static final String COMMAND_APP_WILL_OPEN_URL = "appWillOpenUrl";
     public static final String COMMAND_GDPR_FORGET_ME = "gdprForgetMe";
+    public static final String COMMAND_DISABLE_THIRD_PARTY_SHARING = "disableThirdPartySharing";
     public static final String COMMAND_TRACK_AD_REVENUE = "trackAdRevenue";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_ADID = "getAdid";
