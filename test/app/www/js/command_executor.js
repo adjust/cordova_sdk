@@ -297,12 +297,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
 
     if ('allowiAdInfoReading' in params) {
-        var allowiAdInfoReading = getFirstParameterValue(params, 'allowiAdInfoReading');
+        var allowiAdInfoReadingS = getFirstParameterValue(params, 'allowiAdInfoReading');
+        var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
         adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
     }
 
     if ('allowIdfaReading' in params) {
-        var allowIdfaReading = getFirstParameterValue(params, 'allowIdfaReading');
+        var allowIdfaReadingS = getFirstParameterValue(params, 'allowIdfaReading');
+        var allowIdfaReading = allowIdfaReadingS == 'true';
         adjustConfig.setAllowIdfaReading(allowIdfaReading);
     }
 
