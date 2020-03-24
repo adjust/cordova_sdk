@@ -14,7 +14,7 @@
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
     "@angular/compiler": "5.2.11",
-    "@angular/compiler-cli": "^7.2.15",
+    "@angular/compiler-cli": "^9.0.7",
     "@angular/core": "5.2.11",
     "@angular/forms": "5.2.11",
     "@angular/http": "5.2.11",
@@ -43,7 +43,7 @@
     "set-value": "^3.0.1",
     "shelljs": "^0.8.3",
     "sw-toolbox": "3.6.0",
-    "tar": "^4.4.10",
+    "tar": "^6.0.1",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
