@@ -45,6 +45,7 @@ export class AdjustConfig {
   private delayStart = 0.0;
   private logLevel: AdjustLogLevel = null;
   private defaultTracker: string = null;
+  private externalDeviceId: string = null;
   private sendInBackground: boolean = null;
   private shouldLaunchDeeplink: boolean = null;
   private eventBufferingEnabled: boolean = null;
@@ -56,6 +57,8 @@ export class AdjustConfig {
   private info3: number = null;
   private info4: number = null;
   private processName: string = null; // Android only
+  private allowiAdInfoReading: boolean = null; // iOS only
+  private allowIdfaReading: boolean = null; // iOS only
 
   private attributionCallback: (attribution: AdjustAttribution) => void = null;
   private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -89,6 +92,10 @@ export class AdjustConfig {
     this.defaultTracker = defaultTracker;
   }
 
+  setExternalDeviceId(externalDeviceId: string) {
+    this.externalDeviceId = externalDeviceId;
+  }
+
   setSendInBackground(sendInBackground: boolean) {
     this.sendInBackground = sendInBackground;
   }
@@ -111,6 +118,14 @@ export class AdjustConfig {
 
   setProcessName(processName: string) {
     this.processName = processName;
+  }
+
+  setAllowiAdInfoReading(allowiAdInfoReading: boolean) {
+    this.allowiAdInfoReading = allowiAdInfoReading;
+  }
+
+  setAllowIdfaReading(allowIdfaReading: boolean) {
+    this.allowIdfaReading = allowIdfaReading;
   }
 
   setAttributionCallbackListener(attributionCallback: (attribution: AdjustAttribution) => void) {
@@ -346,6 +361,13 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   gdprForgetMe(): void {}
+
+  /**
+   * You can now notify Adjust when a user has exercised their right to stop sharing their data with partners for marketing purposes, but has allowed it to be shared for statistics purposes. 
+   * Calling the following method will instruct the Adjust SDK to communicate the user's choice to disable data sharing to the Adjust backend
+   */
+  @Cordova({ sync: true })
+  disableThirdPartySharing(): void {}
 
   /**
    * Function used to get Google AdId

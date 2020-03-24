@@ -4,8 +4,8 @@
   "displayName": "HelloCordova",
   "cordova": {
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
@@ -25,8 +25,8 @@
   "dependencies": {
     "com.adjust.sdk": "file:../../temp_plugin",
     "com.adjust.test": "file:../plugin",
-    "cordova-android": "^8.0.0",
-    "cordova-ios": "^5.0.1",
+    "cordova-android": "^8.1.0",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^4.3.0",
     "cordova-plugin-device": "^2.0.2",

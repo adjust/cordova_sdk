@@ -141,6 +141,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             Adjust.sendFirstPackages();
         } else if (action.equals(COMMAND_GDPR_FORGET_ME)) {
             Adjust.gdprForgetMe(this.cordova.getActivity().getApplicationContext());
+        } else if (action.equals(COMMAND_DISABLE_THIRD_PARTY_SHARING)) {
+            Adjust.disableThirdPartySharing(this.cordova.getActivity().getApplicationContext());
         } else if (action.equals(COMMAND_SET_REFERRER)) {
             final String referrer = args.getString(0);
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
@@ -185,6 +187,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String appToken = null;
         String environment = null;
         String defaultTracker = null;
+        String externalDeviceId = null;
         String processName = null;
         String delayStart = null;
         String logLevel = null;
@@ -209,6 +212,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_DEFAULT_TRACKER)) {
             defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
+        }
+        if (parameters.containsKey(KEY_EXTERNAL_DEVICE_ID)) {
+            externalDeviceId = parameters.get(KEY_EXTERNAL_DEVICE_ID).toString();
         }
         if (parameters.containsKey(KEY_PROCESS_NAME)) {
             processName = parameters.get(KEY_PROCESS_NAME).toString();
@@ -296,6 +302,11 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Default tracker.
         if (isFieldValid(defaultTracker)) {
             adjustConfig.setDefaultTracker(defaultTracker);
+        }
+
+        // External device ID.
+        if (isFieldValid(externalDeviceId)) {
+            adjustConfig.setExternalDeviceId(externalDeviceId);
         }
 
         // User agent.

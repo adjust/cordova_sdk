@@ -98,6 +98,10 @@ var Adjust = {
         callCordova('gdprForgetMe');
     },
 
+    disableThirdPartySharing: function() {
+        callCordova('disableThirdPartySharing');
+    },
+
     trackAdRevenue: function(source, payload) {
         callCordova('trackAdRevenue', source, payload);
     },
@@ -130,7 +134,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.18.0';
+        return 'cordova4.21.0';
     },
 
     addSessionCallbackParameter: function(key, value) {
