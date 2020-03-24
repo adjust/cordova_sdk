@@ -1,3 +1,17 @@
+### Version 4.21.0 (20th March 2020)
+#### Added
+- Added `disableThirdPartySharing` method to `Adjust` interface to allow disabling of data sharing with third parties outside of Adjust ecosystem.
+- Added support for signature library as a plugin.
+- Added more aggressive sending retry logic for install session package.
+- Added additional parameters to `ad_revenue` package payload.
+- Added external device ID support.
+
+#### Native SDKs
+- [iOS@v4.21.0][ios_sdk_v4.21.0]
+- [Android@v4.21.0][android_sdk_v4.21.0]
+
+---
+
 ### Version 4.18.0 (2nd July 2019)
 #### Added
 - Added `trackAdRevenue` method to `Adjust` interface to allow tracking of ad revenue. With this release added support for `MoPub` ad revenue tracking.
@@ -426,6 +440,7 @@
 [ios_sdk_v4.15.0]: https://github.com/adjust/ios_sdk/tree/v4.15.0
 [ios_sdk_v4.17.1]: https://github.com/adjust/ios_sdk/tree/v4.17.1
 [ios_sdk_v4.18.0]: https://github.com/adjust/ios_sdk/tree/v4.18.0
+[ios_sdk_v4.21.0]: https://github.com/adjust/ios_sdk/tree/v4.21.0
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -446,3 +461,4 @@
 [android_sdk_v4.15.0]: https://github.com/adjust/android_sdk/tree/v4.15.0
 [android_sdk_v4.17.0]: https://github.com/adjust/android_sdk/tree/v4.17.0
 [android_sdk_v4.18.0]: https://github.com/adjust/android_sdk/tree/v4.18.0
+[android_sdk_v4.21.0]: https://github.com/adjust/android_sdk/tree/v4.21.0
