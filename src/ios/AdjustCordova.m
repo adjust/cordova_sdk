@@ -536,8 +536,7 @@
     }
 
     if ([self isFieldValid:iAdFrameworkEnabled]) {
-        // TODO: available from 4.14.2 >
-        // testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+        testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
     }
     
     [Adjust setTestOptions:testOptions];
