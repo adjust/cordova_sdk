@@ -19,6 +19,7 @@ N.B. At the moment, SDK 4.21.1 for Cordova supports Android platform version `4.
       * [Install referrer](#android-referrer)
          * [Google Play Referrer API](#android-referrer-gpr-api)
          * [Google Play Store intent](#android-referrer-gps-intent)
+         * [Huawei Referrer API](#android-huawei-referrer-api)
       * [iOS frameworks](#ios-frameworks)
 * [Additional features](#additional-features)
    * [Event tracking](#event-tracking)
@@ -237,6 +238,10 @@ The Google Play Store `INSTALL_REFERRER` intent should be captured with a broadc
 ```
 
 Please bear in mind that, if you are using your own broadcast receiver which handles the INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added to your manifest file. You can remove it, but inside your own receiver add the call to the Adjust broadcast receiver as described in our [Android guide][broadcast-receiver-custom].
+
+#### <a id="android-huawei-referrer-api"></a>Huawei Referrer API
+
+As of v4.21.1, the Adjust SDK supports install tracking on Huawei devices with Huawei App Gallery version 10.4 and higher. No additional integration steps are needed to start using the Huawei Referrer API.
 
 ### <a id="ios-frameworks"></a>iOS frameworks
 
