@@ -134,7 +134,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.21.1';
+        return 'cordova4.21.2';
     },
 
     addSessionCallbackParameter: function(key, value) {
