@@ -1,9 +1,9 @@
-### Version 4.21.2 (xxth April 2020)
+### Version 4.21.2 (4th May 2020)
 #### Fixed
-- Added check for iOS timer source and block existence prior to starting it.
+- Removed iAd timer from iOS native SDK.
 
 #### Native SDKs
-- [iOS@v4.21.2][ios_sdk_v4.21.2]
+- [iOS@v4.21.3][ios_sdk_v4.21.3]
 - [Android@v4.21.1][android_sdk_v4.21.1]
 
 ---
@@ -465,7 +465,7 @@
 [ios_sdk_v4.18.0]: https://github.com/adjust/ios_sdk/tree/v4.18.0
 [ios_sdk_v4.21.0]: https://github.com/adjust/ios_sdk/tree/v4.21.0
 [ios_sdk_v4.21.1]: https://github.com/adjust/ios_sdk/tree/v4.21.1
-[ios_sdk_v4.21.2]: https://github.com/adjust/ios_sdk/tree/v4.21.2
+[ios_sdk_v4.21.3]: https://github.com/adjust/ios_sdk/tree/v4.21.3
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
