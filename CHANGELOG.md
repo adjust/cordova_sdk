@@ -1,3 +1,13 @@
+### Version 4.22.0 (10th June 2020)
+#### Added
+- Added subscription tracking feature.
+
+#### Native SDKs
+- [iOS@v4.22.1][ios_sdk_v4.22.1]
+- [Android@v4.22.0][android_sdk_v4.22.0]
+
+---
+
 ### Version 4.21.2 (4th May 2020)
 #### Fixed
 - Removed iAd timer from iOS native SDK.
@@ -466,6 +476,7 @@
 [ios_sdk_v4.21.0]: https://github.com/adjust/ios_sdk/tree/v4.21.0
 [ios_sdk_v4.21.1]: https://github.com/adjust/ios_sdk/tree/v4.21.1
 [ios_sdk_v4.21.3]: https://github.com/adjust/ios_sdk/tree/v4.21.3
+[ios_sdk_v4.22.1]: https://github.com/adjust/ios_sdk/tree/v4.22.1
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -488,3 +499,4 @@
 [android_sdk_v4.18.0]: https://github.com/adjust/android_sdk/tree/v4.18.0
 [android_sdk_v4.21.0]: https://github.com/adjust/android_sdk/tree/v4.21.0
 [android_sdk_v4.21.1]: https://github.com/adjust/android_sdk/tree/v4.21.1
+[android_sdk_v4.22.0]: https://github.com/adjust/android_sdk/tree/v4.22.0
