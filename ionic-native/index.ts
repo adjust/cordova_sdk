@@ -201,6 +201,84 @@ export class AdjustConfig {
   }
 }
 
+export class AdjustAppStoreSubscription {
+  private price: string;
+  private currency: string;
+  private transactionId: string;
+  private receipt: string;
+  private transactionDate: string;
+  private salesRegion: string;
+  private callbackParameters: string[] = [];
+  private partnerParameters: string[] = [];
+
+  constructor(price: string, currency: string, transactionId: string, receipt: string) {
+    this.price = price;
+    this.currency = currency;
+    this.transactionId = transactionId;
+    this.receipt = receipt;
+  }
+
+  setTransactionDate(transactionDate: string): void {
+    this.transactionDate = transactionDate;
+  }
+
+  setSalesRegion(salesRegion: string): void {
+    this.salesRegion = salesRegion;
+  }
+
+  addCallbackParameter(key: string, value: string): void {
+    this.callbackParameters.push(key);
+    this.callbackParameters.push(value);
+  }
+
+  addPartnerParameter(key: string, value: string): void {
+    this.partnerParameters.push(key);
+    this.partnerParameters.push(value);
+  }
+}
+
+export class AdjustPlayStoreSubscription {
+  private price: string;
+  private currency: string;
+  private sku: string;
+  private orderId: string;
+  private signature: string;
+  private purchaseToken: string;
+  private purchaseTime: string;
+  private callbackParameters: string[] = [];
+  private partnerParameters: string[] = [];
+
+  constructor(
+    price: string,
+    currency: string,
+    sku: string,
+    orderId: string,
+    signature: string,
+    purchaseToken: string
+  ) {
+    this.price = price;
+    this.currency = currency;
+    this.sku = sku;
+    this.orderId = orderId;
+    this.signature = signature;
+    this.purchaseToken = purchaseToken;
+  }
+
+  setPurchaseTime(purchaseTime: string): void {
+    this.purchaseTime = purchaseTime;
+  }
+
+  addCallbackParameter(key: string, value: string): void {
+    this.callbackParameters.push(key);
+    this.callbackParameters.push(value);
+  }
+
+  addPartnerParameter(key: string, value: string): void {
+    this.partnerParameters.push(key);
+    this.partnerParameters.push(value);
+  }
+}
+
 export interface AdjustAttribution {
   trackerToken: string;
   trackerName: string;
@@ -291,6 +369,8 @@ export enum AdjustLogLevel {
  * @classes
  * AdjustEvent
  * AdjustConfig
+ * AdjustAppStoreSubscription
+ * AdjustPlayStoreSubscription
  * @enums
  * AdjustEnvironment
  * AdjustLogLevel
@@ -318,6 +398,20 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   trackEvent(event: AdjustEvent): void {}
+
+  /**
+   * This method tracks App Store subscription
+   * @param {AdjustAppStoreSubscription} subscription Adjust App Store subscription object to be tracked
+   */
+  @Cordova({ sync: true })
+  trackAppStoreSubscription(subscription: AdjustAppStoreSubscription): void {}
+
+  /**
+   * This method tracks Play Store subscription
+   * @param {AdjustPlayStoreSubscription} subscription Adjust Play Store subscription object to be tracked
+   */
+  @Cordova({ sync: true })
+  trackPlayStoreSubscription(subscription: AdjustPlayStoreSubscription): void {}
 
   /**
    * This method sets offline mode on or off

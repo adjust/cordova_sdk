@@ -4,8 +4,11 @@ function AdjustTestOptions() {
     this.hasContext = false;
     this.baseUrl = null;
     this.gdprUrl = null;
+    this.subscriptionUrl = null;
     this.basePath = null;
-    this.gdprPath = null;
+    this.gdprPath = null
+    this.subscriptionPath = null
+    this.extraPath = null;
     this.useTestConnectionOptions = null;
     this.timerIntervalInMilliseconds = null;
     this.timerStartInMilliseconds = null;
