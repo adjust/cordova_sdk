@@ -154,6 +154,10 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 Logger logger = (Logger)AdjustFactory.getLogger();
                 logger.error("Give ad revenue payload is not a valid JSON string");
             }
+        } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION)) {
+            executeTrackPlayStoreSubscription(args);
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -464,6 +468,85 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         Adjust.trackEvent(adjustEvent);
     }
 
+    private void executeTrackPlayStoreSubscription(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        long price = -1;
+        String currency = null;
+        String sku = null;
+        String orderId = null;
+        String signature = null;
+        String purchaseToken = null;
+
+        // Price.
+        if (parameters.containsKey(KEY_PRICE)) {
+            try {
+                price = Long.parseLong(parameters.get(KEY_PRICE).toString());
+            } catch (NumberFormatException ignore) {}
+        }
+        // Currency.
+        if (parameters.containsKey(KEY_CURRENCY)) {
+            currency = parameters.get(KEY_CURRENCY).toString();
+        }
+        // SKU.
+        if (parameters.containsKey(KEY_SKU)) {
+            sku = parameters.get(KEY_SKU).toString();
+        }
+        // Order ID.
+        if (parameters.containsKey(KEY_ORDER_ID)) {
+            orderId = parameters.get(KEY_ORDER_ID).toString();
+        }
+        // Signature.
+        if (parameters.containsKey(KEY_SIGNATURE)) {
+            signature = parameters.get(KEY_SIGNATURE).toString();
+        }
+        // Purchase token.
+        if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
+            purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
+        }
+
+        final AdjustPlayStoreSubscription subscription = new AdjustPlayStoreSubscription(
+                price,
+                currency,
+                sku,
+                orderId,
+                signature,
+                purchaseToken);
+
+        // Purchase time.
+        if (parameters.containsKey(KEY_PURCHASE_TIME)) {
+            try {
+                long purchaseTime = Long.parseLong(parameters.get(KEY_PURCHASE_TIME).toString());
+                subscription.setPurchaseTime(purchaseTime);
+            } catch (NumberFormatException ignore) {}
+        }
+
+        JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
+        JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
+        String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
+        String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
+
+        // Callback parameters.
+        for (int i = 0; i < callbackParameters.length; i +=2) {
+            String key = callbackParameters[i];
+            String value = callbackParameters[i+1];
+            subscription.addCallbackParameter(key, value);
+        }
+
+        // Partner parameters.
+        for (int i = 0; i < partnerParameters.length; i += 2) {
+            String key = partnerParameters[i];
+            String value = partnerParameters[i+1];
+            subscription.addPartnerParameter(key, value);
+        }
+
+        // Track subscription.
+        Adjust.trackPlayStoreSubscription(subscription);
+    }
+
     private void executeSetTestOptions(final JSONArray args) throws JSONException {
         JSONObject jsonParameters = args.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
@@ -498,6 +581,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         }
 
+        if (!jsonParameters.isNull(KEY_SUBSCRIPTION_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_SUBSCRIPTION_URL);
+                testOptions.subscriptionUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription URL.");
+            }
+        }
+
         if (!jsonParameters.isNull(KEY_BASE_PATH)) {
             try {
                 String value = jsonParameters.getString(KEY_BASE_PATH);
@@ -513,6 +605,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 testOptions.gdprPath = value;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR path.");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_SUBSCRIPTION_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_SUBSCRIPTION_PATH);
+                testOptions.subscriptionPath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription path.");
             }
         }
 

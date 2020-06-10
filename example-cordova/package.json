@@ -4,12 +4,12 @@
     "description": "A sample Apache Cordova application that uses Adjust SDK.",
     "main": "index.js",
     "dependencies": {
-        "com.adjust.sdk": "^4.21.2",
+        "com.adjust.sdk": "file:../temp_plugin",
         "cordova-android": "^8.1.0",
         "cordova-ios": "^5.1.1",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-customurlscheme": "^4.3.0",
-        "cordova-plugin-device": "^2.0.2",
+        "cordova-plugin-device": "git+https://github.com/apache/cordova-plugin-device.git",
         "cordova-plugin-dialogs": "^2.0.1",
         "cordova-plugin-whitelist": "^1.3.3",
         "cordova-universal-links-plugin": "^1.2.1"
@@ -26,7 +26,8 @@
                 "ANDROID_SCHEME": " ",
                 "ANDROID_HOST": " ",
                 "ANDROID_PATHPREFIX": "/"
-            }
+            },
+            "com.adjust.sdk": {}
         },
         "platforms": [
             "ios",

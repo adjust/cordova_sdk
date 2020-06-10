@@ -42,8 +42,8 @@
 #define KEY_INFO_4 @"info4"
 #define KEY_BASE_URL @"baseUrl"
 #define KEY_GDPR_URL @"gdprUrl"
-#define KEY_BASE_PATH @"basePath"
-#define KEY_GDPR_PATH @"gdprPath"
+#define KEY_SUBSCRIPTION_URL @"gdprUrl"
+#define KEY_EXTRA_PATH @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
 #define KEY_TIMER_START @"timerStartInMilliseconds"
@@ -53,6 +53,9 @@
 #define KEY_NO_BACKOFF_WAIT @"noBackoffWait"
 #define KEY_HAS_CONTEXT @"hasContext"
 #define KEY_IAD_ENABLED @"iAdFrameworkEnabled"
+#define KEY_PRICE @"price"
+#define KEY_TRANSACTION_DATE @"transactionDate"
+#define KEY_SALES_REGION @"salesRegion"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -409,6 +412,75 @@
     [Adjust trackAdRevenue:source payload:dataPayload];
 }
 
+- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+
+    NSString *price = [[jsonObject valueForKey:KEY_PRICE] objectAtIndex:0];
+    NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
+    NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
+    NSString *receipt = [[jsonObject valueForKey:KEY_RECEIPT] objectAtIndex:0];
+    NSString *transactionDate = [[jsonObject valueForKey:KEY_TRANSACTION_DATE] objectAtIndex:0];
+    NSString *salesRegion = [[jsonObject valueForKey:KEY_SALES_REGION] objectAtIndex:0];
+    NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
+    NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
+
+    for (id item in [[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]) {
+        [callbackParameters addObject:item];
+    }
+    for (id item in [[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]) {
+        [partnerParameters addObject:item];
+    }
+
+    // Price.
+    NSDecimalNumber *priceValue;
+    if ([self isFieldValid:price]) {
+        priceValue = [NSDecimalNumber decimalNumberWithString:price];
+    }
+
+    // Receipt.
+    NSData *receiptValue;
+    if ([self isFieldValid:receipt]) {
+        receiptValue = [receipt dataUsingEncoding:NSUTF8StringEncoding];
+    }
+
+    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:priceValue
+                                                                  currency:currency
+                                                             transactionId:transactionId
+                                                                andReceipt:receiptValue];
+
+    // Transaction date.
+    if ([self isFieldValid:transactionDate]) {
+        NSTimeInterval transactionDateInterval = [transactionDate doubleValue];
+        NSDate *oTransactionDate = [NSDate dateWithTimeIntervalSince1970:transactionDateInterval];
+        [subscription setTransactionDate:oTransactionDate];
+    }
+
+    // Sales region.
+    if ([self isFieldValid:salesRegion]) {
+        [subscription setSalesRegion:salesRegion];
+    }
+
+    // Callback parameters.
+    for (int i = 0; i < [callbackParameters count]; i += 2) {
+        NSString *key = [callbackParameters objectAtIndex:i];
+        NSObject *value = [callbackParameters objectAtIndex:(i+1)];
+        [subscription addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
+    }
+
+    // Partner parameters.
+    for (int i = 0; i < [partnerParameters count]; i += 2) {
+        NSString *key = [partnerParameters objectAtIndex:i];
+        NSObject *value = [partnerParameters objectAtIndex:(i+1)];
+        [subscription addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
+    }
+
+    // Track subscription.
+    [Adjust trackSubscription:subscription];
+}
+
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     attributionCallbackId = command.callbackId;
 }
@@ -479,8 +551,8 @@
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
     NSString *gdprUrl = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
-    NSString *basePath = [[command.arguments valueForKey:KEY_BASE_PATH] objectAtIndex:0];
-    NSString *gdprPath = [[command.arguments valueForKey:KEY_GDPR_PATH] objectAtIndex:0];
+    NSString *subscriptionUrl = [[command.arguments valueForKey:KEY_SUBSCRIPTION_URL] objectAtIndex:0];
+    NSString *extraPath = [[command.arguments valueForKey:KEY_EXTRA_PATH] objectAtIndex:0];
     NSString *timerInterval = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
     NSString *timerStart = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
     NSString *sessionInterval = [[command.arguments valueForKey:KEY_SESSION_INTERVAL] objectAtIndex:0];
@@ -498,13 +570,13 @@
     if ([self isFieldValid:gdprUrl]) {
         testOptions.gdprUrl = gdprUrl;
     }
-    
-    if ([self isFieldValid:basePath]) {
-        testOptions.basePath = basePath;
-    }
 
-    if ([self isFieldValid:gdprPath]) {
-        testOptions.gdprPath = gdprPath;
+    if ([self isFieldValid:subscriptionUrl]) {
+        testOptions.subscriptionUrl = subscriptionUrl;
+    }
+    
+    if ([self isFieldValid:extraPath]) {
+        testOptions.extraPath = extraPath;
     }
     
     if ([self isFieldValid:timerInterval]) {
@@ -561,6 +633,8 @@
 }
 
 - (void)setReferrer:(CDVInvokedUrlCommand *)command {}
+
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command {}
 
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
     NSString *googleAdId = @"";

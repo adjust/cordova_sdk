@@ -106,6 +106,14 @@ var Adjust = {
         callCordova('trackAdRevenue', source, payload);
     },
 
+    trackAppStoreSubscription: function(subscription) {
+        callCordovaStringify('trackAppStoreSubscription', subscription);
+    },
+
+    trackPlayStoreSubscription: function(subscription) {
+        callCordovaStringify('trackPlayStoreSubscription', subscription);
+    },
+
     getGoogleAdId: function(callback) {
         callCordovaCallback('getGoogleAdId', callback);
     },
@@ -134,7 +142,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.21.2';
+        return 'cordova4.22.0';
     },
 
     addSessionCallbackParameter: function(key, value) {

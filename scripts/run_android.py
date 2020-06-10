@@ -43,7 +43,7 @@ def _run_example(root_dir, android_submodule_dir):
     # Re-installing plugins to example app.
     debug_green('Re-installing plugins to example app ...')
     cordova_remove_plugin(sdk_plugin_package)
-    cordova_add_plugin(plugin_temp_dir)
+    cordova_add_plugin(plugin_temp_dir, options=['--verbose', '--nofetch'])
     cordova_add_plugin('cordova-plugin-console')
     cordova_add_plugin('cordova-plugin-customurlscheme', options=['--variable', 'URL_SCHEME=adjust-example'])
     cordova_add_plugin('cordova-plugin-dialogs')

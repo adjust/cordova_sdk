@@ -28,8 +28,8 @@ function AdjustCommand(functionName, params, order) {
     this.order = order;
 }
 
-function CommandExecutor(baseUrl, gdprUrl) {
-    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl, gdprUrl);
+function CommandExecutor(baseUrl, gdprUrl, subscriptionUrl) {
+    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl, gdprUrl, subscriptionUrl);
 };
 
 CommandExecutor.prototype.scheduleCommand = function(className, functionName, params, order) {
@@ -41,11 +41,14 @@ CommandExecutor.prototype.scheduleCommand = function(className, functionName, pa
     }
 };
 
-function AdjustCommandExecutor(baseUrl, gdprUrl) {
+function AdjustCommandExecutor(baseUrl, gdprUrl, subscriptionUrl) {
     this.baseUrl = baseUrl;
     this.gdprUrl = gdprUrl;
+    this.subscriptionUrl = subscriptionUrl;
     this.basePath = null;
     this.gdprPath = null;
+    this.subscriptionPath = null;
+    this.extraPath = null;
     this.savedEvents = {};
     this.savedConfigs = {};
     this.savedCommands = [];
@@ -110,6 +113,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case "gdprForgetMe" : this.gdprForgetMe(command.params); break;
         case "trackAdRevenue" : this.trackAdRevenue(command.params); break;
         case "disableThirdPartySharing" : this.disableThirdPartySharing(command.params); break;
+        case "trackSubscription" : this.trackSubscription(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -127,9 +131,12 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     var testOptions = new AdjustTestOptions();
     testOptions.baseUrl = this.baseUrl;
     testOptions.gdprUrl = this.gdprUrl;
+    testOptions.subscriptionUrl = this.subscriptionUrl;
     if ('basePath' in params) {
         this.basePath = getFirstParameterValue(params, 'basePath');
         this.gdprPath = getFirstParameterValue(params, 'basePath');
+        this.subscriptionPath = getFirstParameterValue(params, 'basePath');
+        this.extraPath = getFirstParameterValue(params, 'basePath');
     }
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstParameterValue(params, 'timerInterval').toString();
@@ -144,12 +151,10 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         testOptions.subsessionIntervalInMilliseconds = getFirstParameterValue(params, 'subsessionInterval').toString();
     }
     if ('noBackoffWait' in params) {
-        var noBackoffWait = getFirstParameterValue(params, 'noBackoffWait');
-        testOptions.noBackoffWait = noBackoffWait == 'true';
+        testOptions.noBackoffWait = getFirstParameterValue(params, 'noBackoffWait').toString() === 'true';
     }
     if ('iAdFrameworkEnabled' in params) {
-        var iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled');
-        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+        testOptions.iAdFrameworkEnabled = getFirstParameterValue(params, 'iAdFrameworkEnabled').toString() === 'true';
     }
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
@@ -159,6 +164,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                 testOptions.teardown = true;
                 testOptions.basePath = this.basePath;
                 testOptions.gdprPath = this.gdprPath;
+                testOptions.subscriptionPath = this.subscriptionPath;
+                testOptions.extraPath = this.extraPath;
                 testOptions.useTestConnectionOptions = true;
                 Adjust.teardown('test');
             }
@@ -177,6 +184,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                 testOptions.teardown = true;
                 testOptions.basePath = null;
                 testOptions.gdprPath = null;
+                testOptions.subscriptionPath = null;
+                testOptions.extraPath = null;
                 testOptions.useTestConnectionOptions = false;
                 Adjust.teardown('test');
             }
@@ -569,6 +578,72 @@ AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
     var source = getFirstParameterValue(params, 'adRevenueSource');
     var payload = getFirstParameterValue(params, 'adRevenueJsonString');
     Adjust.trackAdRevenue(source, payload);
+};
+
+AdjustCommandExecutor.prototype.trackSubscription = function(params) {
+    if (device.platform === "iOS") {
+        var price = getFirstParameterValue(params, 'revenue');
+        var currency = getFirstParameterValue(params, 'currency');
+        var transactionId = getFirstParameterValue(params, 'transactionId');
+        var receipt = getFirstParameterValue(params, 'receipt');
+        var transactionDate = getFirstParameterValue(params, 'transactionDate');
+        var salesRegion = getFirstParameterValue(params, 'salesRegion');
+
+        var subscription = new AdjustAppStoreSubscription(price, currency, transactionId, receipt);
+        subscription.setTransactionDate(transactionDate);
+        subscription.setSalesRegion(salesRegion);
+
+        if ('callbackParams' in params) {
+            var callbackParams = getValueFromKey(params, "callbackParams");
+            for (var i = 0; i < callbackParams.length; i += 2) {
+                var key = callbackParams[i];
+                var value = callbackParams[i+1];
+                subscription.addCallbackParameter(key, value);
+            }
+        }
+
+        if ('partnerParams' in params) {
+            var partnerParams = getValueFromKey(params, "partnerParams");
+            for (var i = 0; i < partnerParams.length; i += 2) {
+                var key = partnerParams[i];
+                var value = partnerParams[i+1];
+                subscription.addPartnerParameter(key, value);
+            }
+        }
+
+        Adjust.trackAppStoreSubscription(subscription);
+    } else if (device.platform === "Android") {
+        var price = getFirstParameterValue(params, 'revenue');
+        var currency = getFirstParameterValue(params, 'currency');
+        var sku = getFirstParameterValue(params, 'productId');
+        var signature = getFirstParameterValue(params, 'receipt');
+        var purchaseToken = getFirstParameterValue(params, 'purchaseToken');
+        var orderId = getFirstParameterValue(params, 'transactionId');
+        var purchaseTime = getFirstParameterValue(params, 'transactionDate');
+
+        var subscription = new AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, purchaseToken);
+        subscription.setPurchaseTime(purchaseTime);
+
+        if ('callbackParams' in params) {
+            var callbackParams = getValueFromKey(params, "callbackParams");
+            for (var i = 0; i < callbackParams.length; i += 2) {
+                var key = callbackParams[i];
+                var value = callbackParams[i+1];
+                subscription.addCallbackParameter(key, value);
+            }
+        }
+
+        if ('partnerParams' in params) {
+            var partnerParams = getValueFromKey(params, "partnerParams");
+            for (var i = 0; i < partnerParams.length; i += 2) {
+                var key = partnerParams[i];
+                var value = partnerParams[i+1];
+                subscription.addPartnerParameter(key, value);
+            }
+        }
+
+        Adjust.trackPlayStoreSubscription(subscription);
+    }
 };
 
 // Util methods
