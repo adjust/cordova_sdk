@@ -1,6 +1,6 @@
 ### Version 4.22.1 (11th June 2020)
 #### Fixed
-- Fixed tag usage for `adjust-android.jar` declaraton inside of `plugin.xml` file (now using `lib-file` instead of `source-file`).
+- Fixed tag usage for `adjust-android.jar` declaration inside of `plugin.xml` file (now using `lib-file` instead of `source-file`).
 
 #### Native SDKs
 - [iOS@v4.22.1][ios_sdk_v4.22.1]
