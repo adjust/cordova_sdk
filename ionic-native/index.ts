@@ -45,6 +45,7 @@ export class AdjustConfig {
   private delayStart = 0.0;
   private logLevel: AdjustLogLevel = null;
   private defaultTracker: string = null;
+  private urlStrategy: string = null;
   private externalDeviceId: string = null;
   private sendInBackground: boolean = null;
   private shouldLaunchDeeplink: boolean = null;

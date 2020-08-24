@@ -22,6 +22,7 @@
 #define KEY_RECEIPT @"receipt"
 #define KEY_DEFAULT_TRACKER @"defaultTracker"
 #define KEY_EXTERNAL_DEVICE_ID @"externalDeviceId"
+#define KEY_URL_STRATEGY @"urlStrategy"
 #define KEY_TRANSACTION_ID @"transactionId"
 #define KEY_CALLBACK_ID @"callbackId"
 #define KEY_CALLBACK_PARAMETERS @"callbackParameters"
@@ -90,6 +91,7 @@
     NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
     NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSString *externalDeviceId = [[jsonObject valueForKey:KEY_EXTERNAL_DEVICE_ID] objectAtIndex:0];
+    NSString *urlStrategy = [[jsonObject valueForKey:KEY_URL_STRATEGY] objectAtIndex:0];
     NSString *userAgent = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
     NSString *secretId = [[jsonObject valueForKey:KEY_SECRET_ID] objectAtIndex:0];
     NSString *info1 = [[jsonObject valueForKey:KEY_INFO_1] objectAtIndex:0];
@@ -144,6 +146,15 @@
     // External device ID.
     if ([self isFieldValid:externalDeviceId]) {
         [adjustConfig setExternalDeviceId:externalDeviceId];
+    }
+
+    // URL strategy.
+    if ([self isFieldValid:urlStrategy]) {
+        if ([urlStrategy isEqualToString:@"china"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyChina];
+        } else if ([urlStrategy isEqualToString:@"india"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyIndia];
+        }
     }
 
     // Send in background.

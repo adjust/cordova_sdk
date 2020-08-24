@@ -8,6 +8,7 @@ function AdjustConfig(appToken, environment) {
     this.isDeviceKnown = null;
     this.defaultTracker = null;
     this.externalDeviceId = null;
+    this.urlStrategy = null;
     this.sendInBackground = null;
     this.shouldLaunchDeeplink = null;
     this.eventBufferingEnabled = null;
@@ -40,6 +41,8 @@ AdjustConfig.LogLevelWarn          = "WARN";
 AdjustConfig.LogLevelError         = "ERROR";
 AdjustConfig.LogLevelAssert        = "ASSERT";
 AdjustConfig.LogLevelSuppress      = "SUPPRESS";
+AdjustConfig.UrlStrategyChina      = "china";
+AdjustConfig.UrlStrategyIndia      = "india";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -103,6 +106,10 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 
 AdjustConfig.prototype.setExternalDeviceId = function(externalDeviceId) {
     this.externalDeviceId = externalDeviceId;
+};
+
+AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
+    this.urlStrategy = urlStrategy;
 };
 
 AdjustConfig.prototype.setUserAgent = function(userAgent) {
