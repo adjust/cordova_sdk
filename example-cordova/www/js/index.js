@@ -26,6 +26,7 @@ var app = {
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
 
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+        adjustConfig.deactivateSKAdNetworkHandling();
         // adjustConfig.setShouldLaunchDeeplink(true);
         // adjustConfig.setDelayStart(3.0);
         // adjustConfig.setSendInBackground(true);

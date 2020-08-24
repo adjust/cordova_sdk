@@ -30,6 +30,7 @@ function AdjustConfig(appToken, environment) {
     // iOS only
     this.allowiAdInfoReading = null;
     this.allowIdfaReading = null;
+    this.handleSkAdNetwork = null;
 };
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
@@ -134,6 +135,10 @@ AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
 
 AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
     this.allowIdfaReading = allowIdfaReading;
+};
+
+AdjustConfig.prototype.deactivateSKAdNetworkHandling = function() {
+    this.handleSkAdNetwork = false;
 };
 
 // @deprecated

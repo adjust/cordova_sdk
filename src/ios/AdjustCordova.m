@@ -36,6 +36,7 @@
 #define KEY_DEVICE_KNOWN @"isDeviceKnown"
 #define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
+#define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
 #define KEY_SECRET_ID @"secretId"
 #define KEY_INFO_1 @"info1"
 #define KEY_INFO_2 @"info2"
@@ -88,7 +89,7 @@
 
     NSString *appToken = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
     NSString *environment = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
-    NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
+    NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
     NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSString *externalDeviceId = [[jsonObject valueForKey:KEY_EXTERNAL_DEVICE_ID] objectAtIndex:0];
     NSString *urlStrategy = [[jsonObject valueForKey:KEY_URL_STRATEGY] objectAtIndex:0];
@@ -98,10 +99,11 @@
     NSString *info2 = [[jsonObject valueForKey:KEY_INFO_2] objectAtIndex:0];
     NSString *info3 = [[jsonObject valueForKey:KEY_INFO_3] objectAtIndex:0];
     NSString *info4 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
-    NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
+    NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSNumber *isDeviceKnown = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
     NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
+    NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
@@ -185,6 +187,13 @@
     // IDFA reading.
     if ([self isFieldValid:allowIdfaReading]) {
         [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+    }
+
+    // SKAdNetwork handling.
+    if ([self isFieldValid:handleSkAdNetwork]) {
+        if ([handleSkAdNetwork boolValue] == false) {
+            [adjustConfig deactivateSKAdNetworkHandling];
+        }
     }
 
     // App Secret.
