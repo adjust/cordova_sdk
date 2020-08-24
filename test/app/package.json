@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "displayName": "HelloCordova",
   "cordova": {
-    "platforms": [],
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-console": {},
