@@ -84,5 +84,7 @@
         <framework src="iAd.framework" weak="true" />
         <framework src="CoreTelephony.framework" weak="true" />
         <framework src="StoreKit.framework" weak="true" />
+        <!-- Uncomment line below if you are building your app for iOS 14 -->
+        <!-- <framework src="AppTrackingTransparency.framework" weak="true" /> -->
     </platform>
 </plugin>

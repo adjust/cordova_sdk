@@ -554,4 +554,12 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   sendFirstPackages(): void {}
+
+  /**
+   * Request Adjust SDK to show pop up dialog for asking user's consent to be tracked.
+   * In order to do this, call this function
+   * @return {Promise<int>} Returns a promise with user's consent value
+   */
+  @Cordova()
+  requestTrackingAuthorizationWithCompletionHandler(): Promise<int> { return; }
 }

@@ -173,6 +173,10 @@ var Adjust = {
         callCordova('sendFirstPackages');
     },
 
+    requestTrackingAuthorizationWithCompletionHandler: function(callback) {
+        callCordovaCallback('requestTrackingAuthorizationWithCompletionHandler', callback);
+    },
+
     setTestOptions: function(testOptions) {
         callCordova('setTestOptions', testOptions);
     },
