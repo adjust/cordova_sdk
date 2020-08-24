@@ -1,4 +1,4 @@
-### Version 4.23.0 (21st August 2020)
+### Version 4.23.0 (25th August 2020)
 #### Added
 - Added communication with SKAdNetwork framework by default on iOS 14.
 - Added method `deactivateSKAdNetworkHandling` method to `AdjustConfig` to switch off default communication with SKAdNetwork framework in iOS 14.
