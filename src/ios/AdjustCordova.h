@@ -38,6 +38,9 @@
 - (void)removeSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
+- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)requestTrackingAuthorizationWithCompletionHandler:(CDVInvokedUrlCommand *)command;
 
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;

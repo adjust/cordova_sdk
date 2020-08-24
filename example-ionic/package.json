@@ -1,6 +1,6 @@
 {
   "name": "AdjustExample",
-  "version": "4.22.1",
+  "version": "4.23.0",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -26,7 +26,6 @@
     "@ionic-native/status-bar": "~4.17.0",
     "@ionic/storage": "2.2.0",
     "acorn": "^7.1.1",
-    "com.adjust.sdk": "^4.22.1",
     "cordova-android": "7.1.4",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-device": "^2.0.2",

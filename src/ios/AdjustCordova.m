@@ -22,6 +22,7 @@
 #define KEY_RECEIPT @"receipt"
 #define KEY_DEFAULT_TRACKER @"defaultTracker"
 #define KEY_EXTERNAL_DEVICE_ID @"externalDeviceId"
+#define KEY_URL_STRATEGY @"urlStrategy"
 #define KEY_TRANSACTION_ID @"transactionId"
 #define KEY_CALLBACK_ID @"callbackId"
 #define KEY_CALLBACK_PARAMETERS @"callbackParameters"
@@ -35,6 +36,7 @@
 #define KEY_DEVICE_KNOWN @"isDeviceKnown"
 #define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
+#define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
 #define KEY_SECRET_ID @"secretId"
 #define KEY_INFO_1 @"info1"
 #define KEY_INFO_2 @"info2"
@@ -42,7 +44,7 @@
 #define KEY_INFO_4 @"info4"
 #define KEY_BASE_URL @"baseUrl"
 #define KEY_GDPR_URL @"gdprUrl"
-#define KEY_SUBSCRIPTION_URL @"gdprUrl"
+#define KEY_SUBSCRIPTION_URL @"subscriptionUrl"
 #define KEY_EXTRA_PATH @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
@@ -87,19 +89,21 @@
 
     NSString *appToken = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
     NSString *environment = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
-    NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
+    NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
     NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSString *externalDeviceId = [[jsonObject valueForKey:KEY_EXTERNAL_DEVICE_ID] objectAtIndex:0];
+    NSString *urlStrategy = [[jsonObject valueForKey:KEY_URL_STRATEGY] objectAtIndex:0];
     NSString *userAgent = [[jsonObject valueForKey:KEY_USER_AGENT] objectAtIndex:0];
     NSString *secretId = [[jsonObject valueForKey:KEY_SECRET_ID] objectAtIndex:0];
     NSString *info1 = [[jsonObject valueForKey:KEY_INFO_1] objectAtIndex:0];
     NSString *info2 = [[jsonObject valueForKey:KEY_INFO_2] objectAtIndex:0];
     NSString *info3 = [[jsonObject valueForKey:KEY_INFO_3] objectAtIndex:0];
     NSString *info4 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
-    NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
+    NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSNumber *isDeviceKnown = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
     NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
+    NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
@@ -146,6 +150,15 @@
         [adjustConfig setExternalDeviceId:externalDeviceId];
     }
 
+    // URL strategy.
+    if ([self isFieldValid:urlStrategy]) {
+        if ([urlStrategy isEqualToString:@"china"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyChina];
+        } else if ([urlStrategy isEqualToString:@"india"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyIndia];
+        }
+    }
+
     // Send in background.
     if ([self isFieldValid:sendInBackground]) {
         [adjustConfig setSendInBackground:[sendInBackground boolValue]];
@@ -174,6 +187,13 @@
     // IDFA reading.
     if ([self isFieldValid:allowIdfaReading]) {
         [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+    }
+
+    // SKAdNetwork handling.
+    if ([self isFieldValid:handleSkAdNetwork]) {
+        if ([handleSkAdNetwork boolValue] == false) {
+            [adjustConfig deactivateSKAdNetworkHandling];
+        }
     }
 
     // App Secret.
@@ -545,6 +565,13 @@
 
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command {
     [Adjust resetSessionPartnerParameters];
+}
+
+- (void)requestTrackingAuthorizationWithCompletionHandler:(CDVInvokedUrlCommand *)command {
+    [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsNSUInteger:status];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {

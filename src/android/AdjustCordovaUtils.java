@@ -15,6 +15,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_PROCESS_NAME = "processName";
     public static final String KEY_DEFAULT_TRACKER = "defaultTracker";
     public static final String KEY_EXTERNAL_DEVICE_ID = "externalDeviceId";
+    public static final String KEY_URL_STRATEGY = "urlStrategy";
     public static final String KEY_EVENT_BUFFERING_ENABLED = "eventBufferingEnabled";
     public static final String KEY_EVENT_TOKEN = "eventToken";
     public static final String KEY_REVENUE = "revenue";

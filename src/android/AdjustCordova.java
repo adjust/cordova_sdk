@@ -192,6 +192,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String environment = null;
         String defaultTracker = null;
         String externalDeviceId = null;
+        String urlStrategy = null;
         String processName = null;
         String delayStart = null;
         String logLevel = null;
@@ -219,6 +220,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_EXTERNAL_DEVICE_ID)) {
             externalDeviceId = parameters.get(KEY_EXTERNAL_DEVICE_ID).toString();
+        }
+        if (parameters.containsKey(KEY_URL_STRATEGY)) {
+            urlStrategy = parameters.get(KEY_URL_STRATEGY).toString();
         }
         if (parameters.containsKey(KEY_PROCESS_NAME)) {
             processName = parameters.get(KEY_PROCESS_NAME).toString();
@@ -311,6 +315,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // External device ID.
         if (isFieldValid(externalDeviceId)) {
             adjustConfig.setExternalDeviceId(externalDeviceId);
+        }
+
+        // URL strategy.
+        if (isFieldValid(urlStrategy)) {
+            if (urlStrategy.equalsIgnoreCase("china")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CHINA​);
+            } else if (urlStrategy.equalsIgnoreCase("india")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_INDIA);
+            }
         }
 
         // User agent.

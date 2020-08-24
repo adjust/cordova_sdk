@@ -45,6 +45,7 @@ export class AdjustConfig {
   private delayStart = 0.0;
   private logLevel: AdjustLogLevel = null;
   private defaultTracker: string = null;
+  private urlStrategy: string = null;
   private externalDeviceId: string = null;
   private sendInBackground: boolean = null;
   private shouldLaunchDeeplink: boolean = null;
@@ -553,4 +554,12 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   sendFirstPackages(): void {}
+
+  /**
+   * Request Adjust SDK to show pop up dialog for asking user's consent to be tracked.
+   * In order to do this, call this function
+   * @return {Promise<int>} Returns a promise with user's consent value
+   */
+  @Cordova()
+  requestTrackingAuthorizationWithCompletionHandler(): Promise<int> { return; }
 }
