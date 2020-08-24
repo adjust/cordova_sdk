@@ -44,7 +44,7 @@
 #define KEY_INFO_4 @"info4"
 #define KEY_BASE_URL @"baseUrl"
 #define KEY_GDPR_URL @"gdprUrl"
-#define KEY_SUBSCRIPTION_URL @"gdprUrl"
+#define KEY_SUBSCRIPTION_URL @"subscriptionUrl"
 #define KEY_EXTRA_PATH @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
