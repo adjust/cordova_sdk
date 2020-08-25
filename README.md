@@ -278,7 +278,7 @@ If you are not running any iAd campaigns, you can feel free to remove the `iAd.f
 
 You can take advantage of the following features once the Adjust SDK is integrated into your project.
 
-### <a id="ad-att-framework"></a>AppTrackingTransparency framework
+### <a id="att-framework"></a>AppTrackingTransparency framework
 
 **Note**: This feature exists only in iOS platform.
 
@@ -297,7 +297,7 @@ If authorization to use app tracking data is restricted, the returned status wil
 
 The SDK has a built-in mechanism to receive an updated status after a user responds to the pop-up dialog, in case you don't want to customize your displayed dialog pop-up. To conveniently and efficiently communicate the new state of consent to the backend, Adjust SDK offers a wrapper around the app tracking authorization method described in the following chapter, App-tracking authorization wrapper.
 
-### <a id="ad-ata-wrapper"></a>App-tracking authorisation wrapper
+### <a id="ata-wrapper"></a>App-tracking authorisation wrapper
 
 **Note**: This feature exists only in iOS platform.
 
@@ -329,7 +329,7 @@ Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
 });
 ```
 
-### <a id="ad-skadn-framework"></a>SKAdNetwork framework
+### <a id="skadn-framework"></a>SKAdNetwork framework
 
 **Note**: This feature exists only in iOS platform.
 
