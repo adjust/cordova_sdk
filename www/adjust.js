@@ -34,6 +34,7 @@ function callCordovaCallback(action, callback) {
 }
 
 var Adjust = {
+    // Would not be called, when using the eager initialization.
     create: function(adjustConfig) {
         if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
@@ -64,6 +65,30 @@ var Adjust = {
         }
 
         callCordovaStringify('create', adjustConfig);
+    },
+
+    setAttributionCallback: function(attributionCallback) {
+        callCordovaCallback('setAttributionCallback', attributionCallback);
+    },
+
+    setEventTrackingSucceededCallback: function(eventTrackingSucceededCallback) {
+        callCordovaCallback('setEventTrackingSucceededCallback', eventTrackingSucceededCallback);
+    },
+
+    setEventTrackingFailedCallback: function(eventTrackingFailedCallback) {
+        callCordovaCallback('setEventTrackingFailedCallback', eventTrackingFailedCallback);
+    },
+
+    setSessionTrackingSucceededCallback: function(sessionTrackingSucceededCallback) {
+        callCordovaCallback('setSessionTrackingSucceededCallback', sessionTrackingSucceededCallback);
+    },
+
+    setSessionTrackingFailedCallback: function(sessionTrackingFailedCallback) {
+        callCordovaCallback('setSessionTrackingFailedCallback', sessionTrackingFailedCallback);
+    },
+
+    setDeferredDeeplinkCallback: function(deferredDeeplinkCallback) {
+        callCordovaCallback('setDeferredDeeplinkCallback', deferredDeeplinkCallback);
     },
 
     trackEvent: function(adjustEvent) {
