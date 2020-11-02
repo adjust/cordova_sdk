@@ -52,13 +52,15 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Adjust">
-                <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
+                <param name="android-package" value="com.adjust.sdk.EagerAdjustCordova"/>
                 <param name="onload" value="true" />
             </feature>
         </config-file>
 
         <source-file src="src/android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <source-file src="src/android/AdjustCordovaUtils.java" target-dir="src/com/adjust/sdk" />
+        <source-file src="src/android/BufferedCallbackContext.java" target-dir="src/com/adjust/sdk" />
+        <source-file src="src/android/EagerAdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <lib-file src="src/android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
@@ -69,13 +71,17 @@
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="Adjust">
-                <param name="ios-package" value="AdjustCordova"/>
+                <param name="ios-package" value="EagerAdjustCordova"/>
                 <param name="onload" value="true" />
           </feature>
         </config-file>
 
         <header-file src="src/ios/AdjustCordova.h" />
         <source-file src="src/ios/AdjustCordova.m" />
+        <header-file src="src/ios/EagerAdjustCordova.h" />
+        <source-file src="src/ios/EagerAdjustCordova.m" />
+        <header-file src="src/ios/EagerAdjustBuffer.h" />
+        <source-file src="src/ios/EagerAdjustBuffer.m" />
         <header-file src="src/ios/AdjustCordovaDelegate.h" />
         <source-file src="src/ios/AdjustCordovaDelegate.m" />
 
