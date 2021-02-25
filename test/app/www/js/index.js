@@ -22,7 +22,7 @@ var app = {
             var baseUrl = "";
             var gdprUrl = "";
             var subscriptionUrl = "";
-            var ipAddress = "192.168.86.32";
+            var ipAddress = "192.168.86.61";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
@@ -35,6 +35,8 @@ var app = {
             var controlUrl = "ws://" + ipAddress + ":1987";
 
             var commandExecutor = new CommandExecutor(baseUrl, gdprUrl, subscriptionUrl);
+            // AdjustTest.addTest('Test_ThirdPartySharing_before_install');
+            // AdjustTest.addTest('Test_ThirdPartySharing_after_install');
             AdjustTest.startTestSession(baseUrl, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];

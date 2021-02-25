@@ -177,6 +177,22 @@ var Adjust = {
         callCordovaCallback('requestTrackingAuthorizationWithCompletionHandler', callback);
     },
 
+    updateConversionValue: function(conversionValue) {
+        callCordova('updateConversionValue', conversionValue);
+    },
+
+    getAppTrackingAuthorizationStatus: function(callback) {
+        callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+    },
+
+    trackThirdPartySharing: function(adjustThirdPartySharing) {
+        callCordovaStringify('trackThirdPartySharing', adjustThirdPartySharing);
+    },
+
+    trackMeasurementConsent: function(measurementConsent) {
+        callCordova('trackMeasurementConsent', measurementConsent);
+    },
+
     setTestOptions: function(testOptions) {
         callCordova('setTestOptions', testOptions);
     },

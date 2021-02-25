@@ -32,4 +32,5 @@
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
+    <preference name="AndroidXEnabled" value="true" />
 </widget>

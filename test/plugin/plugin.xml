@@ -33,7 +33,8 @@
 
         <source-file src="src/android/AdjustCordovaTest.java" target-dir="src/com/adjust/test"/>
         <source-file src="src/android/CommandListener.java" target-dir="src/com/adjust/test"/>
-        <source-file src="src/android/adjust-test.jar" target-dir="libs"/>
+        <source-file src="src/android/adjust-test-library.jar" target-dir="libs"/>
+        <source-file src="src/android/adjust-test-options.jar" target-dir="libs"/>
         <framework src="com.google.code.gson:gson:2.8.6" />
         <framework src="org.java-websocket:Java-WebSocket:1.4.0" />
     </platform>

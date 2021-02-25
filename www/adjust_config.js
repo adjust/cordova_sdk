@@ -3,7 +3,6 @@ function AdjustConfig(appToken, environment) {
     this.environment = environment;
     this.delayStart = 0.0;
     this.logLevel = null;
-    this.referrer = null;
     this.userAgent = null;
     this.isDeviceKnown = null;
     this.defaultTracker = null;
@@ -12,6 +11,7 @@ function AdjustConfig(appToken, environment) {
     this.sendInBackground = null;
     this.shouldLaunchDeeplink = null;
     this.eventBufferingEnabled = null;
+    this.needsCost = null;
     this.attributionCallback = null;
     this.eventTrackingSucceededCallback = null;
     this.eventTrackingFailedCallback = null;
@@ -25,16 +25,20 @@ function AdjustConfig(appToken, environment) {
     this.info3 = null;
     this.info4 = null;
     // Android only
+    this.referrer = null;
     this.processName = null;
     this.readMobileEquipmentIdentity = null;
+    this.preinstallTrackingEnabled = null;
     // iOS only
     this.allowiAdInfoReading = null;
+    this.allowAdServicesInfoReading = null;
     this.allowIdfaReading = null;
     this.handleSkAdNetwork = null;
 };
 
 AdjustConfig.EnvironmentSandbox    = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
+
 AdjustConfig.LogLevelVerbose       = "VERBOSE";
 AdjustConfig.LogLevelDebug         = "DEBUG";
 AdjustConfig.LogLevelInfo          = "INFO";
@@ -42,8 +46,29 @@ AdjustConfig.LogLevelWarn          = "WARN";
 AdjustConfig.LogLevelError         = "ERROR";
 AdjustConfig.LogLevelAssert        = "ASSERT";
 AdjustConfig.LogLevelSuppress      = "SUPPRESS";
+
 AdjustConfig.UrlStrategyChina      = "china";
 AdjustConfig.UrlStrategyIndia      = "india";
+
+AdjustConfig.AdRevenueSourceMopub = "mopub";
+AdjustConfig.AdRevenueSourceAdmob = "admob";
+AdjustConfig.AdRevenueSourceFbNativeAd = "facebook_native_ad";
+AdjustConfig.AdRevenueSourceFbAudienceNetwork = "facebook_audience_network";
+AdjustConfig.AdRevenueSourceIronsource = "ironsource";
+AdjustConfig.AdRevenueSourceFyber = "fyber";
+AdjustConfig.AdRevenueSourceAerserv = "aerserv";
+AdjustConfig.AdRevenueSourceAppodeal = "appodeal";
+AdjustConfig.AdRevenueSourceAdincube = "adincube";
+AdjustConfig.AdRevenueSourceFusePowered = "fusepowered";
+AdjustConfig.AdRevenueSourceAddapptr = "addapptr";
+AdjustConfig.AdRevenueSourceMillennialMediation = "millennial_mediation";
+AdjustConfig.AdRevenueSourceFlurry = "flurry";
+AdjustConfig.AdRevenueSourceAdmost = "admost";
+AdjustConfig.AdRevenueSourceDeltadna = "deltadna";
+AdjustConfig.AdRevenueSourceUpsight = "upsight";
+AdjustConfig.AdRevenueSourceUnityAds = "unityads";
+AdjustConfig.AdRevenueSourceAdtoapp = "adtoapp";
+AdjustConfig.AdRevenueSourceTapdaq = "tapdaq";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -93,6 +118,14 @@ AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
 
+AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
+    this.preinstallTrackingEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setNeedsCost = function(needsCost) {
+    this.needsCost = needsCost;
+};
+
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
     this.logLevel = logLevel;
 };
@@ -131,6 +164,10 @@ AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
 
 AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
     this.allowiAdInfoReading = allowiAdInfoReading;
+};
+
+AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
+    this.allowAdServicesInfoReading = allowAdServicesInfoReading;
 };
 
 AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {

@@ -30,6 +30,9 @@
     <js-module src="www/adjust_play_store_subscription.js" name="AdjustPlayStoreSubscription">
         <clobbers target="AdjustPlayStoreSubscription" />
     </js-module>
+    <js-module src="www/adjust_third_party_sharing.js" name="AdjustThirdPartySharing">
+        <clobbers target="AdjustThirdPartySharing" />
+    </js-module>
 
     <!-- Android -->
     <platform name="android">
@@ -62,7 +65,7 @@
         <lib-file src="src/android/adjust-android.jar" target-dir="libs" />
 
         <framework src="com.google.android.gms:play-services-analytics:+" />
-        <framework src="com.android.installreferrer:installreferrer:1.0" />
+        <framework src="com.android.installreferrer:installreferrer:2.1" />
     </platform>
 
     <!-- iOS -->
@@ -84,7 +87,7 @@
         <framework src="iAd.framework" weak="true" />
         <framework src="CoreTelephony.framework" weak="true" />
         <framework src="StoreKit.framework" weak="true" />
-        <!-- Uncomment line below if you are building your app for iOS 14 -->
-        <!-- <framework src="AppTrackingTransparency.framework" weak="true" /> -->
+        <framework src="AdServices.framework" weak="true" />
+        <framework src="AppTrackingTransparency.framework" weak="true" />
     </platform>
 </plugin>

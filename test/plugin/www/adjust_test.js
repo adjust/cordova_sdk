@@ -39,6 +39,10 @@ var AdjustTest = {
 
     addTestDirectory: function(testDir) {
         callCordova('addTestDirectory', testDir);
+    },
+
+    setTestConnectionOptions: function() {
+        callCordova('setTestConnectionOptions', null);
     }
 };
 
