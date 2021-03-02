@@ -1,6 +1,6 @@
 function AdjustThirdPartySharing(isEnabled) {
 	if (isEnabled == null) {
-		this.isEnabled = "null";
+		this.isEnabled = undefined;
 	} else {
 		this.isEnabled = isEnabled == true ? "true" : "false";
 	}

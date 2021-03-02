@@ -63,7 +63,7 @@ def _run_testapp(root_dir, ios_submodule_dir):
     temp_plugin_dir     = '{0}/temp_plugin'.format(root_dir)
     sdk_plugin_package  = 'com.adjust.sdk'
     test_plugin_package = 'com.adjust.test'
-    test_app_package    = 'com.adjust.testapp'
+    test_app_package    = 'com.adjust.examples'
 
     # ------------------------------------------------------------------
     # Packaging plugin content to custom directory.

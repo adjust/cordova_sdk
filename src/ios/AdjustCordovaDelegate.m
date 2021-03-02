@@ -104,6 +104,9 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
