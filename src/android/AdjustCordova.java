@@ -598,9 +598,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Is enabled.
         if (parameters.containsKey(KEY_IS_ENABLED)) {
             if (parameters.get(KEY_IS_ENABLED) != null) {
-                if (!parameters.get(KEY_IS_ENABLED).toString().equalsIgnoreCase("null")) {
-                    isEnabled = Boolean.valueOf(parameters.get(KEY_IS_ENABLED).toString());
-                }
+                isEnabled = Boolean.valueOf(parameters.get(KEY_IS_ENABLED).toString());
             }
         }
 

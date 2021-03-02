@@ -35,8 +35,6 @@ var app = {
             var controlUrl = "ws://" + ipAddress + ":1987";
 
             var commandExecutor = new CommandExecutor(baseUrl, gdprUrl, subscriptionUrl);
-            // AdjustTest.addTest('Test_ThirdPartySharing_before_install');
-            // AdjustTest.addTest('Test_ThirdPartySharing_after_install');
             AdjustTest.startTestSession(baseUrl, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];
