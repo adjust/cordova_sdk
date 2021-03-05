@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AdjustExample</string>
+    <string name="title_activity_main">AdjustExample</string>
+    <string name="package_name">com.adjust.examples</string>
+    <string name="custom_url_scheme">com.adjust.examples</string>
+</resources>
