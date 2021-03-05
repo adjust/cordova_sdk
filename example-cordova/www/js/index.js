@@ -1,9 +1,3 @@
-function handleOpenURL(url) {
-    setTimeout(function() {
-        Adjust.appWillOpenUrl(url);
-    }, 0);
-}
-
 var app = {
     // Application Constructor
     initialize: function() {
@@ -18,10 +12,10 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        // Register for universal links
-        if (device.platform == 'iOS') {
-            universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-        }
+        // // Register for universal links
+        // if (device.platform == 'iOS') {
+        //     universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
+        // }
 
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
 
@@ -32,6 +26,7 @@ var app = {
         // adjustConfig.setEventBufferingEnabled(true);
         // adjustConfig.setDeviceKnown(true);
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
+        adjustConfig.setNeedsCost(true);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -97,6 +92,10 @@ var app = {
         Adjust.removeSessionCallbackParameter("dummy_foo");
         Adjust.removeSessionPartnerParameter("dummy_foo");
 
+        Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
+            console.log("ATT status after dialog = " + status);
+        });
+
         // Adjust.resetSessionCallbackParameters();
         // Adjust.resetSessionPartnerParameters();
 
@@ -105,9 +104,9 @@ var app = {
         // Adjust.sendFirstPackages();
     },
 
-    didLaunchAppFromLink: function(eventData) {
-        Adjust.appWillOpenUrl(eventData.url);
-    },
+    // didLaunchAppFromLink: function(eventData) {
+    //     Adjust.appWillOpenUrl(eventData.url);
+    // },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -124,15 +123,15 @@ var app = {
         var btnGetSdkVersion = document.getElementById("btnGetSdkVersion");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
-            var adjustEvent = new AdjustEvent("g3mfiw");
+            // var adjustEvent = new AdjustEvent("g3mfiw");
             
-            Adjust.trackEvent(adjustEvent);
-        }, false);
+            // Adjust.trackEvent(adjustEvent);
 
-        btnTrackSimpleEventWithCallbackId.addEventListener('click', function() {
-            var adjustEvent = new AdjustEvent("g3mfiw");
-            adjustEvent.setCallbackId("test-callback-id");
-            Adjust.trackEvent(adjustEvent);
+            Adjust.getAppTrackingAuthorizationStatus(function(status) {
+                console.log("ATT status after getter = " + status);
+            });
+
+            Adjust.updateConversionValue(6);
         }, false);
 
         btnTrackRevenueEvent.addEventListener('click',function() { 

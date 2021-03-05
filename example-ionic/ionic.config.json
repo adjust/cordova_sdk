@@ -1,7 +1,0 @@
-{
-  "name": "AdjustExample",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}

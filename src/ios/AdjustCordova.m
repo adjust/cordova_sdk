@@ -28,13 +28,17 @@
 #define KEY_CALLBACK_PARAMETERS @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS @"partnerParameters"
 #define KEY_IS_RECEIPT_SET @"isReceiptSet"
+#define KEY_IS_ENABLED @"isEnabled"
+#define KEY_GRANULAR_OPTIONS @"granularOptions"
 #define KEY_USER_AGENT @"userAgent"
 #define KEY_REFERRER @"referrer"
 #define KEY_SHOULD_LAUNCH_DEEPLINK @"shouldLaunchDeeplink"
 #define KEY_SEND_IN_BACKGROUND @"sendInBackground"
 #define KEY_DELAY_START @"delayStart"
 #define KEY_DEVICE_KNOWN @"isDeviceKnown"
+#define KEY_NEEDS_COST @"needsCost"
 #define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
+#define KEY_ALLOW_ADSERVICES_INFO_READING @"allowAdServicesInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
 #define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
 #define KEY_SECRET_ID @"secretId"
@@ -55,6 +59,7 @@
 #define KEY_NO_BACKOFF_WAIT @"noBackoffWait"
 #define KEY_HAS_CONTEXT @"hasContext"
 #define KEY_IAD_ENABLED @"iAdFrameworkEnabled"
+#define KEY_ADSERVICES_ENABLED @"adServicesFrameworkEnabled"
 #define KEY_PRICE @"price"
 #define KEY_TRANSACTION_DATE @"transactionDate"
 #define KEY_SALES_REGION @"salesRegion"
@@ -102,11 +107,13 @@
     NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSNumber *isDeviceKnown = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
     NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
+    NSNumber *allowAdServicesInfoReading = [[jsonObject valueForKey:KEY_ALLOW_ADSERVICES_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
+    NSNumber *needsCost = [[jsonObject valueForKey:KEY_NEEDS_COST] objectAtIndex:0];
     NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     BOOL allowSuppressLogLevel = NO;
 
@@ -179,9 +186,19 @@
         [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
     }
 
+    // Cost data.
+    if ([self isFieldValid:needsCost]) {
+        [adjustConfig setNeedsCost:[needsCost boolValue]];
+    }
+
     // iAd info reading.
     if ([self isFieldValid:allowiAdInfoReading]) {
         [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
+    }
+
+    // AdServices info reading.
+    if ([self isFieldValid:allowAdServicesInfoReading]) {
+        [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
     }
 
     // IDFA reading.
@@ -262,11 +279,15 @@
     NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
     NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
 
-    for (id item in [[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]) {
-        [callbackParameters addObject:item];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]) {
+            [callbackParameters addObject:item];
+        }
     }
-    for (id item in [[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]) {
-        [partnerParameters addObject:item];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]) {
+            [partnerParameters addObject:item];
+        }
     }
 
     ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
@@ -393,6 +414,10 @@
     [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
+
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -574,6 +599,63 @@
     }];
 }
 
+- (void)updateConversionValue:(CDVInvokedUrlCommand *)command {
+    NSNumber *conversionValue = [command argumentAtIndex:0 withDefault:nil];
+    if (conversionValue == nil) {
+        return;
+    }
+
+    [Adjust updateConversionValue:[conversionValue intValue]];
+}
+
+- (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command {
+    int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:appTrackingAuthorizationStatus];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+
+    NSNumber *isEnabled = [[jsonObject valueForKey:KEY_IS_ENABLED] objectAtIndex:0];
+    NSMutableArray *granularOptions = [[NSMutableArray alloc] init];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]) {
+            [granularOptions addObject:item];
+        }
+    }
+
+    if (isEnabled != nil && [isEnabled isKindOfClass:[NSNull class]]) {
+        isEnabled = nil;
+    }
+    ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+
+    // Granular options.
+    if ([self isFieldValid:granularOptions]) {
+        for (int i = 0; i < [granularOptions count]; i += 3) {
+            NSString *partnerName = [granularOptions objectAtIndex:i];
+            NSString *key = [granularOptions objectAtIndex:i+1];
+            NSString *value = [granularOptions objectAtIndex:i+2];
+            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+    }
+
+    // Track third party sharing.
+    [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+}
+
+- (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command {
+    NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
+    if (isEnabledNumber == nil) {
+        return;
+    }
+
+    [Adjust trackMeasurementConsent:[isEnabledNumber boolValue]];
+}
+
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
@@ -587,55 +669,48 @@
     NSString *teardown = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
     NSString *noBackoffWait = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
     NSString *iAdFrameworkEnabled = [[command.arguments valueForKey:KEY_IAD_ENABLED] objectAtIndex:0];
+    NSString *adServicesFrameworkEnabled = [[command.arguments valueForKey:KEY_ADSERVICES_ENABLED] objectAtIndex:0];
     
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
     
     if ([self isFieldValid:baseUrl]) {
         testOptions.baseUrl = baseUrl;
     }
-
     if ([self isFieldValid:gdprUrl]) {
         testOptions.gdprUrl = gdprUrl;
     }
-
     if ([self isFieldValid:subscriptionUrl]) {
         testOptions.subscriptionUrl = subscriptionUrl;
     }
-    
     if ([self isFieldValid:extraPath]) {
         testOptions.extraPath = extraPath;
     }
-    
     if ([self isFieldValid:timerInterval]) {
         testOptions.timerIntervalInMilliseconds = [self convertMilliStringToNumber:timerInterval];
     }
-    
     if ([self isFieldValid:timerStart]) {
         testOptions.timerStartInMilliseconds = [self convertMilliStringToNumber:timerStart];
     }
-    
     if ([self isFieldValid:sessionInterval]) {
         testOptions.sessionIntervalInMilliseconds = [self convertMilliStringToNumber:sessionInterval];
     }
-    
     if ([self isFieldValid:subsessionInterval]) {
         testOptions.subsessionIntervalInMilliseconds = [self convertMilliStringToNumber:subsessionInterval];
     }
-    
     if ([self isFieldValid:teardown]) {
         testOptions.teardown = [teardown boolValue];
     }
-
     if ([self isFieldValid:noBackoffWait]) {
         testOptions.noBackoffWait = [noBackoffWait boolValue];
     }
-    
     if ([self isFieldValid:hasContext]) {
         testOptions.deleteState = [hasContext boolValue];
     }
-
     if ([self isFieldValid:iAdFrameworkEnabled]) {
         testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+    }
+    if ([self isFieldValid:adServicesFrameworkEnabled]) {
+        testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
     }
     
     [Adjust setTestOptions:testOptions];

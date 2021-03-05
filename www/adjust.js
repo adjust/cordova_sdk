@@ -142,7 +142,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.23.0';
+        return 'cordova4.26.0';
     },
 
     addSessionCallbackParameter: function(key, value) {
@@ -175,6 +175,22 @@ var Adjust = {
 
     requestTrackingAuthorizationWithCompletionHandler: function(callback) {
         callCordovaCallback('requestTrackingAuthorizationWithCompletionHandler', callback);
+    },
+
+    updateConversionValue: function(conversionValue) {
+        callCordova('updateConversionValue', conversionValue);
+    },
+
+    getAppTrackingAuthorizationStatus: function(callback) {
+        callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+    },
+
+    trackThirdPartySharing: function(adjustThirdPartySharing) {
+        callCordovaStringify('trackThirdPartySharing', adjustThirdPartySharing);
+    },
+
+    trackMeasurementConsent: function(measurementConsent) {
+        callCordova('trackMeasurementConsent', measurementConsent);
     },
 
     setTestOptions: function(testOptions) {

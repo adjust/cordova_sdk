@@ -77,7 +77,7 @@ def _run_testapp(root_dir, android_submodule_dir):
     plugin_temp_dir     = '{0}/temp_plugin'.format(root_dir)
     sdk_plugin_package  = 'com.adjust.sdk'
     test_plugin_package = 'com.adjust.test'
-    test_app_package    = 'com.adjust.testapp'
+    test_app_package    = 'com.adjust.examples'
 
     # ------------------------------------------------------------------
     # Removing test app from test device.

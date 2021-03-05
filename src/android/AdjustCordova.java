@@ -156,8 +156,21 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
             // iOS method only
+        } else if (action.equals(COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_UPDATE_CONVERSION_VALUE)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
+            // iOS method only
         } else if (action.equals(COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION)) {
             executeTrackPlayStoreSubscription(args);
+        } else if (action.equals(COMMAND_TRACK_THIRD_PARTY_SHARING)) {
+            executeTrackThirdPartySharing(args);
+        } else if (action.equals(COMMAND_TRACK_MEASUREMENT_CONSENT)) {
+            final Boolean isEnabled = args.getBoolean(0);
+            if (isEnabled != null) {
+                Adjust.trackMeasurementConsent(isEnabled);
+            }
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -207,7 +220,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean eventBufferingEnabled = false;
         boolean isDeviceKnown = false;
         boolean sendInBackground = false;
-        boolean shouldLaunchDeeplink = false;
+        boolean shouldLaunchDeeplink = true;
+        boolean needsCost = false;
+        boolean preinstallTrackingEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -265,6 +280,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_SHOULD_LAUNCH_DEEPLINK)) {
             shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_NEEDS_COST)) {
+            needsCost = parameters.get(KEY_NEEDS_COST).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_PREINSTALL_TRACKING_ENABLED)) {
+            preinstallTrackingEnabled = parameters.get(KEY_PREINSTALL_TRACKING_ENABLED).toString() == "true" ? true : false;
         }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -358,6 +379,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Launching deferred deep link.
         this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+
+        // Cost data.
+        adjustConfig.setNeedsCost(needsCost);
+
+        // Preinstall tracking enabled.
+        adjustConfig.setPreinstallTrackingEnabled(preinstallTrackingEnabled);
 
         // Delayed start.
         if (isFieldValid(delayStart)) {
@@ -560,6 +587,38 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         Adjust.trackPlayStoreSubscription(subscription);
     }
 
+    private void executeTrackThirdPartySharing(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        Boolean isEnabled = null;
+
+        // Is enabled.
+        if (parameters.containsKey(KEY_IS_ENABLED)) {
+            if (parameters.get(KEY_IS_ENABLED) != null) {
+                isEnabled = Boolean.valueOf(parameters.get(KEY_IS_ENABLED).toString());
+            }
+        }
+
+        final AdjustThirdPartySharing adjustThirdPartySharing = new AdjustThirdPartySharing(isEnabled);
+
+        JSONArray granularOptionsJson = (JSONArray)parameters.get(KEY_GRANULAR_OPTIONS);
+        String[] granularOptions = jsonArrayToArray(granularOptionsJson);
+
+        // Granular options.
+        for (int i = 0; i < granularOptions.length; i += 3) {
+            adjustThirdPartySharing.addGranularOption(
+                granularOptions[i],
+                granularOptions[i+1],
+                granularOptions[i+2]);
+        }
+
+        // Track third party sharing.
+        Adjust.trackThirdPartySharing(adjustThirdPartySharing);
+    }
+
     private void executeSetTestOptions(final JSONArray args) throws JSONException {
         JSONObject jsonParameters = args.optJSONObject(0);
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
@@ -630,14 +689,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         }
 
-        if (!jsonParameters.isNull(KEY_USE_TEST_CONNECTION_OPTIONS)) {
-            try {
-                boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
-                testOptions.useTestConnectionOptions = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse use test connection options.");
-            }
-        }
+        // Keep this for the record. Not needed anymore since extraction of test-options.
+        // if (!jsonParameters.isNull(KEY_USE_TEST_CONNECTION_OPTIONS)) {
+        //     try {
+        //         boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
+        //         testOptions.useTestConnectionOptions = value;
+        //     } catch (JSONException e) {
+        //         AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse use test connection options.");
+        //     }
+        // }
 
         if (!jsonParameters.isNull(KEY_TIMER_INTERVAL)) {
             try {

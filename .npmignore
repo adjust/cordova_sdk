@@ -9,5 +9,6 @@ ext/
 scripts/
 example-cordova/
 example-ionic/
+example-ionic-capacitor/
 ionic-native/
 test/

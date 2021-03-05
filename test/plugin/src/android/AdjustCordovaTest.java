@@ -15,6 +15,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
 import com.adjust.test.TestLibrary;
+import com.adjust.test_options.TestConnectionOptions;
 
 public class AdjustCordovaTest extends CordovaPlugin {
     private static final String TAG = "AdjustCordovaTest";
@@ -23,6 +24,7 @@ public class AdjustCordovaTest extends CordovaPlugin {
     private static final String COMMAND_SEND_INFO_TO_SERVER = "sendInfoToServer";
     private static final String COMMAND_ADD_TEST = "addTest";
     private static final String COMMAND_ADD_TEST_DIRECTORY = "addTestDirectory";
+    private static final String COMMAND_SET_TEST_CONNECTION_OPTIONS = "setTestConnectionOptions";
 
     private TestLibrary testLibrary;
     private CallbackContext commandCallbackContext;
@@ -71,6 +73,8 @@ public class AdjustCordovaTest extends CordovaPlugin {
         } else if (action.equals(COMMAND_ADD_TEST_DIRECTORY)) {
             this.selectedTestDirs.add(args.getString(0));
             return true;
+        } else if (action.equals(COMMAND_SET_TEST_CONNECTION_OPTIONS)) {
+            TestConnectionOptions.setTestConnectionOptions();
         }
 
         Log.e(TAG, "Invalid call: " + action);

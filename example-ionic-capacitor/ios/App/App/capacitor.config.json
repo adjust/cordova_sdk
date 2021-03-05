@@ -1,0 +1,13 @@
+{
+  "appId": "com.adjust.examples",
+  "appName": "AdjustExample",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

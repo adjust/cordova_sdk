@@ -26,6 +26,10 @@ public class AdjustCordovaUtils {
     public static final String KEY_PARTNER_PARAMETERS = "partnerParameters";
     public static final String KEY_SEND_IN_BACKGROUND = "sendInBackground";
     public static final String KEY_SHOULD_LAUNCH_DEEPLINK = "shouldLaunchDeeplink";
+    public static final String KEY_NEEDS_COST = "needsCost";
+    public static final String KEY_PREINSTALL_TRACKING_ENABLED = "preinstallTrackingEnabled";
+    public static final String KEY_IS_ENABLED = "isEnabled";
+    public static final String KEY_GRANULAR_OPTIONS = "granularOptions";
     public static final String KEY_USER_AGENT = "userAgent";
     public static final String KEY_DELAY_START = "delayStart";
     public static final String KEY_SECRET_ID = "secretId";
@@ -58,6 +62,9 @@ public class AdjustCordovaUtils {
     public static final String KEY_WILL_RETRY = "willRetry";
     public static final String KEY_TIMESTAMP = "timestamp";
     public static final String KEY_CLICK_LABEL = "clickLabel";
+    public static final String KEY_COST_TYPE = "costType";
+    public static final String KEY_COST_AMOUNT = "costAmount";
+    public static final String KEY_COST_CURRENCY = "costCurrency";
     public static final String KEY_TRACKER_NAME = "trackerName";
     public static final String KEY_TRACKER_TOKEN = "trackerToken";
     public static final String KEY_JSON_RESPONSE = "jsonResponse";
@@ -88,6 +95,11 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_AD_REVENUE = "trackAdRevenue";
     public static final String COMMAND_TRACK_APP_STORE_SUBSCRIPTION = "trackAppStoreSubscription";
     public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
+    public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
+    public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
+    public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";
+    public static final String COMMAND_UPDATE_CONVERSION_VALUE = "updateConversionValue";
+    public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_ADID = "getAdid";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
@@ -153,6 +165,10 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_CREATIVE, attribution.creative);
         addValueOrEmpty(map, KEY_CLICK_LABEL, attribution.clickLabel);
         addValueOrEmpty(map, KEY_ADID, attribution.adid);
+        addValueOrEmpty(map, KEY_COST_TYPE, attribution.costType);
+        addValueOrEmpty(map, KEY_COST_AMOUNT,
+            null != attribution.costAmount && !attribution.costAmount.isNaN() ? attribution.costAmount.toString() : null);
+        addValueOrEmpty(map, KEY_COST_CURRENCY, attribution.costCurrency);
         return map;
     }
 
