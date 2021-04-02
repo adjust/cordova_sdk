@@ -22,7 +22,7 @@ var app = {
             var baseUrl = "";
             var gdprUrl = "";
             var subscriptionUrl = "";
-            var ipAddress = "192.168.86.67";
+            var ipAddress = "192.168.86.75";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
