@@ -27,6 +27,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
+      * [Conversion value updated callback](#skadn-cv-updated-callback)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
@@ -66,6 +67,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Deep linking on iOS 9 and later](#deeplinking-ios-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
+   * [Data residency](#data-residency)
 * [License](#license)
 
 
@@ -365,6 +367,23 @@ You can use Adjust SDK wrapper method `updateConversionValue` to update SKAdNetw
 
 ```js
 Adjust.updateConversionValue(6);
+```
+
+### <a id="skadn-cv-updated-callback"></a>Conversion value updated callback
+
+**Note**: This feature exists only in iOS platform.
+
+You can register callback to get notified each time when Adjust SDK updates conversion value for the user.
+
+```js
+var adjustConfig = new AdjustConfig(appToken, environment);
+
+adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
+    console.log("Conversion value updated callback recveived");
+    console.log("Conversion value: " + conversionValue);
+  });
+
+Adjust.create(adjustConfig);
 ```
 
 ### <a id="event-tracking"></a>Event tracking
@@ -1167,6 +1186,16 @@ var app = {
 // ...
 ```
 
+### <a id="data-residency"></a>Data residency
+
+In order to enable data residency feature, make sure to call `setUrlStrategy` method of the `AdjustConfig` instance with one of the following constants:
+
+```js
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyEU); // for EU data residency region
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyTR); // for Turkey data residency region
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyUS); // for US data residency region
+```
+
 [dashboard]:    http://adjust.com
 [adjust.com]:   http://adjust.com
 
@@ -1198,7 +1227,7 @@ var app = {
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2021 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
