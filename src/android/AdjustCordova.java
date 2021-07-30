@@ -28,6 +28,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext sessionTrackingSucceededCallbackContext;
     private CallbackContext sessionTrackingFailedCallbackContext;
     private CallbackContext deferredDeeplinkCallbackContext;
+    private CallbackContext conversionValueUpdatedCallbackContext;
     private CallbackContext getAdidCallbackContext;
     private CallbackContext getIdfaCallbackContext;
     private CallbackContext getGoogleAdIdCallbackContext;
@@ -50,6 +51,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             sessionTrackingFailedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
             deferredDeeplinkCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK)) {
+            conversionValueUpdatedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             getGoogleAdIdCallbackContext = callbackContext;
             if (getGoogleAdIdCallbackContext != null) {
@@ -147,12 +150,18 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             final String referrer = args.getString(0);
             Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
         } else if (action.equals(COMMAND_TRACK_AD_REVENUE)) {
-            try {
-                JSONObject jsonPayload = new JSONObject(args.getString(1));
-                Adjust.trackAdRevenue(args.getString(0), jsonPayload);
-            } catch (JSONException err) {
-                Logger logger = (Logger)AdjustFactory.getLogger();
-                logger.error("Give ad revenue payload is not a valid JSON string");
+            if (args.length() == 2) {
+                // old API
+                try {
+                    JSONObject jsonPayload = new JSONObject(args.getString(1));
+                    Adjust.trackAdRevenue(args.getString(0), jsonPayload);
+                } catch (JSONException err) {
+                    Logger logger = (Logger)AdjustFactory.getLogger();
+                    logger.error("Give ad revenue payload is not a valid JSON string");
+                }
+            } else {
+                // new API
+                executeTrackAdRevenue(args);
             }
         } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
             // iOS method only
@@ -216,6 +225,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String info2 = null;
         String info3 = null;
         String info4 = null;
+        String preinstallFilePath = null;
         boolean isLogLevelSuppress = false;
         boolean eventBufferingEnabled = false;
         boolean isDeviceKnown = false;
@@ -268,6 +278,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_INFO_4)) {
             info4 = parameters.get(KEY_INFO_4).toString();
+        }
+        if (parameters.containsKey(KEY_PREINSTALL_FILE_PATH)) {
+            preinstallFilePath = parameters.get(KEY_PREINSTALL_FILE_PATH).toString();
         }
         if (parameters.containsKey(KEY_EVENT_BUFFERING_ENABLED)) {
             eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
@@ -344,6 +357,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CHINA​);
             } else if (urlStrategy.equalsIgnoreCase("india")) {
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_INDIA);
+            } else if (urlStrategy.equalsIgnoreCase("data-residency-eu")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.DATA_RESIDENCY_EU);
+            } else if (urlStrategy.equalsIgnoreCase("data-residency-tr")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.DATA_RESIDENCY_TR);
+            } else if (urlStrategy.equalsIgnoreCase("data-residency-us")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.DATA_RESIDENCY_US);
             }
         }
 
@@ -362,6 +381,11 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 long lInfo4 = Long.parseLong(info4, 10);
                 adjustConfig.setAppSecret(lSecretId, lInfo1, lInfo2, lInfo3, lInfo4);
             } catch(NumberFormatException ignored) {}
+        }
+
+        // Preinstall file path.
+        if (isFieldValid(preinstallFilePath)) {
+            adjustConfig.setPreinstallFilePath(preinstallFilePath);
         }
 
         // Deprecated.
@@ -617,6 +641,104 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Track third party sharing.
         Adjust.trackThirdPartySharing(adjustThirdPartySharing);
+    }
+
+    private void executeTrackAdRevenue(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        String revenue = null;
+        String adImpressionsCount = null;
+        String source = null;
+        String currency = null;
+        String adRevenueNetwork = null;
+        String adRevenueUnit = null;
+        String adRevenuePlacement = null;
+
+        if (parameters.containsKey(KEY_SOURCE)) {
+            source = parameters.get(KEY_SOURCE).toString();
+        }
+        if (parameters.containsKey(KEY_REVENUE)) {
+            revenue = parameters.get(KEY_REVENUE).toString();
+        }
+        if (parameters.containsKey(KEY_CURRENCY)) {
+            currency = parameters.get(KEY_CURRENCY).toString();
+        }
+        if (parameters.containsKey(KEY_AD_IMPRESSIONS_COUNT)) {
+            adImpressionsCount = parameters.get(KEY_AD_IMPRESSIONS_COUNT).toString();
+        }
+        if (parameters.containsKey(KEY_AD_REVENUE_NETWORK)) {
+            adRevenueNetwork = parameters.get(KEY_AD_REVENUE_NETWORK).toString();
+        }
+        if (parameters.containsKey(KEY_AD_REVENUE_UNIT)) {
+            adRevenueUnit = parameters.get(KEY_AD_REVENUE_UNIT).toString();
+        }
+        if (parameters.containsKey(KEY_AD_REVENUE_PLACEMENT)) {
+            adRevenuePlacement = parameters.get(KEY_AD_REVENUE_PLACEMENT).toString();
+        }
+
+        JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
+        JSONArray callbackParametersJson = (JSONArray)parameters.get(KEY_CALLBACK_PARAMETERS);
+        String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
+        String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
+
+        final AdjustAdRevenue adjustAdRevenue = new AdjustAdRevenue(source);
+
+        // Revenue and currency.
+        if (isFieldValid(revenue) && isFieldValid(currency)) {
+            try {
+                double revenueValue = Double.parseDouble(revenue);
+                adjustAdRevenue.setRevenue(revenueValue, currency);
+            } catch (Exception e) {
+                ILogger logger = AdjustFactory.getLogger();
+                logger.error("[AdjustCordova]: Unable to parse revenue.");
+            }
+        }
+
+        // Callback parameters.
+        for (int i = 0; i < callbackParameters.length; i +=2) {
+            String key = callbackParameters[i];
+            String value = callbackParameters[i+1];
+            adjustAdRevenue.addCallbackParameter(key, value);
+        }
+
+        // Partner parameters.
+        for (int i = 0; i < partnerParameters.length; i += 2) {
+            String key = partnerParameters[i];
+            String value = partnerParameters[i+1];
+            adjustAdRevenue.addPartnerParameter(key, value);
+        }
+
+        // Ad impressions count.
+        if (isFieldValid(adImpressionsCount)) {
+            try {
+                int adImpressionsCountValue = Integer.parseInt(adImpressionsCount);
+                adjustAdRevenue.setAdImpressionsCount(adImpressionsCountValue);
+            } catch (Exception e) {
+                ILogger logger = AdjustFactory.getLogger();
+                logger.error("[AdjustCordova]: Unable to parse ad impressions count.");
+            }
+        }
+
+        // Ad revenue network.
+        if (isFieldValid(adRevenueNetwork)) {
+            adjustAdRevenue.setAdRevenueNetwork(adRevenueNetwork);
+        }
+
+        // Ad revenue unit.
+        if (isFieldValid(adRevenueUnit)) {
+            adjustAdRevenue.setAdRevenueUnit(adRevenueUnit);
+        }
+
+        // Ad revenue placement.
+        if (isFieldValid(adRevenuePlacement)) {
+            adjustAdRevenue.setAdRevenuePlacement(adRevenuePlacement);
+        }
+
+        // Track ad revenue.
+        Adjust.trackAdRevenue(adjustAdRevenue);
     }
 
     private void executeSetTestOptions(final JSONArray args) throws JSONException {

@@ -26,7 +26,8 @@ var app = {
         // adjustConfig.setEventBufferingEnabled(true);
         // adjustConfig.setDeviceKnown(true);
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
-        adjustConfig.setNeedsCost(true);
+        // adjustConfig.setNeedsCost(true);
+        adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyUS);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -81,6 +82,11 @@ var app = {
         adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
             console.log("[AdjustExample]: Deferred Deeplink Callback received.");
             console.log("[AdjustExample]: URL: " + uri);
+        });
+
+        adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
+            console.log("[AdjustExample]: Conversion value updated!");
+            console.log("[AdjustExample]: Conversion value = " + conversionValue);
         });
 
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");

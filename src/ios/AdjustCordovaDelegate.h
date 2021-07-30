@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2016-2021 Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>
@@ -18,6 +18,7 @@
 @property (nonatomic, copy) NSString *sessionSucceededCallbackId;
 @property (nonatomic, copy) NSString *sessionFailedCallbackId;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackId;
+@property (nonatomic, copy) NSString *conversionValueUpdatedCallbackId;
 @property (nonatomic) id<CDVCommandDelegate> adjustCordovaCommandDelegate;
 
 + (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
@@ -26,12 +27,14 @@
 						 sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
 						    sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
 					     deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
+				   conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
 						 andAttributionCallbackId:(NSString *)attributionCallbackId
 						 eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
 						    eventFailedCallbackId:(NSString *)eventFailedCallbackId
 					   sessionSucceededCallbackId:(NSString *)sessionSucceededCallbackId
 						  sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
 					   deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+				 conversionValueUpdatedCallbackId:(NSString *)conversionValueUpdatedCallbackId
 					 shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
 					          withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate;
 

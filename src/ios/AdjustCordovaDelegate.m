@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2016-2021 Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -33,12 +33,14 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                          sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
                             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
+                   conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
                          andAttributionCallbackId:(NSString *)attributionCallbackId
                          eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
                             eventFailedCallbackId:(NSString *)eventFailedCallbackId
                        sessionSucceededCallbackId:(NSString *)sessionSucceededCallbackId
                           sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                 conversionValueUpdatedCallbackId:(NSString *)conversionValueUpdatedCallbackId
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
     dispatch_once(&onceToken, ^{
@@ -69,6 +71,10 @@ static AdjustCordovaDelegate *defaultInstance = nil;
             [defaultInstance swizzleCallbackMethod:@selector(adjustDeeplinkResponse:)
                                   swizzledSelector:@selector(adjustDeeplinkResponseWannabe:)];
         }
+        if (swizzleConversionValueUpdatedCallback) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustConversionValueUpdated:)
+                                  swizzledSelector:@selector(adjustConversionValueUpdatedWannabe:)];
+        }
 
         [defaultInstance setAttributionCallbackId:attributionCallbackId];
         [defaultInstance setEventSucceededCallbackId:eventSucceededCallbackId];
@@ -76,6 +82,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         [defaultInstance setSessionSucceededCallbackId:sessionSucceededCallbackId];
         [defaultInstance setSessionFailedCallbackId:sessionFailedCallbackId];
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
+        [defaultInstance setConversionValueUpdatedCallbackId:conversionValueUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
     });
@@ -198,6 +205,13 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_deferredDeeplinkCallbackId];
 
     return _shouldLaunchDeferredDeeplink;
+}
+
+- (void)adjustConversionValueUpdatedWannabe:(NSNumber *)conversionValue {
+    int intConversionValue = [conversionValue intValue];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:intConversionValue];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_conversionValueUpdatedCallbackId];
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector
