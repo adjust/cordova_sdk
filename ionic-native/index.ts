@@ -543,8 +543,8 @@ export class Adjust extends IonicNativePlugin {
    * @param {string} payload Ad revenue JSON string payload
    */
   @Cordova({ sync: true })
-  // trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void {}
-  trackAdRevenue:((source: AdjustAdRevenueSource, payload: string): void {}) | ((source: AdjustAdRevenue): void {})
+  trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void {}
+  // trackAdRevenue:((source: AdjustAdRevenueSource, payload: string): void {}) | ((source: AdjustAdRevenue): void {})
 
   /**
    * This method tracks measurement consent choice
