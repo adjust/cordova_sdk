@@ -8,8 +8,8 @@ import { Adjust, AdjustConfig, AdjustEnvironment, AdjustLogLevel } from '@ionic-
 })
 export class AppComponent {
   constructor(private adjust: Adjust) {
-  	const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
-	config.setLogLevel(AdjustLogLevel.Verbose);
-	this.adjust.create(config);
+    const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
+    config.setLogLevel(AdjustLogLevel.Verbose);
+    this.adjust.create(config);
   }
 }
