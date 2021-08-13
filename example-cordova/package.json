@@ -39,5 +39,8 @@
       "ios",
       "android"
     ]
+  },
+  "dependencies": {
+    "xmldom": "github:xmldom/xmldom#0.7.0"
   }
 }
