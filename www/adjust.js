@@ -42,25 +42,23 @@ var Adjust = {
         if (adjustConfig.hasAttributionListener()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
-
         if (adjustConfig.hasEventTrackingSucceededListener()) {
             callCordovaCallback('setEventTrackingSucceededCallback', adjustConfig.getEventTrackingSucceededCallback());
         }
-
         if (adjustConfig.hasEventTrackingFailedListener()) {
             callCordovaCallback('setEventTrackingFailedCallback', adjustConfig.getEventTrackingFailedCallback());
         }
-
         if (adjustConfig.hasSessionTrackingSucceededListener()) {
             callCordovaCallback('setSessionTrackingSucceededCallback', adjustConfig.getSessionTrackingSucceededCallback());
         }
-
         if (adjustConfig.hasSessionTrackingFailedListener()) {
             callCordovaCallback('setSessionTrackingFailedCallback', adjustConfig.getSessionTrackingFailedCallback());
         }
-
         if (adjustConfig.hasDeferredDeeplinkCallbackListener()) {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
+        }
+        if (adjustConfig.hasConversionValueUpdatedCallbackListener()) {
+            callCordovaCallback('setConversionValueUpdatedCallback', adjustConfig.getConversionValueUpdatedCallback());
         }
 
         callCordovaStringify('create', adjustConfig);
@@ -102,8 +100,14 @@ var Adjust = {
         callCordova('disableThirdPartySharing');
     },
 
-    trackAdRevenue: function(source, payload) {
-        callCordova('trackAdRevenue', source, payload);
+    trackAdRevenue: function(source, payload = undefined) {
+        if (payload === undefined) {
+            // new API
+            callCordovaStringify('trackAdRevenue', source);
+        } else {
+            // old API
+            callCordova('trackAdRevenue', source, payload);
+        }
     },
 
     trackAppStoreSubscription: function(subscription) {
@@ -142,7 +146,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.28.0';
+        return 'cordova4.29.0';
     },
 
     addSessionCallbackParameter: function(key, value) {

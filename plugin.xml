@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.28.0">
+    version="4.29.0">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -32,6 +32,9 @@
     </js-module>
     <js-module src="www/adjust_third_party_sharing.js" name="AdjustThirdPartySharing">
         <clobbers target="AdjustThirdPartySharing" />
+    </js-module>
+    <js-module src="www/adjust_ad_revenue.js" name="AdjustAdRevenue">
+        <clobbers target="AdjustAdRevenue" />
     </js-module>
 
     <!-- Android -->

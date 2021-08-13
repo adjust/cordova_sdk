@@ -63,6 +63,11 @@
 #define KEY_PRICE @"price"
 #define KEY_TRANSACTION_DATE @"transactionDate"
 #define KEY_SALES_REGION @"salesRegion"
+#define KEY_SOURCE @"source"
+#define KEY_AD_IMPRESSIONS_COUNT @"adImpressionsCount"
+#define KEY_AD_REVENUE_NETWORK @"adRevenueNetwork"
+#define KEY_AD_REVENUE_UNIT @"adRevenueUnit"
+#define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -71,6 +76,7 @@
     NSString *sessionFailedCallbackId;
     NSString *sessionSucceededCallbackId;
     NSString *deferredDeeplinkCallbackId;
+    NSString *conversionValueUpdatedCallbackId;
 }
 
 #pragma mark - Object lifecycle methods
@@ -82,6 +88,7 @@
     sessionFailedCallbackId = nil;
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
+    conversionValueUpdatedCallbackId = nil;
 }
 
 #pragma mark - Public methods
@@ -163,6 +170,12 @@
             [adjustConfig setUrlStrategy:ADJUrlStrategyChina];
         } else if ([urlStrategy isEqualToString:@"india"]) {
             [adjustConfig setUrlStrategy:ADJUrlStrategyIndia];
+        } else if ([urlStrategy isEqualToString:@"data-residency-eu"]) {
+            [adjustConfig setUrlStrategy:ADJDataResidencyEU];
+        } else if ([urlStrategy isEqualToString:@"data-residency-tr"]) {
+            [adjustConfig setUrlStrategy:ADJDataResidencyTR];
+        } else if ([urlStrategy isEqualToString:@"data-residency-us"]) {
+            [adjustConfig setUrlStrategy:ADJDataResidencyUS];
         }
     }
 
@@ -232,6 +245,7 @@
     BOOL isSessionSucceededCallbackImplemented = sessionSucceededCallbackId != nil ? YES : NO;
     BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
     BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
+    BOOL isConversionValueUpdatedCallbackImplemented = conversionValueUpdatedCallbackId != nil ? YES : NO;
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
 
     // Attribution delegate & other delegates
@@ -240,7 +254,8 @@
         || isEventFailedCallbackImplemented
         || isSessionSucceededCallbackImplemented
         || isSessionFailedCallbackImplemented
-        || isDeferredDeeplinkCallbackImplemented) {
+        || isDeferredDeeplinkCallbackImplemented
+        || isConversionValueUpdatedCallbackImplemented) {
         [adjustConfig setDelegate:
             [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
                                                         eventSucceededCallback:isEventSucceededCallbackImplemented
@@ -248,12 +263,14 @@
                                                       sessionSucceededCallback:isSessionSucceededCallbackImplemented
                                                          sessionFailedCallback:isSessionFailedCallbackImplemented
                                                       deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
+                                                conversionValueUpdatedCallback:isConversionValueUpdatedCallbackImplemented
                                                       andAttributionCallbackId:attributionCallbackId
                                                       eventSucceededCallbackId:eventSucceededCallbackId
                                                          eventFailedCallbackId:eventFailedCallbackId
                                                     sessionSucceededCallbackId:sessionSucceededCallbackId
                                                        sessionFailedCallbackId:sessionFailedCallbackId
                                                     deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
+                                              conversionValueUpdatedCallbackId:conversionValueUpdatedCallbackId
                                                   shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
                                                            withCommandDelegate:self.commandDelegate]];
     }
@@ -451,10 +468,86 @@
 }
 
 - (void)trackAdRevenue:(CDVInvokedUrlCommand *)command {
-    NSString *source = [command argumentAtIndex:0 withDefault:nil];
-    NSString *payload = [command argumentAtIndex:1 withDefault:nil];
-    NSData *dataPayload = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    [Adjust trackAdRevenue:source payload:dataPayload];
+    if ([command.arguments count] == 2) {
+        // old API
+        NSString *source = [command argumentAtIndex:0 withDefault:nil];
+        NSString *payload = [command argumentAtIndex:1 withDefault:nil];
+        NSData *dataPayload = [payload dataUsingEncoding:NSUTF8StringEncoding];
+        [Adjust trackAdRevenue:source payload:dataPayload];
+    } else {
+        // new API
+        NSString *arguments = [command.arguments objectAtIndex:0];
+        NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                              options:0
+                                                                error:NULL];
+
+        NSString *source = [[jsonObject valueForKey:KEY_SOURCE] objectAtIndex:0];
+        NSString *revenue = [[jsonObject valueForKey:KEY_REVENUE] objectAtIndex:0];
+        NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
+        NSString *adImpressionsCount = [[jsonObject valueForKey:KEY_AD_IMPRESSIONS_COUNT] objectAtIndex:0];
+        NSString *adRevenueNetwork = [[jsonObject valueForKey:KEY_AD_REVENUE_NETWORK] objectAtIndex:0];
+        NSString *adRevenueUnit = [[jsonObject valueForKey:KEY_AD_REVENUE_UNIT] objectAtIndex:0];
+        NSString *adRevenuePlacement = [[jsonObject valueForKey:KEY_AD_REVENUE_PLACEMENT] objectAtIndex:0];
+        NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
+        NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
+
+        if ([self isFieldValid:[[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]]) {
+            for (id item in [[jsonObject valueForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:0]) {
+                [callbackParameters addObject:item];
+            }
+        }
+        if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]]) {
+            for (id item in [[jsonObject valueForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:0]) {
+                [partnerParameters addObject:item];
+            }
+        }
+
+        ADJAdRevenue *adjustAdRevenue = [[ADJAdRevenue alloc] initWithSource:source];
+
+        // Revenue and currency.
+        if ([self isFieldValid:revenue]) {
+            double revenueValue = [revenue doubleValue];
+            [adjustAdRevenue setRevenue:revenueValue currency:currency];
+        }
+
+        // Ad impressions count.
+        if ([self isFieldValid:adImpressionsCount]) {
+            int adImpressionsCountValue = [adImpressionsCount intValue];
+            [adjustAdRevenue setAdImpressionsCount:adImpressionsCountValue];
+        }
+
+        // Ad revenue network.
+        if ([self isFieldValid:adRevenueNetwork]) {
+            [adjustAdRevenue setAdRevenueNetwork:adRevenueNetwork];
+        }
+
+        // Ad revenue unit.
+        if ([self isFieldValid:adRevenueUnit]) {
+            [adjustAdRevenue setAdRevenueUnit:adRevenueUnit];
+        }
+
+        // Ad revenue placement.
+        if ([self isFieldValid:adRevenuePlacement]) {
+            [adjustAdRevenue setAdRevenuePlacement:adRevenuePlacement];
+        }
+
+        // Callback parameters.
+        for (int i = 0; i < [callbackParameters count]; i += 2) {
+            NSString *key = [callbackParameters objectAtIndex:i];
+            NSObject *value = [callbackParameters objectAtIndex:(i+1)];
+            [adjustAdRevenue addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
+        }
+
+        // Partner parameters.
+        for (int i = 0; i < [partnerParameters count]; i += 2) {
+            NSString *key = [partnerParameters objectAtIndex:i];
+            NSObject *value = [partnerParameters objectAtIndex:(i+1)];
+            [adjustAdRevenue addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
+        }
+
+        // Track ad revenue.
+        [Adjust trackAdRevenue:adjustAdRevenue];
+    }
 }
 
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command {
@@ -548,6 +641,10 @@
 
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command {
     deferredDeeplinkCallbackId = command.callbackId;
+}
+
+- (void)setConversionValueUpdatedCallback:(CDVInvokedUrlCommand *)command {
+    conversionValueUpdatedCallbackId = command.callbackId;
 }
 
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command {

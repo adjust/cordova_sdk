@@ -116,6 +116,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'trackSubscription' : this.trackSubscription(command.params); break;
         case 'thirdPartySharing' : this.trackThirdPartySharing(command.params); break;
         case 'measurementConsent' : this.trackMeasurementConsent(command.params); break;
+        case 'trackAdRevenueV2' : this.trackAdRevenueV2(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -688,6 +689,86 @@ AdjustCommandExecutor.prototype.trackThirdPartySharing = function(params) {
 AdjustCommandExecutor.prototype.trackMeasurementConsent = function(params) {
     var isEnabled = getFirstParameterValue(params, 'isEnabled') == 'true';
     Adjust.trackMeasurementConsent(isEnabled);
+};
+
+AdjustCommandExecutor.prototype.trackAdRevenueV2 = function(params) {
+    var adjustAdRevenue;
+    var source = getFirstParameterValue(params, 'adRevenueSource');
+    // weird behaviour with null value
+    // double check this later to handle it on event instance level
+    if (typeof source !== 'string') {
+        return;
+    }
+    adjustAdRevenue = new AdjustAdRevenue(source);
+
+    if ('revenue' in params) {
+        var revenueParams = getValueFromKey(params, 'revenue');
+        var currency = revenueParams[0];
+        var revenue = parseFloat(revenueParams[1]);
+        adjustAdRevenue.setRevenue(revenue, currency);
+    }
+
+    if ('callbackParams' in params) {
+        var callbackParams = getValueFromKey(params, 'callbackParams');
+        for (var i = 0; i < callbackParams.length; i += 2) {
+            var key = callbackParams[i];
+            var value = callbackParams[i+1];
+            adjustAdRevenue.addCallbackParameter(key, value);
+        }
+    }
+
+    if ('partnerParams' in params) {
+        var partnerParams = getValueFromKey(params, 'partnerParams');
+        for (var i = 0; i < partnerParams.length; i += 2) {
+            var key = partnerParams[i];
+            var value = partnerParams[i+1];
+            adjustAdRevenue.addPartnerParameter(key, value);
+        }
+    }
+
+    if ('adImpressionsCount' in params) {
+        var adImpressionsCount = getFirstParameterValue(params, 'adImpressionsCount');
+        var adImpressionsCountValue = parseInt(adImpressionsCount);
+        adjustAdRevenue.setAdImpressionsCount(adImpressionsCountValue);
+    }
+
+    if ('adRevenueNetwork' in params) {
+        var adRevenueNetwork = getFirstParameterValue(params, 'adRevenueNetwork');
+
+        // test server might set adRevenueNetwork to be undefined/null, which gets
+        // serialized/deserialized as string 'null', leading to failed test
+        if (adRevenueNetwork === 'null') {
+            adRevenueNetwork = null;
+        }
+
+        adjustAdRevenue.setAdRevenueNetwork(adRevenueNetwork);
+    }
+
+    if ('adRevenueUnit' in params) {
+        var adRevenueUnit = getFirstParameterValue(params, 'adRevenueUnit');
+
+        // test server might set adRevenueUnit to be undefined/null, which gets
+        // serialized/deserialized as string 'null', leading to failed test
+        if (adRevenueUnit === 'null') {
+            adRevenueUnit = null;
+        }
+
+        adjustAdRevenue.setAdRevenueUnit(adRevenueUnit);
+    }
+
+    if ('adRevenuePlacement' in params) {
+        var adRevenuePlacement = getFirstParameterValue(params, 'adRevenuePlacement');
+
+        // test server might set adRevenuePlacement to be undefined/null, which gets
+        // serialized/deserialized as string 'null', leading to failed test
+        if (adRevenuePlacement === 'null') {
+            adRevenuePlacement = null;
+        }
+
+        adjustAdRevenue.setAdRevenuePlacement(adRevenuePlacement);
+    }
+
+    Adjust.trackAdRevenue(adjustAdRevenue);
 };
 
 // Util methods

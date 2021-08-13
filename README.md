@@ -27,6 +27,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
+      * [Conversion value updated callback](#skadn-cv-updated-callback)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
@@ -56,6 +57,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Google Play Services advertising identifier](#di-gps-adid)
       * [Amazon advertising identifier](#di-fire-adid)
       * [Adjust device identifier](#di-adid)
+   * [Set external device ID](#set-external-device-id)
    * [User attribution](#user-attribution)
    * [Push token](#push-token)
    * [Pre-installed trackers](#pre-installed-trackers)
@@ -65,6 +67,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Deep linking on iOS 9 and later](#deeplinking-ios-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
+   * [Data residency](#data-residency)
 * [License](#license)
 
 
@@ -364,6 +367,23 @@ You can use Adjust SDK wrapper method `updateConversionValue` to update SKAdNetw
 
 ```js
 Adjust.updateConversionValue(6);
+```
+
+### <a id="skadn-cv-updated-callback"></a>Conversion value updated callback
+
+**Note**: This feature exists only in iOS platform.
+
+You can register callback to get notified each time when Adjust SDK updates conversion value for the user.
+
+```js
+var adjustConfig = new AdjustConfig(appToken, environment);
+
+adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
+    console.log("Conversion value updated callback recveived");
+    console.log("Conversion value: " + conversionValue);
+  });
+
+Adjust.create(adjustConfig);
 ```
 
 ### <a id="event-tracking"></a>Event tracking
@@ -914,6 +934,30 @@ Adjust.getAdid(function(adid) {
 ```
 
 **Note**: Information about the **adid** is only available after an app installation has been tracked by the Adjust backend. From that moment on, the Adjust SDK has information about the device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** value before the SDK has been initialised and installation of your app has been successfully tracked.
+  
+### <a id="set-external-device-id"></a>Set external device ID
+
+> **Note** If you want to use external device IDs, please contact your Adjust representative. They will talk you through the best approach for your use case.
+
+An external device identifier is a custom value that you can assign to a device or user. They can help you to recognize users across sessions and platforms. They can also help you to deduplicate installs by user so that a user isn't counted as multiple new installs.
+
+You can also use an external device ID as a custom identifier for a device. This can be useful if you use these identifiers elsewhere and want to keep continuity.
+
+Check out our [external device identifiers article](https://help.adjust.com/en/article/external-device-identifiers) for more information.
+
+> **Note** This setting requires Adjust SDK v4.21.0 or later.
+
+To set an external device ID, assign the identifier to the `externalDeviceId` property of your config instance. Do this before you initialize the Adjust SDK.
+
+```js
+adjustConfig.setExternalDeviceId("{Your-External-Device-Id}");
+```
+
+> **Important**: You need to make sure this ID is **unique to the user or device** depending on your use-case. Using the same ID across different users or devices could lead to duplicated data. Talk to your Adjust representative for more information.
+
+If you want to use the external device ID in your business analytics, you can pass it as a session callback parameter. See the section on [session callback parameters](#session-callback-parameters) for more information.
+
+You can import existing external device IDs into Adjust. This ensures that the backend matches future data to your existing device records. If you want to do this, please contact your Adjust representative.
 
 ### <a id="user-attribution"></a>User attribution
 
@@ -1142,6 +1186,16 @@ var app = {
 // ...
 ```
 
+### <a id="data-residency"></a>Data residency
+
+In order to enable data residency feature, make sure to call `setUrlStrategy` method of the `AdjustConfig` instance with one of the following constants:
+
+```js
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyEU); // for EU data residency region
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyTR); // for Turkey data residency region
+adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyUS); // for US data residency region
+```
+
 [dashboard]:    http://adjust.com
 [adjust.com]:   http://adjust.com
 
@@ -1173,7 +1227,7 @@ var app = {
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2021 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

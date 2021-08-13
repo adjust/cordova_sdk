@@ -18,6 +18,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
+    this.conversionValueUpdatedCallback = null;
     this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
@@ -29,6 +30,7 @@ function AdjustConfig(appToken, environment) {
     this.processName = null;
     this.readMobileEquipmentIdentity = null;
     this.preinstallTrackingEnabled = null;
+    this.preinstallFilePath = null;
     // iOS only
     this.allowiAdInfoReading = null;
     this.allowAdServicesInfoReading = null;
@@ -36,39 +38,28 @@ function AdjustConfig(appToken, environment) {
     this.handleSkAdNetwork = null;
 };
 
-AdjustConfig.EnvironmentSandbox    = "sandbox";
+AdjustConfig.EnvironmentSandbox = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
 
-AdjustConfig.LogLevelVerbose       = "VERBOSE";
-AdjustConfig.LogLevelDebug         = "DEBUG";
-AdjustConfig.LogLevelInfo          = "INFO";
-AdjustConfig.LogLevelWarn          = "WARN";
-AdjustConfig.LogLevelError         = "ERROR";
-AdjustConfig.LogLevelAssert        = "ASSERT";
-AdjustConfig.LogLevelSuppress      = "SUPPRESS";
+AdjustConfig.LogLevelVerbose = "VERBOSE";
+AdjustConfig.LogLevelDebug = "DEBUG";
+AdjustConfig.LogLevelInfo  = "INFO";
+AdjustConfig.LogLevelWarn = "WARN";
+AdjustConfig.LogLevelError = "ERROR";
+AdjustConfig.LogLevelAssert = "ASSERT";
+AdjustConfig.LogLevelSuppress = "SUPPRESS";
 
-AdjustConfig.UrlStrategyChina      = "china";
-AdjustConfig.UrlStrategyIndia      = "india";
+AdjustConfig.UrlStrategyChina = "china";
+AdjustConfig.UrlStrategyIndia = "india";
 
+AdjustConfig.DataResidencyEU = "data-residency-eu";
+AdjustConfig.DataResidencyTR = "data-residency-tr";
+AdjustConfig.DataResidencyUS = "data-residency-us";
+
+AdjustConfig.AdRevenueSourceAppLovinMAX = "applovin_max_sdk";
 AdjustConfig.AdRevenueSourceMopub = "mopub";
-AdjustConfig.AdRevenueSourceAdmob = "admob";
-AdjustConfig.AdRevenueSourceFbNativeAd = "facebook_native_ad";
-AdjustConfig.AdRevenueSourceFbAudienceNetwork = "facebook_audience_network";
-AdjustConfig.AdRevenueSourceIronsource = "ironsource";
-AdjustConfig.AdRevenueSourceFyber = "fyber";
-AdjustConfig.AdRevenueSourceAerserv = "aerserv";
-AdjustConfig.AdRevenueSourceAppodeal = "appodeal";
-AdjustConfig.AdRevenueSourceAdincube = "adincube";
-AdjustConfig.AdRevenueSourceFusePowered = "fusepowered";
-AdjustConfig.AdRevenueSourceAddapptr = "addapptr";
-AdjustConfig.AdRevenueSourceMillennialMediation = "millennial_mediation";
-AdjustConfig.AdRevenueSourceFlurry = "flurry";
-AdjustConfig.AdRevenueSourceAdmost = "admost";
-AdjustConfig.AdRevenueSourceDeltadna = "deltadna";
-AdjustConfig.AdRevenueSourceUpsight = "upsight";
-AdjustConfig.AdRevenueSourceUnityAds = "unityads";
-AdjustConfig.AdRevenueSourceAdtoapp = "adtoapp";
-AdjustConfig.AdRevenueSourceTapdaq = "tapdaq";
+AdjustConfig.AdRevenueSourceAdMob = "admob_sdk";
+AdjustConfig.AdRevenueSourceIronSource = "ironsource_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -114,12 +105,20 @@ AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
     return this.deferredDeeplinkCallback;
 };
 
+AdjustConfig.prototype.getConversionValueUpdatedCallback = function() {
+    return this.conversionValueUpdatedCallback;
+};
+
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
     this.preinstallTrackingEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
+    this.preinstallFilePath = preinstallFilePath;
 };
 
 AdjustConfig.prototype.setNeedsCost = function(needsCost) {
@@ -248,6 +247,10 @@ AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDe
     this.deferredDeeplinkCallback = deferredDeeplinkCallback;
 };
 
+AdjustConfig.prototype.setConversionValueUpdatedCallbackListener = function(conversionValueUpdatedCallback) {
+    this.conversionValueUpdatedCallback = conversionValueUpdatedCallback;
+};
+
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
@@ -276,6 +279,10 @@ AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
 
 AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
     return this.deferredDeeplinkCallback !== null;
+};
+
+AdjustConfig.prototype.hasConversionValueUpdatedCallbackListener = function() {
+    return this.conversionValueUpdatedCallback !== null;
 };
 
 module.exports = AdjustConfig;

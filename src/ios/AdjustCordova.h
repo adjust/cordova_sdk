@@ -32,6 +32,7 @@
 - (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
+- (void)setConversionValueUpdatedCallback:(CDVInvokedUrlCommand *)command;
 - (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;

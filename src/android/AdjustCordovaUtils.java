@@ -37,6 +37,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_INFO_2 = "info2";
     public static final String KEY_INFO_3 = "info3";
     public static final String KEY_INFO_4 = "info4";
+    public static final String KEY_PREINSTALL_FILE_PATH = "preinstallFilePath";
     public static final String KEY_DEVICE_KNOWN = "isDeviceKnown";
     // public static final String KEY_READ_MOBILE_EQUIPMENT_IDENTITY = "readMobileEquipmentIdentity";
     public static final String KEY_BASE_URL = "baseUrl";
@@ -74,6 +75,11 @@ public class AdjustCordovaUtils {
     public static final String KEY_SIGNATURE = "signature";
     public static final String KEY_PURCHASE_TOKEN = "purchaseToken";
     public static final String KEY_PURCHASE_TIME = "purchaseTime";
+    public static final String KEY_SOURCE = "source";
+    public static final String KEY_AD_IMPRESSIONS_COUNT = "adImpressionsCount";
+    public static final String KEY_AD_REVENUE_NETWORK = "adRevenueNetwork";
+    public static final String KEY_AD_REVENUE_UNIT = "adRevenueUnit";
+    public static final String KEY_AD_REVENUE_PLACEMENT = "adRevenuePlacement";
 
     public static final String COMMAND_CREATE = "create";
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";
@@ -82,6 +88,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK = "setSessionTrackingSucceededCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
+    public static final String COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK = "setConversionValueUpdatedCallback";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_TRACK_EVENT = "trackEvent";
     public static final String COMMAND_SET_OFFLINE_MODE = "setOfflineMode";
