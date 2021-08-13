@@ -486,6 +486,7 @@ export enum AdjustAdRevenueSource {
  * AdjustAppStoreSubscription
  * AdjustPlayStoreSubscription
  * AdjustThirdPartySharing
+ * AdjustAdReenue
  * @enums
  * AdjustEnvironment
  * AdjustLogLevel
@@ -544,7 +545,13 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova({ sync: true })
   trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void {}
-  // trackAdRevenue:((source: AdjustAdRevenueSource, payload: string): void {}) | ((source: AdjustAdRevenue): void {})
+
+  /**
+   * This method tracks ad revenue data
+   * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
+   */
+  @Cordova({ sync: true })
+  trackAdRevenue(adRevenue: AdjustAdRevenue): void {}
 
   /**
    * This method tracks measurement consent choice
