@@ -543,15 +543,17 @@ export class Adjust extends IonicNativePlugin {
    * @param {AdjustAdRevenueSource} source Ad revenue source
    * @param {string} payload Ad revenue JSON string payload
    */
-  @Cordova({ sync: true })
-  trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void {}
+  trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void
 
   /**
-   * This method tracks ad revenue data
-   * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
-   */
-  @Cordova({ sync: true })
-  trackAdRevenue(adRevenue: AdjustAdRevenue): void {}
+  * This method tracks ad revenue data
+  * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
+  */
+  trackAdRevenue(adRevenue: AdjustAdRevenue): void
+
+  // And typescript hides this, so the client will be able call only methods above
+  @Cordova({sync: true})
+  trackAdRevenue(sourceOrAdRevenue: any, payload?: any): void {}
 
   /**
    * This method tracks measurement consent choice
