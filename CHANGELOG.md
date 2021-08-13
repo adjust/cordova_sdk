@@ -1,4 +1,4 @@
-### Version 4.29.0 (xxth August 2021)
+### Version 4.29.0 (13th August 2021)
 #### Added
 - Added data residency feature. You can choose this setting by calling `setUrlStrategy` method of `AdjustConfig` instance with `AdjustConfig.DataResidencyEU` (for EU data residency region), `AdjustConfig.DataResidencyTR` (for TR data residency region) or `AdjustConfig.DataResidencyUS` value (for US data residency region).
 - Added possibility to `trackAdRevenue` method of `Adjust` interface to allow tracking of ad revenue by passing `AdjustAdRevenue` object as parameter.
