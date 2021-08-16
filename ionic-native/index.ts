@@ -462,7 +462,7 @@ export enum AdjustAdRevenueSource {
  *
  * @usage
  * ```typescript
- *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@ionic-native/adjust';
+ *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@ionic-native/adjust/ngx';
  *
  *  constructor(private adjust: Adjust) { }
  *
@@ -546,9 +546,9 @@ export class Adjust extends IonicNativePlugin {
   trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void
 
   /**
-  * This method tracks ad revenue data
-  * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
-  */
+   * This method tracks ad revenue data
+   * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
+   */
   trackAdRevenue(adRevenue: AdjustAdRevenue): void
 
   // And typescript hides this, so the client will be able call only methods above
