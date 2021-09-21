@@ -165,6 +165,18 @@ The Adjust SDK adds three permissions to your Android manifest file: `INTERNET`,
 
 `INTERNET` permission is the permission that our SDK might need at any point in time. `ACCESS_WIFI_STATE` is the permission which the Adjust SDK needs in case your app is not targetting the Google Play Store and doesn't use Google Play Services. If you are targetting the Google Play Store and you are using Google Play Services, the Adjust SDK doesn't need this permission and, if you don't need it anywhere else in your app, you can remove it. `ACCESS_NETWORK_STATE` is needed for reading MMC and MNC parameters.
 
+#### <a id="gps-adid-permission"></a>Add permission to gather Google advertising ID
+
+If you are targeting Android 12 and above (API level 31), you need to add the `com.google.android.gms.AD_ID` permission to read the device's advertising ID. Add the following line to your `plugin.xml` to enable the permission.
+
+```xml
+<config-file target="AndroidManifest.xml" parent="/manifest">
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+</config>
+```
+
+For more information, see [Google's `AdvertisingIdClient.Info` documentation](https://developers.google.com/android/reference/com/google/android/gms/ads/identifier/AdvertisingIdClient.Info#public-string-getid).
+
 ### <a id="android-gps"></a>Google Play Services
 
 Since the August 1, 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the Adjust SDK to use the Google Advertising ID, you must integrate [Google Play Services][google-play-services].
@@ -900,6 +912,10 @@ Adjust.getIdfa(function(idfa) {
 
 
 ### <a id="di-gps-adid"></a>Google Play Services advertising identifier
+  
+The Google Play Services Advertising Identifier (Google advertising ID) is a unique identifier for a device. Users can opt out of sharing their Google advertising ID by toggling the "Opt out of Ads Personalization" setting on their device. When a user has enabled this setting, the Adjust SDK returns a string of zeros when trying to read the Google advertising ID.
+
+> **Important**: If you are targeting Android 12 and above (API level 31), you need to add the [`com.google.android.gms.AD_ID` permission](#gps-adid-permission) to your app. If you do not add this permission, you will not be able to read the Google advertising ID even if the user has not opted out of sharing their ID.
 
 If you need to obtain the Google Advertising ID, you can call the `getGoogleAdId` method of the `Adjust` instance. You need to pass a callback to that method in order to obtain the value:
 
