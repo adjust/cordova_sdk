@@ -28,6 +28,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_SHOULD_LAUNCH_DEEPLINK = "shouldLaunchDeeplink";
     public static final String KEY_NEEDS_COST = "needsCost";
     public static final String KEY_PREINSTALL_TRACKING_ENABLED = "preinstallTrackingEnabled";
+    public static final String KEY_OAID_READING_ENABLED = "oaidReadingEnabled";
     public static final String KEY_IS_ENABLED = "isEnabled";
     public static final String KEY_GRANULAR_OPTIONS = "granularOptions";
     public static final String KEY_USER_AGENT = "userAgent";

@@ -61,6 +61,7 @@ export class AdjustConfig {
   private processName: string = null; // Android only
   private preinstallTrackingEnabled: boolean = null; // Android only
   private preinstallFilePath: string = null; // Android only
+  private oaidReadingEnabled: boolean = null; // Android only
   private allowiAdInfoReading: boolean = null; // iOS only
   private allowIdfaReading: boolean = null; // iOS only
   private allowAdServicesInfoReading: boolean = null; // iOS only
@@ -140,6 +141,10 @@ export class AdjustConfig {
 
   setPreinstallFilePath(preinstallFilePath: string) {
     this.preinstallFilePath = preinstallFilePath;
+  }
+
+  setOaidReadingEnabled(enableOaidReading: boolean) {
+    this.oaidReadingEnabled = enableOaidReading;
   }
 
   setAllowiAdInfoReading(allowiAdInfoReading: boolean) {
@@ -462,7 +467,7 @@ export enum AdjustAdRevenueSource {
  *
  * @usage
  * ```typescript
- *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@ionic-native/adjust';
+ *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@ionic-native/adjust/ngx';
  *
  *  constructor(private adjust: Adjust) { }
  *
@@ -546,9 +551,9 @@ export class Adjust extends IonicNativePlugin {
   trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void
 
   /**
-  * This method tracks ad revenue data
-  * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
-  */
+   * This method tracks ad revenue data
+   * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
+   */
   trackAdRevenue(adRevenue: AdjustAdRevenue): void
 
   // And typescript hides this, so the client will be able call only methods above

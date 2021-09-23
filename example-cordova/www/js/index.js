@@ -27,7 +27,7 @@ var app = {
         // adjustConfig.setDeviceKnown(true);
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
         // adjustConfig.setNeedsCost(true);
-        adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyUS);
+        // adjustConfig.setOaidReadingEnabled(true);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
