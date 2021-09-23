@@ -1,3 +1,14 @@
+### Version 4.29.1 (23rd September 2021)
+#### Added
+- Added support for `Admost` ad revenue source.
+- Added ability to enable native Adjust OAID plugin.
+
+#### Native SDKs
+- [iOS@v4.29.6][ios_sdk_v4.29.6]
+- [Android@v4.28.5][android_sdk_v4.28.5]
+
+---
+
 ### Version 4.29.0 (13th August 2021)
 #### Added
 - Added data residency feature. You can choose this setting by calling `setUrlStrategy` method of `AdjustConfig` instance with `AdjustConfig.DataResidencyEU` (for EU data residency region), `AdjustConfig.DataResidencyTR` (for TR data residency region) or `AdjustConfig.DataResidencyUS` value (for US data residency region).
@@ -551,6 +562,7 @@
 [ios_sdk_v4.26.1]: https://github.com/adjust/ios_sdk/tree/v4.26.1
 [ios_sdk_v4.28.0]: https://github.com/adjust/ios_sdk/tree/v4.28.0
 [ios_sdk_v4.29.4]: https://github.com/adjust/ios_sdk/tree/v4.29.4
+[ios_sdk_v4.29.6]: https://github.com/adjust/ios_sdk/tree/v4.29.6
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -578,3 +590,4 @@
 [android_sdk_v4.26.2]: https://github.com/adjust/android_sdk/tree/v4.26.2
 [android_sdk_v4.27.0]: https://github.com/adjust/android_sdk/tree/v4.27.0
 [android_sdk_v4.28.4]: https://github.com/adjust/android_sdk/tree/v4.28.4
+[android_sdk_v4.28.5]: https://github.com/adjust/android_sdk/tree/v4.28.5
