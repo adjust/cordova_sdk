@@ -197,7 +197,7 @@ To check whether the analytics part of the Google Play Services library has been
 If you are using Proguard, add these lines to your Proguard file:
 
 ```
--keep public class com.adjust.sdk.** { *; }
+-keep class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.ConnectionResult {
     int SUCCESS;
 }
@@ -209,6 +209,12 @@ If you are using Proguard, add these lines to your Proguard file:
     boolean isLimitAdTrackingEnabled();
 }
 -keep public class com.android.installreferrer.** { *; }
+```
+
+If you are **not publishing your app in the Google Play Store**, use the following `com.adjust.sdk` package rules:
+
+```
+-keep public class com.adjust.sdk.** { *; }
 ```
 
 ### <a id="android-referrer"></a>Install referrer
