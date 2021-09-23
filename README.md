@@ -68,6 +68,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
    * [Data residency](#data-residency)
+   * [OAID plugin](#oaid-plugin)
 * [License](#license)
 
 
@@ -1210,6 +1211,14 @@ In order to enable data residency feature, make sure to call `setUrlStrategy` me
 adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyEU); // for EU data residency region
 adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyTR); // for Turkey data residency region
 adjustConfig.setUrlStrategy(AdjustConfig.DataResidencyUS); // for US data residency region
+```
+
+### <a id="oaid-plugin"></a>OAID plugin
+
+You can enable **native** Adjust OAID plugin directly from Adjust Cordova SDK. In order to do that, first make sure to read [native OAID plugin docs](https://github.com/adjust/android_sdk/blob/master/doc/english/plugins/oaid.md). Since Adjust Cordova SDK is already adding the native Adjust SDK under the hood, only dependency you need to add to your app from OAID plugin docs is the OAID plugin dependency. After that has been done, you have an option to enable usage of native Adjust OAID plugin by calling `setOaidReadingEnabled` method of `AdjustConfig`:
+
+```js
+adjustConfig.setOaidReadingEnabled(true);
 ```
 
 [dashboard]:    http://adjust.com
