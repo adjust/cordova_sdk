@@ -1,5 +1,6 @@
 package com.adjust.sdk;
 
+import java.lang.reflect.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -233,6 +234,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean shouldLaunchDeeplink = true;
         boolean needsCost = false;
         boolean preinstallTrackingEnabled = false;
+        boolean oaidReadingEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -299,6 +301,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_PREINSTALL_TRACKING_ENABLED)) {
             preinstallTrackingEnabled = parameters.get(KEY_PREINSTALL_TRACKING_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_OAID_READING_ENABLED)) {
+            oaidReadingEnabled = parameters.get(KEY_OAID_READING_ENABLED).toString() == "true" ? true : false;
         }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -446,6 +451,26 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Deferred deeplink callback listener.
         if (deferredDeeplinkCallbackContext != null) {
             adjustConfig.setOnDeeplinkResponseListener(this);
+        }
+
+        // PLUGIN
+        // Check if OAID reading is enabled to potentially ping OAID plugin if added natively.
+        if (oaidReadingEnabled == true) {
+            Logger logger = (Logger)AdjustFactory.getLogger();
+            try {
+                Class clazz = Class.forName("com.adjust.sdk.oaid.AdjustOaid");
+                if (clazz != null) {
+                    Method method = clazz.getMethod("readOaid", (Class<?>[]) null);
+                    if (method != null) {
+                        method.invoke(null, (Object[])null);
+                        logger.info(String.format("[AdjustCordova]: Adjust OAID plugin successfully found in the app"));
+                        logger.info(String.format("[AdjustCordova]: OAID reading enabled"));
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(String.format("[AdjustCordova]: OAID reading failed"));
+                e.printStackTrace();
+            }
         }
 
         // Start SDK.

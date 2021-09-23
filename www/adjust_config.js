@@ -31,6 +31,7 @@ function AdjustConfig(appToken, environment) {
     this.readMobileEquipmentIdentity = null;
     this.preinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
+    this.oaidReadingEnabled = null;
     // iOS only
     this.allowiAdInfoReading = null;
     this.allowAdServicesInfoReading = null;
@@ -60,6 +61,7 @@ AdjustConfig.AdRevenueSourceAppLovinMAX = "applovin_max_sdk";
 AdjustConfig.AdRevenueSourceMopub = "mopub";
 AdjustConfig.AdRevenueSourceAdMob = "admob_sdk";
 AdjustConfig.AdRevenueSourceIronSource = "ironsource_sdk";
+AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -119,6 +121,10 @@ AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
 
 AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
     this.preinstallFilePath = preinstallFilePath;
+};
+
+AdjustConfig.prototype.setOaidReadingEnabled = function(enableOaidReading) {
+    this.oaidReadingEnabled = enableOaidReading;
 };
 
 AdjustConfig.prototype.setNeedsCost = function(needsCost) {
