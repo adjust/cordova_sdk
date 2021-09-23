@@ -334,6 +334,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setAllowIdfaReading(allowIdfaReading);
     }
 
+    if ('allowSkAdNetworkHandling' in params) {
+        var allowSkAdNetworkHandlingS = getFirstParameterValue(params, 'allowSkAdNetworkHandling');
+        var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
+        if (allowSkAdNetworkHandling == false) {
+            adjustConfig.deactivateSKAdNetworkHandling();
+        }
+    }
+
     if ('attributionCallbackSendAll' in params) {
         var _this = this;
         adjustConfig.setAttributionCallbackListener(function(attribution) {
