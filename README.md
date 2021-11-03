@@ -31,7 +31,6 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
-      * [In-App Purchase verification](#iap-verification)
       * [Callback parameters](#callback-parameters)
       * [Partner parameters](#partner-parameters)
       * [Callback identifier](#callback-id)
@@ -441,10 +440,6 @@ Adjust.trackEvent(adjustEvent);
 ```
 
 **Note**: Transaction ID is the iOS term, unique identifier for successfully finished Android In-App-Purchases is named **Order ID**.
-
-### <a id="iap-verification"></a>In-App Purchase verification
-
-If you want to verify your In-App Purchases, you can use Adjust's Purchase Verification product, our server side receipt verification tool. Check out our Cordova purchase SDK and read more about it [here][cordova-purchase-sdk].
 
 ### <a id="callback-parameters"></a>Callback parameters
 
