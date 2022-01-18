@@ -1229,7 +1229,7 @@ adjustConfig.setOaidReadingEnabled(true);
 [npm-repo]:         https://www.npmjs.com/package/com.adjust.sdk
 
 [example-cordova]:          ./example-cordova
-[example-ionic-capcaitor]:  ./example-ionic-capacitor
+[example-ionic-capacitor]:  ./example-ionic-capacitor
 
 [google-ad-id]:         https://developer.android.com/google/play-services/id.html
 [enable-ulinks]:        https://github.com/adjust/ios_sdk#deeplinking-setup-new
