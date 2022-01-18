@@ -73,7 +73,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
 
 ## <a id="example-app"></a>Example app
 
-There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic` directory][example-ionic]. In there you can check how to integrate the Adjust SDK into your app.
+There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic-capacitor` directory][example-ionic-capacitor]. In there you can check how to integrate the Adjust SDK into your app.
 
 ## <a id="basic-integration"></a>Basic integration
 
@@ -1227,8 +1227,9 @@ adjustConfig.setOaidReadingEnabled(true);
 
 [releases]:         https://github.com/adjust/cordova_sdk/releases
 [npm-repo]:         https://www.npmjs.com/package/com.adjust.sdk
-[example-ionic]:    ./example-ionic
-[example-cordova]:  ./example-cordova
+
+[example-cordova]:          ./example-cordova
+[example-ionic-capcaitor]:  ./example-ionic-capacitor
 
 [google-ad-id]:         https://developer.android.com/google/play-services/id.html
 [enable-ulinks]:        https://github.com/adjust/ios_sdk#deeplinking-setup-new
@@ -1253,7 +1254,7 @@ adjustConfig.setOaidReadingEnabled(true);
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2021 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2022 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
