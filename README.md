@@ -73,7 +73,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
 
 ## <a id="example-app"></a>Example app
 
-There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic` directory][example-ionic]. In there you can check how to integrate the Adjust SDK into your app.
+There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic-capacitor` directory][example-ionic-capacitor]. In there you can check how to integrate the Adjust SDK into your app.
 
 ## <a id="basic-integration"></a>Basic integration
 
