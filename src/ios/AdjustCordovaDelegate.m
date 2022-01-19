@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import <Cordova/CDVPluginResult.h>
 #import "AdjustCordovaDelegate.h"
+#import "EagerAdjustBuffer.h"
 
 static dispatch_once_t onceToken;
 static AdjustCordovaDelegate *defaultInstance = nil;
@@ -118,6 +119,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionCallbackId];
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_attributionCallbackId];
 }
 
 - (void)adjustEventTrackingSucceededWannabe:(ADJEventSuccess *)eventSuccessResponseData {
@@ -138,6 +140,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventSucceededCallbackId];
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_attributionCallbackId];
 }
 
 - (void)adjustEventTrackingFailedWannabe:(ADJEventFailure *)eventFailureResponseData {
@@ -159,6 +162,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventFailedCallbackId];
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_eventFailedCallbackId];
 }
 
 - (void)adjustSessionTrackingSucceededWannabe:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -177,6 +181,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionSucceededCallbackId];
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_sessionSucceededCallbackId];
 }
 
 - (void)adjustSessionTrackingFailedWananbe:(ADJSessionFailure *)sessionFailureResponseData {
@@ -196,6 +201,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionFailedCallbackId];
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_sessionFailedCallbackId];
 }
 
 - (BOOL)adjustDeeplinkResponseWannabe:(NSURL *)deeplink {
@@ -203,7 +209,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_deferredDeeplinkCallbackId];
-
+    [[EagerAdjustBuffer getInstance] addPluginResult:pluginResult andCallbackId:_deferredDeeplinkCallbackId];
     return _shouldLaunchDeferredDeeplink;
 }
 
