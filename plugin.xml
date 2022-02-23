@@ -85,7 +85,15 @@
         <header-file src="src/ios/AdjustCordovaDelegate.h" />
         <source-file src="src/ios/AdjustCordovaDelegate.m" />
         
-        <framework src="src/ios/AdjustSdk.framework" custom="true" />
+        <podspec>
+            <config>
+                <source url="https://cdn.cocoapods.org/"/>
+            </config>
+            <pods>
+                <pod name="Adjust" spec="4.29.7" />
+            </pods>
+        </podspec>
+        
         <framework src="AdSupport.framework" weak="true" />
         <framework src="iAd.framework" weak="true" />
         <framework src="CoreTelephony.framework" weak="true" />
