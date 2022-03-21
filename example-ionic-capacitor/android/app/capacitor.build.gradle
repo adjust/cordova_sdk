@@ -9,9 +9,11 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
+    implementation project(':capacitor-app')
+    implementation project(':capacitor-haptics')
+    implementation project(':capacitor-keyboard')
+    implementation project(':capacitor-status-bar')
 
-    implementation "com.google.android.gms:play-services-analytics:+"
-    implementation "com.android.installreferrer:installreferrer:2.1"
 }
 
 

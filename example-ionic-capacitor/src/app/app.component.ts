@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Adjust, AdjustConfig, AdjustEnvironment, AdjustLogLevel } from '@ionic-native/adjust/ngx';
+import { Adjust, AdjustConfig, AdjustEnvironment, AdjustLogLevel } from '@awesome-cordova-plugins/adjust/ngx';
 
 @Component({
   selector: 'app-root',
