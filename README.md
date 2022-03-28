@@ -279,7 +279,6 @@ Adjust SDK plugin adds three iOS frameworks to your generated Xcode project:
 
 * `iAd.framework` - in case you are running iAd campaigns
 * `AdSupport.framework` - for reading iOS Advertising Id (IDFA)
-* `CoreTelephony.framework` - for reading MCC and MNC information
 * `StoreKit.framework` - for communication with SKAdNetwork framework
 * `AppTrackingTransparency.framework` - to ask for user's consent to be tracked and obtain status of that consent
 * `AdjustSdk.framework` - our native iOS SDK framework
@@ -290,7 +289,6 @@ Settings for this can also be found in `plugin.xml` file of the Adjust SDK plugi
 <framework src="src/ios/AdjustSdk.framework" custom="true" />
 <framework src="AdSupport.framework" weak="true" />
 <framework src="iAd.framework" weak="true" />
-<framework src="CoreTelephony.framework" weak="true" />
 <framework src="StoreKit.framework" weak="true" />
 <framework src="AdServices.framework" weak="true" />
 <framework src="AppTrackingTransparency.framework" weak="true" />
