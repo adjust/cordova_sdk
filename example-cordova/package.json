@@ -13,8 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "com.adjust.sdk": "file:../../../../Desktop/cordova_sdk_dev",
-    "cordova-android": "^9.1.0",
+    "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^5.0.2",
@@ -36,6 +35,7 @@
       "com.adjust.sdk": {}
     },
     "platforms": [
+      "ios",
       "android"
     ]
   },
