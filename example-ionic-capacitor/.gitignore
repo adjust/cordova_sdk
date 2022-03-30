@@ -29,3 +29,9 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
