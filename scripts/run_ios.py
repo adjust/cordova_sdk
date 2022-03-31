@@ -4,13 +4,13 @@ if __name__ == "__main__":
     set_log_tag('RUN-IOS')
     error('Error. Do not run this script explicitly, but rather through "build_and_run.py" script.', do_exit=True)
 
-def run(root_dir, ios_submodule_dir, apptype):
+def run(root_dir, apptype):
     if apptype == 'example':
-        _run_example(root_dir, ios_submodule_dir)
+        _run_example(root_dir)
     else:
-        _run_testapp(root_dir, ios_submodule_dir)
+        _run_testapp(root_dir)
 
-def _run_example(root_dir, ios_submodule_dir):
+def _run_example(root_dir):
     # ------------------------------------------------------------------
     # paths
     temp_plugin_dir    = '{0}/temp_plugin'.format(root_dir)
@@ -54,7 +54,7 @@ def _run_example(root_dir, ios_submodule_dir):
     debug_green('Build successful! (You can also run it from Xcode ({0}/platforms/ios/)).'.format(example_app_dir))
     remove_dir_if_exists(temp_plugin_dir)
 
-def _run_testapp(root_dir, ios_submodule_dir):
+def _run_testapp(root_dir):
     # ------------------------------------------------------------------
     # paths
     test_app_dir        = '{0}/test/app'.format(root_dir)

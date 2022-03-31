@@ -13,7 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "com.adjust.sdk": "file:../../../../temp_plugin/cordova_sdk_dev",
+    "com.adjust.sdk": "file:../temp_plugin",
     "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-console": "^1.1.0",
