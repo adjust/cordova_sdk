@@ -4,8 +4,7 @@
   "displayName": "AdjustTestApp",
   "cordova": {
     "platforms": [
-      "ios",
-      "android"
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
@@ -18,8 +17,7 @@
         "ANDROID_PATHPREFIX": "/"
       },
       "cordova-universal-links-plugin": {},
-      "com.adjust.sdk": {},
-      "com.adjust.test": {}
+      "com.adjust.sdk": {}
     }
   },
   "dependencies": {
@@ -34,7 +32,7 @@
   "devDependencies": {
     "com.adjust.sdk": "file:../../temp_plugin",
     "com.adjust.test": "file:../plugin",
-    "cordova-android": "^9.1.0",
+    "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0"
   }
 }
