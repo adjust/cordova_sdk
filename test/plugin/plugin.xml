@@ -3,63 +3,55 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.test"
     version="4.29.2">
-    
+
     <name>Adjust Test</name>
     <description>Adjust Plugin For Cordova SDK Testing</description>
     <license>MIT License</license>
     <keywords>adjust</keywords>
     <author>adjust</author>
-    
+
     <engines>
         <engine name="cordova-android" version=">=4.0.0"/>
         <engine name="cordova-ios" version=">=3.0.0"/>
     </engines>
-    
+
     <js-module src="www/adjust_test.js" name="AdjustTest">
         <clobbers target="AdjustTest"/>
     </js-module>
-    
+
     <!-- Android -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest"/>
         <config-file target="AndroidManifest.xml" parent="/manifest/application"/>
-        
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AdjustTest">
                 <param name="android-package" value="com.adjust.test.AdjustCordovaTest"/>
                 <param name="onload" value="true"/>
             </feature>
         </config-file>
-        
+
         <source-file src="src/android/AdjustCordovaTest.java" target-dir="src/com/adjust/test"/>
         <source-file src="src/android/CommandListener.java" target-dir="src/com/adjust/test"/>
-        
-        <framework src="com.adjust.sdk:adjust-android:4.29.1"/>
+        <source-file src="src/android/adjust-test-library.jar" target-dir="libs"/>
+        <source-file src="src/android/adjust-test-options.jar" target-dir="libs"/>
         <framework src="com.google.code.gson:gson:2.8.6" />
         <framework src="org.java-websocket:Java-WebSocket:1.4.0" />
     </platform>
-    
+
     <!-- iOS -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="AdjustTest">
                 <param name="ios-package" value="ADJCordovaTest"/>
                 <param name="onload" value="true" />
-            </feature>
+          </feature>
         </config-file>
-        
-        <podspec>
-            <config>
-                <source url="https://cdn.cocoapods.org/"/>
-            </config>
-            <pods>
-                <pod name="Adjust" spec="4.29.7" />
-            </pods>
-        </podspec>
-        
+
         <header-file src="src/ios/ADJCordovaTest.h"/>
         <source-file src="src/ios/ADJCordovaTest.m"/>
         <header-file src="src/ios/ADJCommandListener.h"/>
         <source-file src="src/ios/ADJCommandListener.m"/>
+        <framework src="src/ios/AdjustTestLibrary.framework" custom="true"/>
     </platform>
 </plugin>
