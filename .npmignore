@@ -5,7 +5,6 @@
 
 # Adjust SDK repository
 doc/
-ext/
 scripts/
 example-cordova/
 example-ionic/
