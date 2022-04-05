@@ -17,7 +17,8 @@
         "ANDROID_PATHPREFIX": "/"
       },
       "cordova-universal-links-plugin": {},
-      "com.adjust.sdk": {}
+      "com.adjust.sdk": {},
+      "com.adjust.test": {}
     }
   },
   "dependencies": {
