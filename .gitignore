@@ -89,15 +89,6 @@ build/
 .jira-url
 atlassian-ide-plugin.xml
 
-# exceptions
-!*adjust-android.jar
-
-# Cordova example app
-sample/plugins/*
-sample/platforms/*
-
-!sample/plugins/fetch.json
-!sample/platforms/platforms.json
 temp_plugin/
 example-cordova/node_modules
 example-cordova/platforms
