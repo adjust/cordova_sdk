@@ -995,7 +995,7 @@ To send us the push notification token, add the following call to Adjust **whene
 Adjust.setPushToken("YourPushNotificationsToken");
 ```
 
-Push tokens are used for Audience Builder and client callbacks, and they are required for the upcoming uninstall tracking feature.
+Push tokens are used for Audience Builder and client callbacks, and they are required for the uninstall tracking feature.
 
 ### <a id="pre-installed-trackers"></a>Pre-installed trackers
 
