@@ -235,6 +235,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean needsCost = false;
         boolean preinstallTrackingEnabled = false;
         boolean oaidReadingEnabled = false;
+        boolean coppaCompliantEnabled = false;
+        boolean playStoreKidsAppEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -304,6 +306,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_OAID_READING_ENABLED)) {
             oaidReadingEnabled = parameters.get(KEY_OAID_READING_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_COPPA_COMPLIANT_ENABLED)) {
+            coppaCompliantEnabled = parameters.get(KEY_COPPA_COMPLIANT_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_PLAY_STORE_KIDS_APP_ENABLED)) {
+            playStoreKidsAppEnabled = parameters.get(KEY_PLAY_STORE_KIDS_APP_ENABLED).toString() == "true" ? true : false;
         }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -399,6 +407,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Event buffering.
         adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
+
+        // COPPA compliant.
+        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
+
+        // Play Store Kids App.
+        adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled);
 
         // Is device known.
         adjustConfig.setDeviceKnown(isDeviceKnown);

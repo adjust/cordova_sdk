@@ -65,6 +65,8 @@ export class AdjustConfig {
   private allowiAdInfoReading: boolean = null; // iOS only
   private allowIdfaReading: boolean = null; // iOS only
   private allowAdServicesInfoReading: boolean = null; // iOS only
+  private coppaCompliantEnabled: boolean = null; 
+  private playStoreKidsAppEnabled: boolean = null; // Android only
 
   private attributionCallback: (attribution: AdjustAttribution) => void = null;
   private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -117,6 +119,14 @@ export class AdjustConfig {
 
   setEventBufferingEnabled(eventBufferingEnabled: boolean) {
     this.eventBufferingEnabled = eventBufferingEnabled;
+  }
+
+  setCoppaCompliantEnabled(coppaCompliantEnabled: boolean) {
+    this.coppaCompliantEnabled = coppaCompliantEnabled;
+  }
+
+  setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled: boolean) {
+    this.playStoreKidsAppEnabled = playStoreKidsAppEnabled;
   }
 
   setUserAgent(userAgent: string) {
