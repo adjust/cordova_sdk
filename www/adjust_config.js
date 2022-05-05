@@ -62,6 +62,8 @@ AdjustConfig.AdRevenueSourceMopub = "mopub";
 AdjustConfig.AdRevenueSourceAdMob = "admob_sdk";
 AdjustConfig.AdRevenueSourceIronSource = "ironsource_sdk";
 AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
+AdjustConfig.AdRevenueSourceUnity = "unity_sdk";
+AdjustConfig.AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
