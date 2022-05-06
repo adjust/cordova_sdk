@@ -90,7 +90,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust" spec="4.29.7" />
+                <pod name="Adjust" spec="4.30.0" />
             </pods>
         </podspec>
         
