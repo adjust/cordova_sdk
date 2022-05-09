@@ -657,6 +657,12 @@ export class Adjust extends IonicNativePlugin {
   getAdid(): Promise<string> { return; }
 
   /**
+   * Instruct to Adjust SDK to check current state of att_status
+   */
+  @Cordova()
+  checkForNewAttStatus(): void {}
+
+  /**
    * If you want to access information about a user's current attribution whenever you need it, you can make a call to this function
    * @return {Promise<AdjustAttribution>} Returns a promise with AdjustAttribution object
    */
