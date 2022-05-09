@@ -28,6 +28,8 @@ var app = {
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
         // adjustConfig.setNeedsCost(true);
         // adjustConfig.setOaidReadingEnabled(true);
+        // adjustConfig.setCoppaCompliantEnabled(true);
+        // adjustConfig.setPlayStoreKidsAppEnabled(true);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -104,7 +106,8 @@ var app = {
 
         // Adjust.resetSessionCallbackParameters();
         // Adjust.resetSessionPartnerParameters();
-
+        // Adjust.checkForNewAttStatus();
+    
         Adjust.create(adjustConfig);
 
         // Adjust.sendFirstPackages();
