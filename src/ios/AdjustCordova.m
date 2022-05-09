@@ -892,4 +892,8 @@
     }
 }
 
+- (void)checkForNewAttStatus:(CDVInvokedUrlCommand *)command {
+    [Adjust checkForNewAttStatus];
+}
+
 @end

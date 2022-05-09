@@ -220,6 +220,10 @@ var Adjust = {
            return;
         }
         callCordova('onPause');
+    },
+
+    checkForNewAttStatus: function() {
+        callCordova('checkForNewAttStatus');
     }
 };
 
