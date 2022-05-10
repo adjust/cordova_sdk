@@ -25,6 +25,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
       * [Get current authorisation status](#ata-getter)
+      * [Check for ATT status change](#ad-att-status-change)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
       * [Conversion value updated callback](#skadn-cv-updated-callback)
@@ -68,6 +69,8 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Reattribution via deep links](#deeplinking-reattribution)
    * [Data residency](#data-residency)
    * [OAID plugin](#oaid-plugin)
+   * [COPPA compliance](#ad-coppa-compliance)
+   * [Play Store Kids Apps](#ad-play-store-kids-apps)
 * [License](#license)
 
 
@@ -362,6 +365,14 @@ To get the current app tracking authorization status you can call `getAppTrackin
 * `2`: The user denied access to IDFA
 * `3`: The user authorized access to IDFA
 * `-1`: The status is not available
+
+### <a id="ad-att-status-change"></a>Check for ATT status change
+
+In cases where you are not using [Adjust app-tracking authorization wrapper](#ad-ata-wrapper), Adjust SDK will not be able to know immediately upon answering the dialog what is the new value of app-tracking status. In situations like this, if you would want Adjust SDK to read the new app-tracking status value and communicate it to our backend, make sure to make a call to this method:
+
+```js
+Adjust.checkForNewAttStatus();
+```
 
 ### <a id="skadn-framework"></a>SKAdNetwork framework
 
@@ -1219,6 +1230,24 @@ You can enable **native** Adjust OAID plugin directly from Adjust Cordova SDK. I
 ```js
 adjustConfig.setOaidReadingEnabled(true);
 ```
+  
+### <a id="ad-coppa-compliance"></a>COPPA compliance
+
+By default Adjust SDK doesn't mark app as COPPA compliant. In order to mark your app as COPPA compliant, make sure to call `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
+
+```js
+adjustConfig.setCoppaCompliantEnabled(true);
+```
+
+**Note:** By enabling this feature, third-party sharing will be automatically disabled for the users. If later during the app lifetime you decide not to mark app as COPPA compliant anymore, third-party sharing **will not be automatically re-enabled**. Instead, next to not marking your app as COPPA compliant anymore, you will need to explicitly re-enable third-party sharing in case you want to do that.
+
+### <a id="ad-play-store-kids-apps"></a>Play Store Kids Apps
+
+By default Adjust SDK doesn't mark Android app as Play Store Kids App. In order to mark your app as the app which is targetting kids in Play Store, make sure to call `setPlayStoreKidsAppEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
+
+```js
+adjustConfig.setPlayStoreKidsAppEnabled(true);
+```
 
 [dashboard]:    http://adjust.com
 [adjust.com]:   http://adjust.com
@@ -1252,7 +1281,7 @@ adjustConfig.setOaidReadingEnabled(true);
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2022 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-Present Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
