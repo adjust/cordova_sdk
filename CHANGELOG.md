@@ -1,11 +1,17 @@
-### Version 4.29.2 (12th April 2022)
+### Version 4.30.0 (16th May 2022)
+
+#### Added
+- Added ability to mark your app as COPPA compliant. You can enable this setting by calling `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
+- Added ability to mark your Android app as app for the kids in accordance to Google Play Families policies. You can enable this setting by calling `setPlayStoreKidsAppEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
+- Added `checkForNewAttStatus` method to `Adjust` API to allow iOS apps to instruct to SDK to check if `att_status` might have changed in the meantime.
+
 #### Changed
 - Started using CocoaPods to pull Adjust iOS SDK
 - Started using Maven to pull Adjust Android SDK
 
 #### Native SDKs
-- [iOS@v4.29.7][ios_sdk_v4.29.7]
-- [Android@v4.29.1][android_sdk_v4.29.1]
+- [iOS@v4.30.0][ios_sdk_v4.30.0]
+- [Android@v4.30.0][android_sdk_v4.30.0]
 
 ---
 
@@ -574,7 +580,7 @@
 [ios_sdk_v4.28.0]: https://github.com/adjust/ios_sdk/tree/v4.28.0
 [ios_sdk_v4.29.4]: https://github.com/adjust/ios_sdk/tree/v4.29.4
 [ios_sdk_v4.29.6]: https://github.com/adjust/ios_sdk/tree/v4.29.6
-[ios_sdk_v4.29.7]: https://github.com/adjust/ios_sdk/tree/v4.29.7
+[ios_sdk_v4.30.0]: https://github.com/adjust/ios_sdk/tree/v4.30.0
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -603,5 +609,5 @@
 [android_sdk_v4.27.0]: https://github.com/adjust/android_sdk/tree/v4.27.0
 [android_sdk_v4.28.4]: https://github.com/adjust/android_sdk/tree/v4.28.4
 [android_sdk_v4.28.5]: https://github.com/adjust/android_sdk/tree/v4.28.5
-[android_sdk_v4.29.1]: https://github.com/adjust/android_sdk/tree/v4.29.1
+[android_sdk_v4.30.0]: https://github.com/adjust/android_sdk/tree/v4.30.0
 
