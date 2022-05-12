@@ -4,6 +4,8 @@
 - Added ability to mark your app as COPPA compliant. You can enable this setting by calling `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
 - Added ability to mark your Android app as app for the kids in accordance to Google Play Families policies. You can enable this setting by calling `setPlayStoreKidsAppEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
 - Added `checkForNewAttStatus` method to `Adjust` API to allow iOS apps to instruct to SDK to check if `att_status` might have changed in the meantime.
+- Added support for Unity ad revenue tracking.
+- Added support for Helium Chartboost ad revenue tracking.
 
 #### Changed
 - Started using CocoaPods to pull Adjust iOS SDK
