@@ -6,6 +6,7 @@
 - Added `checkForNewAttStatus` method to `Adjust` API to allow iOS apps to instruct to SDK to check if `att_status` might have changed in the meantime.
 - Added support for Unity ad revenue tracking.
 - Added support for Helium Chartboost ad revenue tracking.
+- Added support for Generic ad revenue tracking.
 
 #### Changed
 - Started using CocoaPods to pull Adjust iOS SDK
@@ -13,7 +14,7 @@
 
 #### Native SDKs
 - [iOS@v4.30.0][ios_sdk_v4.30.0]
-- [Android@v4.30.0][android_sdk_v4.30.0]
+- [Android@v4.30.1][android_sdk_v4.30.1]
 
 ---
 
@@ -611,5 +612,5 @@
 [android_sdk_v4.27.0]: https://github.com/adjust/android_sdk/tree/v4.27.0
 [android_sdk_v4.28.4]: https://github.com/adjust/android_sdk/tree/v4.28.4
 [android_sdk_v4.28.5]: https://github.com/adjust/android_sdk/tree/v4.28.5
-[android_sdk_v4.30.0]: https://github.com/adjust/android_sdk/tree/v4.30.0
+[android_sdk_v4.30.1]: https://github.com/adjust/android_sdk/tree/v4.30.1
 
