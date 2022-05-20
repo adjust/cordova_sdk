@@ -100,9 +100,9 @@ var app = {
         Adjust.removeSessionCallbackParameter("dummy_foo");
         Adjust.removeSessionPartnerParameter("dummy_foo");
 
-        Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
-            console.log("ATT status after dialog = " + status);
-        });
+        // Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
+        //     console.log("ATT status after dialog = " + status);
+        // });
 
         // Adjust.resetSessionCallbackParameters();
         // Adjust.resetSessionPartnerParameters();
@@ -132,15 +132,8 @@ var app = {
         var btnGetSdkVersion = document.getElementById("btnGetSdkVersion");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
-            // var adjustEvent = new AdjustEvent("g3mfiw");
-            
-            // Adjust.trackEvent(adjustEvent);
-
-            Adjust.getAppTrackingAuthorizationStatus(function(status) {
-                console.log("ATT status after getter = " + status);
-            });
-
-            Adjust.updateConversionValue(6);
+            var adjustEvent = new AdjustEvent("g3mfiw");
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
         btnTrackRevenueEvent.addEventListener('click',function() { 
