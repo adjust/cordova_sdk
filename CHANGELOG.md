@@ -1,4 +1,4 @@
-### Version 4.30.0 (16th May 2022)
+### Version 4.30.0 (24th May 2022)
 
 #### Added
 - Added ability to mark your app as COPPA compliant. You can enable this setting by calling `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
