@@ -431,7 +431,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('playStoreKids' in params) {
         var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
         var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
-        adjustConfig.setPlayStoreKidsEnabled(playStoreKidsEnabled);
+        adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsEnabled);
     }
 };
 
