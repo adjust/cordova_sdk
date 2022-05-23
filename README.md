@@ -1,6 +1,6 @@
 ## Summary
 
-This is the Cordova SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
+This is the Cordova SDK of Adjust™. You can read more about Adjust™ at [adjust.com](https://adjust.com).
 
 N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and higher` and iOS platform version `3.0.0 and higher`.
 
@@ -25,7 +25,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
       * [Get current authorisation status](#ata-getter)
-      * [Check for ATT status change](#ad-att-status-change)
+      * [Check for ATT status change](#att-status-change)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
       * [Conversion value updated callback](#skadn-cv-updated-callback)
@@ -76,7 +76,7 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
 
 ## <a id="example-app"></a>Example app
 
-There is Cordova example app inside the [`example-cordova` directory][example-cordova] and Ionic example app inside the [`example-ionic-capacitor` directory][example-ionic-capacitor]. In there you can check how to integrate the Adjust SDK into your app.
+There is Cordova example app inside the [`example-cordova` directory](./example-cordova) and Ionic example app inside the [`example-ionic-capacitor` directory](./example-ionic-capacitor). In there you can check how to integrate the Adjust SDK into your app.
 
 ## <a id="basic-integration"></a>Basic integration
 
@@ -84,7 +84,7 @@ These are the minimal steps required to integrate the Adjust SDK into your Cordo
 
 ### <a id="sdk-get"></a>Get the SDK
 
-You can get the latest version of the Adjust SDK from the `npm` [repository][npm-repo] or download the it from our [releases page][releases].
+You can get the latest version of the Adjust SDK from the `npm` [repository](https://www.npmjs.com/package/com.adjust.sdk) or download the it from our [releases page](https://github.com/adjust/cordova_sdk/releases).
 
 ### <a id="sdk-add"></a>Add the SDK to your project
 
@@ -97,18 +97,10 @@ Installing "com.adjust.sdk" for android
 Installing "com.adjust.sdk" for ios
 ```
 
-Alternatively, if you have downloaded our SDK from the releases page, extract the archive to the folder of your choice and execute the following command in your project folder:
+In case you are using Ionic to build your app, you can add our SDK from [`awesome-cordova-plugins`](https://github.com/danielsogl/awesome-cordova-plugins) repo:
 
 ```
-> cordova plugin add path_to_folder/cordova_sdk/plugin
-Installing "com.adjust.sdk" for android
-Installing "com.adjust.sdk" for ios
-```
-
-In case you are using Ionic Native, you can add our SDK from `ionic-native` repo:
-
-```
-> npm install @ionic-native/adjust --save
+> npm install @awesome-cordova-plugins/adjust --save
 > ionic cordova plugin add com.adjust.sdk
 ```
 
@@ -123,7 +115,7 @@ var adjustConfig = new AdjustConfig("{YourAppToken}", AdjustConfig.EnvironmentSa
 Adjust.create(adjustConfig);
 ```
 
-Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
+Replace `{YourAppToken}` with your app token. You can find this in your [dashboard](http://dash.adjust.com).
 
 Depending on whether you build your app for testing or for production, you must set `environment` with one of these values:
 
@@ -156,21 +148,21 @@ Once the Adjust SDK has been added to your app, certain tweeks are being perform
 
 ### <a id="android-permissions"></a>Android permissions
 
-The Adjust SDK adds three permissions to your Android manifest file: `INTERNET`, `ACCESS_WIFI_STATE` and `ACCESS_NETWORK_STATE`. You can find this setting in the `plugin.xml` file of the Adjust SDK plugin:
+The Adjust SDK adds three permissions to your Android manifest file: `INTERNET` and `ACCESS_NETWORK_STATE`. You can find this setting in the `plugin.xml` file of the Adjust SDK plugin:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </config-file>
 ```
 
-`INTERNET` permission is the permission that our SDK might need at any point in time. `ACCESS_WIFI_STATE` is the permission which the Adjust SDK needs in case your app is not targetting the Google Play Store and doesn't use Google Play Services. If you are targetting the Google Play Store and you are using Google Play Services, the Adjust SDK doesn't need this permission and, if you don't need it anywhere else in your app, you can remove it. `ACCESS_NETWORK_STATE` is needed for reading MMC and MNC parameters.
+- `INTERNET` permission is the permission that our SDK might need at any point in time.
+- `ACCESS_NETWORK_STATE` is needed for reading MMC and MNC parameters.
 
 #### <a id="gps-adid-permission"></a>Add permission to gather Google advertising ID
 
-If you are targeting Android 12 and above (API level 31), you need to add the `com.google.android.gms.AD_ID` permission to read the device's advertising ID. Add the following line to your `plugin.xml` to enable the permission.
+If you are targeting Android 12 and above (API level 31), you need to add the `com.google.android.gms.AD_ID` permission to read the device's advertising ID. Add the following line to your `plugin.xml` to enable the permission:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -182,15 +174,13 @@ For more information, see [Google's `AdvertisingIdClient.Info` documentation](ht
 
 ### <a id="android-gps"></a>Google Play Services
 
-Since the August 1, 2014, apps in the Google Play Store must use the [Google Advertising ID][google-ad-id] to uniquely identify each device. To allow the Adjust SDK to use the Google Advertising ID, you must integrate [Google Play Services][google-play-services].
+Since the August 1, 2014, apps in the Google Play Store must use the [Google Advertising ID](https://developer.android.com/google/play-services/id.html) to uniquely identify each device. To allow the Adjust SDK to use the Google Advertising ID, you must add the Google Play Services dependency which allows reading of this parameter.
 
-The Adjust SDK adds Google Play Services by default to your app. This is done with this line in the `plugin.xml` file:
+The Adjust SDK adds this dependency by default to your app. This is done with this line in the `plugin.xml` file:
 
 ```xml
-<framework src="com.google.android.gms:play-services-analytics:+" />
+<framework src="com.google.android.gms:play-services-ads-identifier:18.0.1" />
 ```
-
-If you are using other Cordova plugins, they might also be importing Google Play Services by default into your app. If this is the case, Google Play Services from our SDK and other plugins can conflict and cause build time errors. Google Play Services does not have to be present in your app as part of our SDK exclusively. As long as you have the **analytics part of the Google Play Services library integrated in your app**, our SDK will be able to read all the necessary information. In case you choose to add Google Play Services into your app as part of another Cordova plugin, you can simply remove the above line from the `plugin.xml` file of our SDK.
 
 To check whether the analytics part of the Google Play Services library has been successfully added to your app so that the Adjust SDK can read it properly, you should start your app by configuring the SDK to run in `sandbox` mode and set the log level to `verbose`. After that, track a session or some events in your app and observe the list of parameters in the verbose logs which are being read once the session or event has been tracked. If you see a parameter called `gps_adid` in there, you have successfully added the analytics part of the Google Play Services library to your app and our SDK is reading the necessary information from it.
 
@@ -230,7 +220,7 @@ In order to correctly attribute an install of your Android app to its source, Ad
 In order to support this in your app, the Adjust SDK adds support for it by default to your app. This is done with this line in the `plugin.xml` file:
 
 ```xml
-<framework src="com.android.installreferrer:installreferrer:1.0" />
+<framework src="com.android.installreferrer:installreferrer:2.2" />
 ```
 
 `installreferrer` library is part of Google Maven repository, so in order to be able to build your app, you need to add Google Maven repository to your app's `build.gradle` file if you haven't added it already:
@@ -256,7 +246,7 @@ This feature is supported if you are using the **Adjust SDK v4.12.0 or above**.
 
 #### <a id="android-referrer-gps-intent"></a>Google Play Store intent
 
-The Google Play Store `INSTALL_REFERRER` intent should be captured with a broadcast receiver. The Adjust install referrer broadcast receiver is added to your app by default. For more information, you can check our native [Android SDK README][broadcast-receiver]. You can find this setting in the `plugin.xml` file of the the Adjust SDK plugin:
+The Google Play Store `INSTALL_REFERRER` intent should be captured with a broadcast receiver. The Adjust install referrer broadcast receiver is added to your app by default. For more information, you can check our native [Android SDK README](https://github.com/adjust/android_sdk#gps-intent). You can find this setting in the `plugin.xml` file of the the Adjust SDK plugin:
 
 ```xml
 <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -270,34 +260,31 @@ The Google Play Store `INSTALL_REFERRER` intent should be captured with a broadc
 </config-file>
 ```
 
-Please bear in mind that, if you are using your own broadcast receiver which handles the INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added to your manifest file. You can remove it, but inside your own receiver add the call to the Adjust broadcast receiver as described in our [Android guide][broadcast-receiver-custom].
+Please bear in mind that, if you are using your own broadcast receiver which handles the INSTALL_REFERRER intent, you don't need the Adjust broadcast receiver to be added to your manifest file. You can remove it, but inside your own receiver add the call to the Adjust broadcast receiver as described in our [Android guide](https://github.com/adjust/android_sdk/blob/master/doc/english/referrer.md).
 
 #### <a id="android-huawei-referrer-api"></a>Huawei Referrer API
 
-As of v4.21.1, the Adjust SDK supports install tracking on Huawei devices with Huawei App Gallery version 10.4 and higher. No additional integration steps are needed to start using the Huawei Referrer API.
+As of **v4.21.1**, the Adjust SDK supports install tracking on Huawei devices with Huawei App Gallery version 10.4 and higher. No additional integration steps are needed to start using the Huawei Referrer API.
 
 ### <a id="ios-frameworks"></a>iOS frameworks
 
-Adjust SDK plugin adds three iOS frameworks to your generated Xcode project:
+Adjust SDK plugin adds these iOS frameworks to your generated Xcode project:
 
-* `iAd.framework` - in case you are running iAd campaigns
-* `AdSupport.framework` - for reading iOS Advertising Id (IDFA)
-* `StoreKit.framework` - for communication with SKAdNetwork framework
-* `AppTrackingTransparency.framework` - to ask for user's consent to be tracked and obtain status of that consent
-* `AdjustSdk.framework` - our native iOS SDK framework
+- `AdSupport.framework` - This framework is needed so that SDK can access to IDFA value and (prior to iOS 14) LAT information.
+- `iAd.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaigns you might be running.
+- `AdServices.framework` - For devices running iOS 14.3 or higher, this framework allows the SDK to automatically handle attribution for ASA campaigns. It is required when leveraging the Apple Ads Attribution API.
+- `StoreKit.framework` - This framework is needed for access to `SKAdNetwork` framework and for Adjust SDK to handle communication with it automatically in iOS 14 or later.
+- `AppTrackingTransparency.framework` - This framework is needed in iOS 14 and later for SDK to be able to wrap user's tracking consent dialog and access to value of the user's consent to be tracked or not.
 
 Settings for this can also be found in `plugin.xml` file of the Adjust SDK plugin:
 
 ```xml
-<framework src="src/ios/AdjustSdk.framework" custom="true" />
 <framework src="AdSupport.framework" weak="true" />
 <framework src="iAd.framework" weak="true" />
 <framework src="StoreKit.framework" weak="true" />
 <framework src="AdServices.framework" weak="true" />
 <framework src="AppTrackingTransparency.framework" weak="true" />
 ```
-
-If you are not running any iAd campaigns, you can feel free to remove the `iAd.framework` dependency. If you don't use SKAdNetwork framework, feel free to remove `StoreKit.framework` dependency (unless you need it for something else).
 
 ## <a id="additional-features"></a>Additional features
 
@@ -366,9 +353,9 @@ To get the current app tracking authorization status you can call `getAppTrackin
 * `3`: The user authorized access to IDFA
 * `-1`: The status is not available
 
-### <a id="ad-att-status-change"></a>Check for ATT status change
+### <a id="att-status-change"></a>Check for ATT status change
 
-In cases where you are not using [Adjust app-tracking authorization wrapper](#ad-ata-wrapper), Adjust SDK will not be able to know immediately upon answering the dialog what is the new value of app-tracking status. In situations like this, if you would want Adjust SDK to read the new app-tracking status value and communicate it to our backend, make sure to make a call to this method:
+In cases where you are not using [Adjust app-tracking authorization wrapper](#ata-wrapper), Adjust SDK will not be able to know immediately upon answering the dialog what is the new value of app-tracking status. In situations like this, if you would want Adjust SDK to read the new app-tracking status value and communicate it to our backend, make sure to make a call to this method:
 
 ```js
 Adjust.checkForNewAttStatus();
@@ -378,7 +365,7 @@ Adjust.checkForNewAttStatus();
 
 **Note**: This feature exists only in iOS platform.
 
-If you have implemented the Adjust iOS SDK v4.23.0 or above and your app is running on iOS 14 and above, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, Adjust automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the Adjust dashboard to receive conversion values, the Adjust backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After Adjust receives the SKAdNetwork callback data, it is then displayed in the dashboard.
+If you have implemented the Adjust iOS SDK **v4.23.0 or above** and your app is running on iOS 14 and above, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, Adjust automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the Adjust dashboard to receive conversion values, the Adjust backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After Adjust receives the SKAdNetwork callback data, it is then displayed in the dashboard.
 
 In case you don't want the Adjust SDK to automatically communicate with SKAdNetwork, you can disable that by calling the following method on configuration object:
 
@@ -415,7 +402,7 @@ Adjust.create(adjustConfig);
 
 ### <a id="event-tracking"></a>Event tracking
 
-You can use Adjust to track all kinds of events. Let's say you want to track every tap on a button. Simply create a new event token in your [dashboard]. Let's say that event token is `abc123`. You can add the following line in your button’s click handler method to track the click:
+You can use Adjust to track all kinds of events. Let's say you want to track every tap on a button. Simply create a new event token in your [dashboard](http://dash.adjust.com). Let's say that event token is `abc123`. You can add the following line in your button’s click handler method to track the click:
 
 ```js
 var adjustEvent = new AdjustEvent("abc123");
@@ -432,7 +419,7 @@ adjustEvent.setRevenue(0.01, "EUR");
 Adjust.trackEvent(adjustEvent);
 ```
 
-When you set a currency token, Adjust will automatically convert the incoming revenues into a reporting revenue of your choice. Read more about [currency conversion here][currency-conversion].
+When you set a currency token, Adjust will automatically convert the incoming revenues into a reporting revenue of your choice. Read more about [currency conversion here](https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies).
 
 
 ### <a id="revenue-deduplication"></a>Revenue deduplication
@@ -452,7 +439,7 @@ Adjust.trackEvent(adjustEvent);
 
 ### <a id="callback-parameters"></a>Callback parameters
 
-You can also register a callback URL for that event in your [dashboard][dashboard] and we will send a GET request to that URL whenever the event gets tracked. In that case you can also put some key-value pairs in an object and pass it to the `trackEvent` method. We will then append these named parameters to your callback URL.
+You can also register a callback URL for that event in your [dashboard](http://dash.adjust.com) and we will send a GET request to that URL whenever the event gets tracked. In that case you can also put some key-value pairs in an object and pass it to the `trackEvent` method. We will then append these named parameters to your callback URL.
 
 For example, suppose you have registered the URL `http://www.adjust.com/callback` for your event with event token `abc123` and execute the following lines:
 
@@ -471,7 +458,7 @@ http://www.adjust.com/callback?key=value&foo=bar
 
 It should be mentioned that we support a variety of placeholders like `{idfa}` for iOS or `{gps_adid}` for Android that can be used as parameter values.  In the resulting callback the `{idfa}` placeholder would be replaced with the ID for Advertisers of the current device for iOS and the `{gps_adid}` would be replaced with the Google Advertising ID of the current device for Android. Also note that we don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for an event, these parameters won't even be read.
 
-You can read more about using URL callbacks, including a full list of available values, in our [callbacks guide][callbacks-guide].
+You can read more about using URL callbacks, including a full list of available values, in our [callbacks guide](https://docs.adjust.com/en/callbacks).
 
 ### <a id="partner-parameters"></a>Partner parameters
 
@@ -486,7 +473,7 @@ adjustEvent.addPartnerParameter("foo", "bar");
 Adjust.trackEvent(adjustEvent);
 ```
 
-You can read more about special partners and networks in our [guide to special partners][special-partners].
+You can read more about special partners and networks in our [guide to special partners](https://docs.adjust.com/en/special-partners).
 
 ### <a id="callback-id"></a>Callback identifier
 
@@ -500,7 +487,7 @@ Adjust.trackEvent(adjustEvent);
 
 ### <a id="subscription-tracking"></a>Subscription tracking
 
-**Note**: This feature is only available in the SDK v4.22.0 and above.
+**Note**: This feature is only available in the SDK **v4.22.0 and above**.
 
 You can track App Store and Play Store subscriptions and verify their validity with the Adjust SDK. After a subscription has been successfully purchased, make the following call to the Adjust SDK:
 
@@ -615,7 +602,7 @@ Adjust.resetSessionCallbackParameters();
 
 In the same way that there are [session callback parameters](#session-callback-parameters) that are sent for every event or session of the Adjust SDK, there are also session partner parameters.
 
-These will be transmitted to network partners, for the integrations that have been activated in your Adjust [dashboard].
+These will be transmitted to network partners, for the integrations that have been activated in your Adjust [dashboard](http://dash.adjust.com).
 
 The session partner parameters have a similar interface to the event partner parameters. Instead of adding the key and its value to an event, it's added through a call to method `addSessionPartnerParameter` of the `Adjust` instance:
 
@@ -693,7 +680,7 @@ Within the listener function you have access to the `attribution` parameters. He
 - `costAmount`      the cost amount.
 - `costCurrency`    the cost currency.
 
-Please make sure to consider our [applicable attribution data policies][attribution-data].
+Please make sure to consider our [applicable attribution data policies](https://github.com/adjust/sdks/blob/master/doc/attribution-data.md).
 
 **Note**: The cost data - `costType`, `costAmount` & `costCurrency` are only available when configured in `AdjustConfig` by calling `setNeedsCost` method. If not configured or configured, but not being part of the attribution, these fields will have value `null`. This feature is available in SDK v4.26.0 and above.
 
@@ -921,7 +908,6 @@ Adjust.getIdfa(function(idfa) {
 });
 ```
 
-
 ### <a id="di-gps-adid"></a>Google Play Services advertising identifier
   
 The Google Play Services Advertising Identifier (Google advertising ID) is a unique identifier for a device. Users can opt out of sharing their Google advertising ID by toggling the "Opt out of Ads Personalization" setting on their device. When a user has enabled this setting, the Adjust SDK returns a string of zeros when trying to read the Google advertising ID.
@@ -972,7 +958,7 @@ You can also use an external device ID as a custom identifier for a device. This
 
 Check out our [external device identifiers article](https://help.adjust.com/en/article/external-device-identifiers) for more information.
 
-> **Note** This setting requires Adjust SDK v4.21.0 or later.
+> **Note** This setting requires Adjust SDK **v4.21.0 or later**.
 
 To set an external device ID, assign the identifier to the `externalDeviceId` property of your config instance. Do this before you initialize the Adjust SDK.
 
@@ -1012,7 +998,7 @@ Push tokens are used for Audience Builder and client callbacks, and they are req
 
 If you want to use the Adjust SDK to recognize users that found your app pre-installed on their device, follow these steps.
 
-1. Create a new tracker in your [dashboard].
+1. Create a new tracker in your [dashboard](http://dash.adjust.com).
 2. Open your app delegate and add set the default tracker of your `AdjustConfig` instance:
 
     ```js
@@ -1043,9 +1029,9 @@ Standard deep linking scenario is a platform specific feature and in order to su
 
 ### <a id="deeplinking-android-ios-old"></a>Deep linking on Android & iOS 8 and earlier
 
-To support deep linking handling in your app for Android and iOS 8 and earlier versions, you can use the `Custom URL Scheme` plugin which can be found [here][custom-url-scheme].
+To support deep linking handling in your app for Android and iOS 8 and earlier versions, you can use the `Custom URL Scheme` plugin which can be found [here](https://github.com/EddyVerbruggen/Custom-URL-scheme).
 
-After you successfully integrate this plugin, in the callback method used with the plugin described in this [section][custom-url-scheme-usage] you will have an access to the content of the URL which opened your app on user's device:
+After you successfully integrate this plugin, in the callback method used with the plugin described in this [section](https://github.com/EddyVerbruggen/Custom-URL-scheme#3-usage) you will have an access to the content of the URL which opened your app on user's device:
 
 ```js
 function handleOpenURL(url) {
@@ -1061,9 +1047,9 @@ By completing integration of this plugin, you should be able to handle deep link
 
 Starting from **iOS 9**, Apple has introduced suppressed support for old style deep linking with custom URL schemes like described above in favour of `universal links`. If you want to support deep linking in your app for iOS 9 and higher, you need to add support for universal links handling.
 
-First thing you need to do is to enable universal links for your app in the Adjust dashboard. Instructions on how to do that can be found in our native iOS SDK [README][enable-ulinks].
+First thing you need to do is to enable universal links for your app in the Adjust dashboard. Instructions on how to do that can be found in our native iOS SDK [README](https://github.com/adjust/ios_sdk#deeplinking-setup-new).
 
-After you have enabled universal links handling for your app in your dashboard, you need to add support for it in your app as well. You can achieve this by adding this [plugin][plugin-ulinks] to your cordova app. Please, read the README of this plugin, because it precisely describes what should be done in order to properly integrate it.
+After you have enabled universal links handling for your app in your dashboard, you need to add support for it in your app as well. You can achieve this by adding this [plugin](https://github.com/nordnet/cordova-universal-links-plugin) to your cordova app. Please, read the README of this plugin, because it precisely describes what should be done in order to properly integrate it.
 
 **Note**: You can disregard any information in the README that states that you need to have a domain and website or you need to upload a file to the root of your domain. Adjust is taking care of this instead of you and you can skip these parts of the README. Also, you don't need to follow the instructions of this plugin for the Android platform, because deep linking in Android is still being handled with `Custom URL scheme` plugin.
 
@@ -1170,7 +1156,7 @@ If nothing is set, **the Adjust SDK will always try to launch the URL by default
 
 ### <a id="deeplinking-reattribution"></a>Reattribution via deep links
 
-Adjust enables you to run re-engagement campaigns by using deep links. For more information on this, please check our [official docs][reattribution-with-deeplinks].
+Adjust enables you to run re-engagement campaigns by using deep links. For more information on this, please check our [official docs](https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link).
 
 If you are using this feature, in order for your user to be properly reattributed, you need to make one additional call to the Adjust SDK in your app.
 
@@ -1248,34 +1234,6 @@ By default Adjust SDK doesn't mark Android app as Play Store Kids App. In order 
 ```js
 adjustConfig.setPlayStoreKidsAppEnabled(true);
 ```
-
-[dashboard]:    http://adjust.com
-[adjust.com]:   http://adjust.com
-
-[releases]:         https://github.com/adjust/cordova_sdk/releases
-[npm-repo]:         https://www.npmjs.com/package/com.adjust.sdk
-
-[example-cordova]:          ./example-cordova
-[example-ionic-capacitor]:  ./example-ionic-capacitor
-
-[google-ad-id]:         https://developer.android.com/google/play-services/id.html
-[enable-ulinks]:        https://github.com/adjust/ios_sdk#deeplinking-setup-new
-[plugin-ulinks]:        https://github.com/nordnet/cordova-universal-links-plugin
-[event-tracking]:       https://docs.adjust.com/en/event-tracking
-[callbacks-guide]:      https://docs.adjust.com/en/callbacks
-[attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[special-partners]:     https://docs.adjust.com/en/special-partners
-[custom-url-scheme]:    https://github.com/EddyVerbruggen/Custom-URL-scheme
-[broadcast-receiver]:   https://github.com/adjust/android_sdk#gps-intent
-
-[google-launch-modes]:    http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
-[currency-conversion]:    https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
-[cordova-purchase-sdk]:   https://github.com/adjust/cordova_purchase_sdk
-[google-play-services]:   http://developer.android.com/google/play-services/index.html
-
-[custom-url-scheme-usage]:      https://github.com/EddyVerbruggen/Custom-URL-scheme#3-usage
-[broadcast-receiver-custom]:    https://github.com/adjust/android_sdk/blob/master/doc/english/referrer.md
-[reattribution-with-deeplinks]: https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
 ## <a id="license"></a>License
 
