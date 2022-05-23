@@ -9,8 +9,8 @@
 - Added support for Generic ad revenue tracking.
 
 #### Changed
-- Started using CocoaPods to pull Adjust iOS SDK
-- Started using Maven to pull Adjust Android SDK
+- Started using CocoaPods to pull native Adjust iOS SDK dependency.
+- Started using Maven to pull native Adjust Android SDK dependency.
 
 #### Native SDKs
 - [iOS@v4.30.0][ios_sdk_v4.30.0]
