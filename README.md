@@ -69,8 +69,8 @@ N.B. At the moment, Cordova SDK supports Android platform version `4.0.0 and hig
       * [Reattribution via deep links](#deeplinking-reattribution)
    * [Data residency](#data-residency)
    * [OAID plugin](#oaid-plugin)
-   * [COPPA compliance](#ad-coppa-compliance)
-   * [Play Store Kids Apps](#ad-play-store-kids-apps)
+   * [COPPA compliance](#coppa-compliance)
+   * [Play Store Kids Apps](#play-store-kids-apps)
 * [License](#license)
 
 
@@ -1217,7 +1217,7 @@ You can enable **native** Adjust OAID plugin directly from Adjust Cordova SDK. I
 adjustConfig.setOaidReadingEnabled(true);
 ```
   
-### <a id="ad-coppa-compliance"></a>COPPA compliance
+### <a id="coppa-compliance"></a>COPPA compliance
 
 By default Adjust SDK doesn't mark app as COPPA compliant. In order to mark your app as COPPA compliant, make sure to call `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
 
@@ -1227,7 +1227,7 @@ adjustConfig.setCoppaCompliantEnabled(true);
 
 **Note:** By enabling this feature, third-party sharing will be automatically disabled for the users. If later during the app lifetime you decide not to mark app as COPPA compliant anymore, third-party sharing **will not be automatically re-enabled**. Instead, next to not marking your app as COPPA compliant anymore, you will need to explicitly re-enable third-party sharing in case you want to do that.
 
-### <a id="ad-play-store-kids-apps"></a>Play Store Kids Apps
+### <a id="play-store-kids-apps"></a>Play Store Kids Apps
 
 By default Adjust SDK doesn't mark Android app as Play Store Kids App. In order to mark your app as the app which is targetting kids in Play Store, make sure to call `setPlayStoreKidsAppEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
 
