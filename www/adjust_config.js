@@ -19,6 +19,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
     this.conversionValueUpdatedCallback = null;
+    this.coppaCompliantEnabled = null;
     this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
@@ -32,7 +33,8 @@ function AdjustConfig(appToken, environment) {
     this.preinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
     this.oaidReadingEnabled = null;
-    // iOS only
+    this.playStoreKidsAppEnabled = null;
+    // iOS only 
     this.allowiAdInfoReading = null;
     this.allowAdServicesInfoReading = null;
     this.allowIdfaReading = null;
@@ -62,6 +64,9 @@ AdjustConfig.AdRevenueSourceMopub = "mopub";
 AdjustConfig.AdRevenueSourceAdMob = "admob_sdk";
 AdjustConfig.AdRevenueSourceIronSource = "ironsource_sdk";
 AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
+AdjustConfig.AdRevenueSourceUnity = "unity_sdk";
+AdjustConfig.AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
+AdjustConfig.AdRevenueSourcePublisher = "publisher_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -289,6 +294,14 @@ AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
 
 AdjustConfig.prototype.hasConversionValueUpdatedCallbackListener = function() {
     return this.conversionValueUpdatedCallback !== null;
+};
+
+AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
+    this.coppaCompliantEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
+    this.playStoreKidsAppEnabled = isEnabled;
 };
 
 module.exports = AdjustConfig;

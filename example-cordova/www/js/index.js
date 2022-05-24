@@ -28,6 +28,8 @@ var app = {
         // adjustConfig.setUserAgent("Custom Adjust User Agent");
         // adjustConfig.setNeedsCost(true);
         // adjustConfig.setOaidReadingEnabled(true);
+        // adjustConfig.setCoppaCompliantEnabled(true);
+        // adjustConfig.setPlayStoreKidsAppEnabled(true);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -98,13 +100,14 @@ var app = {
         Adjust.removeSessionCallbackParameter("dummy_foo");
         Adjust.removeSessionPartnerParameter("dummy_foo");
 
-        Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
-            console.log("ATT status after dialog = " + status);
-        });
+        // Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
+        //     console.log("ATT status after dialog = " + status);
+        // });
 
         // Adjust.resetSessionCallbackParameters();
         // Adjust.resetSessionPartnerParameters();
-
+        // Adjust.checkForNewAttStatus();
+    
         Adjust.create(adjustConfig);
 
         // Adjust.sendFirstPackages();
@@ -129,15 +132,8 @@ var app = {
         var btnGetSdkVersion = document.getElementById("btnGetSdkVersion");
 
         btnTrackSimpleEvent.addEventListener('click', function() {
-            // var adjustEvent = new AdjustEvent("g3mfiw");
-            
-            // Adjust.trackEvent(adjustEvent);
-
-            Adjust.getAppTrackingAuthorizationStatus(function(status) {
-                console.log("ATT status after getter = " + status);
-            });
-
-            Adjust.updateConversionValue(6);
+            var adjustEvent = new AdjustEvent("g3mfiw");
+            Adjust.trackEvent(adjustEvent);
         }, false);
 
         btnTrackRevenueEvent.addEventListener('click',function() { 

@@ -65,6 +65,8 @@ export class AdjustConfig {
   private allowiAdInfoReading: boolean = null; // iOS only
   private allowIdfaReading: boolean = null; // iOS only
   private allowAdServicesInfoReading: boolean = null; // iOS only
+  private coppaCompliantEnabled: boolean = null; 
+  private playStoreKidsAppEnabled: boolean = null; // Android only
 
   private attributionCallback: (attribution: AdjustAttribution) => void = null;
   private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
@@ -117,6 +119,14 @@ export class AdjustConfig {
 
   setEventBufferingEnabled(eventBufferingEnabled: boolean) {
     this.eventBufferingEnabled = eventBufferingEnabled;
+  }
+
+  setCoppaCompliantEnabled(coppaCompliantEnabled: boolean) {
+    this.coppaCompliantEnabled = coppaCompliantEnabled;
+  }
+
+  setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled: boolean) {
+    this.playStoreKidsAppEnabled = playStoreKidsAppEnabled;
   }
 
   setUserAgent(userAgent: string) {
@@ -645,6 +655,12 @@ export class Adjust extends IonicNativePlugin {
    */
   @Cordova()
   getAdid(): Promise<string> { return; }
+
+  /**
+   * Instruct to Adjust SDK to check current state of att_status
+   */
+  @Cordova()
+  checkForNewAttStatus(): void {}
 
   /**
    * If you want to access information about a user's current attribution whenever you need it, you can make a call to this function

@@ -18,40 +18,40 @@
     under the License.
 -->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <button id="btnTrackSimpleEvent" style="color:black; height: 30px">Track Simple Event</button>
-            <button id="btnTrackRevenueEvent" style="color:black; height: 30px">Track Revenue Event</button>
-            <button id="btnTrackCallbackEvent" style="color:black; height: 30px">Track Callback Event</button>
-            <button id="btnTrackPartnerEvent" style="color:black; height: 30px">Track Partner Event</button>
-            <button id="btnEnableOfflineMode" style="color:black; height: 30px">Enable offline mode</button>
-            <button id="btnDisableOfflineMode" style="color:black; height: 30px">Disable offline mode</button>
-            <button id="btnEnableSdk" style="color:black; height: 30px">Enable SDK</button>
-            <button id="btnDisableSdk" style="color:black; height: 30px">Disable SDK</button>
-            <button id="btnIsSdkEnabled" style="color:black; height: 30px">Is SDK enabled?</button>
-            <button id="btnGetIds" style="color:black; height: 30px">Get IDs</button>
-            <button id="btnGetSdkVersion" style="color:black; height: 30px">Get SDK Version</button>
-        </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <!--
+    Customize this policy to fit your own app's needs. For more guidance, see:
+        https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+    Some notes:
+        * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+        * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+            * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <meta name="format-detection" content="telephone=no">-->
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Hello World</title>
+</head>
+<body>
+    <div class="app">
+        <button id="btnTrackSimpleEvent" style="color: black; height: 30px; margin: 5px">Track Simpple Event</button>
+        <button id="btnTrackRevenueEvent" style="color: black; height: 30px; margin: 5px">Track Revenue Event</button>
+        <button id="btnTrackCallbackEvent" style="color: black; height: 30px; margin: 5px">Track Callback Event</button>
+        <button id="btnTrackPartnerEvent" style="color: black; height: 30px; margin: 5px">Track Partner Event</button>
+        <button id="btnEnableOfflineMode" style="color: black; height: 30px; margin: 5px">Enable offline mode</button>
+        <button id="btnDisableOfflineMode" style="color: black; height: 30px; margin: 5px ">Disable offline mode</button>
+        <button id="btnEnableSdk" style="color: black; height: 30px; margin: 5px">Enable SDK</button>
+        <button id="btnDisableSdk" style="color: black; height: 30px; margin: 5px">Disable SDK</button>
+        <button id="btnIsSdkEnabled" style="color: black; height: 30px; margin: 5px">Is SDK enabled?</button>
+        <button id="btnGetIds" style="color: black; height: 30px; margin: 5px">Get IDs</button>
+        <button id="btnGetSdkVersion" style="color: black; height: 30px; margin: 5px">Get SDK Version</button>
+    </div>
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+</body>
 </html>

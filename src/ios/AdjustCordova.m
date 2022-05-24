@@ -16,6 +16,7 @@
 #define KEY_LOG_LEVEL @"logLevel"
 #define KEY_SDK_PREFIX @"sdkPrefix"
 #define KEY_EVENT_BUFFERING_ENABLED @"eventBufferingEnabled"
+#define KEY_COPPA_COMPLIANT_ENABLED @"coppaCompliantEnabled"
 #define KEY_EVENT_TOKEN @"eventToken"
 #define KEY_REVENUE @"revenue"
 #define KEY_CURRENCY @"currency"
@@ -118,6 +119,7 @@
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
+    NSNumber *coppaCompliantEnabled = [[jsonObject valueForKey:KEY_COPPA_COMPLIANT_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
     NSNumber *needsCost = [[jsonObject valueForKey:KEY_NEEDS_COST] objectAtIndex:0];
@@ -147,6 +149,11 @@
     // Event buffering.
     if ([self isFieldValid:eventBufferingEnabled]) {
         [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+    }
+    
+    // COPPA compliant.
+    if ([self isFieldValid:coppaCompliantEnabled]) {
+        [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
     }
 
     // SDK prefix.
@@ -883,6 +890,10 @@
     } else {
         [dictionary setObject:@"" forKey:key];
     }
+}
+
+- (void)checkForNewAttStatus:(CDVInvokedUrlCommand *)command {
+    [Adjust checkForNewAttStatus];
 }
 
 @end

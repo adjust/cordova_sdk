@@ -421,6 +421,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
+
+    if ('coppaCompliant' in params) {
+        var coppaCompliantEnabledS = getFirstParameterValue(params, 'coppaCompliant');
+        var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
+        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
+    }
+
+    if ('playStoreKids' in params) {
+        var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
+        var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
+        adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsEnabled);
+    }
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {

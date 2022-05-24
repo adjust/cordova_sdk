@@ -81,6 +81,8 @@ public class AdjustCordovaUtils {
     public static final String KEY_AD_REVENUE_NETWORK = "adRevenueNetwork";
     public static final String KEY_AD_REVENUE_UNIT = "adRevenueUnit";
     public static final String KEY_AD_REVENUE_PLACEMENT = "adRevenuePlacement";
+    public static final String KEY_COPPA_COMPLIANT_ENABLED = "coppaCompliantEnabled";
+    public static final String KEY_PLAY_STORE_KIDS_APP_ENABLED = "playStoreKidsAppEnabled";
 
     public static final String COMMAND_CREATE = "create";
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";
@@ -110,6 +112,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_ADID = "getAdid";
+    public static final String COMMAND_CHECK_FOR_NEW_ATT_STATUS = "checkForNewAttStatus";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
     public static final String COMMAND_GET_GOOGLE_AD_ID = "getGoogleAdId";
     public static final String COMMAND_GET_AMAZON_AD_ID = "getAmazonAdId";

@@ -9,5 +9,9 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {}
+  "cordova": {},
+  // adding -ObjC flag is not needed anymore if you are using Adjust SDK version 4.30.0 or later
+  "ios": {
+    "cordovaLinkerFlags": ["-ObjC"]
+  }
 }

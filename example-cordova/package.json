@@ -14,11 +14,11 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "com.adjust.sdk": "file:../temp_plugin",
-    "cordova-android": "^9.1.0",
+    "cordova-android": "^10.1.2",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^5.0.2",
-    "cordova-plugin-device": "git+https://github.com/apache/cordova-plugin-device.git",
+    "cordova-plugin-device": "github:apache/cordova-plugin-device",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-whitelist": "^1.3.4",
     "cordova-universal-links-plugin": "^1.2.1"
@@ -36,8 +36,8 @@
       "com.adjust.sdk": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "dependencies": {

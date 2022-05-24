@@ -6,9 +6,7 @@
 # Adjust SDK repository
 doc/
 ext/
-scripts/
 example-cordova/
-example-ionic/
 example-ionic-capacitor/
 ionic-native/
 test/
