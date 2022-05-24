@@ -27,7 +27,7 @@
     "cordova-plugin-customurlscheme": "^4.3.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-universal-links-plugin": "^1.2.1",
-    "ios-sim": "^7.0.0",
+    "ios-sim": "^9.0.0",
     "xmldom": "github:xmldom/xmldom#0.7.0"
   },
   "devDependencies": {
