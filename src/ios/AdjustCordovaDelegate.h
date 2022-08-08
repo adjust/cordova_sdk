@@ -7,7 +7,11 @@
 //
 
 #import <Cordova/CDV.h>
+#if defined(__has_include) && __has_include(<Adjust/Adjust.h>)
+#import <Adjust/Adjust.h>
+#else
 #import "Adjust.h"
+#endif
 
 @interface AdjustCordovaDelegate : NSObject<AdjustDelegate>
 
