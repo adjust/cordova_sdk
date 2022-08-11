@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Cordova, IonicNativePlugin, Plugin } from '@ionic-native/core';
+import { Cordova, AwesomeCordovaNativePlugin, Plugin } from '@awesome-cordova-plugins/core';
 
 export class AdjustEvent {
   private eventToken: string;
@@ -181,7 +181,9 @@ export class AdjustConfig {
     this.eventTrackingFailedCallback = eventTrackingFailedCallback;
   }
 
-  setSessionTrackingSucceededCallbackListener(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void) {
+  setSessionTrackingSucceededCallbackListener(
+    sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void
+  ) {
     this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
   }
 
@@ -248,6 +250,10 @@ export class AdjustConfig {
   private hasDeferredDeeplinkCallbackListener() {
     return this.deferredDeeplinkCallback !== null;
   }
+
+  private hasConversionValueUpdatedCallbackListener() {
+    return this.conversionValueUpdatedCallback !== null;
+  }
 }
 
 export class AdjustAppStoreSubscription {
@@ -297,14 +303,7 @@ export class AdjustPlayStoreSubscription {
   private callbackParameters: string[] = [];
   private partnerParameters: string[] = [];
 
-  constructor(
-    price: string,
-    currency: string,
-    sku: string,
-    orderId: string,
-    signature: string,
-    purchaseToken: string
-  ) {
+  constructor(price: string, currency: string, sku: string, orderId: string, signature: string, purchaseToken: string) {
     this.price = price;
     this.currency = currency;
     this.sku = sku;
@@ -440,7 +439,7 @@ export interface AdjustEventFailure {
 
 export enum AdjustEnvironment {
   Sandbox = 'sandbox',
-  Production = 'production'
+  Production = 'production',
 }
 
 export enum AdjustLogLevel {
@@ -450,7 +449,7 @@ export enum AdjustLogLevel {
   Warn = 'WARN',
   Error = 'ERROR',
   Assert = 'ASSERT',
-  Suppress = 'SUPPRESS'
+  Suppress = 'SUPPRESS',
 }
 
 export enum AdjustUrlStrategy {
@@ -458,14 +457,18 @@ export enum AdjustUrlStrategy {
   China = 'china',
   DataResidencyEU = 'data-residency-eu',
   DataResidencyTR = 'data-residency-tr',
-  DataResidencyUS = 'data-residency-us'
+  DataResidencyUS = 'data-residency-us',
 }
 
 export enum AdjustAdRevenueSource {
   AdRevenueSourceAppLovinMAX = 'applovin_max_sdk',
   AdRevenueSourceMopub = 'mopub',
   AdRevenueSourceAdMob = 'admob_sdk',
-  AdRevenueSourceIronsource = 'ironsource_sdk',
+  AdRevenueSourceIronSource = 'ironsource_sdk',
+  AdRevenueSourceAdMost = "admost_sdk",
+  AdRevenueSourceUnity = "unity_sdk",
+  AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk",
+  AdRevenueSourcePublisher = "publisher_sdk",
 }
 
 /**
@@ -477,7 +480,7 @@ export enum AdjustAdRevenueSource {
  *
  * @usage
  * ```typescript
- *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@ionic-native/adjust/ngx';
+ *  import { Adjust, AdjustConfig, AdjustEnvironment } from '@awesome-cordova-plugins/adjust/ngx';
  *
  *  constructor(private adjust: Adjust) { }
  *
@@ -513,13 +516,14 @@ export enum AdjustAdRevenueSource {
   plugin: 'com.adjust.sdk',
   pluginRef: 'Adjust',
   repo: 'https://github.com/adjust/cordova_sdk',
-  platforms: ['Android', 'iOS']
+  platforms: ['Android', 'iOS'],
 })
 @Injectable()
-export class Adjust extends IonicNativePlugin {
+export class Adjust extends AwesomeCordovaNativePlugin {
 
   /**
    * This method initializes Adjust SDK
+   *
    * @param {AdjustConig} config Adjust config object used as starting options
    */
   @Cordova({ sync: true })
@@ -527,6 +531,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method tracks an event
+   *
    * @param {AdjustEvent} event Adjust event object to be tracked
    */
   @Cordova({ sync: true })
@@ -534,6 +539,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method tracks App Store subscription
+   *
    * @param {AdjustAppStoreSubscription} subscription Adjust App Store subscription object to be tracked
    */
   @Cordova({ sync: true })
@@ -541,6 +547,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method tracks Play Store subscription
+   *
    * @param {AdjustPlayStoreSubscription} subscription Adjust Play Store subscription object to be tracked
    */
   @Cordova({ sync: true })
@@ -548,6 +555,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method tracks third party sharing choice
+   *
    * @param {AdjustThirdPartySharing} thirdPartySharing Adjust third party sharing object to be tracked
    */
   @Cordova({ sync: true })
@@ -555,23 +563,26 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method tracks ad revenue data
+   *
    * @param {AdjustAdRevenueSource} source Ad revenue source
    * @param {string} payload Ad revenue JSON string payload
    */
-  trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void
+  trackAdRevenue(source: AdjustAdRevenueSource, payload: string): void;
 
   /**
    * This method tracks ad revenue data
+   *
    * @param {AdjustAdRevenue} adRevenue Adjust ad revenue object
    */
-  trackAdRevenue(adRevenue: AdjustAdRevenue): void
+  trackAdRevenue(adRevenue: AdjustAdRevenue): void;
 
   // And typescript hides this, so the client will be able call only methods above
-  @Cordova({sync: true})
+  @Cordova({ sync: true })
   trackAdRevenue(sourceOrAdRevenue: any, payload?: any): void {}
 
   /**
    * This method tracks measurement consent choice
+   *
    * @param {boolean} measurementConsent set measurement consent to true or false
    */
   @Cordova({ sync: true })
@@ -579,6 +590,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * This method sets offline mode on or off
+   *
    * @param {boolean} enabled set to true for offline mode on
    */
   @Cordova({ sync: true })
@@ -586,6 +598,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * By making this call, the Adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will be sent to the Adjust backend.
+   *
    * @param {string} url URL of the deeplink
    */
   @Cordova({ sync: true })
@@ -593,6 +606,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * You can disable/enable the Adjust SDK from tracking by invoking this method
+   *
    * @param {boolean} enabled set to false to disable SDK
    */
   @Cordova({ sync: true })
@@ -601,6 +615,7 @@ export class Adjust extends IonicNativePlugin {
   /**
    * To send us the push notification token, add the following call to Adjust whenever you get your token in the app or when it gets updated.
    * Push tokens are used for Audience Builder and client callbacks, and they are required for the upcoming uninstall tracking feature.
+   *
    * @param {string} pushToken push token value
    */
   @Cordova({ sync: true })
@@ -608,10 +623,13 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * Check if the Adjust SDK is currently enabled by calling this function
+   *
    * @returns {Promise<boolean>}
    */
   @Cordova()
-  isEnabled(): Promise<boolean> { return; }
+  isEnabled(): Promise<boolean> {
+    return;
+  }
 
   /**
    * In accordance with article 17 of the EU's General Data Protection Regulation (GDPR), you can notify Adjust when a user has exercised their right to be forgotten.
@@ -629,55 +647,74 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * Function used to get Google AdId
-   * @return {Promise<string>} Returns a promise with google AdId value
+   *
+   * @returns {Promise<string>} Returns a promise with google AdId value
    */
   @Cordova()
-  getGoogleAdId(): Promise<string> { return; }
+  getGoogleAdId(): Promise<string> {
+    return;
+  }
 
   /**
    * If you need to obtain the Amazon Advertising ID, you can make a call to this function.
-   * @return {Promise<string>} Returns a promise with anazib adv. ID
+   *
+   * @returns {Promise<string>} Returns a promise with anazib adv. ID
    */
   @Cordova()
-  getAmazonAdId(): Promise<string> { return; }
+  getAmazonAdId(): Promise<string> {
+    return;
+  }
 
   /**
    * To obtain the IDFA, call this function
-   * @return {Promise<string>} Returns a promise with IDFA string value
+   *
+   * @returns {Promise<string>} Returns a promise with IDFA string value
    */
   @Cordova()
-  getIdfa(): Promise<string> { return; }
+  getIdfa(): Promise<string> {
+    return;
+  }
 
   /**
    * For every device with your app installed on it, the Adjust backend generates a unique Adjust device identifier (adid).
    * In order to obtain this identifier, call this function
-   * @return {Promise<string>} Returns a promise with adid value
+   *
+   * @returns {Promise<string>} Returns a promise with adid value
    */
   @Cordova()
-  getAdid(): Promise<string> { return; }
+  getAdid(): Promise<string> {
+    return;
+  }
 
   /**
    * Instruct to Adjust SDK to check current state of att_status
    */
-  @Cordova()
+  @Cordova({ sync: true })
   checkForNewAttStatus(): void {}
 
   /**
    * If you want to access information about a user's current attribution whenever you need it, you can make a call to this function
-   * @return {Promise<AdjustAttribution>} Returns a promise with AdjustAttribution object
+   *
+   * @returns {Promise<AdjustAttribution>} Returns a promise with AdjustAttribution object
    */
   @Cordova()
-  getAttribution(): Promise<AdjustAttribution> { return; }
+  getAttribution(): Promise<AdjustAttribution> {
+    return;
+  }
 
   /**
    * Get the information about version of the SDK used
-   * @return {Promise<string>} Returns a promise with sdk version information
+   *
+   * @returns {Promise<string>} Returns a promise with sdk version information
    */
   @Cordova()
-  getSdkVersion(): Promise<string> { return; }
+  getSdkVersion(): Promise<string> {
+    return;
+  }
 
   /**
    * Method used to add session callback parameters
+   *
    * @param key key
    * @param value value
    */
@@ -686,6 +723,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * Remove a specific session callback parameter by passing the desiring key to this method
+   *
    * @param key key
    */
   @Cordova({ sync: true })
@@ -699,6 +737,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * Method used to add session partner parameters
+   *
    * @param key key
    * @param value value
    */
@@ -707,6 +746,7 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * Remove a specific session partner parameter by passing the desiring key to this method
+   *
    * @param key key
    */
   @Cordova({ sync: true })
@@ -727,13 +767,17 @@ export class Adjust extends IonicNativePlugin {
   /**
    * Request Adjust SDK to show pop up dialog for asking user's consent to be tracked.
    * In order to do this, call this function
-   * @return {Promise<number>} Returns a promise with user's consent value
+   *
+   * @returns {Promise<number>} Returns a promise with user's consent value
    */
   @Cordova()
-  requestTrackingAuthorizationWithCompletionHandler(): Promise<number> { return; }
+  requestTrackingAuthorizationWithCompletionHandler(): Promise<number> {
+    return;
+  }
 
   /**
    * You can update SKAdNetwork conversion value with calling this method
+   *
    * @param {number} conversionValue conversion value for the user
    */
   @Cordova({ sync: true })
@@ -741,8 +785,11 @@ export class Adjust extends IonicNativePlugin {
 
   /**
    * To obtain the app tracking authorization status in iOS, call this function
-   * @return {Promise<number>} Returns a promise with app tracking authorization status
+   *
+   * @returns {Promise<number>} Returns a promise with app tracking authorization status
    */
   @Cordova()
-  getAppTrackingAuthorizationStatus(): Promise<number> { return; }
+  getAppTrackingAuthorizationStatus(): Promise<number> {
+    return;
+  }
 }
