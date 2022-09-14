@@ -680,6 +680,17 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 granularOptions[i+2]);
         }
 
+        JSONArray partnerSharingSettingsJson = (JSONArray)parameters.get(KEY_PARTNER_SHARING_SETTINGS);
+        String[] partnerSharingSettings = jsonArrayToArray(partnerSharingSettingsJson);
+
+        // Partner sharing settings.
+        for (int i = 0; i < partnerSharingSettings.length; i += 3) {
+            adjustThirdPartySharing.addPartnerSharingSetting(
+                partnerSharingSettings[i],
+                partnerSharingSettings[i+1],
+                Boolean.parseBoolean(partnerSharingSettings[i+2]));
+        }
+
         // Track third party sharing.
         Adjust.trackThirdPartySharing(adjustThirdPartySharing);
     }

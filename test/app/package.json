@@ -4,7 +4,8 @@
   "displayName": "AdjustTestApp",
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-console": {},
@@ -17,6 +18,7 @@
       },
       "cordova-universal-links-plugin": {},
       "cordova-plugin-whitelist": {},
+      "com.adjust.sdk": {},
       "com.adjust.test": {}
     }
   },

@@ -31,6 +31,7 @@
 #define KEY_IS_RECEIPT_SET @"isReceiptSet"
 #define KEY_IS_ENABLED @"isEnabled"
 #define KEY_GRANULAR_OPTIONS @"granularOptions"
+#define KEY_PARTNER_SHARING_SETTINGS @"partnerSharingSettings"
 #define KEY_USER_AGENT @"userAgent"
 #define KEY_REFERRER @"referrer"
 #define KEY_SHOULD_LAUNCH_DEEPLINK @"shouldLaunchDeeplink"
@@ -731,6 +732,12 @@
             [granularOptions addObject:item];
         }
     }
+    NSMutableArray *partnerSharingSettings = [[NSMutableArray alloc] init];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]) {
+            [partnerSharingSettings addObject:item];
+        }
+    }
 
     if (isEnabled != nil && [isEnabled isKindOfClass:[NSNull class]]) {
         isEnabled = nil;
@@ -744,6 +751,16 @@
             NSString *key = [granularOptions objectAtIndex:i+1];
             NSString *value = [granularOptions objectAtIndex:i+2];
             [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+    }
+
+    // Partner sharing settings.
+    if ([self isFieldValid:partnerSharingSettings]) {
+        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
+            NSString *partnerName = [partnerSharingSettings objectAtIndex:i];
+            NSString *key = [partnerSharingSettings objectAtIndex:i+1];
+            NSString *value = [partnerSharingSettings objectAtIndex:i+2];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
         }
     }
 

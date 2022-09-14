@@ -31,6 +31,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_OAID_READING_ENABLED = "oaidReadingEnabled";
     public static final String KEY_IS_ENABLED = "isEnabled";
     public static final String KEY_GRANULAR_OPTIONS = "granularOptions";
+    public static final String KEY_PARTNER_SHARING_SETTINGS = "partnerSharingSettings";
     public static final String KEY_USER_AGENT = "userAgent";
     public static final String KEY_DELAY_START = "delayStart";
     public static final String KEY_SECRET_ID = "secretId";

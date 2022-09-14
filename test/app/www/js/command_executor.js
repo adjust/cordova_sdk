@@ -356,7 +356,9 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('costType', attribution.costType);
             AdjustTest.addInfoToSend('costAmount', attribution.costAmount);
             AdjustTest.addInfoToSend('costCurrency', attribution.costCurrency);
-            AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
+            if (device.platform === 'Android') {
+                AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
+            }
             AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
@@ -701,6 +703,16 @@ AdjustCommandExecutor.prototype.trackThirdPartySharing = function(params) {
             var key = granularOptions[i+1];
             var value = granularOptions[i+2];
             adjustThirdPartySharing.addGranularOption(partnerName, key, value);
+        }
+    }
+
+    if ('partnerSharingSettings' in params) {
+        var partnerSharingSettings = getValueFromKey(params, 'partnerSharingSettings');
+        for (var i = 0; i < partnerSharingSettings.length; i += 3) {
+            var partnerName = partnerSharingSettings[i];
+            var key = partnerSharingSettings[i+1];
+            var value = partnerSharingSettings[i+2] === 'true';
+            adjustThirdPartySharing.addPartnerSharingSetting(partnerName, key, value);
         }
     }
 
