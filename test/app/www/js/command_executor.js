@@ -356,6 +356,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('costType', attribution.costType);
             AdjustTest.addInfoToSend('costAmount', attribution.costAmount);
             AdjustTest.addInfoToSend('costCurrency', attribution.costCurrency);
+            AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
             AdjustTest.sendInfoToServer(_this.basePath);
         });
     }
