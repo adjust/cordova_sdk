@@ -777,6 +777,18 @@
     [Adjust trackMeasurementConsent:[isEnabledNumber boolValue]];
 }
 
+- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command {
+    NSURL *lastDeeplink = [Adjust lastDeeplink];
+    NSString *lastDeeplinkString = nil;
+    if (lastDeeplink == nil) {
+        lastDeeplinkString = @"";
+    } else {
+        lastDeeplinkString = [lastDeeplink absoluteString];
+    }
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];

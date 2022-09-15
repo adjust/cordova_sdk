@@ -197,6 +197,10 @@ var Adjust = {
         callCordova('trackMeasurementConsent', measurementConsent);
     },
 
+    getLastDeeplink: function(callback) {
+        callCordovaCallback('getLastDeeplink', callback);
+    },
+
     setTestOptions: function(testOptions) {
         callCordova('setTestOptions', testOptions);
     },
