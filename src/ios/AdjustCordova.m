@@ -43,6 +43,7 @@
 #define KEY_ALLOW_ADSERVICES_INFO_READING @"allowAdServicesInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
 #define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
+#define KEY_LINK_ME_ENABLED @"linkMeEnabled"
 #define KEY_SECRET_ID @"secretId"
 #define KEY_INFO_1 @"info1"
 #define KEY_INFO_2 @"info2"
@@ -119,6 +120,7 @@
     NSNumber *allowAdServicesInfoReading = [[jsonObject valueForKey:KEY_ALLOW_ADSERVICES_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
+    NSNumber *linkMeEnabled = [[jsonObject valueForKey:KEY_LINK_ME_ENABLED] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *coppaCompliantEnabled = [[jsonObject valueForKey:KEY_COPPA_COMPLIANT_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
@@ -232,6 +234,11 @@
         if ([handleSkAdNetwork boolValue] == false) {
             [adjustConfig deactivateSKAdNetworkHandling];
         }
+    }
+
+    // LinkMe.
+    if ([self isFieldValid:linkMeEnabled]) {
+        [adjustConfig setLinkMeEnabled:[linkMeEnabled boolValue]];
     }
 
     // App Secret.
