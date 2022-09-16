@@ -1,5 +1,4 @@
 ### Version 4.32.0 (16th September 2022)
-
 #### Added
 - Added partner sharing settings to the third party sharing feature.
 - Added `getLastDeeplink` getter to `Adjust` API to be able to get last tracked deep link by the SDK (iOS only).
@@ -8,6 +7,9 @@
 
 #### Changed
 - Switched to adding permission `com.google.android.gms.permission.AD_ID` in the Android app's manifest by default.
+
+#### Fixed
+- Fixed import statement errors in case CocoaPods is forcing usage of frameworks (https://github.com/adjust/cordova_sdk/issues/163).
 
 #### Native SDKs
 - [iOS@v4.32.0][ios_sdk_v4.32.0]
