@@ -31,6 +31,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_OAID_READING_ENABLED = "oaidReadingEnabled";
     public static final String KEY_IS_ENABLED = "isEnabled";
     public static final String KEY_GRANULAR_OPTIONS = "granularOptions";
+    public static final String KEY_PARTNER_SHARING_SETTINGS = "partnerSharingSettings";
     public static final String KEY_USER_AGENT = "userAgent";
     public static final String KEY_DELAY_START = "delayStart";
     public static final String KEY_SECRET_ID = "secretId";
@@ -69,6 +70,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_COST_CURRENCY = "costCurrency";
     public static final String KEY_TRACKER_NAME = "trackerName";
     public static final String KEY_TRACKER_TOKEN = "trackerToken";
+    public static final String KEY_FB_INSTALL_REFERRER = "fbInstallReferrer";
     public static final String KEY_JSON_RESPONSE = "jsonResponse";
     public static final String KEY_PRICE = "price";
     public static final String KEY_SKU = "sku";
@@ -180,6 +182,7 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_COST_AMOUNT,
             null != attribution.costAmount && !attribution.costAmount.isNaN() ? attribution.costAmount.toString() : null);
         addValueOrEmpty(map, KEY_COST_CURRENCY, attribution.costCurrency);
+        addValueOrEmpty(map, KEY_FB_INSTALL_REFERRER, attribution.fbInstallReferrer);
         return map;
     }
 

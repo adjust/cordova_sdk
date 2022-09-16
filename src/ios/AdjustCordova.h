@@ -7,7 +7,11 @@
 //
 
 #import <Cordova/CDV.h>
+#if defined(__has_include) && __has_include(<Adjust/Adjust.h>)
+#import <Adjust/Adjust.h>
+#else
 #import "Adjust.h"
+#endif
 
 @interface AdjustCordova : CDVPlugin
 
@@ -46,6 +50,7 @@
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 - (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
+- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
 
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;

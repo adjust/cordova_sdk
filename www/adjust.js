@@ -146,7 +146,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.30.0';
+        return 'cordova4.32.0';
     },
 
     addSessionCallbackParameter: function(key, value) {
@@ -195,6 +195,10 @@ var Adjust = {
 
     trackMeasurementConsent: function(measurementConsent) {
         callCordova('trackMeasurementConsent', measurementConsent);
+    },
+
+    getLastDeeplink: function(callback) {
+        callCordovaCallback('getLastDeeplink', callback);
     },
 
     setTestOptions: function(testOptions) {

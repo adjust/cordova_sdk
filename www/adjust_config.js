@@ -39,6 +39,7 @@ function AdjustConfig(appToken, environment) {
     this.allowAdServicesInfoReading = null;
     this.allowIdfaReading = null;
     this.handleSkAdNetwork = null;
+    this.linkMeEnabled = null;
 };
 
 AdjustConfig.EnvironmentSandbox = "sandbox";
@@ -186,6 +187,10 @@ AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
 
 AdjustConfig.prototype.deactivateSKAdNetworkHandling = function() {
     this.handleSkAdNetwork = false;
+};
+
+AdjustConfig.prototype.setLinkMeEnabled = function(linkMeEnabled) {
+    this.linkMeEnabled = linkMeEnabled;
 };
 
 // @deprecated

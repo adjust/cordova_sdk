@@ -31,6 +31,7 @@
 #define KEY_IS_RECEIPT_SET @"isReceiptSet"
 #define KEY_IS_ENABLED @"isEnabled"
 #define KEY_GRANULAR_OPTIONS @"granularOptions"
+#define KEY_PARTNER_SHARING_SETTINGS @"partnerSharingSettings"
 #define KEY_USER_AGENT @"userAgent"
 #define KEY_REFERRER @"referrer"
 #define KEY_SHOULD_LAUNCH_DEEPLINK @"shouldLaunchDeeplink"
@@ -42,6 +43,7 @@
 #define KEY_ALLOW_ADSERVICES_INFO_READING @"allowAdServicesInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
 #define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
+#define KEY_LINK_ME_ENABLED @"linkMeEnabled"
 #define KEY_SECRET_ID @"secretId"
 #define KEY_INFO_1 @"info1"
 #define KEY_INFO_2 @"info2"
@@ -118,6 +120,7 @@
     NSNumber *allowAdServicesInfoReading = [[jsonObject valueForKey:KEY_ALLOW_ADSERVICES_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
+    NSNumber *linkMeEnabled = [[jsonObject valueForKey:KEY_LINK_ME_ENABLED] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *coppaCompliantEnabled = [[jsonObject valueForKey:KEY_COPPA_COMPLIANT_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
@@ -231,6 +234,11 @@
         if ([handleSkAdNetwork boolValue] == false) {
             [adjustConfig deactivateSKAdNetworkHandling];
         }
+    }
+
+    // LinkMe.
+    if ([self isFieldValid:linkMeEnabled]) {
+        [adjustConfig setLinkMeEnabled:[linkMeEnabled boolValue]];
     }
 
     // App Secret.
@@ -731,6 +739,12 @@
             [granularOptions addObject:item];
         }
     }
+    NSMutableArray *partnerSharingSettings = [[NSMutableArray alloc] init];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]) {
+            [partnerSharingSettings addObject:item];
+        }
+    }
 
     if (isEnabled != nil && [isEnabled isKindOfClass:[NSNull class]]) {
         isEnabled = nil;
@@ -747,6 +761,16 @@
         }
     }
 
+    // Partner sharing settings.
+    if ([self isFieldValid:partnerSharingSettings]) {
+        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
+            NSString *partnerName = [partnerSharingSettings objectAtIndex:i];
+            NSString *key = [partnerSharingSettings objectAtIndex:i+1];
+            NSString *value = [partnerSharingSettings objectAtIndex:i+2];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
+        }
+    }
+
     // Track third party sharing.
     [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 }
@@ -758,6 +782,18 @@
     }
 
     [Adjust trackMeasurementConsent:[isEnabledNumber boolValue]];
+}
+
+- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command {
+    NSURL *lastDeeplink = [Adjust lastDeeplink];
+    NSString *lastDeeplinkString = nil;
+    if (lastDeeplink == nil) {
+        lastDeeplinkString = @"";
+    } else {
+        lastDeeplinkString = [lastDeeplink absoluteString];
+    }
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
