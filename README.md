@@ -170,6 +170,14 @@ If you are targeting Android 12 and above (API level 31), you need to add the `c
 </config>
 ```
 
+> **Important**: The Adjust SDK includes the `com.google.android.gms.AD_ID` permission by default in version 4.32.0 and above.
+
+You can remove the `com.google.android.gms.AD_ID` permission by adding a `remove` directive. Do this if need to make your app COPPA-compliant or if you do not target the Google Play Store.
+
+```xml
+<uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+```
+
 For more information, see [Google's `AdvertisingIdClient.Info` documentation](https://developers.google.com/android/reference/com/google/android/gms/ads/identifier/AdvertisingIdClient.Info#public-string-getid).
 
 ### <a id="android-gps"></a>Google Play Services
