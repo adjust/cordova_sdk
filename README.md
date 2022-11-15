@@ -1124,7 +1124,7 @@ By completing these steps, you have successfully added support for deep linking 
 
 While deferred deep linking is not supported out of the box on Android and iOS, our Adjust SDK makes it possible.
  
-In order to get info about the URL content in a deferred deep linking scenario, you should set a callback method on the `AdjustConfig` object which will receive one parameter where the content of the URL will be delivered. You should set this method on the config object by calling the method `setDeeplinkCallbackListener`:
+In order to get info about the URL content in a deferred deep linking scenario, you should set a callback method on the `AdjustConfig` object which will receive one parameter where the content of the URL will be delivered. You should set this method on the config object by calling the method `setDeferredDeeplinkCallbackListener`:
 
 ```js
 var adjustConfig = new AdjustConfig(appToken, environment);
@@ -1145,7 +1145,7 @@ var adjustConfig = new AdjustConfig(appToken, environment);
 adjustConfig.setShouldLaunchDeeplink(true);
 // or adjustConfig.setShouldLaunchDeeplink(false);
 
-adjustConfig.setDeeplinkCallbackListener(function(deeplink) {
+adjustConfig.setDeferredDeeplinkCallbackListener(function(deeplink) {
     console.log("Deferred deep link URL content: " + deeplink);
 });
 
