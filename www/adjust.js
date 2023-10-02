@@ -11,6 +11,7 @@ function callCordova(action) {
 }
 
 function callCordovaStringify(action) {
+    console.log(action);
     var args = Array.prototype.slice.call(arguments, 1);
 
     cordova.exec(
@@ -25,11 +26,24 @@ function callCordovaStringify(action) {
 function callCordovaCallback(action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
 
-    cordova.exec(callback,
+    cordova.exec(
+        callback,
         function errorHandler(err) { },
         'Adjust',
         action,
         args
+    );
+}
+
+function callCordovaStringifyCallback(action, data, callback) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    cordova.exec(
+        callback,
+        function errorHandler(err) { },
+        'Adjust',
+        action,
+        [JSON.stringify(args)]
     );
 }
 
@@ -116,6 +130,10 @@ var Adjust = {
 
     trackPlayStoreSubscription: function(subscription) {
         callCordovaStringify('trackPlayStoreSubscription', subscription);
+    },
+
+    verifyPlayStorePurchase: function(purchase, callback) {
+        callCordovaStringifyCallback('verifyPlayStorePurchase', purchase, callback);
     },
 
     getGoogleAdId: function(callback) {

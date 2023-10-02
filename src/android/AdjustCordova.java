@@ -176,6 +176,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             // iOS method only
         } else if (action.equals(COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION)) {
             executeTrackPlayStoreSubscription(args);
+        } else if (action.equals(COMMAND_VERIFY_PLAY_STORE_PURCHASE)) {
+            executeVerifyPlayStorePurchase(args, callbackContext);
         } else if (action.equals(COMMAND_TRACK_THIRD_PARTY_SHARING)) {
             executeTrackThirdPartySharing(args);
         } else if (action.equals(COMMAND_TRACK_MEASUREMENT_CONSENT)) {
@@ -654,6 +656,47 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         Adjust.trackPlayStoreSubscription(subscription);
     }
 
+    private void executeVerifyPlayStorePurchase(
+        final JSONArray args,
+        final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        String productId = null;
+        String purchaseToken = null;
+
+        // Product ID.
+        if (parameters.containsKey(KEY_PRODUCT_ID)) {
+            productId = parameters.get(KEY_PRODUCT_ID).toString();
+        }
+        // Purchase token.
+        if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
+            purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
+        }
+
+        // Create purchase instance.
+        final AdjustPurchase purchase = new AdjustPurchase(productId, purchaseToken);
+
+        // Verify purchase.
+        Adjust.verifyPurchase(purchase, new OnPurchaseVerificationFinishedListener() {
+            @Override
+            public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
+                if (callbackContext != null) {
+                    HashMap<String, String> adjustPurchaseMap = new HashMap<String, String>();
+                    adjustPurchaseMap.put("code", String.valueOf(verificationResult.getCode()));
+                    adjustPurchaseMap.put("verificationStatus", verificationResult.getVerificationStatus());
+                    adjustPurchaseMap.put("message", verificationResult.getMessage());
+                    JSONObject verificationResultJsonData = new JSONObject(adjustPurchaseMap);
+                    PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
+            }
+        });
+    }
+
     private void executeTrackThirdPartySharing(final JSONArray args) throws JSONException {
         String params = args.getString(0);
         JSONArray jsonArrayParams = new JSONArray(params);
@@ -838,6 +881,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         }
 
+        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_URL);
+                testOptions.purchaseVerificationUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification URL.");
+            }
+        }
+
         if (!jsonParameters.isNull(KEY_BASE_PATH)) {
             try {
                 String value = jsonParameters.getString(KEY_BASE_PATH);
@@ -862,6 +914,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 testOptions.subscriptionPath = value;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription path.");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_PATH);
+                testOptions.purchaseVerificationPath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification path.");
             }
         }
 

@@ -45,9 +45,11 @@ public class AdjustCordovaUtils {
     public static final String KEY_BASE_URL = "baseUrl";
     public static final String KEY_GDPR_URL = "gdprUrl";
     public static final String KEY_SUBSCRIPTION_URL = "subscriptionUrl";
+    public static final String KEY_PURCHASE_VERIFICATION_URL = "purchaseVerificationUrl";
     public static final String KEY_BASE_PATH = "basePath";
     public static final String KEY_GDPR_PATH = "gdprPath";
     public static final String KEY_SUBSCRIPTION_PATH = "subscriptionPath";
+    public static final String KEY_PURCHASE_VERIFICATION_PATH = "purchaseVerificationPath";
     public static final String KEY_USE_TEST_CONNECTION_OPTIONS = "useTestConnectionOptions";
     public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
     public static final String KEY_TIMER_START = "timerStartInMilliseconds";
@@ -74,6 +76,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_JSON_RESPONSE = "jsonResponse";
     public static final String KEY_PRICE = "price";
     public static final String KEY_SKU = "sku";
+    public static final String KEY_PRODUCT_ID = "productId";
     public static final String KEY_ORDER_ID = "orderId";
     public static final String KEY_SIGNATURE = "signature";
     public static final String KEY_PURCHASE_TOKEN = "purchaseToken";
@@ -107,6 +110,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_AD_REVENUE = "trackAdRevenue";
     public static final String COMMAND_TRACK_APP_STORE_SUBSCRIPTION = "trackAppStoreSubscription";
     public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
+    public static final String COMMAND_VERIFY_PLAY_STORE_PURCHASE = "verifyPlayStorePurchase";
     public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";

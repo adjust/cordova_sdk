@@ -4,8 +4,7 @@
   "displayName": "AdjustTestApp",
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ],
     "plugins": {
       "cordova-plugin-console": {},

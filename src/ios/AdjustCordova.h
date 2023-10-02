@@ -44,7 +44,6 @@
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
-- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)requestTrackingAuthorizationWithCompletionHandler:(CDVInvokedUrlCommand *)command;
 - (void)updateConversionValue:(CDVInvokedUrlCommand *)command;
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
@@ -57,6 +56,8 @@
 - (void)setReferrer:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;

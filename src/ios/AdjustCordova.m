@@ -892,6 +892,12 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command {
+    NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 #pragma mark - Private & helper methods
 
 - (NSNumber *)convertMilliStringToNumber:(NSString *)milliS {
