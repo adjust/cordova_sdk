@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.32.0">
+    version="4.35.0">
     
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -66,7 +66,7 @@
         <source-file src="src/android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <source-file src="src/android/AdjustCordovaUtils.java" target-dir="src/com/adjust/sdk" />
         
-        <framework src="com.adjust.sdk:adjust-android:4.32.0"/>
+        <framework src="com.adjust.sdk:adjust-android:4.35.0"/>
         <framework src="com.google.android.gms:play-services-ads-identifier:18.0.1" />
         <framework src="com.android.installreferrer:installreferrer:2.2" />
     </platform>
@@ -90,7 +90,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust" spec="4.32.0" />
+                <pod name="Adjust" spec="4.35.1" />
             </pods>
         </podspec>
         
