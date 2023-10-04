@@ -30,6 +30,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext sessionTrackingFailedCallbackContext;
     private CallbackContext deferredDeeplinkCallbackContext;
     private CallbackContext conversionValueUpdatedCallbackContext;
+    private CallbackContext skad4ConversionValueUpdatedCallbackContext;
     private CallbackContext getAdidCallbackContext;
     private CallbackContext getIdfaCallbackContext;
     private CallbackContext getGoogleAdIdCallbackContext;
@@ -54,6 +55,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             deferredDeeplinkCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK)) {
             conversionValueUpdatedCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_SKAD4_CONVERSION_VALUE_UPDATED_CALLBACK)) {
+            skad4ConversionValueUpdatedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             getGoogleAdIdCallbackContext = callbackContext;
             if (getGoogleAdIdCallbackContext != null) {
@@ -169,6 +172,10 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         } else if (action.equals(COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER)) {
             // iOS method only
         } else if (action.equals(COMMAND_UPDATE_CONVERSION_VALUE)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_UPDATE_CONVERSION_VALUE_WITH_ERROR_CALLBACK)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK)) {
             // iOS method only
         } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
             // iOS method only

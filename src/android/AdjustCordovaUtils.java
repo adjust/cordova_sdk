@@ -98,6 +98,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
     public static final String COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK = "setConversionValueUpdatedCallback";
+    public static final String COMMAND_SET_SKAD4_CONVERSION_VALUE_UPDATED_CALLBACK = "setSkad4ConversionValueUpdatedCallback";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_TRACK_EVENT = "trackEvent";
     public static final String COMMAND_SET_OFFLINE_MODE = "setOfflineMode";
@@ -116,6 +117,8 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";
     public static final String COMMAND_UPDATE_CONVERSION_VALUE = "updateConversionValue";
+    public static final String COMMAND_UPDATE_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateConversionValueWithErrorCallback";
+    public static final String COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateSkad4ConversionValueWithErrorCallback";
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_ADID = "getAdid";
