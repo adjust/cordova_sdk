@@ -441,6 +441,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
         adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsEnabled);
     }
+
+    if ('finalAttributionEnabled' in params) {
+        var finalAttributionEnabledS = getFirstParameterValue(params, 'finalAttributionEnabled');
+        var finalAttributionEnabled = finalAttributionEnabledS == 'true';
+        adjustConfig.setFinalAndroidAttributionEnabled(finalAttributionEnabled);
+    }
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {

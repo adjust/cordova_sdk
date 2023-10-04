@@ -88,6 +88,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_AD_REVENUE_PLACEMENT = "adRevenuePlacement";
     public static final String KEY_COPPA_COMPLIANT_ENABLED = "coppaCompliantEnabled";
     public static final String KEY_PLAY_STORE_KIDS_APP_ENABLED = "playStoreKidsAppEnabled";
+    public static final String KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED = "finalAndroidAttributionEnabled";
 
     public static final String COMMAND_CREATE = "create";
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";

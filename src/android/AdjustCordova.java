@@ -241,6 +241,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean oaidReadingEnabled = false;
         boolean coppaCompliantEnabled = false;
         boolean playStoreKidsAppEnabled = false;
+        boolean finalAndroidAttributionEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -316,6 +317,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_PLAY_STORE_KIDS_APP_ENABLED)) {
             playStoreKidsAppEnabled = parameters.get(KEY_PLAY_STORE_KIDS_APP_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED)) {
+            finalAndroidAttributionEnabled = parameters.get(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED).toString() == "true" ? true : false;
         }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -419,6 +423,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Play Store Kids App.
         adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled);
+
+        // Final Android attribution.
+        adjustConfig.setFinalAttributionEnabled(finalAndroidAttributionEnabled);
 
         // Is device known.
         adjustConfig.setDeviceKnown(isDeviceKnown);

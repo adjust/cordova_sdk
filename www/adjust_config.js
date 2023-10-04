@@ -34,6 +34,7 @@ function AdjustConfig(appToken, environment) {
     this.preinstallFilePath = null;
     this.oaidReadingEnabled = null;
     this.playStoreKidsAppEnabled = null;
+    this.finalAndroidAttributionEnabled = null;
     // iOS only 
     this.allowiAdInfoReading = null;
     this.allowAdServicesInfoReading = null;
@@ -308,6 +309,10 @@ AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
 
 AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
     this.playStoreKidsAppEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setFinalAndroidAttributionEnabled = function (isEnabled) {
+    this.finalAndroidAttributionEnabled = isEnabled;
 };
 
 module.exports = AdjustConfig;
