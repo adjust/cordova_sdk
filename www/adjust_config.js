@@ -42,6 +42,7 @@ function AdjustConfig(appToken, environment) {
     this.allowIdfaReading = null;
     this.handleSkAdNetwork = null;
     this.linkMeEnabled = null;
+    this.attConsentWaitingInterval = null;
 };
 
 AdjustConfig.EnvironmentSandbox = "sandbox";
@@ -200,6 +201,10 @@ AdjustConfig.prototype.deactivateSKAdNetworkHandling = function() {
 
 AdjustConfig.prototype.setLinkMeEnabled = function(linkMeEnabled) {
     this.linkMeEnabled = linkMeEnabled;
+};
+
+AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
+    this.attConsentWaitingInterval = attConsentWaitingInterval;
 };
 
 // @deprecated

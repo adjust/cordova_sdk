@@ -30,6 +30,7 @@ var app = {
         // adjustConfig.setOaidReadingEnabled(true);
         // adjustConfig.setCoppaCompliantEnabled(true);
         // adjustConfig.setPlayStoreKidsAppEnabled(true);
+        adjustConfig.setAttConsentWaitingInterval(16);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");

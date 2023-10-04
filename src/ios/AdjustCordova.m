@@ -71,6 +71,7 @@
 #define KEY_AD_REVENUE_NETWORK @"adRevenueNetwork"
 #define KEY_AD_REVENUE_UNIT @"adRevenueUnit"
 #define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
+#define KEY_ATT_CONSENT_WAITING_INTERVAL @"attConsentWaitingInterval"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -128,6 +129,7 @@
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
     NSNumber *needsCost = [[jsonObject valueForKey:KEY_NEEDS_COST] objectAtIndex:0];
+    NSNumber *attConsentWaitingInterval = [[jsonObject valueForKey:KEY_ATT_CONSENT_WAITING_INTERVAL] objectAtIndex:0];
     NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
     BOOL allowSuppressLogLevel = NO;
 
@@ -206,6 +208,11 @@
     // Delay start.
     if ([self isFieldValid:delayStart]) {
         [adjustConfig setDelayStart:[delayStart doubleValue]];
+    }
+
+    // ATT consent waiting interval.
+    if ([self isFieldValid:attConsentWaitingInterval]) {
+        [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingInterval intValue]];
     }
 
     // Device known.
