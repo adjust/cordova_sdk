@@ -80,6 +80,7 @@
     NSString *sessionSucceededCallbackId;
     NSString *deferredDeeplinkCallbackId;
     NSString *conversionValueUpdatedCallbackId;
+    NSString *skad4ConversionValueUpdatedCallbackId;
 }
 
 #pragma mark - Object lifecycle methods
@@ -92,6 +93,7 @@
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
     conversionValueUpdatedCallbackId = nil;
+    skad4ConversionValueUpdatedCallbackId = nil;
 }
 
 #pragma mark - Public methods
@@ -263,6 +265,7 @@
     BOOL isSessionFailedCallbackImplemented = sessionFailedCallbackId != nil ? YES : NO;
     BOOL isDeferredDeeplinkCallbackImplemented = deferredDeeplinkCallbackId != nil ? YES : NO;
     BOOL isConversionValueUpdatedCallbackImplemented = conversionValueUpdatedCallbackId != nil ? YES : NO;
+    BOOL isSkad4ConversionValueUpdatedCallbackImplemented = skad4ConversionValueUpdatedCallbackId != nil ? YES : NO;
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
 
     // Attribution delegate & other delegates
@@ -272,7 +275,8 @@
         || isSessionSucceededCallbackImplemented
         || isSessionFailedCallbackImplemented
         || isDeferredDeeplinkCallbackImplemented
-        || isConversionValueUpdatedCallbackImplemented) {
+        || isConversionValueUpdatedCallbackImplemented
+        || isSkad4ConversionValueUpdatedCallbackImplemented) {
         [adjustConfig setDelegate:
             [AdjustCordovaDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
                                                         eventSucceededCallback:isEventSucceededCallbackImplemented
@@ -281,6 +285,7 @@
                                                          sessionFailedCallback:isSessionFailedCallbackImplemented
                                                       deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
                                                 conversionValueUpdatedCallback:isConversionValueUpdatedCallbackImplemented
+                                           skad4ConversionValueUpdatedCallback:isSkad4ConversionValueUpdatedCallbackImplemented
                                                       andAttributionCallbackId:attributionCallbackId
                                                       eventSucceededCallbackId:eventSucceededCallbackId
                                                          eventFailedCallbackId:eventFailedCallbackId
@@ -288,6 +293,7 @@
                                                        sessionFailedCallbackId:sessionFailedCallbackId
                                                     deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
                                               conversionValueUpdatedCallbackId:conversionValueUpdatedCallbackId
+                                         skad4ConversionValueUpdatedCallbackId:skad4ConversionValueUpdatedCallbackId
                                                   shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
                                                            withCommandDelegate:self.commandDelegate]];
     }
@@ -664,6 +670,10 @@
     conversionValueUpdatedCallbackId = command.callbackId;
 }
 
+- (void)setSkad4ConversionValueUpdatedCallback:(CDVInvokedUrlCommand *)command {
+    skad4ConversionValueUpdatedCallbackId = command.callbackId;
+}
+
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command {
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
@@ -849,7 +859,7 @@
         testOptions.deleteState = [hasContext boolValue];
     }
     if ([self isFieldValid:iAdFrameworkEnabled]) {
-        testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+        // testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
     }
     if ([self isFieldValid:adServicesFrameworkEnabled]) {
         testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];

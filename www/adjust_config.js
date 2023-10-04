@@ -19,6 +19,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
     this.conversionValueUpdatedCallback = null;
+    this.skad4ConversionValueUpdatedCallback = null;
     this.coppaCompliantEnabled = null;
     this.sdkPrefix = null;
     this.secretId = null;
@@ -117,6 +118,10 @@ AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
 
 AdjustConfig.prototype.getConversionValueUpdatedCallback = function() {
     return this.conversionValueUpdatedCallback;
+};
+
+AdjustConfig.prototype.getSkad4ConversionValueUpdatedCallback = function() {
+    return this.skad4ConversionValueUpdatedCallback;
 };
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
@@ -269,6 +274,10 @@ AdjustConfig.prototype.setConversionValueUpdatedCallbackListener = function(conv
     this.conversionValueUpdatedCallback = conversionValueUpdatedCallback;
 };
 
+AdjustConfig.prototype.setSkad4ConversionValueUpdatedCallbackListener = function(skad4ConversionValueUpdatedCallback) {
+    this.skad4ConversionValueUpdatedCallback = skad4ConversionValueUpdatedCallback;
+};
+
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
@@ -301,6 +310,10 @@ AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
 
 AdjustConfig.prototype.hasConversionValueUpdatedCallbackListener = function() {
     return this.conversionValueUpdatedCallback !== null;
+};
+
+AdjustConfig.prototype.hasSkad4ConversionValueUpdatedCallbackListener = function() {
+    return this.skad4ConversionValueUpdatedCallback !== null;
 };
 
 AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {

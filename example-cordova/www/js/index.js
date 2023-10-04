@@ -91,6 +91,13 @@ var app = {
             console.log("[AdjustExample]: Conversion value = " + conversionValue);
         });
 
+        adjustConfig.setSkad4ConversionValueUpdatedCallbackListener(function(skad4data) {
+            console.log("[AdjustExample]: SKAdNetwork 4 conversion value updated!");
+            console.log("[AdjustExample]: Fine value = " + skad4data.fineValue);
+            console.log("[AdjustExample]: Coarse value = " + skad4data.coarseValue);
+            console.log("[AdjustExample]: Lock window = " + skad4data.lockWindow);
+        });
+
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
 

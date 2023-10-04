@@ -74,6 +74,9 @@ var Adjust = {
         if (adjustConfig.hasConversionValueUpdatedCallbackListener()) {
             callCordovaCallback('setConversionValueUpdatedCallback', adjustConfig.getConversionValueUpdatedCallback());
         }
+        if (adjustConfig.hasSkad4ConversionValueUpdatedCallbackListener()) {
+            callCordovaCallback('setSkad4ConversionValueUpdatedCallback', adjustConfig.getSkad4ConversionValueUpdatedCallback());
+        }
 
         callCordovaStringify('create', adjustConfig);
     },
