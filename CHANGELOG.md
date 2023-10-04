@@ -1,3 +1,19 @@
+### Version 4.35.0 (4th October 2023)
+#### Added
+- Added support for SKAdNetwork 4.0.
+- Added support for setting a new China URL Strategy. You can choose this setting by calling `setUrlStrategy` method of `AdjustConfig` instance with `AdjustConfig.AdjustUrlStrategyCn` parameter.
+- Added ability to read App Set ID on Android platform in case you opt in by adding the `com.google.android.gms:play-services-appset` dependency to your Android app.
+- Added ability to delay SDK start on iOS platform in order to wait for an answer to the ATT dialog. You can set the number of seconds to wait (capped internally to 120) by calling the `setAttConsentWaitingInterval` method of the `AdjustConfig` instance.
+- Added support for purchase verification. In case you are using this feature, you can now use it by calling `verifyAppStorePurchase` (for iOS) and `verifyPlayStorePurchase` (for Android) methods of the `Adjust` instance.
+- Added support for SigV3 library. Update authorization header building logic to use `adj_signing_id`.
+- Added `setAndroidFinalAttributionEnabled` method to `AdjustConfig` to indicate if only final Android attribution is needed in attribution callback (by default attribution callback return intermediate attribution as well before final attribution if not enabled with this setter method).
+
+#### Native SDKs
+- [iOS@v4.35.1][ios_sdk_v4.35.1]
+- [Android@v4.35.0][android_sdk_v4.35.0]
+
+---
+
 ### Version 4.32.0 (16th September 2022)
 #### Added
 - Added partner sharing settings to the third party sharing feature.
