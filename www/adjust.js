@@ -135,6 +135,10 @@ var Adjust = {
         callCordovaStringify('trackPlayStoreSubscription', subscription);
     },
 
+    verifyAppStorePurchase: function(purchase, callback) {
+        callCordovaStringifyCallback('verifyAppStorePurchase', purchase, callback);
+    },
+
     verifyPlayStorePurchase: function(purchase, callback) {
         callCordovaStringifyCallback('verifyPlayStorePurchase', purchase, callback);
     },

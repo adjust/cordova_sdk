@@ -113,6 +113,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_APP_STORE_SUBSCRIPTION = "trackAppStoreSubscription";
     public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
     public static final String COMMAND_VERIFY_PLAY_STORE_PURCHASE = "verifyPlayStorePurchase";
+    public static final String COMMAND_VERIFY_APP_STORE_PURCHASE = "verifyAppStorePurchase";
     public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";

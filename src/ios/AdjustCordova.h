@@ -53,6 +53,7 @@
 - (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
 - (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
+- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
 
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;

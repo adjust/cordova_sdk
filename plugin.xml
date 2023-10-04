@@ -36,6 +36,9 @@
     <js-module src="www/adjust_ad_revenue.js" name="AdjustAdRevenue">
         <clobbers target="AdjustAdRevenue" />
     </js-module>
+    <js-module src="www/adjust_app_store_purchase.js" name="AdjustAppStorePurchase">
+        <clobbers target="AdjustAppStorePurchase" />
+    </js-module>
     <js-module src="www/adjust_play_store_purchase.js" name="AdjustPlayStorePurchase">
         <clobbers target="AdjustPlayStorePurchase" />
     </js-module>

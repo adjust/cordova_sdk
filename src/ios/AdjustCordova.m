@@ -52,6 +52,7 @@
 #define KEY_BASE_URL @"baseUrl"
 #define KEY_GDPR_URL @"gdprUrl"
 #define KEY_SUBSCRIPTION_URL @"subscriptionUrl"
+#define KEY_PURCHASE_VERIFICATION_URL @"purchaseVerificationUrl"
 #define KEY_EXTRA_PATH @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
@@ -324,7 +325,7 @@
     NSString *productId = [[jsonObject valueForKey:KEY_PRODUCT_ID] objectAtIndex:0];
     NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
     NSString *callbackId = [[jsonObject valueForKey:KEY_CALLBACK_ID] objectAtIndex:0];
-    NSNumber *isReceiptSet = [[jsonObject valueForKey:KEY_IS_RECEIPT_SET] objectAtIndex:0];
+    // NSNumber *isReceiptSet = [[jsonObject valueForKey:KEY_IS_RECEIPT_SET] objectAtIndex:0];
     NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
     NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
 
@@ -862,11 +863,57 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+
+    NSString *receipt = [[jsonObject valueForKey:KEY_RECEIPT] objectAtIndex:0];
+    NSString *productId = [[jsonObject valueForKey:KEY_PRODUCT_ID] objectAtIndex:0];
+    NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
+
+    // Receipt.
+    NSData *receiptValue;
+    if ([self isFieldValid:receipt]) {
+        receiptValue = [receipt dataUsingEncoding:NSUTF8StringEncoding];
+    }
+
+    // Create purchase instance.
+    ADJPurchase *purchase = [[ADJPurchase alloc] initWithTransactionId:transactionId
+                                                             productId:productId
+                                                            andReceipt:receiptValue];
+
+    // Verify purchase.
+    [Adjust verifyPurchase:purchase 
+         completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        if (verificationResult == nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+
+        [self addValueOrEmpty:verificationResult.verificationStatus
+                      withKey:@"verificationStatus"
+                 toDictionary:dictionary];
+        [self addValueOrEmpty:[NSString stringWithFormat:@"%d", verificationResult.code]
+                      withKey:@"code"
+                 toDictionary:dictionary];
+        [self addValueOrEmpty:verificationResult.message
+                      withKey:@"message"
+                 toDictionary:dictionary];
+
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
     NSString *gdprUrl = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
     NSString *subscriptionUrl = [[command.arguments valueForKey:KEY_SUBSCRIPTION_URL] objectAtIndex:0];
+    NSString *purchaseVerificationUrl = [[command.arguments valueForKey:KEY_PURCHASE_VERIFICATION_URL] objectAtIndex:0];
     NSString *extraPath = [[command.arguments valueForKey:KEY_EXTRA_PATH] objectAtIndex:0];
     NSString *timerInterval = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
     NSString *timerStart = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
@@ -887,6 +934,9 @@
     }
     if ([self isFieldValid:subscriptionUrl]) {
         testOptions.subscriptionUrl = subscriptionUrl;
+    }
+    if ([self isFieldValid:purchaseVerificationUrl]) {
+        testOptions.purchaseVerificationUrl = purchaseVerificationUrl;
     }
     if ([self isFieldValid:extraPath]) {
         testOptions.extraPath = extraPath;

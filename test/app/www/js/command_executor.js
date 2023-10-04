@@ -841,6 +841,18 @@ AdjustCommandExecutor.prototype.getLastDeeplink = function(params) {
 
 AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
     if (device.platform === 'iOS') {
+        var receipt = getFirstParameterValue(params, 'receipt');
+        var productId = getFirstParameterValue(params, 'productId');
+        var transactionId = getFirstParameterValue(params, 'transactionId');
+        var purchase = new AdjustAppStorePurchase(receipt, productId, transactionId);
+
+        var _this = this;
+        Adjust.verifyAppStorePurchase(purchase, function(verificationInfo) {
+            AdjustTest.addInfoToSend('verification_status', verificationInfo.verificationStatus);
+            AdjustTest.addInfoToSend('code', verificationInfo.code);
+            AdjustTest.addInfoToSend('message', verificationInfo.message);
+            AdjustTest.sendInfoToServer(_this.basePath);
+        });
     } else if (device.platform === 'Android') {
         var productId = getFirstParameterValue(params, 'productId');
         var purchaseToken = getFirstParameterValue(params, 'purchaseToken');

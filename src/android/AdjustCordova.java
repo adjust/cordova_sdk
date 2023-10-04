@@ -181,6 +181,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             // iOS method only
         } else if (action.equals(COMMAND_CHECK_FOR_NEW_ATT_STATUS)) {
             // iOS method only
+        } else if (action.equals(COMMAND_VERIFY_APP_STORE_PURCHASE)) {
+            // iOS method only
         } else if (action.equals(COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION)) {
             executeTrackPlayStoreSubscription(args);
         } else if (action.equals(COMMAND_VERIFY_PLAY_STORE_PURCHASE)) {
