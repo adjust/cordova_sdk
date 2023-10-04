@@ -518,6 +518,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String currency = null;
         String transactionId = null;
         String callbackId = null;
+        String productId = null;
+        String purchaseToken = null;
 
         if (parameters.containsKey(KEY_EVENT_TOKEN)) {
             eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
@@ -533,6 +535,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_CALLBACK_ID)) {
             callbackId = parameters.get(KEY_CALLBACK_ID).toString();
+        }
+        if (parameters.containsKey(KEY_PRODUCT_ID)) {
+            productId = parameters.get(KEY_PRODUCT_ID).toString();
+        }
+        if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
+            purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
         }
 
         JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
@@ -578,6 +586,16 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Callback ID.
         if (isFieldValid(callbackId)) {
             adjustEvent.setCallbackId(callbackId);
+        }
+
+        // Product ID.
+        if (isFieldValid(productId)) {
+            adjustEvent.setProductId(productId);
+        }
+
+        // Purchase token.
+        if (isFieldValid(purchaseToken)) {
+            adjustEvent.setPurchaseToken(purchaseToken);
         }
 
         // Track event.

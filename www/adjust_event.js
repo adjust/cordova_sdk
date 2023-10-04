@@ -2,6 +2,7 @@ function AdjustEvent(eventToken) {
     this.eventToken = eventToken;
     this.revenue = null;
     this.currency = null;
+    this.productId = null;
     this.transactionId = null;
     this.callbackId = null;
     this.callbackParameters = [];
@@ -9,6 +10,8 @@ function AdjustEvent(eventToken) {
     // iOS only
     this.receipt = null;
     this.isReceiptSet = false;
+    // Android only
+    this.purchaseToken = null;
 }
 
 AdjustEvent.prototype.setRevenue = function(revenue, currency) {
@@ -32,6 +35,14 @@ AdjustEvent.prototype.setTransactionId = function(transactionId) {
 
 AdjustEvent.prototype.setCallbackId = function(callbackId) {
     this.callbackId = callbackId;
+}
+
+AdjustEvent.prototype.setProductId = function(productId) {
+    this.productId = productId;
+}
+
+AdjustEvent.prototype.setPurchaseToken = function(purchaseToken) {
+    this.purchaseToken = purchaseToken;
 }
 
 // @deprecated

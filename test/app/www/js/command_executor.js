@@ -518,6 +518,16 @@ AdjustCommandExecutor.prototype.event = function(params) {
         var callbackId = getFirstParameterValue(params, 'callbackId');
         adjustEvent.setCallbackId(callbackId);
     }
+
+    if ('productId' in params) {
+        var productId = getFirstParameterValue(params, 'productId');
+        adjustEvent.setProductId(productId);
+    }
+
+    if ('purchaseToken' in params) {
+        var purchaseToken = getFirstParameterValue(params, 'purchaseToken');
+        adjustEvent.setPurchaseToken(purchaseToken);
+    }
 };
 
 AdjustCommandExecutor.prototype.trackEvent = function(params) {
