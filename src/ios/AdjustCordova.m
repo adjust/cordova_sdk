@@ -906,6 +906,8 @@
     sessionFailedCallbackId = nil;
     sessionSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
+    conversionValueUpdatedCallbackId = nil;
+    skad4ConversionValueUpdatedCallbackId = nil;
     [AdjustCordovaDelegate teardown];
 }
 
