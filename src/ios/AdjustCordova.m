@@ -732,6 +732,36 @@
     [Adjust updateConversionValue:[conversionValue intValue]];
 }
 
+- (void)updateConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command {
+    NSNumber *conversionValue = [command argumentAtIndex:0 withDefault:nil];
+    if (conversionValue == nil) {
+        return;
+    }
+
+    [Adjust updatePostbackConversionValue:[conversionValue intValue]
+                        completionHandler:^(NSError * _Nullable error) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[error localizedDescription]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)updateSkad4ConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command {
+    NSNumber *fineValue = [command argumentAtIndex:0 withDefault:nil];
+    NSString *coarseValue = [command argumentAtIndex:1 withDefault:nil];
+    NSNumber *lockWindow = [command argumentAtIndex:2 withDefault:nil];
+    if (fineValue == nil || coarseValue == nil || lockWindow == nil) {
+        return;
+    }
+
+    [Adjust updatePostbackConversionValue:[fineValue intValue]
+                              coarseValue:coarseValue
+                               lockWindow:(BOOL)lockWindow
+                            completionHandler:^(NSError * _Nullable error) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[error localizedDescription]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command {
     int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:appTrackingAuthorizationStatus];

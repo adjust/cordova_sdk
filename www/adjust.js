@@ -206,6 +206,14 @@ var Adjust = {
         callCordova('updateConversionValue', conversionValue);
     },
 
+    updateConversionValueWithErrorCallback: function(callback, conversionValue) {
+        callCordovaCallback('updateConversionValueWithErrorCallback', callback, conversionValue);
+    },
+
+    updateSkad4ConversionValueWithErrorCallback: function(callback, fineValue, coarseValue, lockWindow) {
+        callCordovaCallback('updateSkad4ConversionValueWithErrorCallback', callback, fineValue, coarseValue, lockWindow);
+    },
+
     getAppTrackingAuthorizationStatus: function(callback) {
         callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
     },

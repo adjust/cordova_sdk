@@ -47,6 +47,8 @@
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)requestTrackingAuthorizationWithCompletionHandler:(CDVInvokedUrlCommand *)command;
 - (void)updateConversionValue:(CDVInvokedUrlCommand *)command;
+- (void)updateConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
+- (void)updateSkad4ConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 - (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
