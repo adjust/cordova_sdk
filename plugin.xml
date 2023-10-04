@@ -98,7 +98,6 @@
         </podspec>
         
         <framework src="AdSupport.framework" weak="true" />
-        <framework src="iAd.framework" weak="true" />
         <framework src="StoreKit.framework" weak="true" />
         <framework src="AdServices.framework" weak="true" />
         <framework src="AppTrackingTransparency.framework" weak="true" />
