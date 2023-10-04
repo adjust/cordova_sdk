@@ -522,6 +522,16 @@ AdjustCommandExecutor.prototype.event = function(params) {
         var purchaseToken = getFirstParameterValue(params, 'purchaseToken');
         adjustEvent.setPurchaseToken(purchaseToken);
     }
+
+    if ('receipt' in params) {
+        var receipt = getFirstParameterValue(params, 'receipt');
+        adjustEvent.setReceipt(receipt);
+    }
+
+    if ('transactionId' in params) {
+        var transactionId = getFirstParameterValue(params, 'transactionId');
+        adjustEvent.setTransactionId(transactionId);
+    }
 };
 
 AdjustCommandExecutor.prototype.trackEvent = function(params) {

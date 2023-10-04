@@ -72,6 +72,7 @@
 #define KEY_AD_REVENUE_UNIT @"adRevenueUnit"
 #define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
 #define KEY_ATT_CONSENT_WAITING_INTERVAL @"attConsentWaitingInterval"
+#define KEY_PRODUCT_ID @"productId"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -320,6 +321,7 @@
     NSString *revenue = [[jsonObject valueForKey:KEY_REVENUE] objectAtIndex:0];
     NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
     NSString *receipt = [[jsonObject valueForKey:KEY_RECEIPT] objectAtIndex:0];
+    NSString *productId = [[jsonObject valueForKey:KEY_PRODUCT_ID] objectAtIndex:0];
     NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
     NSString *callbackId = [[jsonObject valueForKey:KEY_CALLBACK_ID] objectAtIndex:0];
     NSNumber *isReceiptSet = [[jsonObject valueForKey:KEY_IS_RECEIPT_SET] objectAtIndex:0];
@@ -365,27 +367,42 @@
 
     // Deprecated.
     // Transaction ID and receipt.
-    BOOL isTransactionIdSet = NO;
-    if ([self isFieldValid:isReceiptSet]) {
-        if ([isReceiptSet boolValue]) {
-            [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding] transactionId:transactionId];
-        } else {
-            if ([self isFieldValid:transactionId]) {
-                [adjustEvent setTransactionId:transactionId];
-                isTransactionIdSet = YES;
-            }
-        }
-    }
-
-    if (NO == isTransactionIdSet) {
-        if ([self isFieldValid:transactionId]) {
-            [adjustEvent setTransactionId:transactionId];
-        }
-    }
+    // BOOL isTransactionIdSet = NO;
+    // if ([self isFieldValid:isReceiptSet]) {
+    //     if ([isReceiptSet boolValue]) {
+    //         [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding] transactionId:transactionId];
+    //     } else {
+    //         if ([self isFieldValid:transactionId]) {
+    //             [adjustEvent setTransactionId:transactionId];
+    //             isTransactionIdSet = YES;
+    //         }
+    //     }
+    // }
+    // 
+    // if (NO == isTransactionIdSet) {
+    //     if ([self isFieldValid:transactionId]) {
+    //         [adjustEvent setTransactionId:transactionId];
+    //     }
+    // }
 
     // Callback ID.
     if ([self isFieldValid:callbackId]) {
         [adjustEvent setCallbackId:callbackId];
+    }
+
+    // Receipt.
+    if ([self isFieldValid:receipt]) {
+        [adjustEvent setReceipt:[receipt dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+
+    // Product ID.
+    if ([self isFieldValid:productId]) {
+        [adjustEvent setProductId:productId];
+    }
+
+    // Transaction ID.
+    if ([self isFieldValid:transactionId]) {
+        [adjustEvent setTransactionId:transactionId];
     }
 
     // Track event.

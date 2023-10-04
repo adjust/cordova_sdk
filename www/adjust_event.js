@@ -29,29 +29,36 @@ AdjustEvent.prototype.addPartnerParameter = function(key, value) {
     this.partnerParameters.push(value);
 };
 
-AdjustEvent.prototype.setTransactionId = function(transactionId) {
-    this.transactionId = transactionId;
-}
-
 AdjustEvent.prototype.setCallbackId = function(callbackId) {
     this.callbackId = callbackId;
-}
+};
 
 AdjustEvent.prototype.setProductId = function(productId) {
     this.productId = productId;
-}
+};
+
+AdjustEvent.prototype.setTransactionId = function(transactionId) {
+    this.transactionId = transactionId;
+};
+
+// iOS only
+
+AdjustEvent.prototype.setReceipt = function(receipt) {
+    this.receipt = receipt;
+};
+
+// Android only
 
 AdjustEvent.prototype.setPurchaseToken = function(purchaseToken) {
     this.purchaseToken = purchaseToken;
-}
+};
 
 // @deprecated
 AdjustEvent.prototype.setReceiptForTransactionId = function(receipt, transactionId) {
-    console.warn("Calling deprecated function! Use Cordova purchase SDK for this purpose.");
-    console.warn("For more info, visit https://github.com/adjust/cordova_purchase_sdk");
-    this.receipt = receipt;
-    this.transactionId = transactionId;
-    this.isReceiptSet = true;
-}
+    console.warn("Calling deprecated function! Please use official purchase verification method.");
+    // this.receipt = receipt;
+    // this.transactionId = transactionId;
+    // this.isReceiptSet = true;
+};
 
 module.exports = AdjustEvent;
