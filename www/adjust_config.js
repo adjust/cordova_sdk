@@ -180,8 +180,10 @@ AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
     this.sdkPrefix = sdkPrefix;
 };
 
+// @deprecated
 AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
-    this.allowiAdInfoReading = allowiAdInfoReading;
+    console.warn("Calling deprecated function! Apple Search Ads attribution with usage of iAd.framework has been sunset by Apple as of February 7th 2023.");
+    // this.allowiAdInfoReading = allowiAdInfoReading;
 };
 
 AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {

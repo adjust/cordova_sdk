@@ -39,7 +39,7 @@
 #define KEY_DELAY_START @"delayStart"
 #define KEY_DEVICE_KNOWN @"isDeviceKnown"
 #define KEY_NEEDS_COST @"needsCost"
-#define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
+// #define KEY_ALLOW_IAD_INFO_READING @"allowiAdInfoReading"
 #define KEY_ALLOW_ADSERVICES_INFO_READING @"allowAdServicesInfoReading"
 #define KEY_ALLOW_IDFA_READING @"allowIdfaReading"
 #define KEY_HANDLE_SKADNETWORK @"handleSkAdNetwork"
@@ -118,7 +118,7 @@
     NSString *info4 = [[jsonObject valueForKey:KEY_INFO_4] objectAtIndex:0];
     NSNumber *delayStart = [[jsonObject valueForKey:KEY_DELAY_START] objectAtIndex:0];
     NSNumber *isDeviceKnown = [[jsonObject valueForKey:KEY_DEVICE_KNOWN] objectAtIndex:0];
-    NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
+    // NSNumber *allowiAdInfoReading = [[jsonObject valueForKey:KEY_ALLOW_IAD_INFO_READING] objectAtIndex:0];
     NSNumber *allowAdServicesInfoReading = [[jsonObject valueForKey:KEY_ALLOW_ADSERVICES_INFO_READING] objectAtIndex:0];
     NSNumber *allowIdfaReading = [[jsonObject valueForKey:KEY_ALLOW_IDFA_READING] objectAtIndex:0];
     NSNumber *handleSkAdNetwork = [[jsonObject valueForKey:KEY_HANDLE_SKADNETWORK] objectAtIndex:0];
@@ -218,10 +218,10 @@
         [adjustConfig setNeedsCost:[needsCost boolValue]];
     }
 
-    // iAd info reading.
-    if ([self isFieldValid:allowiAdInfoReading]) {
-        [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
-    }
+    // iAd info reading. Deprecated.
+    // if ([self isFieldValid:allowiAdInfoReading]) {
+    //     [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
+    // }
 
     // AdServices info reading.
     if ([self isFieldValid:allowAdServicesInfoReading]) {
@@ -850,7 +850,7 @@
     NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
     NSString *teardown = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
     NSString *noBackoffWait = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
-    NSString *iAdFrameworkEnabled = [[command.arguments valueForKey:KEY_IAD_ENABLED] objectAtIndex:0];
+    // NSString *iAdFrameworkEnabled = [[command.arguments valueForKey:KEY_IAD_ENABLED] objectAtIndex:0];
     NSString *adServicesFrameworkEnabled = [[command.arguments valueForKey:KEY_ADSERVICES_ENABLED] objectAtIndex:0];
     
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
@@ -888,9 +888,10 @@
     if ([self isFieldValid:hasContext]) {
         testOptions.deleteState = [hasContext boolValue];
     }
-    if ([self isFieldValid:iAdFrameworkEnabled]) {
-        // testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
-    }
+    // Deprecated.
+    // if ([self isFieldValid:iAdFrameworkEnabled]) {
+    //     testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+    // }
     if ([self isFieldValid:adServicesFrameworkEnabled]) {
         testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
     }

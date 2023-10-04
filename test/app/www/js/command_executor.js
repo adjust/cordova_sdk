@@ -321,12 +321,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setUserAgent(userAgent);
     }
 
-    if ('allowiAdInfoReading' in params) {
-        var allowiAdInfoReadingS = getFirstParameterValue(params, 'allowiAdInfoReading');
-        var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
-        adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
-    }
-
     if ('allowAdServicesInfoReading' in params) {
         var allowAdServicesInfoReadingS = getFirstParameterValue(params, 'allowAdServicesInfoReading');
         var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
