@@ -37,6 +37,7 @@
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
 - (void)setConversionValueUpdatedCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSkad4ConversionValueUpdatedCallback:(CDVInvokedUrlCommand *)command;
 - (void)addSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)addSessionCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeSessionPartnerParameter:(CDVInvokedUrlCommand *)command;
@@ -44,19 +45,23 @@
 - (void)resetSessionPartnerParameters:(CDVInvokedUrlCommand *)command;
 - (void)resetSessionCallbackParameters:(CDVInvokedUrlCommand *)command;
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
-- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)requestTrackingAuthorizationWithCompletionHandler:(CDVInvokedUrlCommand *)command;
 - (void)updateConversionValue:(CDVInvokedUrlCommand *)command;
+- (void)updateConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
+- (void)updateSkad4ConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 - (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
 - (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
+- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
 
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
 - (void)setReferrer:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;

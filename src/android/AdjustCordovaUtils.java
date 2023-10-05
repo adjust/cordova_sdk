@@ -45,9 +45,11 @@ public class AdjustCordovaUtils {
     public static final String KEY_BASE_URL = "baseUrl";
     public static final String KEY_GDPR_URL = "gdprUrl";
     public static final String KEY_SUBSCRIPTION_URL = "subscriptionUrl";
+    public static final String KEY_PURCHASE_VERIFICATION_URL = "purchaseVerificationUrl";
     public static final String KEY_BASE_PATH = "basePath";
     public static final String KEY_GDPR_PATH = "gdprPath";
     public static final String KEY_SUBSCRIPTION_PATH = "subscriptionPath";
+    public static final String KEY_PURCHASE_VERIFICATION_PATH = "purchaseVerificationPath";
     public static final String KEY_USE_TEST_CONNECTION_OPTIONS = "useTestConnectionOptions";
     public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
     public static final String KEY_TIMER_START = "timerStartInMilliseconds";
@@ -74,6 +76,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_JSON_RESPONSE = "jsonResponse";
     public static final String KEY_PRICE = "price";
     public static final String KEY_SKU = "sku";
+    public static final String KEY_PRODUCT_ID = "productId";
     public static final String KEY_ORDER_ID = "orderId";
     public static final String KEY_SIGNATURE = "signature";
     public static final String KEY_PURCHASE_TOKEN = "purchaseToken";
@@ -85,6 +88,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_AD_REVENUE_PLACEMENT = "adRevenuePlacement";
     public static final String KEY_COPPA_COMPLIANT_ENABLED = "coppaCompliantEnabled";
     public static final String KEY_PLAY_STORE_KIDS_APP_ENABLED = "playStoreKidsAppEnabled";
+    public static final String KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED = "finalAndroidAttributionEnabled";
 
     public static final String COMMAND_CREATE = "create";
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";
@@ -94,6 +98,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
     public static final String COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK = "setConversionValueUpdatedCallback";
+    public static final String COMMAND_SET_SKAD4_CONVERSION_VALUE_UPDATED_CALLBACK = "setSkad4ConversionValueUpdatedCallback";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_TRACK_EVENT = "trackEvent";
     public static final String COMMAND_SET_OFFLINE_MODE = "setOfflineMode";
@@ -107,10 +112,14 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_AD_REVENUE = "trackAdRevenue";
     public static final String COMMAND_TRACK_APP_STORE_SUBSCRIPTION = "trackAppStoreSubscription";
     public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
+    public static final String COMMAND_VERIFY_PLAY_STORE_PURCHASE = "verifyPlayStorePurchase";
+    public static final String COMMAND_VERIFY_APP_STORE_PURCHASE = "verifyAppStorePurchase";
     public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";
     public static final String COMMAND_UPDATE_CONVERSION_VALUE = "updateConversionValue";
+    public static final String COMMAND_UPDATE_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateConversionValueWithErrorCallback";
+    public static final String COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateSkad4ConversionValueWithErrorCallback";
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_ADID = "getAdid";

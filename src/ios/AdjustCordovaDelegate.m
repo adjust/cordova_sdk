@@ -34,6 +34,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
                    conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
+              skad4ConversionValueUpdatedCallback:(BOOL)swizzleSkad4ConversionValueUpdatedCallback
                          andAttributionCallbackId:(NSString *)attributionCallbackId
                          eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
                             eventFailedCallbackId:(NSString *)eventFailedCallbackId
@@ -41,6 +42,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                           sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                  conversionValueUpdatedCallbackId:(NSString *)conversionValueUpdatedCallbackId
+            skad4ConversionValueUpdatedCallbackId:(NSString *)skad4ConversionValueUpdatedCallbackId
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
     dispatch_once(&onceToken, ^{
@@ -75,6 +77,10 @@ static AdjustCordovaDelegate *defaultInstance = nil;
             [defaultInstance swizzleCallbackMethod:@selector(adjustConversionValueUpdated:)
                                   swizzledSelector:@selector(adjustConversionValueUpdatedWannabe:)];
         }
+        if (swizzleSkad4ConversionValueUpdatedCallback) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustConversionValueUpdated:coarseValue:lockWindow:)
+                                  swizzledSelector:@selector(adjustConversionValueUpdatedWannabe:coarseValue:lockWindow:)];
+        }
 
         [defaultInstance setAttributionCallbackId:attributionCallbackId];
         [defaultInstance setEventSucceededCallbackId:eventSucceededCallbackId];
@@ -83,6 +89,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         [defaultInstance setSessionFailedCallbackId:sessionFailedCallbackId];
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
         [defaultInstance setConversionValueUpdatedCallbackId:conversionValueUpdatedCallbackId];
+        [defaultInstance setSkad4ConversionValueUpdatedCallbackId:skad4ConversionValueUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
     });
@@ -212,6 +219,19 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:intConversionValue];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_conversionValueUpdatedCallbackId];
+}
+
+- (void)adjustConversionValueUpdatedWannabe:(nullable NSNumber *)fineValue
+                                coarseValue:(nullable NSString *)coarseValue
+                                 lockWindow:(nullable NSNumber *)lockWindow {
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [self addValueOrEmpty:[fineValue stringValue] withKey:@"fineValue" toDictionary:dictionary];
+    [self addValueOrEmpty:coarseValue withKey:@"coarseValue" toDictionary:dictionary];
+    [self addValueOrEmpty:[lockWindow stringValue] withKey:@"lockWindow" toDictionary:dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skad4ConversionValueUpdatedCallbackId];    
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector

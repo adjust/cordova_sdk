@@ -30,6 +30,7 @@ var app = {
         // adjustConfig.setOaidReadingEnabled(true);
         // adjustConfig.setCoppaCompliantEnabled(true);
         // adjustConfig.setPlayStoreKidsAppEnabled(true);
+        adjustConfig.setAttConsentWaitingInterval(16);
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -89,6 +90,13 @@ var app = {
         adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
             console.log("[AdjustExample]: Conversion value updated!");
             console.log("[AdjustExample]: Conversion value = " + conversionValue);
+        });
+
+        adjustConfig.setSkad4ConversionValueUpdatedCallbackListener(function(skad4data) {
+            console.log("[AdjustExample]: SKAdNetwork 4 conversion value updated!");
+            console.log("[AdjustExample]: Fine value = " + skad4data.fineValue);
+            console.log("[AdjustExample]: Coarse value = " + skad4data.coarseValue);
+            console.log("[AdjustExample]: Lock window = " + skad4data.lockWindow);
         });
 
         Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");

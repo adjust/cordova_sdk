@@ -19,6 +19,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
     this.conversionValueUpdatedCallback = null;
+    this.skad4ConversionValueUpdatedCallback = null;
     this.coppaCompliantEnabled = null;
     this.sdkPrefix = null;
     this.secretId = null;
@@ -34,12 +35,14 @@ function AdjustConfig(appToken, environment) {
     this.preinstallFilePath = null;
     this.oaidReadingEnabled = null;
     this.playStoreKidsAppEnabled = null;
+    this.finalAndroidAttributionEnabled = null;
     // iOS only 
     this.allowiAdInfoReading = null;
     this.allowAdServicesInfoReading = null;
     this.allowIdfaReading = null;
     this.handleSkAdNetwork = null;
     this.linkMeEnabled = null;
+    this.attConsentWaitingInterval = null;
 };
 
 AdjustConfig.EnvironmentSandbox = "sandbox";
@@ -55,6 +58,7 @@ AdjustConfig.LogLevelSuppress = "SUPPRESS";
 
 AdjustConfig.UrlStrategyChina = "china";
 AdjustConfig.UrlStrategyIndia = "india";
+AdjustConfig.UrlStrategyCn = "cn";
 
 AdjustConfig.DataResidencyEU = "data-residency-eu";
 AdjustConfig.DataResidencyTR = "data-residency-tr";
@@ -117,6 +121,10 @@ AdjustConfig.prototype.getConversionValueUpdatedCallback = function() {
     return this.conversionValueUpdatedCallback;
 };
 
+AdjustConfig.prototype.getSkad4ConversionValueUpdatedCallback = function() {
+    return this.skad4ConversionValueUpdatedCallback;
+};
+
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
@@ -173,8 +181,10 @@ AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
     this.sdkPrefix = sdkPrefix;
 };
 
+// @deprecated
 AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
-    this.allowiAdInfoReading = allowiAdInfoReading;
+    console.warn("Calling deprecated function! Apple Search Ads attribution with usage of iAd.framework has been sunset by Apple as of February 7th 2023.");
+    // this.allowiAdInfoReading = allowiAdInfoReading;
 };
 
 AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
@@ -191,6 +201,10 @@ AdjustConfig.prototype.deactivateSKAdNetworkHandling = function() {
 
 AdjustConfig.prototype.setLinkMeEnabled = function(linkMeEnabled) {
     this.linkMeEnabled = linkMeEnabled;
+};
+
+AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
+    this.attConsentWaitingInterval = attConsentWaitingInterval;
 };
 
 // @deprecated
@@ -267,6 +281,10 @@ AdjustConfig.prototype.setConversionValueUpdatedCallbackListener = function(conv
     this.conversionValueUpdatedCallback = conversionValueUpdatedCallback;
 };
 
+AdjustConfig.prototype.setSkad4ConversionValueUpdatedCallbackListener = function(skad4ConversionValueUpdatedCallback) {
+    this.skad4ConversionValueUpdatedCallback = skad4ConversionValueUpdatedCallback;
+};
+
 // @deprecated
 AdjustConfig.prototype.hasListener = function() {
     console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
@@ -301,12 +319,20 @@ AdjustConfig.prototype.hasConversionValueUpdatedCallbackListener = function() {
     return this.conversionValueUpdatedCallback !== null;
 };
 
+AdjustConfig.prototype.hasSkad4ConversionValueUpdatedCallbackListener = function() {
+    return this.skad4ConversionValueUpdatedCallback !== null;
+};
+
 AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
     this.coppaCompliantEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
     this.playStoreKidsAppEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setFinalAndroidAttributionEnabled = function (isEnabled) {
+    this.finalAndroidAttributionEnabled = isEnabled;
 };
 
 module.exports = AdjustConfig;

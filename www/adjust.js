@@ -11,6 +11,7 @@ function callCordova(action) {
 }
 
 function callCordovaStringify(action) {
+    console.log(action);
     var args = Array.prototype.slice.call(arguments, 1);
 
     cordova.exec(
@@ -25,11 +26,24 @@ function callCordovaStringify(action) {
 function callCordovaCallback(action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
 
-    cordova.exec(callback,
+    cordova.exec(
+        callback,
         function errorHandler(err) { },
         'Adjust',
         action,
         args
+    );
+}
+
+function callCordovaStringifyCallback(action, data, callback) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    cordova.exec(
+        callback,
+        function errorHandler(err) { },
+        'Adjust',
+        action,
+        [JSON.stringify(args)]
     );
 }
 
@@ -59,6 +73,9 @@ var Adjust = {
         }
         if (adjustConfig.hasConversionValueUpdatedCallbackListener()) {
             callCordovaCallback('setConversionValueUpdatedCallback', adjustConfig.getConversionValueUpdatedCallback());
+        }
+        if (adjustConfig.hasSkad4ConversionValueUpdatedCallbackListener()) {
+            callCordovaCallback('setSkad4ConversionValueUpdatedCallback', adjustConfig.getSkad4ConversionValueUpdatedCallback());
         }
 
         callCordovaStringify('create', adjustConfig);
@@ -118,6 +135,14 @@ var Adjust = {
         callCordovaStringify('trackPlayStoreSubscription', subscription);
     },
 
+    verifyAppStorePurchase: function(purchase, callback) {
+        callCordovaStringifyCallback('verifyAppStorePurchase', purchase, callback);
+    },
+
+    verifyPlayStorePurchase: function(purchase, callback) {
+        callCordovaStringifyCallback('verifyPlayStorePurchase', purchase, callback);
+    },
+
     getGoogleAdId: function(callback) {
         callCordovaCallback('getGoogleAdId', callback);
     },
@@ -146,7 +171,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.32.0';
+        return 'cordova4.35.0';
     },
 
     addSessionCallbackParameter: function(key, value) {
@@ -183,6 +208,14 @@ var Adjust = {
 
     updateConversionValue: function(conversionValue) {
         callCordova('updateConversionValue', conversionValue);
+    },
+
+    updateConversionValueWithErrorCallback: function(callback, conversionValue) {
+        callCordovaCallback('updateConversionValueWithErrorCallback', callback, conversionValue);
+    },
+
+    updateSkad4ConversionValueWithErrorCallback: function(callback, fineValue, coarseValue, lockWindow) {
+        callCordovaCallback('updateSkad4ConversionValueWithErrorCallback', callback, fineValue, coarseValue, lockWindow);
     },
 
     getAppTrackingAuthorizationStatus: function(callback) {

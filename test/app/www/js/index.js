@@ -22,19 +22,23 @@ var app = {
             var baseUrl = "";
             var gdprUrl = "";
             var subscriptionUrl = "";
-            var ipAddress = "192.168.86.44";
+            var purchaseVerificationUrl = "";
+            var ipAddress = "192.168.1.104";
             if (device.platform === "Android") {
                 baseUrl = "https://" + ipAddress + ":8443";
                 gdprUrl = "https://" + ipAddress + ":8443";
                 subscriptionUrl = "https://" + ipAddress + ":8443";
+                purchaseVerificationUrl = "https://" + ipAddress + ":8443";
             } else if (device.platform === "iOS") {
                 baseUrl = "http://" + ipAddress + ":8080";
                 gdprUrl = "http://" + ipAddress + ":8080";
                 subscriptionUrl = "http://" + ipAddress + ":8080";
+                purchaseVerificationUrl = "http://" + ipAddress + ":8080";
             }
             var controlUrl = "ws://" + ipAddress + ":1987";
 
-            var commandExecutor = new CommandExecutor(baseUrl, gdprUrl, subscriptionUrl);
+            var commandExecutor = new CommandExecutor(baseUrl, gdprUrl, subscriptionUrl, purchaseVerificationUrl);
+            // AdjustTest.addTestDirectory('purchase-verification');
             AdjustTest.startTestSession(baseUrl, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];

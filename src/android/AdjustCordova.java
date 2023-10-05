@@ -30,6 +30,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext sessionTrackingFailedCallbackContext;
     private CallbackContext deferredDeeplinkCallbackContext;
     private CallbackContext conversionValueUpdatedCallbackContext;
+    private CallbackContext skad4ConversionValueUpdatedCallbackContext;
     private CallbackContext getAdidCallbackContext;
     private CallbackContext getIdfaCallbackContext;
     private CallbackContext getGoogleAdIdCallbackContext;
@@ -54,6 +55,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             deferredDeeplinkCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_CONVERSION_VALUE_UPDATED_CALLBACK)) {
             conversionValueUpdatedCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_SKAD4_CONVERSION_VALUE_UPDATED_CALLBACK)) {
+            skad4ConversionValueUpdatedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             getGoogleAdIdCallbackContext = callbackContext;
             if (getGoogleAdIdCallbackContext != null) {
@@ -170,12 +173,20 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             // iOS method only
         } else if (action.equals(COMMAND_UPDATE_CONVERSION_VALUE)) {
             // iOS method only
+        } else if (action.equals(COMMAND_UPDATE_CONVERSION_VALUE_WITH_ERROR_CALLBACK)) {
+            // iOS method only
+        } else if (action.equals(COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK)) {
+            // iOS method only
         } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
             // iOS method only
         } else if (action.equals(COMMAND_CHECK_FOR_NEW_ATT_STATUS)) {
             // iOS method only
+        } else if (action.equals(COMMAND_VERIFY_APP_STORE_PURCHASE)) {
+            // iOS method only
         } else if (action.equals(COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION)) {
             executeTrackPlayStoreSubscription(args);
+        } else if (action.equals(COMMAND_VERIFY_PLAY_STORE_PURCHASE)) {
+            executeVerifyPlayStorePurchase(args, callbackContext);
         } else if (action.equals(COMMAND_TRACK_THIRD_PARTY_SHARING)) {
             executeTrackThirdPartySharing(args);
         } else if (action.equals(COMMAND_TRACK_MEASUREMENT_CONSENT)) {
@@ -239,6 +250,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean oaidReadingEnabled = false;
         boolean coppaCompliantEnabled = false;
         boolean playStoreKidsAppEnabled = false;
+        boolean finalAndroidAttributionEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -315,6 +327,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         if (parameters.containsKey(KEY_PLAY_STORE_KIDS_APP_ENABLED)) {
             playStoreKidsAppEnabled = parameters.get(KEY_PLAY_STORE_KIDS_APP_ENABLED).toString() == "true" ? true : false;
         }
+        if (parameters.containsKey(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED)) {
+            finalAndroidAttributionEnabled = parameters.get(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED).toString() == "true" ? true : false;
+        }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -372,6 +387,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CHINA​);
             } else if (urlStrategy.equalsIgnoreCase("india")) {
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_INDIA);
+            } else if (urlStrategy.equalsIgnoreCase("cn")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CN);
             } else if (urlStrategy.equalsIgnoreCase("data-residency-eu")) {
                 adjustConfig.setUrlStrategy(AdjustConfig.DATA_RESIDENCY_EU);
             } else if (urlStrategy.equalsIgnoreCase("data-residency-tr")) {
@@ -415,6 +432,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Play Store Kids App.
         adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled);
+
+        // Final Android attribution.
+        adjustConfig.setFinalAttributionEnabled(finalAndroidAttributionEnabled);
 
         // Is device known.
         adjustConfig.setDeviceKnown(isDeviceKnown);
@@ -507,6 +527,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String currency = null;
         String transactionId = null;
         String callbackId = null;
+        String productId = null;
+        String purchaseToken = null;
 
         if (parameters.containsKey(KEY_EVENT_TOKEN)) {
             eventToken = parameters.get(KEY_EVENT_TOKEN).toString();
@@ -522,6 +544,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_CALLBACK_ID)) {
             callbackId = parameters.get(KEY_CALLBACK_ID).toString();
+        }
+        if (parameters.containsKey(KEY_PRODUCT_ID)) {
+            productId = parameters.get(KEY_PRODUCT_ID).toString();
+        }
+        if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
+            purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
         }
 
         JSONArray partnerParametersJson = (JSONArray)parameters.get(KEY_PARTNER_PARAMETERS);
@@ -567,6 +595,16 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Callback ID.
         if (isFieldValid(callbackId)) {
             adjustEvent.setCallbackId(callbackId);
+        }
+
+        // Product ID.
+        if (isFieldValid(productId)) {
+            adjustEvent.setProductId(productId);
+        }
+
+        // Purchase token.
+        if (isFieldValid(purchaseToken)) {
+            adjustEvent.setPurchaseToken(purchaseToken);
         }
 
         // Track event.
@@ -650,6 +688,47 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Track subscription.
         Adjust.trackPlayStoreSubscription(subscription);
+    }
+
+    private void executeVerifyPlayStorePurchase(
+        final JSONArray args,
+        final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        String productId = null;
+        String purchaseToken = null;
+
+        // Product ID.
+        if (parameters.containsKey(KEY_PRODUCT_ID)) {
+            productId = parameters.get(KEY_PRODUCT_ID).toString();
+        }
+        // Purchase token.
+        if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
+            purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
+        }
+
+        // Create purchase instance.
+        final AdjustPurchase purchase = new AdjustPurchase(productId, purchaseToken);
+
+        // Verify purchase.
+        Adjust.verifyPurchase(purchase, new OnPurchaseVerificationFinishedListener() {
+            @Override
+            public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
+                if (callbackContext != null) {
+                    HashMap<String, String> adjustPurchaseMap = new HashMap<String, String>();
+                    adjustPurchaseMap.put("code", String.valueOf(verificationResult.getCode()));
+                    adjustPurchaseMap.put("verificationStatus", verificationResult.getVerificationStatus());
+                    adjustPurchaseMap.put("message", verificationResult.getMessage());
+                    JSONObject verificationResultJsonData = new JSONObject(adjustPurchaseMap);
+                    PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
+            }
+        });
     }
 
     private void executeTrackThirdPartySharing(final JSONArray args) throws JSONException {
@@ -836,6 +915,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             }
         }
 
+        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_URL)) {
+            try {
+                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_URL);
+                testOptions.purchaseVerificationUrl = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification URL.");
+            }
+        }
+
         if (!jsonParameters.isNull(KEY_BASE_PATH)) {
             try {
                 String value = jsonParameters.getString(KEY_BASE_PATH);
@@ -860,6 +948,15 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 testOptions.subscriptionPath = value;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription path.");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_PATH)) {
+            try {
+                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_PATH);
+                testOptions.purchaseVerificationPath = value;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification path.");
             }
         }
 

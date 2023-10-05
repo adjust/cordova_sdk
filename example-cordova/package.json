@@ -15,7 +15,7 @@
   "devDependencies": {
     "com.adjust.sdk": "file:../temp_plugin",
     "cordova-android": "^10.1.2",
-    "cordova-ios": "^6.2.0",
+    "cordova-ios": "^6.3.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^5.0.2",
     "cordova-plugin-device": "github:apache/cordova-plugin-device",

@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~13.2.2",
     "@angular/platform-browser-dynamic": "~13.2.2",
     "@angular/router": "~13.2.2",
-    "@awesome-cordova-plugins/adjust": "^5.40.0",
+    "@awesome-cordova-plugins/adjust": "^5.46.0",
     "@awesome-cordova-plugins/core": "^5.40.0",
     "@capacitor/android": "^3.4.3",
     "@capacitor/app": "1.1.1",
@@ -29,6 +29,7 @@
     "@capacitor/keyboard": "1.2.2",
     "@capacitor/status-bar": "1.0.8",
     "@ionic/angular": "^6.0.0",
+    "com.adjust.sdk": "^4.32.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
