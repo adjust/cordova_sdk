@@ -1,4 +1,4 @@
-### Version 4.35.0 (4th October 2023)
+### Version 4.35.0 (5th October 2023)
 #### Added
 - Added support for SKAdNetwork 4.0.
 - Added support for setting a new China URL Strategy. You can choose this setting by calling `setUrlStrategy` method of `AdjustConfig` instance with `AdjustConfig.AdjustUrlStrategyCn` parameter.
