@@ -1,3 +1,12 @@
+### Version 4.35.1 (10th October 2023)
+#### Added
+- Added sending of `event_callback_id` parameter (if set) with the event payload.
+
+#### Native SDKs
+- [iOS@v4.35.2][ios_sdk_v4.35.2]
+- [Android@v4.35.1][android_sdk_v4.35.1]
+---
+
 ### Version 4.35.0 (5th October 2023)
 #### Added
 - Added support for SKAdNetwork 4.0.
@@ -620,6 +629,8 @@
 [ios_sdk_v4.29.6]: https://github.com/adjust/ios_sdk/tree/v4.29.6
 [ios_sdk_v4.30.0]: https://github.com/adjust/ios_sdk/tree/v4.30.0
 [ios_sdk_v4.32.0]: https://github.com/adjust/ios_sdk/tree/v4.32.0
+[ios_sdk_v4.35.1]: https://github.com/adjust/ios_sdk/tree/v4.35.1
+[ios_sdk_v4.35.2]: https://github.com/adjust/ios_sdk/tree/v4.35.2
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -650,3 +661,5 @@
 [android_sdk_v4.28.5]: https://github.com/adjust/android_sdk/tree/v4.28.5
 [android_sdk_v4.30.1]: https://github.com/adjust/android_sdk/tree/v4.30.1
 [android_sdk_v4.32.0]: https://github.com/adjust/android_sdk/tree/v4.32.0
+[android_sdk_v4.35.0]: https://github.com/adjust/android_sdk/tree/v4.35.0
+[android_sdk_v4.35.1]: https://github.com/adjust/android_sdk/tree/v4.35.1
