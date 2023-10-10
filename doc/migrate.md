@@ -1,4 +1,4 @@
-## Migrate your Adjust SDK for Cordova to 4.35.0 from 3.4.1
+## Migrate your Adjust SDK for Cordova to 4.35.1 from 3.4.1
 
 ### Migration procedure
 

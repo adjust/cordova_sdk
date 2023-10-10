@@ -279,7 +279,6 @@ As of **v4.21.1**, the Adjust SDK supports install tracking on Huawei devices wi
 Adjust SDK plugin adds these iOS frameworks to your generated Xcode project:
 
 - `AdSupport.framework` - This framework is needed so that SDK can access to IDFA value and (prior to iOS 14) LAT information.
-- `iAd.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaigns you might be running.
 - `AdServices.framework` - For devices running iOS 14.3 or higher, this framework allows the SDK to automatically handle attribution for ASA campaigns. It is required when leveraging the Apple Ads Attribution API.
 - `StoreKit.framework` - This framework is needed for access to `SKAdNetwork` framework and for Adjust SDK to handle communication with it automatically in iOS 14 or later.
 - `AppTrackingTransparency.framework` - This framework is needed in iOS 14 and later for SDK to be able to wrap user's tracking consent dialog and access to value of the user's consent to be tracked or not.
@@ -288,7 +287,6 @@ Settings for this can also be found in `plugin.xml` file of the Adjust SDK plugi
 
 ```xml
 <framework src="AdSupport.framework" weak="true" />
-<framework src="iAd.framework" weak="true" />
 <framework src="StoreKit.framework" weak="true" />
 <framework src="AdServices.framework" weak="true" />
 <framework src="AppTrackingTransparency.framework" weak="true" />
