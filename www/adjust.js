@@ -234,6 +234,10 @@ var Adjust = {
         callCordovaCallback('getLastDeeplink', callback);
     },
 
+    getIdfv: function(callback) {
+        callCordovaCallback('getIdfv', callback);
+    },
+
     setTestOptions: function(testOptions) {
         callCordova('setTestOptions', testOptions);
     },

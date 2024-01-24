@@ -122,6 +122,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateSkad4ConversionValueWithErrorCallback";
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
+    public static final String COMMAND_GET_IDFV = "getIdfv";
     public static final String COMMAND_GET_ADID = "getAdid";
     public static final String COMMAND_CHECK_FOR_NEW_ATT_STATUS = "checkForNewAttStatus";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";

@@ -908,6 +908,12 @@
     }];
 }
 
+- (void)getIdfv:(CDVInvokedUrlCommand *)command {
+    NSString *idfv = [Adjust idfv];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
     NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];

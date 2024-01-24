@@ -36,6 +36,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext getGoogleAdIdCallbackContext;
     private CallbackContext getAmazonAdidCallbackContext;
     private CallbackContext getAttributionCallbackContext;
+    private CallbackContext getIdfvCallbackContext;
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -96,6 +97,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             PluginResult pluginResult = new PluginResult(Status.OK, idfa);
             pluginResult.setKeepCallback(true);
             getIdfaCallbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_IDFV)) {
+            getIdfvCallbackContext = callbackContext;
+            final String idfv = "";
+            PluginResult pluginResult = new PluginResult(Status.OK, idfv);
+            pluginResult.setKeepCallback(true);
+            getIdfvCallbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
             String sdkVersion = Adjust.getSdkVersion();
             if (sdkVersion == null) {
@@ -208,6 +215,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             getGoogleAdIdCallbackContext = null;
             getAmazonAdidCallbackContext = null;
             getAttributionCallbackContext = null;
+            getIdfvCallbackContext = null;
             shouldLaunchDeeplink = true;
         } else {
             Logger logger = (Logger)AdjustFactory.getLogger();
