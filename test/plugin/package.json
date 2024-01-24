@@ -1,5 +1,5 @@
 {
-    "version": "4.35.1",
+    "version": "4.37.0",
     "name": "com.adjust.test",
     "cordova_name": "Adjust Cordova Test Plugin",
     "description": "Cordova Plugin For Adjust SDK Testing",
