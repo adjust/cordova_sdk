@@ -38,7 +38,7 @@ var app = {
             var controlUrl = "ws://" + ipAddress + ":1987";
 
             var commandExecutor = new CommandExecutor(baseUrl, gdprUrl, subscriptionUrl, purchaseVerificationUrl);
-            AdjustTest.addTest('Test_LinkShortener_after_install');
+            // AdjustTest.addTestDirectory('purchase-verification');
             AdjustTest.startTestSession(baseUrl, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];
