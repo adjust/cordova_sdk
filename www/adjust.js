@@ -239,7 +239,7 @@ var Adjust = {
     },
 
     processDeeplink: function(deeplink, callback) {
-        callCordovaCallback('processDeeplink', deeplink, callback);
+        callCordovaCallback('processDeeplink', callback, deeplink);
     },
 
     setTestOptions: function(testOptions) {
