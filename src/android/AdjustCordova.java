@@ -201,6 +201,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             if (isEnabled != null) {
                 Adjust.trackMeasurementConsent(isEnabled);
             }
+        } else if (action.equals(COMMAND_PROCESS_DEEPLINK)) {
+            executeProcessDeeplink(args, callbackContext);
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -735,6 +737,22 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                     pluginResult.setKeepCallback(true);
                     callbackContext.sendPluginResult(pluginResult);
                 }
+            }
+        });
+    }
+
+    private void executeProcessDeeplink(
+        final JSONArray args,
+        final CallbackContext callbackContext) throws JSONException {
+        String url = args.getString(0);
+        final Uri uri = Uri.parse(url);
+
+        Adjust.processDeeplink(uri, this.cordova.getActivity().getApplicationContext(), new OnDeeplinkResolvedListener() {
+            @Override
+            public void onDeeplinkResolved(String resolvedLink) {
+                PluginResult pluginResult = new PluginResult(Status.OK, resolvedLink);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
             }
         });
     }
