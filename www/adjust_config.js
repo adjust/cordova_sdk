@@ -59,6 +59,7 @@ AdjustConfig.LogLevelSuppress = "SUPPRESS";
 AdjustConfig.UrlStrategyChina = "china";
 AdjustConfig.UrlStrategyIndia = "india";
 AdjustConfig.UrlStrategyCn = "cn";
+AdjustConfig.UrlStrategyCnOnly = "cn-only";
 
 AdjustConfig.DataResidencyEU = "data-residency-eu";
 AdjustConfig.DataResidencyTR = "data-residency-tr";

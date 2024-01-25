@@ -188,6 +188,8 @@
             [adjustConfig setUrlStrategy:ADJUrlStrategyIndia];
         } else if ([urlStrategy isEqualToString:@"cn"]) {
             [adjustConfig setUrlStrategy:ADJUrlStrategyCn];
+        } else if ([urlStrategy isEqualToString:@"cn-only"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyCnOnly];
         } else if ([urlStrategy isEqualToString:@"data-residency-eu"]) {
             [adjustConfig setUrlStrategy:ADJDataResidencyEU];
         } else if ([urlStrategy isEqualToString:@"data-residency-tr"]) {
