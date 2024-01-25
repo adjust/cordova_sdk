@@ -21,6 +21,7 @@ function AdjustConfig(appToken, environment) {
     this.conversionValueUpdatedCallback = null;
     this.skad4ConversionValueUpdatedCallback = null;
     this.coppaCompliantEnabled = null;
+    this.readDeviceInfoOnceEnabled = null;
     this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
@@ -328,6 +329,10 @@ AdjustConfig.prototype.hasSkad4ConversionValueUpdatedCallbackListener = function
 
 AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
     this.coppaCompliantEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setReadDeviceInfoOnceEnabled = function (isEnabled) {
+    this.readDeviceInfoOnceEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {

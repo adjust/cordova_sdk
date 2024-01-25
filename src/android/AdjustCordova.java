@@ -261,6 +261,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean coppaCompliantEnabled = false;
         boolean playStoreKidsAppEnabled = false;
         boolean finalAndroidAttributionEnabled = false;
+        boolean readDeviceInfoOnceEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -339,6 +340,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED)) {
             finalAndroidAttributionEnabled = parameters.get(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED).toString() == "true" ? true : false;
+        }
+        if (parameters.containsKey(KEY_READ_DEVICE_INFO_ONCE_ENABLED)) {
+            readDeviceInfoOnceEnabled = parameters.get(KEY_READ_DEVICE_INFO_ONCE_ENABLED).toString() == "true" ? true : false;
         }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -447,6 +451,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Final Android attribution.
         adjustConfig.setFinalAttributionEnabled(finalAndroidAttributionEnabled);
+
+        // Read device info just once.
+        adjustConfig.setReadDeviceInfoOnceEnabled(readDeviceInfoOnceEnabled);
 
         // Is device known.
         adjustConfig.setDeviceKnown(isDeviceKnown);

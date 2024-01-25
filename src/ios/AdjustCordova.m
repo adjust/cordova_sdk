@@ -74,6 +74,7 @@
 #define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
 #define KEY_ATT_CONSENT_WAITING_INTERVAL @"attConsentWaitingInterval"
 #define KEY_PRODUCT_ID @"productId"
+#define KEY_READ_DEVICE_INFO_ONCE_ENABLED @"readDeviceInfoOnceEnabled"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -128,6 +129,7 @@
     NSNumber *linkMeEnabled = [[jsonObject valueForKey:KEY_LINK_ME_ENABLED] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *coppaCompliantEnabled = [[jsonObject valueForKey:KEY_COPPA_COMPLIANT_ENABLED] objectAtIndex:0];
+    NSNumber *readDeviceInfoOnceEnabled = [[jsonObject valueForKey:KEY_READ_DEVICE_INFO_ONCE_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
     NSNumber *needsCost = [[jsonObject valueForKey:KEY_NEEDS_COST] objectAtIndex:0];
@@ -163,6 +165,11 @@
     // COPPA compliant.
     if ([self isFieldValid:coppaCompliantEnabled]) {
         [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
+    }
+
+    // Read device info just once.
+    if ([self isFieldValid:readDeviceInfoOnceEnabled]) {
+        [adjustConfig setReadDeviceInfoOnceEnabled:[readDeviceInfoOnceEnabled boolValue]];
     }
 
     // SDK prefix.
