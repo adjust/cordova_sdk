@@ -72,6 +72,8 @@ AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
 AdjustConfig.AdRevenueSourceUnity = "unity_sdk";
 AdjustConfig.AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
 AdjustConfig.AdRevenueSourcePublisher = "publisher_sdk";
+AdjustConfig.AdRevenueSourceTopOn = "topon_sdk";
+AdjustConfig.AdRevenueSourceAdx = "adx_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
