@@ -76,6 +76,7 @@ export class AdjustConfig {
   private processName: string = null; // Android only
   private preinstallTrackingEnabled: boolean = null; // Android only
   private preinstallFilePath: string = null; // Android only
+  private fbAppId: string = null; // Android only
   private oaidReadingEnabled: boolean = null; // Android only
   private allowiAdInfoReading: boolean = null; // iOS only
   private allowIdfaReading: boolean = null; // iOS only
@@ -175,6 +176,10 @@ export class AdjustConfig {
 
   setPreinstallFilePath(preinstallFilePath: string) {
     this.preinstallFilePath = preinstallFilePath;
+  }
+
+  setFbAppId(fbAppId: string) {
+    this.fbAppId = fbAppId;
   }
 
   setOaidReadingEnabled(enableOaidReading: boolean) {

@@ -1,5 +1,5 @@
 {
-    "version": "4.37.0",
+    "version": "4.37.1",
     "name": "com.adjust.sdk",
     "cordova_name": "Adjust SDK Cordova Plugin",
     "description": "Cordova plugin for the Adjust SDK",

@@ -250,6 +250,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         String info3 = null;
         String info4 = null;
         String preinstallFilePath = null;
+        String fbAppId = null;
         boolean isLogLevelSuppress = false;
         boolean eventBufferingEnabled = false;
         boolean isDeviceKnown = false;
@@ -310,6 +311,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         }
         if (parameters.containsKey(KEY_PREINSTALL_FILE_PATH)) {
             preinstallFilePath = parameters.get(KEY_PREINSTALL_FILE_PATH).toString();
+        }
+        if (parameters.containsKey(KEY_FB_APP_ID)) {
+            fbAppId = parameters.get(KEY_FB_APP_ID).toString();
         }
         if (parameters.containsKey(KEY_EVENT_BUFFERING_ENABLED)) {
             eventBufferingEnabled = parameters.get(KEY_EVENT_BUFFERING_ENABLED).toString() == "true" ? true : false;
@@ -434,6 +438,11 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         // Preinstall file path.
         if (isFieldValid(preinstallFilePath)) {
             adjustConfig.setPreinstallFilePath(preinstallFilePath);
+        }
+
+        // FB app ID (meta install referrer).
+        if (isFieldValid(fbAppId)) {
+            adjustConfig.setFbAppId(fbAppId);
         }
 
         // Deprecated.
