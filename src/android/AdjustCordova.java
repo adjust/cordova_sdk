@@ -36,6 +36,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
     private CallbackContext getGoogleAdIdCallbackContext;
     private CallbackContext getAmazonAdidCallbackContext;
     private CallbackContext getAttributionCallbackContext;
+    private CallbackContext getIdfvCallbackContext;
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -96,6 +97,12 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             PluginResult pluginResult = new PluginResult(Status.OK, idfa);
             pluginResult.setKeepCallback(true);
             getIdfaCallbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_IDFV)) {
+            getIdfvCallbackContext = callbackContext;
+            final String idfv = "";
+            PluginResult pluginResult = new PluginResult(Status.OK, idfv);
+            pluginResult.setKeepCallback(true);
+            getIdfvCallbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
             String sdkVersion = Adjust.getSdkVersion();
             if (sdkVersion == null) {
@@ -194,6 +201,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             if (isEnabled != null) {
                 Adjust.trackMeasurementConsent(isEnabled);
             }
+        } else if (action.equals(COMMAND_PROCESS_DEEPLINK)) {
+            executeProcessDeeplink(args, callbackContext);
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -208,6 +217,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
             getGoogleAdIdCallbackContext = null;
             getAmazonAdidCallbackContext = null;
             getAttributionCallbackContext = null;
+            getIdfvCallbackContext = null;
             shouldLaunchDeeplink = true;
         } else {
             Logger logger = (Logger)AdjustFactory.getLogger();
@@ -251,6 +261,7 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         boolean coppaCompliantEnabled = false;
         boolean playStoreKidsAppEnabled = false;
         boolean finalAndroidAttributionEnabled = false;
+        boolean readDeviceInfoOnceEnabled = false;
 
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
@@ -330,6 +341,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
         if (parameters.containsKey(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED)) {
             finalAndroidAttributionEnabled = parameters.get(KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED).toString() == "true" ? true : false;
         }
+        if (parameters.containsKey(KEY_READ_DEVICE_INFO_ONCE_ENABLED)) {
+            readDeviceInfoOnceEnabled = parameters.get(KEY_READ_DEVICE_INFO_ONCE_ENABLED).toString() == "true" ? true : false;
+        }
 
         if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
             isLogLevelSuppress = true;
@@ -389,6 +403,8 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_INDIA);
             } else if (urlStrategy.equalsIgnoreCase("cn")) {
                 adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CN);
+            } else if (urlStrategy.equalsIgnoreCase("cn-only")) {
+                adjustConfig.setUrlStrategy(AdjustConfig.URL_STRATEGY_CN_ONLY);
             } else if (urlStrategy.equalsIgnoreCase("data-residency-eu")) {
                 adjustConfig.setUrlStrategy(AdjustConfig.DATA_RESIDENCY_EU);
             } else if (urlStrategy.equalsIgnoreCase("data-residency-tr")) {
@@ -435,6 +451,9 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
 
         // Final Android attribution.
         adjustConfig.setFinalAttributionEnabled(finalAndroidAttributionEnabled);
+
+        // Read device info just once.
+        adjustConfig.setReadDeviceInfoOnceEnabled(readDeviceInfoOnceEnabled);
 
         // Is device known.
         adjustConfig.setDeviceKnown(isDeviceKnown);
@@ -727,6 +746,22 @@ public class AdjustCordova extends CordovaPlugin implements OnAttributionChanged
                     pluginResult.setKeepCallback(true);
                     callbackContext.sendPluginResult(pluginResult);
                 }
+            }
+        });
+    }
+
+    private void executeProcessDeeplink(
+        final JSONArray args,
+        final CallbackContext callbackContext) throws JSONException {
+        String url = args.getString(0);
+        final Uri uri = Uri.parse(url);
+
+        Adjust.processDeeplink(uri, this.cordova.getActivity().getApplicationContext(), new OnDeeplinkResolvedListener() {
+            @Override
+            public void onDeeplinkResolved(String resolvedLink) {
+                PluginResult pluginResult = new PluginResult(Status.OK, resolvedLink);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
             }
         });
     }

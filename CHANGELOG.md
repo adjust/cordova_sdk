@@ -1,3 +1,18 @@
+### Version 4.37.0 (26th January 2024)
+#### Added
+- Added ability to process shortened deep links and provide the unshortened link back as a response. You can achieve this by invoking `processDeeplink` method of the `Adjust` instance.
+- Added getter for obtaining IDFV value of the iOS device. You can obtain IDFV value by calling `getIdfv` method of the `Adjust` instance.
+- Added support for Meta install referrer.
+- Added support for Google Play Games on PC.
+- Added support for `TopOn` and `AD(X)` ad revenue tracking.
+- Added a new type of URL strategy called `AdjustConfig.AdjustUrlStrategyCnOnly`. This URL strategy represents `AdjustConfig.AdjustUrlStrategyCn` strategy, but without fallback domains.
+- Added ability to indicate if the device IDs should be read just once per SDK initialization via calling `setReadDeviceInfoOnceEnabled` method of the `AdjustConfig` instance.
+
+#### Native SDKs
+- [iOS@v4.37.0][ios_sdk_v4.37.0]
+- [Android@v4.38.0][android_sdk_v4.38.0]
+---
+
 ### Version 4.35.1 (10th October 2023)
 #### Added
 - Added sending of `event_callback_id` parameter (if set) with the event payload.
@@ -631,6 +646,7 @@
 [ios_sdk_v4.32.0]: https://github.com/adjust/ios_sdk/tree/v4.32.0
 [ios_sdk_v4.35.1]: https://github.com/adjust/ios_sdk/tree/v4.35.1
 [ios_sdk_v4.35.2]: https://github.com/adjust/ios_sdk/tree/v4.35.2
+[ios_sdk_v4.37.0]: https://github.com/adjust/ios_sdk/tree/v4.37.0
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -663,3 +679,4 @@
 [android_sdk_v4.32.0]: https://github.com/adjust/android_sdk/tree/v4.32.0
 [android_sdk_v4.35.0]: https://github.com/adjust/android_sdk/tree/v4.35.0
 [android_sdk_v4.35.1]: https://github.com/adjust/android_sdk/tree/v4.35.1
+[android_sdk_v4.38.0]: https://github.com/adjust/android_sdk/tree/v4.38.0

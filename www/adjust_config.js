@@ -21,6 +21,7 @@ function AdjustConfig(appToken, environment) {
     this.conversionValueUpdatedCallback = null;
     this.skad4ConversionValueUpdatedCallback = null;
     this.coppaCompliantEnabled = null;
+    this.readDeviceInfoOnceEnabled = null;
     this.sdkPrefix = null;
     this.secretId = null;
     this.info1 = null;
@@ -59,6 +60,7 @@ AdjustConfig.LogLevelSuppress = "SUPPRESS";
 AdjustConfig.UrlStrategyChina = "china";
 AdjustConfig.UrlStrategyIndia = "india";
 AdjustConfig.UrlStrategyCn = "cn";
+AdjustConfig.UrlStrategyCnOnly = "cn-only";
 
 AdjustConfig.DataResidencyEU = "data-residency-eu";
 AdjustConfig.DataResidencyTR = "data-residency-tr";
@@ -72,6 +74,8 @@ AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
 AdjustConfig.AdRevenueSourceUnity = "unity_sdk";
 AdjustConfig.AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
 AdjustConfig.AdRevenueSourcePublisher = "publisher_sdk";
+AdjustConfig.AdRevenueSourceTopOn = "topon_sdk";
+AdjustConfig.AdRevenueSourceAdx = "adx_sdk";
 
 AdjustConfig.prototype.getUserAgent = function() {
     return this.userAgent;
@@ -325,6 +329,10 @@ AdjustConfig.prototype.hasSkad4ConversionValueUpdatedCallbackListener = function
 
 AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
     this.coppaCompliantEnabled = isEnabled;
+};
+
+AdjustConfig.prototype.setReadDeviceInfoOnceEnabled = function (isEnabled) {
+    this.readDeviceInfoOnceEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {

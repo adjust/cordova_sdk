@@ -74,6 +74,7 @@
 #define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
 #define KEY_ATT_CONSENT_WAITING_INTERVAL @"attConsentWaitingInterval"
 #define KEY_PRODUCT_ID @"productId"
+#define KEY_READ_DEVICE_INFO_ONCE_ENABLED @"readDeviceInfoOnceEnabled"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -128,6 +129,7 @@
     NSNumber *linkMeEnabled = [[jsonObject valueForKey:KEY_LINK_ME_ENABLED] objectAtIndex:0];
     NSNumber *eventBufferingEnabled = [[jsonObject valueForKey:KEY_EVENT_BUFFERING_ENABLED] objectAtIndex:0];
     NSNumber *coppaCompliantEnabled = [[jsonObject valueForKey:KEY_COPPA_COMPLIANT_ENABLED] objectAtIndex:0];
+    NSNumber *readDeviceInfoOnceEnabled = [[jsonObject valueForKey:KEY_READ_DEVICE_INFO_ONCE_ENABLED] objectAtIndex:0];
     NSNumber *sendInBackground = [[jsonObject valueForKey:KEY_SEND_IN_BACKGROUND] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
     NSNumber *needsCost = [[jsonObject valueForKey:KEY_NEEDS_COST] objectAtIndex:0];
@@ -165,6 +167,11 @@
         [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
     }
 
+    // Read device info just once.
+    if ([self isFieldValid:readDeviceInfoOnceEnabled]) {
+        [adjustConfig setReadDeviceInfoOnceEnabled:[readDeviceInfoOnceEnabled boolValue]];
+    }
+
     // SDK prefix.
     if ([self isFieldValid:sdkPrefix]) {
         [adjustConfig setSdkPrefix:sdkPrefix];
@@ -188,6 +195,8 @@
             [adjustConfig setUrlStrategy:ADJUrlStrategyIndia];
         } else if ([urlStrategy isEqualToString:@"cn"]) {
             [adjustConfig setUrlStrategy:ADJUrlStrategyCn];
+        } else if ([urlStrategy isEqualToString:@"cn-only"]) {
+            [adjustConfig setUrlStrategy:ADJUrlStrategyCnOnly];
         } else if ([urlStrategy isEqualToString:@"data-residency-eu"]) {
             [adjustConfig setUrlStrategy:ADJDataResidencyEU];
         } else if ([urlStrategy isEqualToString:@"data-residency-tr"]) {
@@ -904,6 +913,34 @@
                  toDictionary:dictionary];
 
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)getIdfv:(CDVInvokedUrlCommand *)command {
+    NSString *idfv = [Adjust idfv];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)processDeeplink:(CDVInvokedUrlCommand *)command {
+    NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
+    if (urlString == nil) {
+        return;
+    }
+
+    NSURL *url;
+    if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
+        url = [NSURL URLWithString:[urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }
+#pragma clang diagnostic pop
+
+    [Adjust processDeeplink:url completionHandler:^(NSString * _Nonnull resolvedLink) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }

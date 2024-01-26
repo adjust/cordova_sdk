@@ -80,7 +80,8 @@ export class AdjustConfig {
   private allowiAdInfoReading: boolean = null; // iOS only
   private allowIdfaReading: boolean = null; // iOS only
   private allowAdServicesInfoReading: boolean = null; // iOS only
-  private coppaCompliantEnabled: boolean = null; 
+  private coppaCompliantEnabled: boolean = null;
+  private readDeviceInfoOnceEnabled: boolean = null;
   private playStoreKidsAppEnabled: boolean = null; // Android only
   private linkMeEnabled: boolean = null; // iOS only
   private finalAndroidAttributionEnabled: boolean = null; // Android only
@@ -142,6 +143,10 @@ export class AdjustConfig {
 
   setCoppaCompliantEnabled(coppaCompliantEnabled: boolean) {
     this.coppaCompliantEnabled = coppaCompliantEnabled;
+  }
+
+  setReadDeviceInfoOnceEnabled(readDeviceInfoOnceEnabled: boolean) {
+    this.readDeviceInfoOnceEnabled = readDeviceInfoOnceEnabled;
   }
 
   setPlayStoreKidsAppEnabled(playStoreKidsAppEnabled: boolean) {
@@ -541,6 +546,7 @@ export enum AdjustUrlStrategy {
   India = 'india',
   China = 'china',
   Cn = 'cn',
+  CnOnly = 'cn-only',
   DataResidencyEU = 'data-residency-eu',
   DataResidencyTR = 'data-residency-tr',
   DataResidencyUS = 'data-residency-us',
@@ -555,6 +561,8 @@ export enum AdjustAdRevenueSource {
   AdRevenueSourceUnity = "unity_sdk",
   AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk",
   AdRevenueSourcePublisher = "publisher_sdk",
+  AdRevenueSourceTopOn = "topon_sdk",
+  AdRevenueSourceAdx = "adx_sdk",
 }
 
 /**
@@ -897,15 +905,32 @@ export class Adjust extends AwesomeCordovaNativePlugin {
    * This method is used to verify the App Store purchase
    *
    * @param {AdjustAppStorePurchase} purchase Adjust App Store purchase object to be verified
+   * @returns {Promise<AdjustPurchaseVerificationInfo>} Returns a promise with purchase verification outcome
    */
   @Cordova()
-  verifyAppStorePurchase(purchase: AdjustAppStorePurchase): Promise<AdjustPurchaseVerificationInfo> {}
+  verifyAppStorePurchase(purchase: AdjustAppStorePurchase): Promise<AdjustPurchaseVerificationInfo> {
+    return;
+  }
 
   /**
    * This method is used to verify the Play Store purchase
    *
    * @param {AdjustPlayStorePurchase} purchase Adjust Play Store purchase object to be verified
+   * @returns {Promise<AdjustPurchaseVerificationInfo>} Returns a promise with purchase verification outcome
    */
   @Cordova()
-  verifyPlayStorePurchase(purchase: AdjustPlayStorePurchase): Promise<AdjustPurchaseVerificationInfo> {}
+  verifyPlayStorePurchase(purchase: AdjustPlayStorePurchase): Promise<AdjustPurchaseVerificationInfo> {
+    return;
+  }
+
+  /**
+   * This method is used to send and potentially resolve shortened deep links
+   *
+   * @param {string} deeplink Potentially shortened deep link that has opened your app
+   * @returns {Promise<string>} Returns a promise with either resolved (if it was resolved) or echoed deep link
+   */
+  @Cordova()
+  verifyPlayStorePurchase(deeplink: string): Promise<string> {
+    return;
+  }
 }

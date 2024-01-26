@@ -89,6 +89,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_COPPA_COMPLIANT_ENABLED = "coppaCompliantEnabled";
     public static final String KEY_PLAY_STORE_KIDS_APP_ENABLED = "playStoreKidsAppEnabled";
     public static final String KEY_FINAL_ANDROID_ATTRIBUTION_ENABLED = "finalAndroidAttributionEnabled";
+    public static final String KEY_READ_DEVICE_INFO_ONCE_ENABLED = "readDeviceInfoOnceEnabled";
 
     public static final String COMMAND_CREATE = "create";
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";
@@ -116,12 +117,14 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_VERIFY_APP_STORE_PURCHASE = "verifyAppStorePurchase";
     public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
+    public static final String COMMAND_PROCESS_DEEPLINK = "processDeeplink";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";
     public static final String COMMAND_UPDATE_CONVERSION_VALUE = "updateConversionValue";
     public static final String COMMAND_UPDATE_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateConversionValueWithErrorCallback";
     public static final String COMMAND_UPDATE_SKAD4_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateSkad4ConversionValueWithErrorCallback";
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
     public static final String COMMAND_GET_IDFA = "getIdfa";
+    public static final String COMMAND_GET_IDFV = "getIdfv";
     public static final String COMMAND_GET_ADID = "getAdid";
     public static final String COMMAND_CHECK_FOR_NEW_ATT_STATUS = "checkForNewAttStatus";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
