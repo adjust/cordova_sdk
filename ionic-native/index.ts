@@ -930,7 +930,7 @@ export class Adjust extends AwesomeCordovaNativePlugin {
    * @returns {Promise<string>} Returns a promise with either resolved (if it was resolved) or echoed deep link
    */
   @Cordova()
-  verifyPlayStorePurchase(deeplink: string): Promise<string> {
+  processDeeplink(deeplink: string): Promise<string> {
     return;
   }
 }
