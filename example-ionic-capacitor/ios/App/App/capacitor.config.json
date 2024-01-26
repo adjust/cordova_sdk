@@ -1,18 +1,8 @@
 {
-	"appId": "com.adjust.examples",
-	"appName": "AdjustExample",
-	"bundledWebRuntime": false,
-	"npmClient": "npm",
+	"appId": "io.ionic.starter",
+	"appName": "example-ionic-capacitor",
 	"webDir": "www",
-	"plugins": {
-		"SplashScreen": {
-			"launchShowDuration": 0
-		}
-	},
-	"cordova": {},
-	"ios": {
-		"cordovaLinkerFlags": [
-			"-ObjC"
-		]
+	"server": {
+		"androidScheme": "https"
 	}
 }
