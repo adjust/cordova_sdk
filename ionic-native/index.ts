@@ -446,7 +446,7 @@ export class AdjustAdRevenue {
 
 export class AdjustAppStorePurchase {
   private receipt: string;
-  private receipt: string;
+  private productId: string;
   private transactionId: string;
 
   constructor(receipt: string, productId: string, transactionId: string) {
