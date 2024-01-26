@@ -30,7 +30,8 @@ var app = {
         // adjustConfig.setOaidReadingEnabled(true);
         // adjustConfig.setCoppaCompliantEnabled(true);
         // adjustConfig.setPlayStoreKidsAppEnabled(true);
-        adjustConfig.setAttConsentWaitingInterval(16);
+        // adjustConfig.setAttConsentWaitingInterval(16);
+        // adjust.setFbAppId("your-fb-app-id");
 
         adjustConfig.setAttributionCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");

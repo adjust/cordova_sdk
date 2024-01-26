@@ -1,11 +1,11 @@
 {
   "name": "com.adjust.examples",
-  "version": "4.37.0",
+  "version": "4.37.1",
   "displayName": "AdjustTestApp",
   "cordova": {
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-console": {},
