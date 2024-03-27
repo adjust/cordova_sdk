@@ -1,3 +1,16 @@
+### Version 4.38.0 (28th March 2024)
+#### Added
+- Added iOS Privacy Manifest for the Adjust SDK.
+- Added new domains and corresponding payload restrictions for the Adjust SDK to direct the iOS traffic to:
+    - https://consent.adjust.com - for consented users
+    - https://analytics.adjust.com - for non-consented users
+
+#### Native SDKs
+- [iOS@v4.38.0][ios_sdk_v4.38.0]
+- [Android@v4.38.3][android_sdk_v4.38.3]
+
+---
+
 ### Version 4.37.1 (26th January 2024)
 #### Added
 - Added support for Meta install referrer.
@@ -20,6 +33,7 @@
 #### Native SDKs
 - [iOS@v4.37.0][ios_sdk_v4.37.0]
 - [Android@v4.38.0][android_sdk_v4.38.0]
+
 ---
 
 ### Version 4.35.1 (10th October 2023)
@@ -29,6 +43,7 @@
 #### Native SDKs
 - [iOS@v4.35.2][ios_sdk_v4.35.2]
 - [Android@v4.35.1][android_sdk_v4.35.1]
+
 ---
 
 ### Version 4.35.0 (5th October 2023)
@@ -656,6 +671,7 @@
 [ios_sdk_v4.35.1]: https://github.com/adjust/ios_sdk/tree/v4.35.1
 [ios_sdk_v4.35.2]: https://github.com/adjust/ios_sdk/tree/v4.35.2
 [ios_sdk_v4.37.0]: https://github.com/adjust/ios_sdk/tree/v4.37.0
+[ios_sdk_v4.38.0]: https://github.com/adjust/ios_sdk/tree/v4.38.0
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -689,3 +705,4 @@
 [android_sdk_v4.35.0]: https://github.com/adjust/android_sdk/tree/v4.35.0
 [android_sdk_v4.35.1]: https://github.com/adjust/android_sdk/tree/v4.35.1
 [android_sdk_v4.38.0]: https://github.com/adjust/android_sdk/tree/v4.38.0
+[android_sdk_v4.38.3]: https://github.com/adjust/android_sdk/tree/v4.38.3
