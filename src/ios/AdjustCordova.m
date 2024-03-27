@@ -49,10 +49,7 @@
 #define KEY_INFO_2 @"info2"
 #define KEY_INFO_3 @"info3"
 #define KEY_INFO_4 @"info4"
-#define KEY_BASE_URL @"baseUrl"
-#define KEY_GDPR_URL @"gdprUrl"
-#define KEY_SUBSCRIPTION_URL @"subscriptionUrl"
-#define KEY_PURCHASE_VERIFICATION_URL @"purchaseVerificationUrl"
+#define KEY_URL_OVERWRITE @"urlOverwrite"
 #define KEY_EXTRA_PATH @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
@@ -61,6 +58,8 @@
 #define KEY_SUBSESSION_INTERVAL @"subsessionIntervalInMilliseconds"
 #define KEY_TEARDOWN @"teardown"
 #define KEY_NO_BACKOFF_WAIT @"noBackoffWait"
+#define KEY_ATT_STATUS @"attStatus"
+#define KEY_IDFA @"idfa"
 #define KEY_HAS_CONTEXT @"hasContext"
 #define KEY_IAD_ENABLED @"iAdFrameworkEnabled"
 #define KEY_ADSERVICES_ENABLED @"adServicesFrameworkEnabled"
@@ -947,10 +946,7 @@
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *hasContext = [[command.arguments valueForKey:KEY_HAS_CONTEXT] objectAtIndex:0];
-    NSString *baseUrl = [[command.arguments valueForKey:KEY_BASE_URL] objectAtIndex:0];
-    NSString *gdprUrl = [[command.arguments valueForKey:KEY_GDPR_URL] objectAtIndex:0];
-    NSString *subscriptionUrl = [[command.arguments valueForKey:KEY_SUBSCRIPTION_URL] objectAtIndex:0];
-    NSString *purchaseVerificationUrl = [[command.arguments valueForKey:KEY_PURCHASE_VERIFICATION_URL] objectAtIndex:0];
+    NSString *urlOverwrite = [[command.arguments valueForKey:KEY_URL_OVERWRITE] objectAtIndex:0];
     NSString *extraPath = [[command.arguments valueForKey:KEY_EXTRA_PATH] objectAtIndex:0];
     NSString *timerInterval = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
     NSString *timerStart = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
@@ -960,20 +956,13 @@
     NSString *noBackoffWait = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
     // NSString *iAdFrameworkEnabled = [[command.arguments valueForKey:KEY_IAD_ENABLED] objectAtIndex:0];
     NSString *adServicesFrameworkEnabled = [[command.arguments valueForKey:KEY_ADSERVICES_ENABLED] objectAtIndex:0];
+    NSString *attStatus = [[command.arguments valueForKey:KEY_ATT_STATUS] objectAtIndex:0];
+    NSString *idfa = [[command.arguments valueForKey:KEY_IDFA] objectAtIndex:0];
     
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
     
-    if ([self isFieldValid:baseUrl]) {
-        testOptions.baseUrl = baseUrl;
-    }
-    if ([self isFieldValid:gdprUrl]) {
-        testOptions.gdprUrl = gdprUrl;
-    }
-    if ([self isFieldValid:subscriptionUrl]) {
-        testOptions.subscriptionUrl = subscriptionUrl;
-    }
-    if ([self isFieldValid:purchaseVerificationUrl]) {
-        testOptions.purchaseVerificationUrl = purchaseVerificationUrl;
+    if ([self isFieldValid:urlOverwrite]) {
+        testOptions.urlOverwrite = urlOverwrite;
     }
     if ([self isFieldValid:extraPath]) {
         testOptions.extraPath = extraPath;
@@ -1005,6 +994,12 @@
     // }
     if ([self isFieldValid:adServicesFrameworkEnabled]) {
         testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
+    }
+    if ([self isFieldValid:attStatus]) {
+        testOptions.attStatusInt = [NSNumber numberWithInt:[attStatus intValue]];
+    }
+    if ([self isFieldValid:idfa]) {
+        testOptions.idfa = idfa;
     }
     
     [Adjust setTestOptions:testOptions];

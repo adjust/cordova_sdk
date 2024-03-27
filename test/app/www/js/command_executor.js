@@ -28,8 +28,8 @@ function AdjustCommand(functionName, params, order) {
     this.order = order;
 }
 
-function CommandExecutor(baseUrl, gdprUrl, subscriptionUrl, purchaseVerificationUrl) {
-    this.adjustCommandExecutor = new AdjustCommandExecutor(baseUrl, gdprUrl, subscriptionUrl, purchaseVerificationUrl);
+function CommandExecutor(urlOverwrite) {
+    this.adjustCommandExecutor = new AdjustCommandExecutor(urlOverwrite);
 };
 
 CommandExecutor.prototype.scheduleCommand = function(className, functionName, params, order) {
@@ -41,16 +41,17 @@ CommandExecutor.prototype.scheduleCommand = function(className, functionName, pa
     }
 };
 
-function AdjustCommandExecutor(baseUrl, gdprUrl, subscriptionUrl, purchaseVerificationUrl) {
-    this.baseUrl = baseUrl;
-    this.gdprUrl = gdprUrl;
-    this.subscriptionUrl = subscriptionUrl;
-    this.purchaseVerificationUrl = purchaseVerificationUrl;
+function AdjustCommandExecutor(urlOverwrite) {
+    this.urlOverwrite = urlOverwrite;
+    this.baseUrl = urlOverwrite;
+    this.gdprUrl = urlOverwrite;
+    this.subscriptionUrl = urlOverwrite;
+    this.purchaseVerificationUrl = urlOverwrite;
+    this.extraPath = null;
     this.basePath = null;
     this.gdprPath = null;
     this.subscriptionPath = null;
     this.purchaseVerificationPath = null;
-    this.extraPath = null;
     this.savedEvents = {};
     this.savedConfigs = {};
     this.savedCommands = [];
@@ -137,16 +138,17 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
 
 AdjustCommandExecutor.prototype.testOptions = function(params) {
     var testOptions = new AdjustTestOptions();
-    testOptions.baseUrl = this.baseUrl;
-    testOptions.gdprUrl = this.gdprUrl;
-    testOptions.subscriptionUrl = this.subscriptionUrl;
-    testOptions.purchaseVerificationUrl = this.purchaseVerificationUrl;
+    testOptions.urlOverwrite = this.urlOverwrite;
+    testOptions.baseUrl = this.urlOverwrite;
+    testOptions.gdprUrl = this.urlOverwrite;
+    testOptions.subscriptionUrl = this.urlOverwrite;
+    testOptions.purchaseVerificationUrl = this.urlOverwrite;
     if ('basePath' in params) {
+        this.extraPath = getFirstParameterValue(params, 'basePath');
         this.basePath = getFirstParameterValue(params, 'basePath');
         this.gdprPath = getFirstParameterValue(params, 'basePath');
         this.subscriptionPath = getFirstParameterValue(params, 'basePath');
         this.purchaseVerificationPath = getFirstParameterValue(params, 'basePath');
-        this.extraPath = getFirstParameterValue(params, 'basePath');
     }
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstParameterValue(params, 'timerInterval').toString();
@@ -166,6 +168,12 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('adServicesFrameworkEnabled' in params) {
         testOptions.adServicesFrameworkEnabled = getFirstParameterValue(params, 'adServicesFrameworkEnabled').toString() === 'true';
     }
+    if ('attStatus' in params) {
+        testOptions.attStatus = getFirstParameterValue(params, 'attStatus').toString();
+    }
+    if ('idfa' in params) {
+        testOptions.idfa = getFirstParameterValue(params, 'idfa').toString();
+    }
     var useTestConnectionOptions = false;
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
@@ -173,11 +181,11 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             var option = teardownOptions[i];
             if ('resetSdk' === option) {
                 testOptions.teardown = true;
-                testOptions.basePath = this.basePath;
-                testOptions.gdprPath = this.gdprPath;
-                testOptions.subscriptionPath = this.subscriptionPath;
-                testOptions.purchaseVerificationPath = this.purchaseVerificationPath;
                 testOptions.extraPath = this.extraPath;
+                testOptions.basePath = this.extraPath;
+                testOptions.gdprPath = this.extraPath;
+                testOptions.subscriptionPath = this.extraPath;
+                testOptions.purchaseVerificationPath = this.extraPath;
                 testOptions.useTestConnectionOptions = true;
                 useTestConnectionOptions = true;
                 Adjust.teardown('test');
@@ -195,11 +203,11 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             }
             if ('sdk' === option) {
                 testOptions.teardown = true;
+                testOptions.extraPath = null;
                 testOptions.basePath = null;
                 testOptions.gdprPath = null;
                 testOptions.subscriptionPath = null;
                 testOptions.purchaseVerificationPath = null;
-                testOptions.extraPath = null;
                 testOptions.useTestConnectionOptions = false;
                 Adjust.teardown('test');
             }
@@ -359,7 +367,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             if (device.platform === 'Android') {
                 AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
             }
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -370,7 +378,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('timestamp', sessionSuccess.timestamp);
             AdjustTest.addInfoToSend('adid', sessionSuccess.adid);
             addJsonResponseInfo(sessionSuccess);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -382,7 +390,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('adid', sessionFailed.adid);
             AdjustTest.addInfoToSend('willRetry', sessionFailed.willRetry);
             addJsonResponseInfo(sessionFailed);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -395,7 +403,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('eventToken', eventSuccess.eventToken);
             AdjustTest.addInfoToSend('callbackId', eventSuccess.callbackId);
             addJsonResponseInfo(eventSuccess);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -409,7 +417,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('callbackId', eventFailed.callbackId);
             AdjustTest.addInfoToSend('willRetry', eventFailed.willRetry);
             addJsonResponseInfo(eventFailed);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -421,7 +429,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setShouldLaunchDeeplink(launchDeferredDeeplink);
         adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
             AdjustTest.addInfoToSend('deeplink', uri);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
@@ -441,6 +449,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var finalAttributionEnabledS = getFirstParameterValue(params, 'finalAttributionEnabled');
         var finalAttributionEnabled = finalAttributionEnabledS == 'true';
         adjustConfig.setFinalAndroidAttributionEnabled(finalAttributionEnabled);
+    }
+
+    if ('attConsentWaitingSeconds' in params) {
+        var attConsentWaitingSecondsS = getFirstParameterValue(params, 'attConsentWaitingSeconds');
+        var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);
+        adjustConfig.setAttConsentWaitingInterval(attConsentWaitingSeconds);
     }
 };
 
@@ -835,7 +849,7 @@ AdjustCommandExecutor.prototype.getLastDeeplink = function(params) {
         var _this = this;
         Adjust.getLastDeeplink(function(lastDeeplink) {
             AdjustTest.addInfoToSend('last_deeplink', lastDeeplink);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 };
@@ -852,7 +866,7 @@ AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
             AdjustTest.addInfoToSend('verification_status', verificationInfo.verificationStatus);
             AdjustTest.addInfoToSend('code', verificationInfo.code);
             AdjustTest.addInfoToSend('message', verificationInfo.message);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     } else if (device.platform === 'Android') {
         var productId = getFirstParameterValue(params, 'productId');
@@ -864,7 +878,7 @@ AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
             AdjustTest.addInfoToSend('verification_status', verificationInfo.verificationStatus);
             AdjustTest.addInfoToSend('code', verificationInfo.code);
             AdjustTest.addInfoToSend('message', verificationInfo.message);
-            AdjustTest.sendInfoToServer(_this.basePath);
+            AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 };
@@ -874,7 +888,7 @@ AdjustCommandExecutor.prototype.processDeeplink = function(params) {
     var _this = this;
     Adjust.processDeeplink(deeplink, function(resolvedLink) {
         AdjustTest.addInfoToSend('resolved_link', resolvedLink);
-        AdjustTest.sendInfoToServer(_this.basePath);
+        AdjustTest.sendInfoToServer(_this.extraPath);
     });
 };
 
