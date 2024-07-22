@@ -91,14 +91,15 @@
         <header-file src="src/ios/AdjustCordovaDelegate.h" />
         <source-file src="src/ios/AdjustCordovaDelegate.m" />
         
-        <podspec>
+        <!-- <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
                 <pod name="Adjust" spec="4.38.2" />
             </pods>
-        </podspec>
+        </podspec> -->
+        <framework src="src/ios/AdjustSdk.framework" custom="true" />
         
         <framework src="AdSupport.framework" weak="true" />
         <framework src="StoreKit.framework" weak="true" />
