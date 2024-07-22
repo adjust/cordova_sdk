@@ -10,7 +10,8 @@
 #if defined(__has_include) && __has_include(<Adjust/Adjust.h>)
 #import <Adjust/Adjust.h>
 #else
-#import "Adjust.h"
+//#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #endif
 
 @interface AdjustCordovaDelegate : NSObject<AdjustDelegate>
