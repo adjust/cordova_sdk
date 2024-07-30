@@ -1,5 +1,4 @@
-function AdjustAppStorePurchase(receipt, productId, transactionId) {
-    this.receipt = receipt;
+function AdjustAppStorePurchase(productId, transactionId) {
     this.productId = productId;
     this.transactionId = transactionId;
 }

@@ -1,8 +1,7 @@
-function AdjustAppStoreSubscription(price, currency, transactionId, receipt) {
+function AdjustAppStoreSubscription(price, currency, transactionId) {
     this.price = price;
     this.currency = currency;
     this.transactionId = transactionId;
-    this.receipt = receipt;
     this.transactionDate = null;
     this.salesRegion = null;
     this.callbackParameters = [];
