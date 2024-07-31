@@ -21,19 +21,14 @@ var app = {
 
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
         // adjustConfig.setShouldLaunchDeeplink(true);
-        // adjustConfig.setDelayStart(3.0);
-        // adjustConfig.setSendInBackground(true);
-        // adjustConfig.setEventBufferingEnabled(true);
-        // adjustConfig.setDeviceKnown(true);
-        // adjustConfig.setUserAgent("Custom Adjust User Agent");
-        // adjustConfig.setNeedsCost(true);
+        // adjustConfig.enableSendingInBackground();
+        // adjustConfig.enableCostDataInAttribution();
         // adjustConfig.setOaidReadingEnabled(true);
-        // adjustConfig.setCoppaCompliantEnabled(true);
         // adjustConfig.setPlayStoreKidsAppEnabled(true);
         // adjustConfig.setAttConsentWaitingInterval(16);
         // adjust.setFbAppId("your-fb-app-id");
 
-        adjustConfig.setAttributionCallbackListener(function(attribution) {
+        adjustConfig.setAttributionChangedCallbackListener(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
             console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
             console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
@@ -83,47 +78,41 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + sessionFailed.jsonResponse);
         });
 
-        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+        adjustConfig.setDeferredDeeplinkReceivedCallbackListener(function(uri) {
             console.log("[AdjustExample]: Deferred Deeplink Callback received.");
             console.log("[AdjustExample]: URL: " + uri);
         });
 
-        adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
-            console.log("[AdjustExample]: Conversion value updated!");
-            console.log("[AdjustExample]: Conversion value = " + conversionValue);
+        adjustConfig.setSkanConversionDataUpdatedCallbackListener(function(skanData) {
+            console.log("[AdjustExample]: SKAdNetwork conversion data updated!");
+            console.log("[AdjustExample]: Fine value = " + skanData.fineValue);
+            console.log("[AdjustExample]: Coarse value = " + skanData.coarseValue);
+            console.log("[AdjustExample]: Lock window = " + skanData.lockWindow);
         });
 
-        adjustConfig.setSkad4ConversionValueUpdatedCallbackListener(function(skad4data) {
-            console.log("[AdjustExample]: SKAdNetwork 4 conversion value updated!");
-            console.log("[AdjustExample]: Fine value = " + skad4data.fineValue);
-            console.log("[AdjustExample]: Coarse value = " + skad4data.coarseValue);
-            console.log("[AdjustExample]: Lock window = " + skad4data.lockWindow);
-        });
 
-        Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
+        Adjust.addGlobalCallbackParameter("dummy_foo", "dummy_bar");
+        Adjust.addGlobalCallbackParameter("dummy_foo_foo", "dummy_bar");
 
-        Adjust.addSessionPartnerParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionPartnerParameter("dummy_foo_foo", "dummy_bar");
+        Adjust.addGlobalPartnerParameter("dummy_foo", "dummy_bar");
+        Adjust.addGlobalPartnerParameter("dummy_foo_foo", "dummy_bar");
 
-        Adjust.removeSessionCallbackParameter("dummy_foo");
-        Adjust.removeSessionPartnerParameter("dummy_foo");
+        Adjust.removeGlobalCallbackParameter("dummy_foo");
+        Adjust.removeGlobalPartnerParameter("dummy_foo");
 
-        // Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
+        // Adjust.requestAppTrackingAuthorizationWithCompletionHandler(function(status) {
         //     console.log("ATT status after dialog = " + status);
         // });
 
-        // Adjust.resetSessionCallbackParameters();
-        // Adjust.resetSessionPartnerParameters();
-        // Adjust.checkForNewAttStatus();
-    
+        // Adjust.removeGlobalCallbackParameters();
+        // Adjust.removeGlobalPartnerParameters();
+
         Adjust.create(adjustConfig);
 
-        // Adjust.sendFirstPackages();
     },
 
     // didLaunchAppFromLink: function(eventData) {
-    //     Adjust.appWillOpenUrl(eventData.url);
+    //     Adjust.processDeeplink(eventData.url);
     // },
 
     // Update DOM on a Received Event
@@ -170,19 +159,19 @@ var app = {
         }, false);
 
         btnEnableOfflineMode.addEventListener('click', function() {
-            Adjust.setOfflineMode(true);
+            Adjust.switchToOfflineMode();
         }, false);
 
         btnDisableOfflineMode.addEventListener('click', function() {
-            Adjust.setOfflineMode(false);
+            Adjust.switchBackToOnlineMode();
         }, false);
 
         btnEnableSdk.addEventListener('click', function() {
-            Adjust.setEnabled(true);
+            Adjust.enable();
         }, false);
 
         btnDisableSdk.addEventListener('click', function() {
-            Adjust.setEnabled(false);
+            Adjust.disable();
         }, false);
 
         btnIsSdkEnabled.addEventListener('click', function() {
@@ -198,6 +187,10 @@ var app = {
         btnGetIds.addEventListener('click', function() {
             Adjust.getIdfa(function(idfa) {
                 console.log("[AdjustExample]: IDFA = " + idfa);
+            });
+
+            Adjust.getIdfv(function(idfv) {
+                console.log("[AdjustExample]: IDFV = " + idfv);
             });
 
             Adjust.getGoogleAdId(function(gpsAdId) {
@@ -220,7 +213,9 @@ var app = {
                 console.log("[AdjustExample]: Adgroup = " + attribution.adgroup);
                 console.log("[AdjustExample]: Creative = " + attribution.creative);
                 console.log("[AdjustExample]: Click label = " + attribution.clickLabel);
-                console.log("[AdjustExample]: Adid = " + attribution.adid);
+                console.log("[AdjustExample]: Cost Type = " + attribution.costType);
+                console.log("[AdjustExample]: Cost Amount = " + attribution.costAmount);
+                console.log("[AdjustExample]: Cost Currency = " + attribution.costCurrency);
             });
         }, false);
 
