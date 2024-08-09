@@ -207,12 +207,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 }
 
 - (void)adjustSkanUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [self addValueOrEmpty:[data objectForKey:@"conversion_value"] withKey:@"fineValue" toDictionary:dictionary];
-    [self addValueOrEmpty:[data objectForKey:@"coarse_value"] withKey:@"coarseValue" toDictionary:dictionary];
-    [self addValueOrEmpty:[data objectForKey:@"lock_window"] withKey:@"lockWindow" toDictionary:dictionary];
-
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skanConversionDataUpdatedCallbackId];
 }

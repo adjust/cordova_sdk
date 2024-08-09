@@ -1,7 +1,7 @@
 function handleOpenURL(url) {
     setTimeout(function() {
-        console.log(`TestApp, handleOpenURL: initiate Adjust.appWillOpenUrl, with URL = ${url}`);
-        Adjust.appWillOpenUrl(url);
+        console.log(`TestApp, handleOpenURL: initiate Adjust.processDeeplink, with URL = ${url}`);
+        Adjust.processDeeplink(url);
     }, 0);
 }
 
@@ -30,6 +30,7 @@ var app = {
 
             var commandExecutor = new CommandExecutor(urlOverwrite);
             // AdjustTest.addTestDirectory('purchase-verification');
+
             AdjustTest.startTestSession(urlOverwrite, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];
@@ -42,8 +43,8 @@ var app = {
     },
 
     didLaunchAppFromLink: function(eventData) {
-        console.log(`TestApp, didLaunchAppFromLink: initiate Adjust.appWillOpenUrl, with URL = ${eventData.url}`);
-        Adjust.appWillOpenUrl(eventData.url);
+        console.log(`TestApp, didLaunchAppFromLink: initiate Adjust.processDeeplink, with URL = ${eventData.url}`);
+        Adjust.processDeeplink(eventData.url);
     },
 
     receivedEvent: function(id) {

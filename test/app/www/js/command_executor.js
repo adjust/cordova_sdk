@@ -43,15 +43,7 @@ CommandExecutor.prototype.scheduleCommand = function(className, functionName, pa
 
 function AdjustCommandExecutor(urlOverwrite) {
     this.urlOverwrite = urlOverwrite;
-    this.baseUrl = urlOverwrite;
-    this.gdprUrl = urlOverwrite;
-    this.subscriptionUrl = urlOverwrite;
-    this.purchaseVerificationUrl = urlOverwrite;
     this.extraPath = null;
-    this.basePath = null;
-    this.gdprPath = null;
-    this.subscriptionPath = null;
-    this.purchaseVerificationPath = null;
     this.savedEvents = {};
     this.savedConfigs = {};
     this.savedCommands = [];
@@ -103,26 +95,25 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'setEnabled' : this.setEnabled(command.params); break;
         case 'setReferrer' : this.setReferrer(command.params); break;
         case 'setOfflineMode' : this.setOfflineMode(command.params); break;
-        case 'sendFirstPackages' : this.sendFirstPackages(command.params); break;
-        case 'addSessionCallbackParameter' : this.addSessionCallbackParameter(command.params); break;
-        case 'addSessionPartnerParameter' : this.addSessionPartnerParameter(command.params); break;
-        case 'removeSessionCallbackParameter' : this.removeSessionCallbackParameter(command.params); break;
-        case 'removeSessionPartnerParameter' : this.removeSessionPartnerParameter(command.params); break;
-        case 'resetSessionCallbackParameters' : this.resetSessionCallbackParameters(command.params); break;
-        case 'resetSessionPartnerParameters' : this.resetSessionPartnerParameters(command.params); break;
+        case 'addGlobalCallbackParameter' : this.addGlobalCallbackParameter(command.params); break;
+        case 'addGlobalPartnerParameter' : this.addGlobalPartnerParameter(command.params); break;
+        case 'removeGlobalCallbackParameter' : this.removeGlobalCallbackParameter(command.params); break;
+        case 'removeGlobalPartnerParameter' : this.removeGlobalPartnerParameter(command.params); break;
+        case 'removeGlobalCallbackParameters' : this.removeGlobalCallbackParameters(command.params); break;
+        case 'removeGlobalPartnerParameters' : this.removeGlobalPartnerParameters(command.params); break;
         case 'setPushToken' : this.setPushToken(command.params); break;
         case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'sendReferrer' : this.sendReferrer(command.params); break;
         case 'gdprForgetMe' : this.gdprForgetMe(command.params); break;
-        case 'trackAdRevenue' : this.trackAdRevenue(command.params); break;
-        case 'disableThirdPartySharing' : this.disableThirdPartySharing(command.params); break;
-        case 'trackSubscription' : this.trackSubscription(command.params); break;
         case 'thirdPartySharing' : this.trackThirdPartySharing(command.params); break;
         case 'measurementConsent' : this.trackMeasurementConsent(command.params); break;
-        case 'trackAdRevenueV2' : this.trackAdRevenueV2(command.params); break;
+        case 'trackSubscription' : this.trackAppStoreSubscription(command.params); break;
+        case 'trackAdRevenue' : this.trackAdRevenue(command.params); break;
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
         case 'verifyPurchase' : this.verifyPurchase(command.params); break;
+        case 'verifyTrack' : this.verifyTrack(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
+        case 'attributionGetter' : this.attributionGetter(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -138,17 +129,9 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
 
 AdjustCommandExecutor.prototype.testOptions = function(params) {
     var testOptions = new AdjustTestOptions();
-    testOptions.urlOverwrite = this.urlOverwrite;
-    testOptions.baseUrl = this.urlOverwrite;
-    testOptions.gdprUrl = this.urlOverwrite;
-    testOptions.subscriptionUrl = this.urlOverwrite;
-    testOptions.purchaseVerificationUrl = this.urlOverwrite;
+    testOptions.testUrlOverwrite = this.urlOverwrite;
     if ('basePath' in params) {
         this.extraPath = getFirstParameterValue(params, 'basePath');
-        this.basePath = getFirstParameterValue(params, 'basePath');
-        this.gdprPath = getFirstParameterValue(params, 'basePath');
-        this.subscriptionPath = getFirstParameterValue(params, 'basePath');
-        this.purchaseVerificationPath = getFirstParameterValue(params, 'basePath');
     }
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstParameterValue(params, 'timerInterval').toString();
@@ -162,19 +145,22 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('subsessionInterval' in params) {
         testOptions.subsessionIntervalInMilliseconds = getFirstParameterValue(params, 'subsessionInterval').toString();
     }
-    if ('noBackoffWait' in params) {
-        testOptions.noBackoffWait = getFirstParameterValue(params, 'noBackoffWait').toString() === 'true';
-    }
-    if ('adServicesFrameworkEnabled' in params) {
-        testOptions.adServicesFrameworkEnabled = getFirstParameterValue(params, 'adServicesFrameworkEnabled').toString() === 'true';
-    }
     if ('attStatus' in params) {
         testOptions.attStatus = getFirstParameterValue(params, 'attStatus').toString();
     }
     if ('idfa' in params) {
         testOptions.idfa = getFirstParameterValue(params, 'idfa').toString();
     }
-    var useTestConnectionOptions = false;
+    if ('noBackoffWait' in params) {
+        testOptions.noBackoffWait = getFirstParameterValue(params, 'noBackoffWait').toString() === 'true';
+    }
+
+    // default value -> NO - AdServices will not be used in test app by default
+    testOptions.adServicesFrameworkEnabled = false;
+    if ('adServicesFrameworkEnabled' in params) {
+        testOptions.adServicesFrameworkEnabled = getFirstParameterValue(params, 'adServicesFrameworkEnabled').toString() === 'true';
+    }
+
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
         for (var i = 0; i < teardownOptions.length; i++) {
@@ -182,20 +168,14 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('resetSdk' === option) {
                 testOptions.teardown = true;
                 testOptions.extraPath = this.extraPath;
-                testOptions.basePath = this.extraPath;
-                testOptions.gdprPath = this.extraPath;
-                testOptions.subscriptionPath = this.extraPath;
-                testOptions.purchaseVerificationPath = this.extraPath;
-                testOptions.useTestConnectionOptions = true;
-                useTestConnectionOptions = true;
                 Adjust.teardown('test');
             }
             if ('deleteState' === option) {
-                testOptions.hasContext = true;
+                testOptions.deleteState = true;
             }
             if ('resetTest' === option) {
-                this.savedEvents = {};
                 this.savedConfigs = {};
+                this.savedEvents = {};
                 testOptions.timerIntervalInMilliseconds = (-1).toString();
                 testOptions.timerStartInMilliseconds = (-1).toString();
                 testOptions.sessionIntervalInMilliseconds = (-1).toString();
@@ -204,16 +184,12 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('sdk' === option) {
                 testOptions.teardown = true;
                 testOptions.extraPath = null;
-                testOptions.basePath = null;
-                testOptions.gdprPath = null;
-                testOptions.subscriptionPath = null;
-                testOptions.purchaseVerificationPath = null;
-                testOptions.useTestConnectionOptions = false;
                 Adjust.teardown('test');
             }
             if ('test' === option) {
-                this.savedEvents = null;
                 this.savedConfigs = null;
+                this.savedEvents = null;
+                this.extraPath = null;
                 testOptions.timerIntervalInMilliseconds = (-1).toString();
                 testOptions.timerStartInMilliseconds = (-1).toString();
                 testOptions.sessionIntervalInMilliseconds = (-1).toString();
@@ -223,9 +199,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     }
 
     Adjust.setTestOptions(testOptions);
-    if (useTestConnectionOptions == true) {
-        AdjustTest.setTestConnectionOptions();
-    }
 };
 
 AdjustCommandExecutor.prototype.config = function(params) {
@@ -286,84 +259,57 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setDefaultTracker(defaultTracker);
     }
 
+    if ('needsCost' in params) {
+        var defaultTracker = getFirstParameterValue(params, 'needsCost');
+        adjustConfig.enableCostDataInAttribution();
+    }
+
+    if ('sendInBackground' in params) {
+        var sendInBackgroundS = getFirstParameterValue(params, 'sendInBackground');
+        if (sendInBackgroundS == 'true') {
+            adjustConfig.enableSendingInBackground();
+        }
+    }
+
+    if ('allowIdfaReading' in params) {
+        var allowIdfaReadingS = getFirstParameterValue(params, 'allowIdfaReading');
+        if (allowIdfaReadingS != 'true') {
+            adjustConfig.disableIdfaReading();
+        }
+    }
+
+    if ('allowAdServicesInfoReading' in params) {
+        var allowAdServicesInfoReadingS = getFirstParameterValue(params, 'allowAdServicesInfoReading');
+        if (allowAdServicesInfoReadingS != 'true') {
+            adjustConfig.disableAdServices();
+    }
+    }
+
+    if ('allowSkAdNetworkHandling' in params) {
+        var allowSkAdNetworkHandlingS = getFirstParameterValue(params, 'allowSkAdNetworkHandling');
+        if (allowSkAdNetworkHandlingS != 'true') {
+            adjustConfig.disableSkanAttribution();
+        }
+    }
+
     if ('externalDeviceId' in params) {
         var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
 
-    if ('appSecret' in params) {
-        var appSecretArray = getValueFromKey(params, 'appSecret');
-        var secretId = appSecretArray[0].toString();
-        var info1 = appSecretArray[1].toString();
-        var info2 = appSecretArray[2].toString();
-        var info3 = appSecretArray[3].toString();
-        var info4 = appSecretArray[4].toString();
-        adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
-    }
-
-    if ('delayStart' in params) {
-        var delayStartS = getFirstParameterValue(params, 'delayStart');
-        var delayStart = parseFloat(delayStartS);
-        adjustConfig.setDelayStart(delayStart);
-    }
-
-    if ('deviceKnown' in params) {
-        var deviceKnownS = getFirstParameterValue(params, 'deviceKnown');
-        var deviceKnown = deviceKnownS == 'true';
-        adjustConfig.setDeviceKnown(deviceKnown);
-    }
-
-    if ('eventBufferingEnabled' in params) {
-        var eventBufferingEnabledS = getFirstParameterValue(params, 'eventBufferingEnabled');
-        var eventBufferingEnabled = eventBufferingEnabledS == 'true';
-        adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
-    }
-
-    if ('sendInBackground' in params) {
-        var sendInBackgroundS = getFirstParameterValue(params, 'sendInBackground');
-        var sendInBackground = sendInBackgroundS == 'true';
-        adjustConfig.setSendInBackground(sendInBackground);
-    }
-
-    if ('userAgent' in params) {
-        var userAgent = getFirstParameterValue(params, 'userAgent');
-        adjustConfig.setUserAgent(userAgent);
-    }
-
-    if ('allowAdServicesInfoReading' in params) {
-        var allowAdServicesInfoReadingS = getFirstParameterValue(params, 'allowAdServicesInfoReading');
-        var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
-        adjustConfig.setAllowAdServicesInfoReading(allowAdServicesInfoReading);
-    }
-
-    if ('allowIdfaReading' in params) {
-        var allowIdfaReadingS = getFirstParameterValue(params, 'allowIdfaReading');
-        var allowIdfaReading = allowIdfaReadingS == 'true';
-        adjustConfig.setAllowIdfaReading(allowIdfaReading);
-    }
-
-    if ('allowSkAdNetworkHandling' in params) {
-        var allowSkAdNetworkHandlingS = getFirstParameterValue(params, 'allowSkAdNetworkHandling');
-        var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
-        if (allowSkAdNetworkHandling == false) {
-            adjustConfig.deactivateSKAdNetworkHandling();
-        }
-    }
-
     if ('attributionCallbackSendAll' in params) {
         var _this = this;
-        adjustConfig.setAttributionCallbackListener(function(attribution) {
-            AdjustTest.addInfoToSend('trackerToken', attribution.trackerToken);
-            AdjustTest.addInfoToSend('trackerName', attribution.trackerName);
+        adjustConfig.setAttributionChangedCallbackListener(function(attribution) {
+            AdjustTest.addInfoToSend('tracker_token', attribution.trackerToken);
+            AdjustTest.addInfoToSend('tracker_name', attribution.trackerName);
             AdjustTest.addInfoToSend('network', attribution.network);
             AdjustTest.addInfoToSend('campaign', attribution.campaign);
             AdjustTest.addInfoToSend('adgroup', attribution.adgroup);
             AdjustTest.addInfoToSend('creative', attribution.creative);
-            AdjustTest.addInfoToSend('clickLabel', attribution.clickLabel);
-            AdjustTest.addInfoToSend('adid', attribution.adid);
-            AdjustTest.addInfoToSend('costType', attribution.costType);
-            AdjustTest.addInfoToSend('costAmount', attribution.costAmount);
-            AdjustTest.addInfoToSend('costCurrency', attribution.costCurrency);
+            AdjustTest.addInfoToSend('click_label', attribution.clickLabel);
+            AdjustTest.addInfoToSend('cost_type', attribution.costType);
+            AdjustTest.addInfoToSend('cost_amount', attribution.costAmount);
+            AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
             if (device.platform === 'Android') {
                 AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
             }
@@ -427,16 +373,40 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var launchDeferredDeeplink = launchDeferredDeeplinkS === 'true';
         console.log(`[*] Launch deferred deeplink set to: ${launchDeferredDeeplink}`);
         adjustConfig.setShouldLaunchDeeplink(launchDeferredDeeplink);
-        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+        adjustConfig.setDeferredDeeplinkReceivedCallbackListener(function(uri) {
             AdjustTest.addInfoToSend('deeplink', uri);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
 
+    if ('skanCallback' in params) {
+        var _this = this;
+        adjustConfig.setSkanConversionDataUpdatedCallbackListener(function(data) {
+            var jsonObject = JSON.parse(JSON.stringify(data));
+            for (let [key, value] of Object.entries(jsonObject)) {
+                AdjustTest.addInfoToSend(key, value);
+            }
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    }
+
+    if ('attConsentWaitingSeconds' in params) {
+        var attConsentWaitingSecondsS = getFirstParameterValue(params, 'attConsentWaitingSeconds');
+        var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);
+        adjustConfig.setAttConsentWaitingInterval(attConsentWaitingSeconds);
+    }
+
+    if ('eventDeduplicationIdsMaxSize' in params) {
+        var eventDeduplicationIdsMaxSizeS = getFirstParameterValue(params, 'eventDeduplicationIdsMaxSize');
+        var eventDeduplicationIdsMaxSize = parseInt(eventDeduplicationIdsMaxSizeS);
+        adjustConfig.setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize);
+    }
+
     if ('coppaCompliant' in params) {
         var coppaCompliantEnabledS = getFirstParameterValue(params, 'coppaCompliant');
-        var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
-        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
+        if (coppaCompliantEnabledS == 'true') {
+            adjustConfig.enableCoppaCompliance();
+        }
     }
 
     if ('playStoreKids' in params) {
@@ -449,12 +419,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var finalAttributionEnabledS = getFirstParameterValue(params, 'finalAttributionEnabled');
         var finalAttributionEnabled = finalAttributionEnabledS == 'true';
         adjustConfig.setFinalAndroidAttributionEnabled(finalAttributionEnabled);
-    }
-
-    if ('attConsentWaitingSeconds' in params) {
-        var attConsentWaitingSecondsS = getFirstParameterValue(params, 'attConsentWaitingSeconds');
-        var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);
-        adjustConfig.setAttConsentWaitingInterval(attConsentWaitingSeconds);
     }
 };
 
@@ -538,14 +502,14 @@ AdjustCommandExecutor.prototype.event = function(params) {
         adjustEvent.setPurchaseToken(purchaseToken);
     }
 
-    if ('receipt' in params) {
-        var receipt = getFirstParameterValue(params, 'receipt');
-        adjustEvent.setReceipt(receipt);
-    }
-
     if ('transactionId' in params) {
         var transactionId = getFirstParameterValue(params, 'transactionId');
         adjustEvent.setTransactionId(transactionId);
+    }
+
+    if ('deduplicationId' in params) {
+        var deduplicationId = getFirstParameterValue(params, 'deduplicationId');
+        adjustEvent.setDeduplicationId(deduplicationId);
     }
 };
 
@@ -577,156 +541,82 @@ AdjustCommandExecutor.prototype.resume = function(params) {
 };
 
 AdjustCommandExecutor.prototype.setEnabled = function(params) {
-    var enabled = getFirstParameterValue(params, 'enabled') == 'true';
-    Adjust.setEnabled(enabled);
+    if (getFirstParameterValue(params, 'enabled') == 'true') {
+        Adjust.enable();
+    } else {
+        Adjust.disable();
+    }
 };
 
 AdjustCommandExecutor.prototype.setOfflineMode = function(params) {
-    var enabled = getFirstParameterValue(params, 'enabled') == 'true';
-    Adjust.setOfflineMode(enabled);
+    if (getFirstParameterValue(params, 'enabled') == 'true') {
+        Adjust.switchToOfflineMode();
+    } else {
+        Adjust.switchBackToOnlineMode();
+    }
 };
 
-AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
-    Adjust.sendFirstPackages();
+AdjustCommandExecutor.prototype.addGlobalCallbackParameter = function(params) {
+    var list = getValueFromKey(params, 'KeyValue');
+    for (var i = 0; i < list.length; i += 2) {
+        var key = list[i];
+        var value = list[i+1];
+        Adjust.addGlobalCallbackParameter(key, value);
+    }
+};
+
+AdjustCommandExecutor.prototype.addGlobalPartnerParameter = function(params) {
+    var list = getValueFromKey(params, 'KeyValue');
+    for (var i = 0; i < list.length; i += 2) {
+        var key = list[i];
+        var value = list[i+1];
+        Adjust.addGlobalPartnerParameter(key, value);
+    }
+};
+
+AdjustCommandExecutor.prototype.removeGlobalCallbackParameter = function(params) {
+    if ('key' in params) {
+        var list = getValueFromKey(params, 'key');
+        for (var i = 0; i < list.length; i += 1) {
+            Adjust.removeGlobalCallbackParameter(list[i]);
+        }
+    }
+};
+
+AdjustCommandExecutor.prototype.removeGlobalPartnerParameter = function(params) {
+    if ('key' in params) {
+        var list = getValueFromKey(params, 'key');
+        for (var i = 0; i < list.length; i += 1) {
+            Adjust.removeGlobalPartnerParameter(list[i]);
+        }
+    }
+};
+
+AdjustCommandExecutor.prototype.removeGlobalCallbackParameters = function(params) {
+    Adjust.removeGlobalCallbackParameters();
+};
+
+AdjustCommandExecutor.prototype.removeGlobalPartnerParameters = function(params) {
+    Adjust.removeGlobalPartnerParameters();
+};
+
+AdjustCommandExecutor.prototype.setPushToken = function(params) {
+    var token = getFirstParameterValue(params, 'pushToken');
+    Adjust.setPushTokenAsString(token);
+};
+
+AdjustCommandExecutor.prototype.openDeeplink = function(params) {
+    var deeplink = getFirstParameterValue(params, 'deeplink');
+    Adjust.processDeeplink(deeplink);
 };
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
     Adjust.gdprForgetMe();
 };
 
-AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
-    Adjust.disableThirdPartySharing();
-};
-
-AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
-    var list = getValueFromKey(params, 'KeyValue');
-    for (var i = 0; i < list.length; i += 2) {
-        var key = list[i];
-        var value = list[i+1];
-        Adjust.addSessionCallbackParameter(key, value);
-    }
-};
-
-AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
-    var list = getValueFromKey(params, 'KeyValue');
-    for (var i = 0; i < list.length; i += 2) {
-        var key = list[i];
-        var value = list[i+1];
-        Adjust.addSessionPartnerParameter(key, value);
-    }
-};
-
-AdjustCommandExecutor.prototype.removeSessionCallbackParameter = function(params) {
-    if ('key' in params) {
-        var list = getValueFromKey(params, 'key');
-        for (var i = 0; i < list.length; i += 1) {
-            Adjust.removeSessionCallbackParameter(list[i]);
-        }
-    }
-};
-
-AdjustCommandExecutor.prototype.removeSessionPartnerParameter = function(params) {
-    if ('key' in params) {
-        var list = getValueFromKey(params, 'key');
-        for (var i = 0; i < list.length; i += 1) {
-            Adjust.removeSessionPartnerParameter(list[i]);
-        }
-    }
-};
-
-AdjustCommandExecutor.prototype.resetSessionCallbackParameters = function(params) {
-    Adjust.resetSessionCallbackParameters();
-};
-
-AdjustCommandExecutor.prototype.resetSessionPartnerParameters = function(params) {
-    Adjust.resetSessionPartnerParameters();
-};
-
-AdjustCommandExecutor.prototype.setPushToken = function(params) {
-    var token = getFirstParameterValue(params, 'pushToken');
-    Adjust.setPushToken(token);
-};
-
-AdjustCommandExecutor.prototype.openDeeplink = function(params) {
-    var deeplink = getFirstParameterValue(params, 'deeplink');
-    Adjust.appWillOpenUrl(deeplink);
-};
-
 AdjustCommandExecutor.prototype.sendReferrer = function(params) {
     var referrer = getFirstParameterValue(params, 'referrer');
     Adjust.setReferrer(referrer);
-};
-
-AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
-    var source = getFirstParameterValue(params, 'adRevenueSource');
-    var payload = getFirstParameterValue(params, 'adRevenueJsonString');
-    Adjust.trackAdRevenue(source, payload);
-};
-
-AdjustCommandExecutor.prototype.trackSubscription = function(params) {
-    if (device.platform === 'iOS') {
-        var price = getFirstParameterValue(params, 'revenue');
-        var currency = getFirstParameterValue(params, 'currency');
-        var transactionId = getFirstParameterValue(params, 'transactionId');
-        var receipt = getFirstParameterValue(params, 'receipt');
-        var transactionDate = getFirstParameterValue(params, 'transactionDate');
-        var salesRegion = getFirstParameterValue(params, 'salesRegion');
-
-        var subscription = new AdjustAppStoreSubscription(price, currency, transactionId, receipt);
-        subscription.setTransactionDate(transactionDate);
-        subscription.setSalesRegion(salesRegion);
-
-        if ('callbackParams' in params) {
-            var callbackParams = getValueFromKey(params, 'callbackParams');
-            for (var i = 0; i < callbackParams.length; i += 2) {
-                var key = callbackParams[i];
-                var value = callbackParams[i+1];
-                subscription.addCallbackParameter(key, value);
-            }
-        }
-
-        if ('partnerParams' in params) {
-            var partnerParams = getValueFromKey(params, 'partnerParams');
-            for (var i = 0; i < partnerParams.length; i += 2) {
-                var key = partnerParams[i];
-                var value = partnerParams[i+1];
-                subscription.addPartnerParameter(key, value);
-            }
-        }
-
-        Adjust.trackAppStoreSubscription(subscription);
-    } else if (device.platform === 'Android') {
-        var price = getFirstParameterValue(params, 'revenue');
-        var currency = getFirstParameterValue(params, 'currency');
-        var sku = getFirstParameterValue(params, 'productId');
-        var signature = getFirstParameterValue(params, 'receipt');
-        var purchaseToken = getFirstParameterValue(params, 'purchaseToken');
-        var orderId = getFirstParameterValue(params, 'transactionId');
-        var purchaseTime = getFirstParameterValue(params, 'transactionDate');
-
-        var subscription = new AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, purchaseToken);
-        subscription.setPurchaseTime(purchaseTime);
-
-        if ('callbackParams' in params) {
-            var callbackParams = getValueFromKey(params, 'callbackParams');
-            for (var i = 0; i < callbackParams.length; i += 2) {
-                var key = callbackParams[i];
-                var value = callbackParams[i+1];
-                subscription.addCallbackParameter(key, value);
-            }
-        }
-
-        if ('partnerParams' in params) {
-            var partnerParams = getValueFromKey(params, 'partnerParams');
-            for (var i = 0; i < partnerParams.length; i += 2) {
-                var key = partnerParams[i];
-                var value = partnerParams[i+1];
-                subscription.addPartnerParameter(key, value);
-            }
-        }
-
-        Adjust.trackPlayStoreSubscription(subscription);
-    }
 };
 
 AdjustCommandExecutor.prototype.trackThirdPartySharing = function(params) {
@@ -764,7 +654,73 @@ AdjustCommandExecutor.prototype.trackMeasurementConsent = function(params) {
     Adjust.trackMeasurementConsent(isEnabled);
 };
 
-AdjustCommandExecutor.prototype.trackAdRevenueV2 = function(params) {
+AdjustCommandExecutor.prototype.trackAppStoreSubscription = function(params) {
+    if (device.platform === 'iOS') {
+        var price = getFirstParameterValue(params, 'revenue');
+        var currency = getFirstParameterValue(params, 'currency');
+        var transactionId = getFirstParameterValue(params, 'transactionId');
+        var transactionDate = getFirstParameterValue(params, 'transactionDate');
+        var salesRegion = getFirstParameterValue(params, 'salesRegion');
+
+        var subscription = new AdjustAppStoreSubscription(price, currency, transactionId);
+        subscription.setTransactionDate(transactionDate);
+        subscription.setSalesRegion(salesRegion);
+
+        if ('callbackParams' in params) {
+            var callbackParams = getValueFromKey(params, 'callbackParams');
+            for (var i = 0; i < callbackParams.length; i += 2) {
+                var key = callbackParams[i];
+                var value = callbackParams[i+1];
+                subscription.addCallbackParameter(key, value);
+            }
+        }
+
+        if ('partnerParams' in params) {
+            var partnerParams = getValueFromKey(params, 'partnerParams');
+            for (var i = 0; i < partnerParams.length; i += 2) {
+                var key = partnerParams[i];
+                var value = partnerParams[i+1];
+                subscription.addPartnerParameter(key, value);
+            }
+        }
+
+        Adjust.trackAppStoreSubscription(subscription);
+
+    } else if (device.platform === 'Android') {
+        var price = getFirstParameterValue(params, 'revenue');
+        var currency = getFirstParameterValue(params, 'currency');
+        var sku = getFirstParameterValue(params, 'productId');
+        var signature = getFirstParameterValue(params, 'receipt');
+        var purchaseToken = getFirstParameterValue(params, 'purchaseToken');
+        var orderId = getFirstParameterValue(params, 'transactionId');
+        var purchaseTime = getFirstParameterValue(params, 'transactionDate');
+
+        var subscription = new AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, purchaseToken);
+        subscription.setPurchaseTime(purchaseTime);
+
+        if ('callbackParams' in params) {
+            var callbackParams = getValueFromKey(params, 'callbackParams');
+            for (var i = 0; i < callbackParams.length; i += 2) {
+                var key = callbackParams[i];
+                var value = callbackParams[i+1];
+                subscription.addCallbackParameter(key, value);
+            }
+        }
+
+        if ('partnerParams' in params) {
+            var partnerParams = getValueFromKey(params, 'partnerParams');
+            for (var i = 0; i < partnerParams.length; i += 2) {
+                var key = partnerParams[i];
+                var value = partnerParams[i+1];
+                subscription.addPartnerParameter(key, value);
+            }
+        }
+
+        Adjust.trackPlayStoreSubscription(subscription);
+    }
+};
+
+AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
     var adjustAdRevenue;
     var source = getFirstParameterValue(params, 'adRevenueSource');
     // weird behaviour with null value
@@ -781,40 +737,10 @@ AdjustCommandExecutor.prototype.trackAdRevenueV2 = function(params) {
         adjustAdRevenue.setRevenue(revenue, currency);
     }
 
-    if ('callbackParams' in params) {
-        var callbackParams = getValueFromKey(params, 'callbackParams');
-        for (var i = 0; i < callbackParams.length; i += 2) {
-            var key = callbackParams[i];
-            var value = callbackParams[i+1];
-            adjustAdRevenue.addCallbackParameter(key, value);
-        }
-    }
-
-    if ('partnerParams' in params) {
-        var partnerParams = getValueFromKey(params, 'partnerParams');
-        for (var i = 0; i < partnerParams.length; i += 2) {
-            var key = partnerParams[i];
-            var value = partnerParams[i+1];
-            adjustAdRevenue.addPartnerParameter(key, value);
-        }
-    }
-
     if ('adImpressionsCount' in params) {
         var adImpressionsCount = getFirstParameterValue(params, 'adImpressionsCount');
         var adImpressionsCountValue = parseInt(adImpressionsCount);
         adjustAdRevenue.setAdImpressionsCount(adImpressionsCountValue);
-    }
-
-    if ('adRevenueNetwork' in params) {
-        var adRevenueNetwork = getFirstParameterValue(params, 'adRevenueNetwork');
-
-        // test server might set adRevenueNetwork to be undefined/null, which gets
-        // serialized/deserialized as string 'null', leading to failed test
-        if (adRevenueNetwork === 'null') {
-            adRevenueNetwork = null;
-        }
-
-        adjustAdRevenue.setAdRevenueNetwork(adRevenueNetwork);
     }
 
     if ('adRevenueUnit' in params) {
@@ -841,6 +767,35 @@ AdjustCommandExecutor.prototype.trackAdRevenueV2 = function(params) {
         adjustAdRevenue.setAdRevenuePlacement(adRevenuePlacement);
     }
 
+    if ('adRevenueNetwork' in params) {
+        var adRevenueNetwork = getFirstParameterValue(params, 'adRevenueNetwork');
+
+        // test server might set adRevenueNetwork to be undefined/null, which gets
+        // serialized/deserialized as string 'null', leading to failed test
+        if (adRevenueNetwork === 'null') {
+            adRevenueNetwork = null;
+        }
+
+        adjustAdRevenue.setAdRevenueNetwork(adRevenueNetwork);
+    }
+
+    if ('callbackParams' in params) {
+        var callbackParams = getValueFromKey(params, 'callbackParams');
+        for (var i = 0; i < callbackParams.length; i += 2) {
+            var key = callbackParams[i];
+            var value = callbackParams[i+1];
+            adjustAdRevenue.addCallbackParameter(key, value);
+        }
+    }
+
+    if ('partnerParams' in params) {
+        var partnerParams = getValueFromKey(params, 'partnerParams');
+        for (var i = 0; i < partnerParams.length; i += 2) {
+            var key = partnerParams[i];
+            var value = partnerParams[i+1];
+            adjustAdRevenue.addPartnerParameter(key, value);
+        }
+    }
     Adjust.trackAdRevenue(adjustAdRevenue);
 };
 
@@ -856,10 +811,9 @@ AdjustCommandExecutor.prototype.getLastDeeplink = function(params) {
 
 AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
     if (device.platform === 'iOS') {
-        var receipt = getFirstParameterValue(params, 'receipt');
         var productId = getFirstParameterValue(params, 'productId');
         var transactionId = getFirstParameterValue(params, 'transactionId');
-        var purchase = new AdjustAppStorePurchase(receipt, productId, transactionId);
+        var purchase = new AdjustAppStorePurchase(productId, transactionId);
 
         var _this = this;
         Adjust.verifyAppStorePurchase(purchase, function(verificationInfo) {
@@ -883,11 +837,51 @@ AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
     }
 };
 
+AdjustCommandExecutor.prototype.verifyTrack = function(params) {
+    var _this = this;
+    this.event(params);
+    var eventNumber = 0;
+    if ('eventName' in params) {
+        var eventName = getFirstParameterValue(params, 'eventName');
+        eventNumber = parseInt(eventName.substr(eventName.length - 1))
+    }
+    var adjustEvent = this.savedEvents[eventNumber];
+    Adjust.verifyAndTrackAppStorePurchase(adjustEvent, function(verificationResult) {
+        AdjustTest.addInfoToSend('verification_status', verificationResult.verificationStatus);
+        AdjustTest.addInfoToSend('code', verificationResult.code);
+        AdjustTest.addInfoToSend('message', verificationResult.message);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+
+    delete this.savedEvents[0];
+};
+
+
 AdjustCommandExecutor.prototype.processDeeplink = function(params) {
     var deeplink = getFirstParameterValue(params, 'deeplink');
     var _this = this;
-    Adjust.processDeeplink(deeplink, function(resolvedLink) {
+    Adjust.processAndResolveDeeplink(deeplink, function(resolvedLink) {
         AdjustTest.addInfoToSend('resolved_link', resolvedLink);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.attributionGetter = function(params) {
+    var _this = this;
+    Adjust.getAttribution(function(attribution) {
+        AdjustTest.addInfoToSend('tracker_token', attribution.trackerToken);
+        AdjustTest.addInfoToSend('tracker_name', attribution.trackerName);
+        AdjustTest.addInfoToSend('network', attribution.network);
+        AdjustTest.addInfoToSend('campaign', attribution.campaign);
+        AdjustTest.addInfoToSend('adgroup', attribution.adgroup);
+        AdjustTest.addInfoToSend('creative', attribution.creative);
+        AdjustTest.addInfoToSend('click_label', attribution.clickLabel);
+        AdjustTest.addInfoToSend('cost_type', attribution.costType);
+        AdjustTest.addInfoToSend('cost_amount', attribution.costAmount);
+        AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
+        if (device.platform === 'Android') {
+            AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
+        }
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
 };

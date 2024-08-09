@@ -10,7 +10,6 @@
 #if defined(__has_include) && __has_include(<Adjust/Adjust.h>)
 #import <Adjust/Adjust.h>
 #else
-//#import "Adjust.h"
 #import <AdjustSdk/AdjustSdk.h>
 #endif
 
@@ -44,11 +43,7 @@
 - (void)disable:(CDVInvokedUrlCommand *)command;
 - (void)isEnabled:(CDVInvokedUrlCommand *)command;
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
-- (void)enableCoppaCompliance:(CDVInvokedUrlCommand *)command;
-- (void)disableCoppaCompliance:(CDVInvokedUrlCommand *)command;
-// TODO: Remove the usage of trackAdRevenue with 2 arguments
 - (void)trackAdRevenue:(CDVInvokedUrlCommand *)command;
-// TODO: remove receipt from the usage of trackAppStoreSubscription
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;

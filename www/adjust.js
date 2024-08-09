@@ -146,14 +146,6 @@ var Adjust = {
         callCordova('gdprForgetMe');
     },
 
-    enableCoppaCompliance: function() {
-        callCordova('enableCoppaCompliance');
-    },
-
-    disableCoppaCompliance: function() {
-        callCordova('disableCoppaCompliance');
-    },
-
     trackAdRevenue: function(adRevenue) {
         callCordovaStringify('trackAdRevenue', adRevenue);
     },

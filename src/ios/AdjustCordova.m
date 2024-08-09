@@ -18,8 +18,6 @@
 #define KEY_EVENT_TOKEN                             @"eventToken"
 #define KEY_REVENUE                                 @"revenue"
 #define KEY_CURRENCY                                @"currency"
-// TODO: Check whether this key is needed
-#define KEY_RECEIPT                                 @"receipt"
 #define KEY_DEFAULT_TRACKER                         @"defaultTracker"
 #define KEY_EXTERNAL_DEVICE_ID                      @"externalDeviceId"
 #define KEY_TRANSACTION_ID                          @"transactionId"
@@ -27,7 +25,6 @@
 #define KEY_DEDUPLICATION_ID                        @"deduplicationId"
 #define KEY_CALLBACK_PARAMETERS                     @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS                      @"partnerParameters"
-#define KEY_IS_RECEIPT_SET                          @"isReceiptSet"
 #define KEY_IS_ENABLED                              @"isEnabled"
 #define KEY_GRANULAR_OPTIONS                        @"granularOptions"
 #define KEY_PARTNER_SHARING_SETTINGS                @"partnerSharingSettings"
@@ -35,13 +32,13 @@
 #define KEY_SHOULD_LAUNCH_DEEPLINK                  @"shouldLaunchDeeplink"
 #define KEY_IS_SENDING_IN_BACKGROUND_ENABLED        @"isSendingInBackgroundEnabled"
 #define KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED     @"isCostDataInAttributionEnabled"
-// #define KEY_ALLOW_IAD_INFO_READING               @"allowiAdInfoReading"
 #define KEY_IS_AD_SERVICES_ENABLED                  @"isAdServicesEnabled"
 #define KEY_IS_IDFA_READING_ENABLED                 @"isIdfaReadingEnabled"
 #define KEY_IS_IDFV_READING_ENABLED                 @"isIdfvReadingEnabled"
 #define KEY_IS_SKAN_ATTRIBUTION_ENABLED             @"isSkanAttributionEnabled"
 #define KEY_IS_LINK_ME_ENABLED                      @"isLinkMeEnabled"
-#define KEY_URL_OVERWRITE                           @"urlOverwrite"
+#define KEY_IS_COPPA_COMPLIANCE_ENABLED             @"isCoppaComplianceEnabled"
+#define KEY_TEST_URL_OVERWRITE                      @"testUrlOverwrite"
 #define KEY_EXTRA_PATH                              @"extraPath"
 #define KEY_USE_TEST_CONNECTION_OPTIONS             @"useTestConnectionOptions"
 #define KEY_TIMER_INTERVAL                          @"timerIntervalInMilliseconds"
@@ -52,13 +49,7 @@
 #define KEY_NO_BACKOFF_WAIT                         @"noBackoffWait"
 #define KEY_ATT_STATUS                              @"attStatus"
 #define KEY_IDFA                                    @"idfa"
-
-//TODO: Replace this key be the following one.
-//#define KEY_HAS_CONTEXT                           @"hasContext"
 #define KEY_DELETE_STATE                            @"deleteState"
-
-//TODO: Check that's removed
-//#define KEY_IAD_ENABLED                           @"iAdFrameworkEnabled"
 #define KEY_ADSERVICES_ENABLED                      @"adServicesFrameworkEnabled"
 #define KEY_PRICE                                   @"price"
 #define KEY_TRANSACTION_DATE                        @"transactionDate"
@@ -120,6 +111,7 @@
     NSNumber *isIdfvReadingEnabled = [[jsonObject valueForKey:KEY_IS_IDFV_READING_ENABLED] objectAtIndex:0];
     NSNumber *isSkanAttributionEnabled = [[jsonObject valueForKey:KEY_IS_SKAN_ATTRIBUTION_ENABLED] objectAtIndex:0];
     NSNumber *isLinkMeEnabled = [[jsonObject valueForKey:KEY_IS_LINK_ME_ENABLED] objectAtIndex:0];
+    NSNumber *isCoppaComplianceEnabled = [[jsonObject valueForKey:KEY_IS_COPPA_COMPLIANCE_ENABLED] objectAtIndex:0];
     NSNumber *isDeviceIdsReadingOnceEnabled = [[jsonObject valueForKey:KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED] objectAtIndex:0];
     NSNumber *isSendingInBackgroundEnabled = [[jsonObject valueForKey:KEY_IS_SENDING_IN_BACKGROUND_ENABLED] objectAtIndex:0];
     NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
@@ -226,6 +218,13 @@
         [isLinkMeEnabled boolValue]) {
         [adjustConfig enableLinkMe];
     }
+
+    // Coppa
+    if ([self isFieldValid:isCoppaComplianceEnabled] &&
+        [isCoppaComplianceEnabled boolValue]) {
+        [adjustConfig enableCoppaCompliance];
+    }
+
 
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
 
@@ -429,14 +428,6 @@
 
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command {
     [Adjust gdprForgetMe];
-}
-
-- (void)enableCoppaCompliance:(CDVInvokedUrlCommand *)command {
-    [Adjust enableCoppaCompliance];
-}
-
-- (void)disableCoppaCompliance:(CDVInvokedUrlCommand *)command {
-    [Adjust disableCoppaCompliance];
 }
 
 - (void)trackAdRevenue:(CDVInvokedUrlCommand *)command {
@@ -807,7 +798,7 @@
 }
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
-    NSString *urlOverwrite = [[command.arguments valueForKey:KEY_URL_OVERWRITE] objectAtIndex:0];
+    NSString *testUrlOverwrite = [[command.arguments valueForKey:KEY_TEST_URL_OVERWRITE] objectAtIndex:0];
     NSString *extraPath = [[command.arguments valueForKey:KEY_EXTRA_PATH] objectAtIndex:0];
     NSString *timerInterval = [[command.arguments valueForKey:KEY_TIMER_INTERVAL] objectAtIndex:0];
     NSString *timerStart = [[command.arguments valueForKey:KEY_TIMER_START] objectAtIndex:0];
@@ -822,8 +813,8 @@
 
     NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
 
-    if ([self isFieldValid:urlOverwrite]) {
-        [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
+    if ([self isFieldValid:testUrlOverwrite]) {
+        [testOptions setObject:testUrlOverwrite forKey:@"testUrlOverwrite"];
     }
     if ([self isFieldValid:extraPath]) {
         [testOptions setObject:extraPath forKey:@"extraPath"];

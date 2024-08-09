@@ -25,6 +25,7 @@ function AdjustConfig(appToken, environment) {
     this.externalDeviceId = null;
     this.eventDeduplicationIdsMaxSize = null;
     this.shouldLaunchDeeplink = null;
+    this.isCoppaComplianceEnabled = null;
 
     // Android only
     this.referrer = null;
@@ -165,6 +166,10 @@ function AdjustConfig(appToken, environment) {
 
     AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
         this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+    };
+
+    AdjustConfig.prototype.enableCoppaCompliance = function() {
+        this.isCoppaComplianceEnabled = true;
     };
 
     // Configuration fields - Android only
