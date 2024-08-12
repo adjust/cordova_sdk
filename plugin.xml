@@ -97,11 +97,8 @@
             </config>
             <pods>
                 <pod name="Adjust" spec="5.0.0" />
-                <pod name="AdjustSignature" spec="~> 3.18" />
             </pods>
         </podspec>
-
-
         <!--<framework src="src/ios/AdjustSdk.framework" custom="true" />-->
 
         <framework src="AdSupport.framework" weak="true" />
