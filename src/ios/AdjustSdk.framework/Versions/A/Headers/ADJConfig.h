@@ -184,6 +184,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, readonly) BOOL isDataResidency;
 
+/**
+ * @brief Indicator of whether SDK should start in COPPA compliant mode or not.
+ */
+@property (nonatomic, readonly) BOOL isCoppaComplianceEnabled;
+
 #pragma mark - AdjustConfig assignable properties
 
 /**
@@ -327,6 +332,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  * @brief A method to enable obtaining of cost data inside of the attribution callback.
  */
 - (void)enableCostDataInAttribution;
+
+/**
+ * @brief A method to configure SDK to start in COPPA compliant mode.
+ */
+- (void)enableCoppaCompliance;
 
 /**
  * @brief A method to set custom URL strategy.
