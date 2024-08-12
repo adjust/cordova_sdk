@@ -2,8 +2,8 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="4.38.1">
-    
+    version="5.0.0">
+
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
     <license>MIT License</license>
@@ -79,11 +79,13 @@
     
     <!-- iOS -->
     <platform name="ios">
+
         <config-file target="config.xml" parent="/*">
             <feature name="Adjust">
                 <param name="ios-package" value="AdjustCordova"/>
                 <param name="onload" value="true" />
             </feature>
+            <preference name="deployment-target" value="12.0" />
         </config-file>
         
         <header-file src="src/ios/AdjustCordova.h" />
@@ -99,7 +101,6 @@
                 <pod name="Adjust" spec="5.0.0" />
             </pods>
         </podspec>
-        <!--<framework src="src/ios/AdjustSdk.framework" custom="true" />-->
 
         <framework src="AdSupport.framework" weak="true" />
         <framework src="StoreKit.framework" weak="true" />
