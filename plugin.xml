@@ -72,7 +72,7 @@
         <source-file src="src/android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <source-file src="src/android/AdjustCordovaUtils.java" target-dir="src/com/adjust/sdk" />
         
-        <framework src="com.adjust.sdk:adjust-android:4.38.3"/>
+        <framework src="com.adjust.sdk:adjust-android:5.0.0"/>
         <framework src="com.google.android.gms:play-services-ads-identifier:18.0.1" />
         <framework src="com.android.installreferrer:installreferrer:2.2" />
     </platform>
