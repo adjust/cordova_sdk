@@ -17,7 +17,6 @@
 
 // Initialization
 - (void)create:(CDVInvokedUrlCommand *)command;
-
 // Adjust API Callbacks setters
 - (void)setAttributionChangedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
@@ -26,47 +25,60 @@
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkReceivedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSkanConversionDataUpdatedCallback:(CDVInvokedUrlCommand *)command;
-
 // Adjust API
-- (void)trackEvent:(CDVInvokedUrlCommand *)command;
-- (void)switchToOfflineMode:(CDVInvokedUrlCommand *)command;
-- (void)switchBackToOnlineMode:(CDVInvokedUrlCommand *)command;
-- (void)setPushTokenAsString:(CDVInvokedUrlCommand *)command;
-- (void)processDeeplink:(CDVInvokedUrlCommand *)command;
-- (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command;
+// Setters
+- (void)setPushToken:(CDVInvokedUrlCommand *)command;
+// Getters
+- (void)getAttribution:(CDVInvokedUrlCommand *)command;
+- (void)getAdId:(CDVInvokedUrlCommand *)command;
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getIdfv:(CDVInvokedUrlCommand *)command;
-- (void)getAdid:(CDVInvokedUrlCommand *)command;
-- (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command;
+// Global Parameters manipulation commands
+// Callback
+- (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeGlobalCallbackParameters:(CDVInvokedUrlCommand *)command;
+// Partner
+- (void)addGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
+- (void)removeGlobalPartnerParameters:(CDVInvokedUrlCommand *)command;
+// SDK State
+- (void)switchToOfflineMode:(CDVInvokedUrlCommand *)command;
+- (void)switchBackToOnlineMode:(CDVInvokedUrlCommand *)command;
 - (void)enable:(CDVInvokedUrlCommand *)command;
 - (void)disable:(CDVInvokedUrlCommand *)command;
 - (void)isEnabled:(CDVInvokedUrlCommand *)command;
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
-- (void)trackAdRevenue:(CDVInvokedUrlCommand *)command;
-- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
-- (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)removeGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
-- (void)removeGlobalCallbackParameters:(CDVInvokedUrlCommand *)command;
-- (void)addGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
-- (void)removeGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
-- (void)removeGlobalPartnerParameters:(CDVInvokedUrlCommand *)command;
-- (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command;
-- (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
-- (void)updateSkanConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
-- (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
-- (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
-- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
-- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
-- (void)verifyAndTrackAppStorePurchase:(CDVInvokedUrlCommand *)command;
+// SDK Lifecycle
 - (void)onPause:(CDVInvokedUrlCommand *)command;
 - (void)onResume:(CDVInvokedUrlCommand *)command;
+// Tracking
+- (void)trackEvent:(CDVInvokedUrlCommand *)command;
+- (void)trackAdRevenue:(CDVInvokedUrlCommand *)command;
+- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
+- (void)verifyAndTrackAppStorePurchase:(CDVInvokedUrlCommand *)command;
+- (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
+- (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
+// Deeplink
+- (void)processDeeplink:(CDVInvokedUrlCommand *)command;
+- (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command;
+- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
+// App Tracking Authorization
+- (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command;
+- (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
+// SKAN
+- (void)updateSkanConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
+// Android Only
 - (void)setReferrer:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
+- (void)getGooglePlayInstallReferrer:(CDVInvokedUrlCommand *)command;
 - (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
-
+- (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command;
+// Testing
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;
 

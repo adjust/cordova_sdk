@@ -28,13 +28,11 @@ function AdjustConfig(appToken, environment) {
     this.isCoppaComplianceEnabled = null;
 
     // Android only
-    this.referrer = null;
     this.processName = null;
     this.preinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
     this.oaidReadingEnabled = null;
     this.playStoreKidsAppEnabled = null;
-    this.finalAndroidAttributionEnabled = null;
     this.fbAppId = null;
     // iOS only 
     this.isAdServicesEnabled = null;
@@ -101,6 +99,7 @@ function AdjustConfig(appToken, environment) {
         return this.sessionTrackingSucceededCallback !== null;
     };
 
+
     AdjustConfig.prototype.getSessionTrackingFailedCallback = function() {
         return this.sessionTrackingFailedCallback;
     };
@@ -111,6 +110,7 @@ function AdjustConfig(appToken, environment) {
         return this.sessionTrackingFailedCallback !== null;
     };
 
+
     AdjustConfig.prototype.getDeferredDeeplinkReceivedCallback = function() {
         return this.deferredDeeplinkReceivedCallback;
     };
@@ -120,6 +120,7 @@ function AdjustConfig(appToken, environment) {
     AdjustConfig.prototype.hasDeferredDeeplinkReceivedCallbackListener = function() {
         return this.deferredDeeplinkReceivedCallback !== null;
     };
+
 
     AdjustConfig.prototype.getSkanConversionDataUpdatedCallback = function() {
         return this.skanConversionDataUpdatedCallback;
@@ -160,8 +161,8 @@ function AdjustConfig(appToken, environment) {
         this.externalDeviceId = externalDeviceId;
     };
 
-    AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsnMaxSize) {
-        this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsnMaxSize;
+    AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
+        this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
     };
 
     AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
@@ -170,15 +171,6 @@ function AdjustConfig(appToken, environment) {
 
     AdjustConfig.prototype.enableCoppaCompliance = function() {
         this.isCoppaComplianceEnabled = true;
-    };
-
-    // Configuration fields - Android only
-    // TODO: Should we keep the getter?
-    AdjustConfig.prototype.getReferrer = function() {
-        return this.referrer;
-    };
-    AdjustConfig.prototype.setReferrer = function(referrer) {
-        this.referrer = referrer;
     };
 
     AdjustConfig.prototype.setProcessName = function(processName) {
@@ -199,10 +191,6 @@ function AdjustConfig(appToken, environment) {
 
     AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
         this.playStoreKidsAppEnabled = isEnabled;
-    };
-
-    AdjustConfig.prototype.setFinalAndroidAttributionEnabled = function (isEnabled) {
-        this.finalAndroidAttributionEnabled = isEnabled;
     };
 
     AdjustConfig.prototype.setFbAppId = function (fbAppId) {
