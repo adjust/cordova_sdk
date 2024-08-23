@@ -201,8 +201,8 @@ var app = {
                 console.log("[AdjustExample]: Amazon Ad Id = " + gpsAdId);
             });
 
-            Adjust.getAdid(function(adid) {
-                console.log("[AdjustExample]: Adid = " + adid);
+            Adjust.getAdId(function(adid) {
+                console.log("[AdjustExample]: Adjust Id = " + adid);
             });
 
             Adjust.getAttribution(function(attribution) {
