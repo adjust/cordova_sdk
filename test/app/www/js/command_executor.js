@@ -602,7 +602,7 @@ AdjustCommandExecutor.prototype.removeGlobalPartnerParameters = function(params)
 
 AdjustCommandExecutor.prototype.setPushToken = function(params) {
     var token = getFirstParameterValue(params, 'pushToken');
-    Adjust.setPushTokenAsString(token);
+    Adjust.setPushToken(token);
 };
 
 AdjustCommandExecutor.prototype.openDeeplink = function(params) {
