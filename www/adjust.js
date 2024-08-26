@@ -205,12 +205,12 @@ var Adjust = {
         callCordova('trackMeasurementConsent', measurementConsent);
     },
 
-    processDeeplink: function(url) {
-        callCordova('processDeeplink', url);
+    processDeeplink: function(adjustDeeplink) {
+        callCordova('processDeeplink', adjustDeeplink);
     },
 
-    processAndResolveDeeplink: function(deeplink, callback) {
-        callCordovaCallback('processAndResolveDeeplink', callback, deeplink);
+    processAndResolveDeeplink: function(adjustDeeplink, callback) {
+        callCordovaCallback('processAndResolveDeeplink', callback, adjustDeeplink);
     },
 
     getLastDeeplink: function(callback) {

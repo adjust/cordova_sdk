@@ -67,6 +67,7 @@
 #define KEY_USE_SUBDOMAINS                          @"useSubdomains"
 #define KEY_IS_DATA_RESIDENCY                       @"isDataResidency"
 #define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE        @"eventDeduplicationIdsnMaxSize"
+#define KEY_DEEPLINK                                @"deeplink"
 
 
 
@@ -450,7 +451,6 @@
 
 - (void)trackAdRevenue:(CDVInvokedUrlCommand *)command {
     if ([command.arguments count] == 1) {
-        // new API
         NSString *arguments = [command.arguments objectAtIndex:0];
         NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                               options:0
@@ -703,36 +703,48 @@
 #pragma mark - Deeplink
 
 - (void)processDeeplink:(CDVInvokedUrlCommand *)command {
-    NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
-    if (urlString == nil) {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSString *deeplink;
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
+        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
+    } else {
         return;
     }
 
     NSURL *url;
     if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
-        url = [NSURL URLWithString:[urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+        url = [NSURL URLWithString:[deeplink stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        url = [NSURL URLWithString:[deeplink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
 #pragma clang diagnostic pop
     [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
 }
 
 - (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command {
-    NSString *urlString = [command argumentAtIndex:0 withDefault:nil];
-    if (urlString == nil) {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSString *deeplink;
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
+        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
+    } else {
         return;
     }
 
     NSURL *url;
     if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
-        url = [NSURL URLWithString:[urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+        url = [NSURL URLWithString:[deeplink stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        url = [NSURL URLWithString:[deeplink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
 #pragma clang diagnostic pop
 
