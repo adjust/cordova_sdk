@@ -206,11 +206,11 @@ var Adjust = {
     },
 
     processDeeplink: function(adjustDeeplink) {
-        callCordova('processDeeplink', adjustDeeplink);
+        callCordovaStringify('processDeeplink', adjustDeeplink);
     },
 
     processAndResolveDeeplink: function(adjustDeeplink, callback) {
-        callCordovaCallback('processAndResolveDeeplink', callback, adjustDeeplink);
+        callCordovaStringifyCallback('processAndResolveDeeplink', adjustDeeplink, callback);
     },
 
     getLastDeeplink: function(callback) {
