@@ -121,11 +121,13 @@ public class AdjustCordova extends CordovaPlugin implements
                 Adjust.trackMeasurementConsent(isEnabled);
             }
         } else if (action.equals(COMMAND_PROCESS_DEEPLINK)) {
-            String url = args.getString(0);
-            AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(url));
-            Adjust.processDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext());
+           if (executeProcessDeeplink(args) == false) {
+               return false;
+           }
         } else if (action.equals(COMMAND_PROCESS_AND_RESOLVE_DEEPLINK)) {
-            executeProcessAndResolveDeeplink(args, callbackContext);
+           if (executeProcessAndResolveDeeplink(args, callbackContext) == false) {
+               return false;
+           }
         } else if (action.equals(COMMAND_GET_LAST_DEEPLINK)) {
             executeGetLastDeeplink(callbackContext);
         } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
@@ -663,12 +665,38 @@ public class AdjustCordova extends CordovaPlugin implements
         });
     }
 
-    private void executeProcessAndResolveDeeplink(
+    private Boolean executeProcessDeeplink(final JSONArray args) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
+
+        String deeplink = null;
+        if (parameters.containsKey(KEY_DEEPLINK)) {
+            deeplink = parameters.get(KEY_DEEPLINK).toString();
+        } else {
+            return false;
+        }
+        AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(deeplink));
+        Adjust.processDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext());
+        return true;
+    }
+
+    private Boolean executeProcessAndResolveDeeplink(
             final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
-        String url = args.getString(0);
-        AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(url));
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
+        String deeplink = null;
+        if (parameters.containsKey(KEY_DEEPLINK)) {
+            deeplink = parameters.get(KEY_DEEPLINK).toString();
+        } else {
+            return false;
+        }
+        AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(deeplink));
         Adjust.processAndResolveDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext(), new OnDeeplinkResolvedListener() {
             @Override
             public void onDeeplinkResolved(String resolvedLink) {
@@ -677,6 +705,7 @@ public class AdjustCordova extends CordovaPlugin implements
                 callbackContext.sendPluginResult(pluginResult);
             }
         });
+        return true;
     }
 
     private void executeTrackThirdPartySharing(final JSONArray args) throws JSONException {

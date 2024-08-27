@@ -92,6 +92,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_GOOGLE_PLAY_INSTANT                              = "googlePlayInstant";
     public static final String KEY_VERIFICATION_STATUS                              = "verificationStatus";
     public static final String KEY_CODE                                             = "code";
+    public static final String KEY_DEEPLINK                                         = "deeplink";
     // TODO: GENA - implement when requirements are clear
     public static final String KEY_URL_STRATEGY_DOMAINS                             = "urlStrategyDomains";
     public static final String KEY_USE_SUBDOMAINS                                   = "useSubdomains";
