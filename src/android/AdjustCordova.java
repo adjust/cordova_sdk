@@ -854,9 +854,9 @@ public class AdjustCordova extends CordovaPlugin implements
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
         final AdjustTestOptions testOptions = new AdjustTestOptions();
 
-        if (!jsonParameters.isNull(KEY_HAS_CONTEXT)) {
+        if (!jsonParameters.isNull(KEY_DELETE_STATE)) {
             try {
-                boolean value = jsonParameters.getBoolean(KEY_HAS_CONTEXT);
+                boolean value = jsonParameters.getBoolean(KEY_DELETE_STATE);
                 if (value) {
                     testOptions.context = this.cordova.getActivity().getApplicationContext();
                 }
@@ -865,87 +865,31 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        if (!jsonParameters.isNull(KEY_BASE_URL)) {
+        if (!jsonParameters.isNull(KEY_TEST_URL_OVERWRITE)) {
             try {
-                String value = jsonParameters.getString(KEY_BASE_URL);
+                String value = jsonParameters.getString(KEY_TEST_URL_OVERWRITE);
                 testOptions.baseUrl = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base URL.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_GDPR_URL)) {
-            try {
-                String value = jsonParameters.getString(KEY_GDPR_URL);
                 testOptions.gdprUrl = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR URL.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_SUBSCRIPTION_URL)) {
-            try {
-                String value = jsonParameters.getString(KEY_SUBSCRIPTION_URL);
                 testOptions.subscriptionUrl = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription URL.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_URL)) {
-            try {
-                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_URL);
                 testOptions.purchaseVerificationUrl = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification URL.");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse testUrlOverwrite.");
             }
+
+
         }
 
-        if (!jsonParameters.isNull(KEY_BASE_PATH)) {
+        if (!jsonParameters.isNull(KEY_EXTRA_PATH)) {
             try {
-                String value = jsonParameters.getString(KEY_BASE_PATH);
+                String value = jsonParameters.getString(KEY_EXTRA_PATH);
                 testOptions.basePath = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse base path.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_GDPR_PATH)) {
-            try {
-                String value = jsonParameters.getString(KEY_GDPR_PATH);
                 testOptions.gdprPath = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse GDPR path.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_SUBSCRIPTION_PATH)) {
-            try {
-                String value = jsonParameters.getString(KEY_SUBSCRIPTION_PATH);
                 testOptions.subscriptionPath = value;
-            } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse subscription path.");
-            }
-        }
-
-        if (!jsonParameters.isNull(KEY_PURCHASE_VERIFICATION_PATH)) {
-            try {
-                String value = jsonParameters.getString(KEY_PURCHASE_VERIFICATION_PATH);
                 testOptions.purchaseVerificationPath = value;
             } catch (JSONException e) {
-                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse purchase verification path.");
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse extra path.");
             }
         }
-
-        // Keep this for the record. Not needed anymore since extraction of test-options.
-        // if (!jsonParameters.isNull(KEY_USE_TEST_CONNECTION_OPTIONS)) {
-        //     try {
-        //         boolean value = jsonParameters.getBoolean(KEY_USE_TEST_CONNECTION_OPTIONS);
-        //         testOptions.useTestConnectionOptions = value;
-        //     } catch (JSONException e) {
-        //         AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse use test connection options.");
-        //     }
-        // }
 
         if (!jsonParameters.isNull(KEY_TIMER_INTERVAL)) {
             try {

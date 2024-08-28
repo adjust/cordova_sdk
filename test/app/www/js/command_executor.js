@@ -89,11 +89,9 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'config' : this.config(command.params); break;
         case 'start' : this.start(command.params); break;
         case 'event' : this.event(command.params); break;
-        case 'trackEvent' : this.trackEvent(command.params); break;
         case 'resume' : this.resume(command.params); break;
         case 'pause' : this.pause(command.params); break;
         case 'setEnabled' : this.setEnabled(command.params); break;
-        case 'setReferrer' : this.setReferrer(command.params); break;
         case 'setOfflineMode' : this.setOfflineMode(command.params); break;
         case 'addGlobalCallbackParameter' : this.addGlobalCallbackParameter(command.params); break;
         case 'addGlobalPartnerParameter' : this.addGlobalPartnerParameter(command.params); break;
@@ -101,19 +99,21 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'removeGlobalPartnerParameter' : this.removeGlobalPartnerParameter(command.params); break;
         case 'removeGlobalCallbackParameters' : this.removeGlobalCallbackParameters(command.params); break;
         case 'removeGlobalPartnerParameters' : this.removeGlobalPartnerParameters(command.params); break;
+        case 'setReferrer' : this.setReferrer(command.params); break;
         case 'setPushToken' : this.setPushToken(command.params); break;
-        case 'openDeeplink' : this.openDeeplink(command.params); break;
-        case 'sendReferrer' : this.sendReferrer(command.params); break;
         case 'gdprForgetMe' : this.gdprForgetMe(command.params); break;
+        case 'attributionGetter' : this.attributionGetter(command.params); break;
+        case 'trackEvent' : this.trackEvent(command.params); break;
+        case 'trackAdRevenue' : this.trackAdRevenue(command.params); break;
+        case 'trackSubscription' : this.trackAppStoreSubscription(command.params); break;
         case 'thirdPartySharing' : this.trackThirdPartySharing(command.params); break;
         case 'measurementConsent' : this.trackMeasurementConsent(command.params); break;
-        case 'trackSubscription' : this.trackAppStoreSubscription(command.params); break;
-        case 'trackAdRevenue' : this.trackAdRevenue(command.params); break;
-        case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
         case 'verifyPurchase' : this.verifyPurchase(command.params); break;
         case 'verifyTrack' : this.verifyTrack(command.params); break;
+        case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
-        case 'attributionGetter' : this.attributionGetter(command.params); break;
+        case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
+        case 'sendReferrer' : this.sendReferrer(command.params); break;
     }
 
     this.nextToSendCounter++;

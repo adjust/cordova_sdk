@@ -34,10 +34,14 @@ public class AdjustCordovaUtils {
     public static final String KEY_PARTNER_SHARING_SETTINGS                         = "partnerSharingSettings";
     public static final String KEY_PREINSTALL_FILE_PATH                             = "preinstallFilePath";
 
+    public static final String KEY_TEST_URL_OVERWRITE                               = "testUrlOverwrite";
     public static final String KEY_BASE_URL                                         = "baseUrl";
     public static final String KEY_GDPR_URL                                         = "gdprUrl";
     public static final String KEY_SUBSCRIPTION_URL                                 = "subscriptionUrl";
     public static final String KEY_PURCHASE_VERIFICATION_URL                        = "purchaseVerificationUrl";
+
+
+    public static final String KEY_EXTRA_PATH                                       = "extraPath";
     public static final String KEY_BASE_PATH                                        = "basePath";
     public static final String KEY_GDPR_PATH                                        = "gdprPath";
     public static final String KEY_SUBSCRIPTION_PATH                                = "subscriptionPath";
@@ -49,7 +53,9 @@ public class AdjustCordovaUtils {
     public static final String KEY_SUBSESSION_INTERVAL                              = "subsessionIntervalInMilliseconds";
     public static final String KEY_TEARDOWN                                         = "teardown";
     public static final String KEY_NO_BACKOFF_WAIT                                  = "noBackoffWait";
-    public static final String KEY_HAS_CONTEXT                                      = "hasContext";
+//    public static final String KEY_HAS_CONTEXT                                      = "hasContext";
+    public static final String KEY_DELETE_STATE                                      = "deleteState";
+
 
     public static final String KEY_ADID                                             = "adid";
     public static final String KEY_MESSAGE                                          = "message";
