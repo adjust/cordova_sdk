@@ -72,7 +72,7 @@ public class AdjustCordova extends CordovaPlugin implements
         } else if (action.equals(COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETER)) {
             final String key = args.getString(0);
             Adjust.removeGlobalCallbackParameter(key);
-        } else if (action.equals(COMMAND_RESET_GLOBAL_CALLBACK_PARAMETERS)) {
+        } else if (action.equals(COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETERS)) {
             Adjust.removeGlobalCallbackParameters();
         } else if (action.equals(COMMAND_ADD_GLOBAL_PARTNER_PARAMETER)) {
             final String key = args.getString(0);
@@ -81,7 +81,7 @@ public class AdjustCordova extends CordovaPlugin implements
         } else if (action.equals(COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETER)) {
             final String key = args.getString(0);
             Adjust.removeGlobalPartnerParameter(key);
-        } else if (action.equals(COMMAND_RESET_GLOBAL_PARTNER_PARAMETERS)) {
+        } else if (action.equals(COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETERS)) {
             Adjust.removeGlobalPartnerParameters();
         } else if (action.equals(COMMAND_SWITCH_TO_OFFLINE_MODE)) {
             Adjust.switchToOfflineMode();
@@ -875,8 +875,6 @@ public class AdjustCordova extends CordovaPlugin implements
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse testUrlOverwrite.");
             }
-
-
         }
 
         if (!jsonParameters.isNull(KEY_EXTRA_PATH)) {

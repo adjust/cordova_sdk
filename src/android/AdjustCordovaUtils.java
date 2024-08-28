@@ -128,11 +128,11 @@ public class AdjustCordovaUtils {
     // Callback
     public static final String COMMAND_ADD_GLOBAL_CALLBACK_PARAMETER                = "addGlobalCallbackParameter";
     public static final String COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETER             = "removeGlobalCallbackParameter";
-    public static final String COMMAND_RESET_GLOBAL_CALLBACK_PARAMETERS             = "resetGlobalCallbackParameters";
+    public static final String COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETERS            = "removeGlobalCallbackParameters";
     // Partner
     public static final String COMMAND_ADD_GLOBAL_PARTNER_PARAMETER                 = "addGlobalPartnerParameter";
     public static final String COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETER              = "removeGlobalPartnerParameter";
-    public static final String COMMAND_RESET_GLOBAL_PARTNER_PARAMETERS              = "resetGlobalPartnerParameters";
+    public static final String COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETERS             = "removeGlobalPartnerParameters";
     // SDK State commands
     public static final String COMMAND_SWITCH_TO_OFFLINE_MODE                       = "switchToOfflineMode";
     public static final String COMMAND_SWITCH_BACK_TO_ONLINE_MODE                   = "switchBackToOnlineMode";
