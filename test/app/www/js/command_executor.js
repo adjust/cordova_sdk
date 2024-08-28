@@ -316,7 +316,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('cost_amount', attribution.costAmount);
             AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
             if (device.platform === 'Android') {
-                AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
+                AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
             }
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
@@ -612,7 +612,11 @@ AdjustCommandExecutor.prototype.setPushToken = function(params) {
 
 AdjustCommandExecutor.prototype.openDeeplink = function(params) {
     var deeplink = getFirstParameterValue(params, 'deeplink');
-    Adjust.processDeeplink(deeplink);
+    if (typeof deeplink !== 'string') {
+        return;
+    }
+    var adjustDeeplink = new AdjustDeeplink(deeplink);
+    Adjust.processDeeplink(adjustDeeplink);
 };
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
@@ -851,12 +855,21 @@ AdjustCommandExecutor.prototype.verifyTrack = function(params) {
         eventNumber = parseInt(eventName.substr(eventName.length - 1))
     }
     var adjustEvent = this.savedEvents[eventNumber];
-    Adjust.verifyAndTrackAppStorePurchase(adjustEvent, function(verificationResult) {
-        AdjustTest.addInfoToSend('verification_status', verificationResult.verificationStatus);
-        AdjustTest.addInfoToSend('code', verificationResult.code);
-        AdjustTest.addInfoToSend('message', verificationResult.message);
-        AdjustTest.sendInfoToServer(_this.extraPath);
-    });
+    if (device.platform === 'iOS') {
+        Adjust.verifyAndTrackAppStorePurchase(adjustEvent, function(verificationResult) {
+            AdjustTest.addInfoToSend('verification_status', verificationResult.verificationStatus);
+            AdjustTest.addInfoToSend('code', verificationResult.code);
+            AdjustTest.addInfoToSend('message', verificationResult.message);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    } else if (device.platform === 'Android') {
+        Adjust.verifyAndTrackPlayStorePurchase(adjustEvent, function(verificationResult) {
+            AdjustTest.addInfoToSend('verification_status', verificationResult.verificationStatus);
+            AdjustTest.addInfoToSend('code', verificationResult.code);
+            AdjustTest.addInfoToSend('message', verificationResult.message);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    }
 
     delete this.savedEvents[0];
 };
@@ -864,8 +877,12 @@ AdjustCommandExecutor.prototype.verifyTrack = function(params) {
 
 AdjustCommandExecutor.prototype.processDeeplink = function(params) {
     var deeplink = getFirstParameterValue(params, 'deeplink');
+    if (typeof deeplink !== 'string') {
+        return;
+    }
+    var adjustDeeplink = new AdjustDeeplink(deeplink);
     var _this = this;
-    Adjust.processAndResolveDeeplink(deeplink, function(resolvedLink) {
+    Adjust.processAndResolveDeeplink(adjustDeeplink, function(resolvedLink) {
         AdjustTest.addInfoToSend('resolved_link', resolvedLink);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
@@ -885,7 +902,7 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         AdjustTest.addInfoToSend('cost_amount', attribution.costAmount);
         AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
         if (device.platform === 'Android') {
-            AdjustTest.addInfoToSend('fbInstallReferrer', attribution.fbInstallReferrer);
+            AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
         }
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
