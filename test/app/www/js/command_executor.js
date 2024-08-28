@@ -161,6 +161,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         testOptions.adServicesFrameworkEnabled = getFirstParameterValue(params, 'adServicesFrameworkEnabled').toString() === 'true';
     }
 
+    var useTestConnectionOptions = false;
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
         for (var i = 0; i < teardownOptions.length; i++) {
@@ -168,6 +169,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             if ('resetSdk' === option) {
                 testOptions.teardown = true;
                 testOptions.extraPath = this.extraPath;
+                useTestConnectionOptions = true;
                 Adjust.teardown('test');
             }
             if ('deleteState' === option) {
@@ -199,6 +201,9 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     }
 
     Adjust.setTestOptions(testOptions);
+    if (useTestConnectionOptions == true) {
+        AdjustTest.setTestConnectionOptions();
+    }
 };
 
 AdjustCommandExecutor.prototype.config = function(params) {
