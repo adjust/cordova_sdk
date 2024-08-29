@@ -119,7 +119,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_REFERRER                                 = "setReferrer";
     // Getters commands
     public static final String COMMAND_GET_ATTRIBUTION                              = "getAttribution";
-    public static final String COMMAND_GET_ADID                                     = "getAdId";
+    public static final String COMMAND_GET_ADID                                     = "getAdid";
     public static final String COMMAND_GET_GOOGLE_AD_ID                             = "getGoogleAdId";
     public static final String COMMAND_GET_AMAZON_AD_ID                             = "getAmazonAdId";
     public static final String COMMAND_GET_SDK_VERSION                              = "getSdkVersion";

@@ -56,7 +56,7 @@ public class AdjustCordova extends CordovaPlugin implements
         } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
             executeGetAttribution(callbackContext);
         } else if (action.equals(COMMAND_GET_ADID)) {
-            executeGetAdId(callbackContext);
+            executeGetAdid(callbackContext);
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             executeGetGoogleAdid(callbackContext);
         } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
@@ -441,7 +441,7 @@ public class AdjustCordova extends CordovaPlugin implements
         });
     }
 
-    private void executeGetAdId(final CallbackContext callbackContext) throws JSONException {
+    private void executeGetAdid(final CallbackContext callbackContext) throws JSONException {
         Adjust.getAdid(new OnAdidReadListener() {
             @Override
             public void onAdidRead(String adid) {

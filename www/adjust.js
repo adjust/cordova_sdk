@@ -89,8 +89,8 @@ var Adjust = {
         callCordovaCallback('getAttribution', callback);
     },
 
-    getAdId: function(callback) {
-        callCordovaCallback('getAdId', callback);
+    getAdid: function(callback) {
+        callCordovaCallback('getAdid', callback);
     },
 
     getGoogleAdId: function(callback) {
