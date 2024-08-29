@@ -319,7 +319,7 @@
     }];
 }
 
-- (void)getAdId:(CDVInvokedUrlCommand *)command {
+- (void)getAdid:(CDVInvokedUrlCommand *)command {
     [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];

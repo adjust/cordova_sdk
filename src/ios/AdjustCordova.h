@@ -30,7 +30,7 @@
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 // Getters
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
-- (void)getAdId:(CDVInvokedUrlCommand *)command;
+- (void)getAdid:(CDVInvokedUrlCommand *)command;
 - (void)getIdfa:(CDVInvokedUrlCommand *)command;
 - (void)getIdfv:(CDVInvokedUrlCommand *)command;
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command;
