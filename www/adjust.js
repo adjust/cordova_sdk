@@ -269,7 +269,4 @@ function onResume() {
     callCordova('onResume');
 }
 
-document.addEventListener('resume', onResume, false);
-document.addEventListener('pause', onPause, false);
-
 module.exports = Adjust;

@@ -54,7 +54,8 @@ public class AdjustCordovaUtils {
     public static final String KEY_TEARDOWN                                         = "teardown";
     public static final String KEY_NO_BACKOFF_WAIT                                  = "noBackoffWait";
 //    public static final String KEY_HAS_CONTEXT                                      = "hasContext";
-    public static final String KEY_DELETE_STATE                                      = "deleteState";
+    public static final String KEY_DELETE_STATE                                     = "deleteState";
+    public static final String KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP                = "ignoreSystemLifecycleBootstrap";
 
 
     public static final String KEY_ADID                                             = "adid";

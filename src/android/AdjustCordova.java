@@ -413,9 +413,6 @@ public class AdjustCordova extends CordovaPlugin implements
 
         // Start SDK.
         Adjust.initSdk(adjustConfig);
-        // Needed because Cordova doesn't launch 'resume' event on app start.
-        // It initializes it only when app comes back from the background.
-        Adjust.onResume();
     }
 
     private void executeGetGoogleAdid(final CallbackContext callbackContext) throws JSONException {
@@ -940,6 +937,15 @@ public class AdjustCordova extends CordovaPlugin implements
                 testOptions.noBackoffWait = noBackoffWait;
             } catch (JSONException e) {
                 AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse noBackoffWait.");
+            }
+        }
+
+        if (!jsonParameters.isNull(KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP)) {
+            try {
+                boolean ignoreSystemLifecycleBootstrap = jsonParameters.getBoolean(KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP);
+                testOptions.ignoreSystemLifecycleBootstrap = ignoreSystemLifecycleBootstrap;
+            } catch (JSONException e) {
+                AdjustFactory.getLogger().error("[AdjustCordova]: Unable to parse ignoreSystemLifecycleBootstrap.");
             }
         }
 

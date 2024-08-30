@@ -161,6 +161,13 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         testOptions.adServicesFrameworkEnabled = getFirstParameterValue(params, 'adServicesFrameworkEnabled').toString() === 'true';
     }
 
+    if ('doNotIgnoreSystemLifecycleBootstrap' in params) {
+         var doNotIgnoreSystemLifecycleBootstrap = getFirstParameterValue(params, 'doNotIgnoreSystemLifecycleBootstrap').toString() === 'true';
+         if (doNotIgnoreSystemLifecycleBootstrap) {
+             testOptions.ignoreSystemLifecycleBootstrap = false;
+         }
+     }
+
     var useTestConnectionOptions = false;
     if ('teardown' in params) {
         var teardownOptions = getValueFromKey(params, 'teardown');
