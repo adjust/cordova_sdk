@@ -50,6 +50,7 @@
 #define KEY_ATT_STATUS                              @"attStatus"
 #define KEY_IDFA                                    @"idfa"
 #define KEY_DELETE_STATE                            @"deleteState"
+#define KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP       @"ignoreSystemLifecycleBootstrap"
 #define KEY_ADSERVICES_ENABLED                      @"adServicesFrameworkEnabled"
 #define KEY_PRICE                                   @"price"
 #define KEY_TRANSACTION_DATE                        @"transactionDate"
@@ -251,7 +252,6 @@
 
     // Start SDK.
     [Adjust initSdk:adjustConfig];
-    [Adjust trackSubsessionStart];
 }
 
 #pragma mark - Adjust API Callbacks setters
@@ -851,6 +851,7 @@
     NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
     NSString *teardown = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
     NSString *deleteState = [[command.arguments valueForKey:KEY_DELETE_STATE] objectAtIndex:0];
+    NSString *ignoreSystemLifecycleBootstrap = [[command.arguments valueForKey:KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP] objectAtIndex:0];
     NSString *noBackoffWait = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
     NSString *adServicesFrameworkEnabled = [[command.arguments valueForKey:KEY_ADSERVICES_ENABLED] objectAtIndex:0];
     NSString *attStatus = [[command.arguments valueForKey:KEY_ATT_STATUS] objectAtIndex:0];
@@ -859,66 +860,54 @@
     NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
 
     if ([self isFieldValid:testUrlOverwrite]) {
-        [testOptions setObject:testUrlOverwrite forKey:@"testUrlOverwrite"];
+        [testOptions setObject:testUrlOverwrite forKey:KEY_TEST_URL_OVERWRITE];
     }
     if ([self isFieldValid:extraPath]) {
-        [testOptions setObject:extraPath forKey:@"extraPath"];
+        [testOptions setObject:extraPath forKey:KEY_EXTRA_PATH];
     }
-
-    // TODO: Check usage of all the time test options  seconds vs milliseconds
     if ([self isFieldValid:timerInterval]) {
-        //testOptions.timerIntervalInMilliseconds = [self convertMilliStringToNumber:timerInterval];
         NSNumber *timerIntervalInMilliseconds = [self convertMilliStringToNumber:timerInterval];
-        [testOptions setObject:timerIntervalInMilliseconds forKey:@"timerIntervalInMilliseconds"];
+        [testOptions setObject:timerIntervalInMilliseconds forKey:KEY_TIMER_INTERVAL];
     }
-
     if ([self isFieldValid:timerStart]) {
-        //testOptions.timerStartInMilliseconds = [self convertMilliStringToNumber:timerStart];
         NSNumber *timerStartInMilliseconds = [self convertMilliStringToNumber:timerStart];
-        [testOptions setObject:timerStartInMilliseconds forKey:@"timerStartInMilliseconds"];
+        [testOptions setObject:timerStartInMilliseconds forKey:KEY_TIMER_START];
     }
     if ([self isFieldValid:sessionInterval]) {
-        //testOptions.sessionIntervalInMilliseconds = [self convertMilliStringToNumber:sessionInterval];
         NSNumber *sessionIntervalInMilliseconds = [self convertMilliStringToNumber:sessionInterval];
-        [testOptions setObject:sessionIntervalInMilliseconds forKey:@"sessionIntervalInMilliseconds"];
+        [testOptions setObject:sessionIntervalInMilliseconds forKey:KEY_SESSION_INTERVAL];
     }
     if ([self isFieldValid:subsessionInterval]) {
-        //testOptions.subsessionIntervalInMilliseconds = [self convertMilliStringToNumber:subsessionInterval];
         NSNumber *subsessionIntervalInMilliseconds = [self convertMilliStringToNumber:subsessionInterval];
-        [testOptions setObject:subsessionIntervalInMilliseconds forKey:@"subsessionIntervalInMilliseconds"];
+        [testOptions setObject:subsessionIntervalInMilliseconds forKey:KEY_SUBSESSION_INTERVAL];
     }
     if ([self isFieldValid:attStatus]) {
-        //testOptions.attStatusInt = [NSNumber numberWithInt:[attStatus intValue]];
         NSNumber *attStatusNum = [NSNumber numberWithInt:[attStatus intValue]];
         [testOptions setObject:attStatusNum forKey:@"attStatusInt"];
     }
     if ([self isFieldValid:idfa]) {
-        //testOptions.idfa = idfa;
-        [testOptions setObject:idfa forKey:@"idfa"];
+        [testOptions setObject:idfa forKey:KEY_IDFA];
     }
-
     if ([self isFieldValid:deleteState]) {
-        //testOptions.teardown = [teardown boolValue];
         NSNumber *deleteStateNumber = [NSNumber numberWithBool:[deleteState boolValue]];
-        [testOptions setObject:deleteStateNumber forKey:@"deleteState"];
+        [testOptions setObject:deleteStateNumber forKey:KEY_DELETE_STATE];
     }
-
-
     if ([self isFieldValid:teardown]) {
-        //testOptions.teardown = [teardown boolValue];
         NSNumber *tearDownNumber = [NSNumber numberWithBool:[teardown boolValue]];
-        [testOptions setObject:tearDownNumber forKey:@"teardown"];
+        [testOptions setObject:tearDownNumber forKey:KEY_TEARDOWN];
     }
     if ([self isFieldValid:noBackoffWait]) {
-        //testOptions.noBackoffWait = [noBackoffWait boolValue];
         NSNumber *noBackoffWaitNum = [NSNumber numberWithBool:[noBackoffWait boolValue]];
-        [testOptions setObject:noBackoffWaitNum forKey:@"noBackoffWait"];
+        [testOptions setObject:noBackoffWaitNum forKey:KEY_NO_BACKOFF_WAIT];
 
     }
     if ([self isFieldValid:adServicesFrameworkEnabled]) {
-        //testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
         NSNumber *adServicesFrameworkEnabledNum = [NSNumber numberWithBool:[adServicesFrameworkEnabled boolValue]];
-        [testOptions setObject:adServicesFrameworkEnabledNum forKey:@"adServicesFrameworkEnabled"];
+        [testOptions setObject:adServicesFrameworkEnabledNum forKey:KEY_ADSERVICES_ENABLED];
+    }
+    if ([self isFieldValid:ignoreSystemLifecycleBootstrap]) {
+        NSNumber *ignoreSystemLifecycleBootstrapNum = [NSNumber numberWithBool:[ignoreSystemLifecycleBootstrap boolValue]];
+        [testOptions setObject:ignoreSystemLifecycleBootstrapNum forKey:KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP];
     }
 
     [Adjust setTestOptions:testOptions];
