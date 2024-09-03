@@ -29,7 +29,7 @@
 #define KEY_GRANULAR_OPTIONS                        @"granularOptions"
 #define KEY_PARTNER_SHARING_SETTINGS                @"partnerSharingSettings"
 #define KEY_REFERRER                                @"referrer"
-#define KEY_SHOULD_LAUNCH_DEEPLINK                  @"shouldLaunchDeeplink"
+#define KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED   @"isDeferredDeeplinkOpeningEnabled"
 #define KEY_IS_SENDING_IN_BACKGROUND_ENABLED        @"isSendingInBackgroundEnabled"
 #define KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED     @"isCostDataInAttributionEnabled"
 #define KEY_IS_AD_SERVICES_ENABLED                  @"isAdServicesEnabled"
@@ -67,7 +67,7 @@
 #define KEY_URL_STRATEGY_DOMAINS                    @"urlStrategyDomains"
 #define KEY_USE_SUBDOMAINS                          @"useSubdomains"
 #define KEY_IS_DATA_RESIDENCY                       @"isDataResidency"
-#define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE        @"eventDeduplicationIdsnMaxSize"
+#define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE        @"eventDeduplicationIdsMaxSize"
 #define KEY_DEEPLINK                                @"deeplink"
 
 
@@ -96,18 +96,17 @@
 
 #pragma mark - Public methods
 #pragma mark - Create
-- (void)create:(CDVInvokedUrlCommand *)command {
+- (void)initSdk:(CDVInvokedUrlCommand *)command {
     NSString *arguments = [command.arguments objectAtIndex:0];
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                           options:0
                                                             error:NULL];
-
     NSString *appToken = [[jsonObject valueForKey:KEY_APP_TOKEN] objectAtIndex:0];
     NSString *environment = [[jsonObject valueForKey:KEY_ENVIRONMENT] objectAtIndex:0];
     NSString *logLevel = [[jsonObject valueForKey:KEY_LOG_LEVEL] objectAtIndex:0];
     NSString *defaultTracker = [[jsonObject valueForKey:KEY_DEFAULT_TRACKER] objectAtIndex:0];
     NSString *externalDeviceId = [[jsonObject valueForKey:KEY_EXTERNAL_DEVICE_ID] objectAtIndex:0];
-    NSNumber *eventDeduplicationIdsnMaxSize = [[jsonObject valueForKey:KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE] objectAtIndex:0];
+    NSNumber *eventDeduplicationIdsMaxSize = [[jsonObject valueForKey:KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE] objectAtIndex:0];
     NSNumber *isAdServicesEnabled = [[jsonObject valueForKey:KEY_IS_AD_SERVICES_ENABLED] objectAtIndex:0];
     NSNumber *isIdfaReadingEnabled = [[jsonObject valueForKey:KEY_IS_IDFA_READING_ENABLED] objectAtIndex:0];
     NSNumber *isIdfvReadingEnabled = [[jsonObject valueForKey:KEY_IS_IDFV_READING_ENABLED] objectAtIndex:0];
@@ -116,15 +115,13 @@
     NSNumber *isCoppaComplianceEnabled = [[jsonObject valueForKey:KEY_IS_COPPA_COMPLIANCE_ENABLED] objectAtIndex:0];
     NSNumber *isDeviceIdsReadingOnceEnabled = [[jsonObject valueForKey:KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED] objectAtIndex:0];
     NSNumber *isSendingInBackgroundEnabled = [[jsonObject valueForKey:KEY_IS_SENDING_IN_BACKGROUND_ENABLED] objectAtIndex:0];
-    NSNumber *shouldLaunchDeeplink = [[jsonObject valueForKey:KEY_SHOULD_LAUNCH_DEEPLINK] objectAtIndex:0];
+    NSNumber *isDeferredDeeplinkOpeningEnabled = [[jsonObject valueForKey:KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED] objectAtIndex:0];
     NSNumber *isCostDataInAttributionEnabled = [[jsonObject valueForKey:KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED] objectAtIndex:0];
     NSNumber *attConsentWaitingInterval = [[jsonObject valueForKey:KEY_ATT_CONSENT_WAITING_INTERVAL] objectAtIndex:0];
     NSString *sdkPrefix = [[jsonObject valueForKey:KEY_SDK_PREFIX] objectAtIndex:0];
-    
-    // TODO: Implement the following 3 fields
-    //id urlStrategyDomains = [[jsonObject valueForKey:KEY_URL_STRATEGY_DOMAINS] objectAtIndex:0];
-    //NSNumber *useSubdomains = [[jsonObject valueForKey:KEY_USE_SUBDOMAINS] objectAtIndex:0];
-    //NSNumber *isDataResidency = [[jsonObject valueForKey:KEY_IS_DATA_RESIDENCY] objectAtIndex:0];
+    id urlStrategyDomains = [[jsonObject valueForKey:KEY_URL_STRATEGY_DOMAINS] objectAtIndex:0];
+    NSNumber *useSubdomains = [[jsonObject valueForKey:KEY_USE_SUBDOMAINS] objectAtIndex:0];
+    NSNumber *isDataResidency = [[jsonObject valueForKey:KEY_IS_DATA_RESIDENCY] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = NO;
 
@@ -174,8 +171,8 @@
         [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingInterval intValue]];
     }
 
-    if ([self isFieldValid:eventDeduplicationIdsnMaxSize]) {
-        [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsnMaxSize integerValue]];
+    if ([self isFieldValid:eventDeduplicationIdsMaxSize]) {
+        [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
     }
 
     // Send in background.
@@ -226,8 +223,23 @@
         [adjustConfig enableCoppaCompliance];
     }
 
+    // Url Strategy
+    if ([self isFieldValid:urlStrategyDomains] &&
+        [urlStrategyDomains count] > 0 &&
+        [self isFieldValid:useSubdomains] &&
+        [self isFieldValid:isDataResidency]) {
+        
+        NSMutableArray *urlStrategyDomainsArray = [NSMutableArray array];
+        for (int i = 0; i < [urlStrategyDomains count]; i += 1) {
+            NSString *domain = [[urlStrategyDomains objectAtIndex:i] description];
+            [urlStrategyDomainsArray addObject:domain];
+        }
+        [adjustConfig setUrlStrategy:urlStrategyDomains
+                       useSubdomains:[useSubdomains boolValue]
+                     isDataResidency:[isDataResidency boolValue]];
+    }
 
-    BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:shouldLaunchDeeplink] ? [shouldLaunchDeeplink boolValue] : YES;
+    BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:isDeferredDeeplinkOpeningEnabled] ? [isDeferredDeeplinkOpeningEnabled boolValue] : YES;
 
     // Attribution delegate & other delegates
     if (attributionChangedCallbackId != nil

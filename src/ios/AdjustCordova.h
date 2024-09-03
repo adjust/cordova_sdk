@@ -16,7 +16,7 @@
 @interface AdjustCordova : CDVPlugin
 
 // Initialization
-- (void)create:(CDVInvokedUrlCommand *)command;
+- (void)initSdk:(CDVInvokedUrlCommand *)command;
 // Adjust API Callbacks setters
 - (void)setAttributionChangedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
