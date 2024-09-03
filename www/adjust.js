@@ -48,7 +48,7 @@ function callCordovaStringifyCallback(action, data, callback) {
 }
 
 var Adjust = {
-    create: function(adjustConfig) {
+    initSdk: function(adjustConfig) {
         if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
         }
@@ -74,7 +74,7 @@ var Adjust = {
             callCordovaCallback('setSkanConversionDataUpdatedCallback', adjustConfig.getSkanConversionDataUpdatedCallback());
         }
 
-        callCordovaStringify('create', adjustConfig);
+        callCordovaStringify('initSdk', adjustConfig);
     },
 
     setPushToken: function(pushToken) {

@@ -1,6 +1,9 @@
 package com.adjust.sdk;
 
 import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import android.net.Uri;
@@ -12,6 +15,7 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult.Status;
+
 import static com.adjust.sdk.AdjustCordovaUtils.*;
 
 public class AdjustCordova extends CordovaPlugin implements
@@ -21,7 +25,7 @@ public class AdjustCordova extends CordovaPlugin implements
         OnSessionTrackingSucceededListener,
         OnSessionTrackingFailedListener,
         OnDeferredDeeplinkResponseListener {
-    private boolean shouldLaunchDeeplink = true;
+    private boolean isDeferredDeeplinkOpeningEnabled = true;
     private CallbackContext attributionChangedCallbackContext;
     private CallbackContext eventTrackingSucceededCallbackContext;
     private CallbackContext eventTrackingFailedCallbackContext;
@@ -32,8 +36,8 @@ public class AdjustCordova extends CordovaPlugin implements
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-        if (action.equals(COMMAND_CREATE)) {
-            executeCreate(args);
+        if (action.equals(COMMAND_INIT_SDK)) {
+            executeInitSdk(args);
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CHANGED_CALLBACK)) {
             attributionChangedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK)) {
@@ -100,7 +104,7 @@ public class AdjustCordova extends CordovaPlugin implements
         } else if (action.equals(COMMAND_ON_RESUME)) {
             Adjust.onResume();
         } else if (action.equals(COMMAND_TRACK_EVENT)) {
-                executeTrackEvent(args);
+            executeTrackEvent(args);
         } else if (action.equals(COMMAND_TRACK_AD_REVENUE)) {
             if (args.length() != 1) {
                 AdjustFactory.getLogger().error(String.format("[AdjustCordova]: Invalid call (%s). Only one parameter is supported!", action));
@@ -121,13 +125,13 @@ public class AdjustCordova extends CordovaPlugin implements
                 Adjust.trackMeasurementConsent(isEnabled);
             }
         } else if (action.equals(COMMAND_PROCESS_DEEPLINK)) {
-           if (executeProcessDeeplink(args) == false) {
-               return false;
-           }
+            if (executeProcessDeeplink(args) == false) {
+                return false;
+            }
         } else if (action.equals(COMMAND_PROCESS_AND_RESOLVE_DEEPLINK)) {
-           if (executeProcessAndResolveDeeplink(args, callbackContext) == false) {
-               return false;
-           }
+            if (executeProcessAndResolveDeeplink(args, callbackContext) == false) {
+                return false;
+            }
         } else if (action.equals(COMMAND_GET_LAST_DEEPLINK)) {
             executeGetLastDeeplink(callbackContext);
         } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
@@ -154,7 +158,7 @@ public class AdjustCordova extends CordovaPlugin implements
             PluginResult pluginResult = new PluginResult(Status.OK, idfv);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
-        }  else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
+        } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
             attributionChangedCallbackContext = null;
@@ -163,7 +167,7 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingSucceededCallbackContext = null;
             sessionTrackingFailedCallbackContext = null;
             deferredDeeplinkReceivedCallbackContext = null;
-            shouldLaunchDeeplink = true;
+            isDeferredDeeplinkOpeningEnabled = true;
         } else {
             Logger logger = (Logger) AdjustFactory.getLogger();
             logger.error(String.format("[AdjustCordova]: Invalid call (%s).", action));
@@ -172,7 +176,7 @@ public class AdjustCordova extends CordovaPlugin implements
         return true;
     }
 
-    private void executeCreate(final JSONArray args) throws JSONException {
+    private void executeInitSdk(final JSONArray args) throws JSONException {
         String params = args.getString(0);
         JSONArray jsonArrayParams = new JSONArray(params);
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
@@ -180,88 +184,27 @@ public class AdjustCordova extends CordovaPlugin implements
 
         String appToken = null;
         String environment = null;
-        String defaultTracker = null;
-        String externalDeviceId = null;
-        String processName = null;
         String logLevel = null;
-        String sdkPrefix = null;
-        String preinstallFilePath = null;
-        String fbAppId = null;
-        Integer eventDeduplicationIdsMaxSize = -1;
-        boolean shouldLaunchDeeplink = true;
-        boolean preinstallTrackingEnabled = false;
-        boolean oaidReadingEnabled = false;
         boolean isLogLevelSuppress = false;
-        boolean isSendingInBackgroundEnabled = false;
-        boolean isCoppaComplianceEnabled = false;
-        boolean isCostDataInAttributionEnabled = false;
-        boolean isDeviceIdsReadingOnceEnabled = false;
-        boolean playStoreKidsAppEnabled = false;
 
+        // App Token
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
         }
+        // Environment
         if (parameters.containsKey(KEY_ENVIRONMENT)) {
             environment = parameters.get(KEY_ENVIRONMENT).toString();
         }
-        if (parameters.containsKey(KEY_DEFAULT_TRACKER)) {
-            defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
-        }
-        if (parameters.containsKey(KEY_EXTERNAL_DEVICE_ID)) {
-            externalDeviceId = parameters.get(KEY_EXTERNAL_DEVICE_ID).toString();
-        }
-        if (parameters.containsKey(KEY_PROCESS_NAME)) {
-            processName = parameters.get(KEY_PROCESS_NAME).toString();
-        }
+        // Log Level Suppress
         if (parameters.containsKey(KEY_LOG_LEVEL)) {
             logLevel = parameters.get(KEY_LOG_LEVEL).toString().toUpperCase();
-        }
-        if (parameters.containsKey(KEY_SDK_PREFIX)) {
-            sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
-        }
-        if (parameters.containsKey(KEY_PREINSTALL_FILE_PATH)) {
-            preinstallFilePath = parameters.get(KEY_PREINSTALL_FILE_PATH).toString();
-        }
-        if (parameters.containsKey(KEY_FB_APP_ID)) {
-            fbAppId = parameters.get(KEY_FB_APP_ID).toString();
-        }
-        if (parameters.containsKey(KEY_SHOULD_LAUNCH_DEEPLINK)) {
-            shouldLaunchDeeplink = parameters.get(KEY_SHOULD_LAUNCH_DEEPLINK).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_PREINSTALL_TRACKING_ENABLED)) {
-            preinstallTrackingEnabled = parameters.get(KEY_PREINSTALL_TRACKING_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_OAID_READING_ENABLED)) {
-            oaidReadingEnabled = parameters.get(KEY_OAID_READING_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_IS_SENDING_IN_BACKGROUND_ENABLED)) {
-            isSendingInBackgroundEnabled = parameters.get(KEY_IS_SENDING_IN_BACKGROUND_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED)) {
-            isCostDataInAttributionEnabled = parameters.get(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_IS_COPPA_COMPLIANCE_ENABLED)) {
-            isCoppaComplianceEnabled = parameters.get(KEY_IS_COPPA_COMPLIANCE_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED)) {
-            isDeviceIdsReadingOnceEnabled = parameters.get(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED).toString() == "true" ? true : false;
-        }
-        if (parameters.containsKey(KEY_PLAY_STORE_KIDS_APP_ENABLED)) {
-            playStoreKidsAppEnabled = parameters.get(KEY_PLAY_STORE_KIDS_APP_ENABLED).toString() == "true" ? true : false;
-        }
-
-        if(parameters.containsKey(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE)) {
-            Object obj = parameters.get(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE);
-            if (obj instanceof Integer) {
-                eventDeduplicationIdsMaxSize = (Integer) obj;
+            if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
+                isLogLevelSuppress = true;
             }
         }
 
-        if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
-            isLogLevelSuppress = true;
-        }
-
-        final AdjustConfig adjustConfig = new AdjustConfig(this.cordova.getActivity().getApplicationContext(),
+        final AdjustConfig adjustConfig = new AdjustConfig(
+                this.cordova.getActivity().getApplicationContext(),
                 appToken,
                 environment,
                 isLogLevelSuppress);
@@ -269,98 +212,197 @@ public class AdjustCordova extends CordovaPlugin implements
             return;
         }
 
-        // Log level.
-        if (isFieldValid(logLevel)) {
-            if (logLevel.equals("VERBOSE")) {
-                adjustConfig.setLogLevel(LogLevel.VERBOSE);
-            } else if (logLevel.equals("DEBUG")) {
-                adjustConfig.setLogLevel(LogLevel.DEBUG);
-            } else if (logLevel.equals("INFO")) {
-                adjustConfig.setLogLevel(LogLevel.INFO);
-            } else if (logLevel.equals("WARN")) {
-                adjustConfig.setLogLevel(LogLevel.WARN);
-            } else if (logLevel.equals("ERROR")) {
-                adjustConfig.setLogLevel(LogLevel.ERROR);
-            } else if (logLevel.equals("ASSERT")) {
-                adjustConfig.setLogLevel(LogLevel.ASSERT);
-            } else if (logLevel.equals("SUPPRESS")) {
-                adjustConfig.setLogLevel(LogLevel.SUPRESS);
-            } else {
-                adjustConfig.setLogLevel(LogLevel.INFO);
+        // SDK prefix.
+        if (parameters.containsKey(KEY_SDK_PREFIX)) {
+            String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
+            if (isFieldValid(sdkPrefix)) {
+                adjustConfig.setSdkPrefix(sdkPrefix);
             }
         }
 
-        // SDK prefix.
-        if (isFieldValid(sdkPrefix)) {
-            adjustConfig.setSdkPrefix(sdkPrefix);
+        // Log level.
+        if (isFieldValid(logLevel)) {
+            switch (logLevel) {
+                case "VERBOSE":
+                    adjustConfig.setLogLevel(LogLevel.VERBOSE);
+                    break;
+                case "DEBUG":
+                    adjustConfig.setLogLevel(LogLevel.DEBUG);
+                    break;
+                case "WARN":
+                    adjustConfig.setLogLevel(LogLevel.WARN);
+                    break;
+                case "ERROR":
+                    adjustConfig.setLogLevel(LogLevel.ERROR);
+                    break;
+                case "ASSERT":
+                    adjustConfig.setLogLevel(LogLevel.ASSERT);
+                    break;
+                case "SUPPRESS":
+                    adjustConfig.setLogLevel(LogLevel.SUPRESS);
+                    break;
+                case "INFO":
+                default:
+                    adjustConfig.setLogLevel(LogLevel.INFO);
+                    break;
+            }
+        }
+
+        // COPPA compliance
+        if (parameters.containsKey(KEY_IS_COPPA_COMPLIANCE_ENABLED)) {
+            String strIsCoppaComplianceEnabled = parameters.get(KEY_IS_COPPA_COMPLIANCE_ENABLED).toString();
+            boolean isCoppaComplianceEnabled = Boolean.parseBoolean(strIsCoppaComplianceEnabled);
+            if (isCoppaComplianceEnabled) {
+                adjustConfig.enableCoppaCompliance();
+            }
+        }
+
+        // Google Play Store kids compliance
+        if (parameters.containsKey(KEY_IS_PLAY_STORE_KIDS_APP_ENABLED)) {
+            String strIsPlayStoreKidsComplianceEnabled = parameters.get(KEY_IS_PLAY_STORE_KIDS_APP_ENABLED).toString();
+            boolean isPlayStoreKidsComplianceEnabled = Boolean.parseBoolean(strIsPlayStoreKidsComplianceEnabled);
+            if (isPlayStoreKidsComplianceEnabled) {
+                adjustConfig.enablePlayStoreKidsCompliance();
+            }
+        }
+
+        // Read device info only once
+        if (parameters.containsKey(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED)) {
+            String strIsDeviceIdsReadingOnceEnabled = parameters.get(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED).toString();
+            boolean isDeviceIdsReadingOnceEnabled = Boolean.parseBoolean(strIsDeviceIdsReadingOnceEnabled);
+            if (isDeviceIdsReadingOnceEnabled) {
+                adjustConfig.enableDeviceIdsReadingOnce();
+            }
+        }
+
+        // Event deduplication buffer size
+        if (parameters.containsKey(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE)) {
+            String strEventDeduplicationIdsMaxSize = parameters.get(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE).toString();
+            try {
+                int eventDeduplicationIdsMaxSize = Integer.valueOf(strEventDeduplicationIdsMaxSize);
+                adjustConfig.setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize);
+            } catch (Exception e) {}
+        }
+
+        // URL strategy
+        if (parameters.containsKey(KEY_URL_STRATEGY_DOMAINS) &&
+                parameters.containsKey(KEY_USE_SUBDOMAINS) &&
+                parameters.containsKey(KEY_IS_DATA_RESIDENCY)) {
+            String strUrlStrategyDomains = parameters.get(KEY_URL_STRATEGY_DOMAINS).toString();
+            try {
+                JSONArray jsonArray = new JSONArray(strUrlStrategyDomains);
+                ArrayList<String> urlStrategyDomainsArray = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i += 1) {
+                    urlStrategyDomainsArray.add((String) jsonArray.get(i));
+                }
+                String strShouldUseSubdomains = parameters.get(KEY_USE_SUBDOMAINS).toString();
+                boolean useSubdomains = Boolean.parseBoolean(strShouldUseSubdomains);
+
+                String strIsDataResidency = parameters.get(KEY_IS_DATA_RESIDENCY).toString();
+                boolean isDataResidency = Boolean.parseBoolean(strIsDataResidency);
+
+                adjustConfig.setUrlStrategy(urlStrategyDomainsArray, useSubdomains, isDataResidency);
+            } catch (JSONException ignored) {}
         }
 
         // Main process name.
-        if (isFieldValid(processName)) {
-            adjustConfig.setProcessName(processName);
+        if (parameters.containsKey(KEY_PROCESS_NAME)) {
+            String processName = parameters.get(KEY_PROCESS_NAME).toString();
+            if (isFieldValid(processName)) {
+                adjustConfig.setProcessName(processName);
+            }
         }
 
-        // Default tracker.
-        if (isFieldValid(defaultTracker)) {
-            adjustConfig.setDefaultTracker(defaultTracker);
+        // Default tracker
+        if (parameters.containsKey(KEY_DEFAULT_TRACKER)) {
+            String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
+            if (isFieldValid(defaultTracker)) {
+                adjustConfig.setDefaultTracker(defaultTracker);
+            }
         }
 
-        // External device ID.
-        if (isFieldValid(externalDeviceId)) {
-            adjustConfig.setExternalDeviceId(externalDeviceId);
+        // External device ID
+        if (parameters.containsKey(KEY_EXTERNAL_DEVICE_ID)) {
+            String externalDeviceId = parameters.get(KEY_EXTERNAL_DEVICE_ID).toString();
+            if (isFieldValid(externalDeviceId)) {
+                adjustConfig.setExternalDeviceId(externalDeviceId);
+            }
         }
 
-        // URL strategy.
-        // TODO: GENA - Implement the following parameters when the requirements are clear
-        // KEY_URL_STRATEGY_DOMAINS, KEY_USE_SUBDOMAINS, KEY_IS_DATA_RESIDENCY
-
-        // Preinstall file path.
-        if (isFieldValid(preinstallFilePath)) {
-            adjustConfig.setPreinstallFilePath(preinstallFilePath);
+        // Custom preinstall file path.
+        if (parameters.containsKey(KEY_PREINSTALL_FILE_PATH)) {
+            String preinstallFilePath = parameters.get(KEY_PREINSTALL_FILE_PATH).toString();
+            if (isFieldValid(preinstallFilePath)) {
+                adjustConfig.setPreinstallFilePath(preinstallFilePath);
+            }
         }
 
-        // FB app ID (meta install referrer).
-        if (isFieldValid(fbAppId)) {
-            adjustConfig.setFbAppId(fbAppId);
+        // FB app ID (META install referrer).
+        if (parameters.containsKey(KEY_FB_APP_ID)) {
+            String fbAppId = parameters.get(KEY_FB_APP_ID).toString();
+            if (isFieldValid(fbAppId)) {
+                adjustConfig.setFbAppId(fbAppId);
+            }
         }
 
-        // COPPA compliant.
-        if (isCoppaComplianceEnabled) {
-            adjustConfig.enableCoppaCompliance();
+        // Sending in background
+        if (parameters.containsKey(KEY_IS_SENDING_IN_BACKGROUND_ENABLED)) {
+            String strIsSendingInBackgroundEnabled = parameters.get(KEY_IS_SENDING_IN_BACKGROUND_ENABLED).toString();
+            boolean isSendingInBackgroundEnabled = Boolean.parseBoolean(strIsSendingInBackgroundEnabled);
+            if (isSendingInBackgroundEnabled) {
+                adjustConfig.enableSendingInBackground();
+            }
         }
 
-        // Play Store Kids App.
-        if (playStoreKidsAppEnabled) {
-            adjustConfig.enablePlayStoreKidsCompliance();
+        // Cost data in attribution callback
+        if (parameters.containsKey(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED)) {
+            String strIsCostDataInAttributionEnabled = parameters.get(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED).toString();
+            boolean isCostDataInAttributionEnabled = Boolean.parseBoolean(strIsCostDataInAttributionEnabled);
+            if (isCostDataInAttributionEnabled) {
+                adjustConfig.enableCostDataInAttribution();
+            }
         }
 
-        // Read device info just once.
-        if (isDeviceIdsReadingOnceEnabled) {
-            adjustConfig.enableDeviceIdsReadingOnce();
-        }
-
-        // Background tracking.
-        if (isSendingInBackgroundEnabled) {
-            adjustConfig.enableSendingInBackground();
+        // Preinstall tracking
+        if (parameters.containsKey(KEY_IS_PREINSTALL_TRACKING_ENABLED)) {
+            String strIsPreinstallTrackingEnabled = parameters.get(KEY_IS_PREINSTALL_TRACKING_ENABLED).toString();
+            boolean isPreinstallTrackingEnabled = Boolean.parseBoolean(strIsPreinstallTrackingEnabled);
+            if (isPreinstallTrackingEnabled) {
+                adjustConfig.enablePreinstallTracking();
+            }
         }
 
         // Launching deferred deep link.
-        this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-
-        // Cost data.
-        if (isCostDataInAttributionEnabled) {
-            adjustConfig.enableCostDataInAttribution();
+        if (parameters.containsKey(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED)) {
+            String strIsDeferredDeeplinkOpeningEnabled = parameters.get(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED).toString();
+            isDeferredDeeplinkOpeningEnabled = strIsDeferredDeeplinkOpeningEnabled.equals("true");
         }
 
-        // Preinstall tracking enabled.
-        if (preinstallTrackingEnabled) {
-            adjustConfig.enablePreinstallTracking();
+        // OAID Reading enabled
+        if (parameters.containsKey(KEY_IS_OAID_READING_ENABLED)) {
+            String strIsOaidReadingEnabled = parameters.get(KEY_IS_OAID_READING_ENABLED).toString();
+            // PLUGIN
+            // Check if OAID reading is enabled to potentially ping OAID plugin if added natively.
+            if (strIsOaidReadingEnabled.equals("true")) {
+                Logger logger = (Logger) AdjustFactory.getLogger();
+                try {
+                    Class clazz = Class.forName("com.adjust.sdk.oaid.AdjustOaid");
+                    if (clazz != null) {
+                        Method method = clazz.getMethod("readOaid", (Class<?>[]) null);
+                        if (method != null) {
+                            method.invoke(null, (Object[]) null);
+                            logger.info(String.format("[AdjustCordova]: Adjust OAID plugin successfully found in the app"));
+                            logger.info(String.format("[AdjustCordova]: OAID reading enabled"));
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.error(String.format("[AdjustCordova]: OAID reading failed"));
+                    e.printStackTrace();
+                }
+            }
+
         }
 
-        // Event deduplication IDs max size
-        if (eventDeduplicationIdsMaxSize != null) {
-            adjustConfig.setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize);
-        }
         // Attribution callback.
         if (attributionChangedCallbackContext != null) {
             adjustConfig.setOnAttributionChangedListener(this);
@@ -389,26 +431,6 @@ public class AdjustCordova extends CordovaPlugin implements
         // Deferred deeplink callback listener.
         if (deferredDeeplinkReceivedCallbackContext != null) {
             adjustConfig.setOnDeferredDeeplinkResponseListener(this);
-        }
-
-        // PLUGIN
-        // Check if OAID reading is enabled to potentially ping OAID plugin if added natively.
-        if (oaidReadingEnabled) {
-            Logger logger = (Logger) AdjustFactory.getLogger();
-            try {
-                Class clazz = Class.forName("com.adjust.sdk.oaid.AdjustOaid");
-                if (clazz != null) {
-                    Method method = clazz.getMethod("readOaid", (Class<?>[]) null);
-                    if (method != null) {
-                        method.invoke(null, (Object[]) null);
-                        logger.info(String.format("[AdjustCordova]: Adjust OAID plugin successfully found in the app"));
-                        logger.info(String.format("[AdjustCordova]: OAID reading enabled"));
-                    }
-                }
-            } catch (Exception e) {
-                logger.error(String.format("[AdjustCordova]: OAID reading failed"));
-                e.printStackTrace();
-            }
         }
 
         // Start SDK.
@@ -1020,7 +1042,7 @@ public class AdjustCordova extends CordovaPlugin implements
             deferredDeeplinkReceivedCallbackContext.sendPluginResult(pluginResult);
         }
 
-        return this.shouldLaunchDeeplink;
+        return this.isDeferredDeeplinkOpeningEnabled;
     }
 
     private AdjustEvent serializeAdjustEventFromJson(final JSONArray args) throws JSONException {

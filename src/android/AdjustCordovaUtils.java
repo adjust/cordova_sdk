@@ -25,10 +25,10 @@ public class AdjustCordovaUtils {
     public static final String KEY_CALLBACK_PARAMETERS                              = "callbackParameters";
     public static final String KEY_PARTNER_PARAMETERS                               = "partnerParameters";
     public static final String KEY_IS_SENDING_IN_BACKGROUND_ENABLED                 = "isSendingInBackgroundEnabled";
-    public static final String KEY_SHOULD_LAUNCH_DEEPLINK                           = "shouldLaunchDeeplink";
+    public static final String KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED            = "isDeferredDeeplinkOpeningEnabled";
     public static final String KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED              = "isCostDataInAttributionEnabled";
-    public static final String KEY_PREINSTALL_TRACKING_ENABLED                      = "preinstallTrackingEnabled";
-    public static final String KEY_OAID_READING_ENABLED                             = "oaidReadingEnabled";
+    public static final String KEY_IS_PREINSTALL_TRACKING_ENABLED                   = "isPreinstallTrackingEnabled";
+    public static final String KEY_IS_OAID_READING_ENABLED                          = "isOaidReadingEnabled";
     public static final String KEY_IS_ENABLED                                       = "isEnabled";
     public static final String KEY_GRANULAR_OPTIONS                                 = "granularOptions";
     public static final String KEY_PARTNER_SHARING_SETTINGS                         = "partnerSharingSettings";
@@ -87,7 +87,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_AD_REVENUE_UNIT                                  = "adRevenueUnit";
     public static final String KEY_AD_REVENUE_PLACEMENT                             = "adRevenuePlacement";
     public static final String KEY_IS_COPPA_COMPLIANCE_ENABLED                      = "isCoppaComplianceEnabled";
-    public static final String KEY_PLAY_STORE_KIDS_APP_ENABLED                      = "playStoreKidsAppEnabled";
+    public static final String KEY_IS_PLAY_STORE_KIDS_APP_ENABLED                   = "isPlayStoreKidsAppEnabled";
     public static final String KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED               = "isDeviceIdsReadingOnceEnabled";
     public static final String KEY_FB_APP_ID                                        = "fbAppId";
     public static final String KEY_INSTALL_REFERRER                                 = "installReferrer";
@@ -106,7 +106,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_IS_DATA_RESIDENCY                                = "isDataResidency";
 
     // Adjust Create Configuration and Initialize SDK command
-    public static final String COMMAND_CREATE                                       = "create";
+    public static final String COMMAND_INIT_SDK                                     = "initSdk";
     // Callback setters commands
     public static final String COMMAND_SET_ATTRIBUTION_CHANGED_CALLBACK             = "setAttributionChangedCallback";
     public static final String COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK        = "setEventTrackingSucceededCallback";

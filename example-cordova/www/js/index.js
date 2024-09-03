@@ -20,7 +20,7 @@ var app = {
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
 
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-        // adjustConfig.setShouldLaunchDeeplink(true);
+        // adjustConfig.setDeferredDeeplinkOpeningEnabled(true);
         // adjustConfig.enableSendingInBackground();
         // adjustConfig.enableCostDataInAttribution();
         // adjustConfig.setOaidReadingEnabled(true);
@@ -107,7 +107,7 @@ var app = {
         // Adjust.removeGlobalCallbackParameters();
         // Adjust.removeGlobalPartnerParameters();
 
-        Adjust.create(adjustConfig);
+        Adjust.initSdk(adjustConfig);
 
     },
 

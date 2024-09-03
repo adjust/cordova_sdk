@@ -15,24 +15,23 @@ function AdjustConfig(appToken, environment) {
     this.isSendingInBackgroundEnabled = null;
     this.isCostDataInAttributionEnabled = null;
     this.isDeviceIdsReadingOnceEnabled = null;
-    // TODO: Implement the following 3 fields
-    //this.urlStrategyDomains = null;
-    //this.useSubdomains = null;
-    //this.isDataResidency = null;
+    this.urlStrategyDomains = null;
+    this.useSubdomains = null;
+    this.isDataResidency = null;
     this.sdkPrefix = null;
     this.logLevel = null;
     this.defaultTracker = null;
     this.externalDeviceId = null;
     this.eventDeduplicationIdsMaxSize = null;
-    this.shouldLaunchDeeplink = null;
+    this.isDeferredDeeplinkOpeningEnabled = null;
     this.isCoppaComplianceEnabled = null;
 
     // Android only
     this.processName = null;
-    this.preinstallTrackingEnabled = null;
+    this.isPreinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
-    this.oaidReadingEnabled = null;
-    this.playStoreKidsAppEnabled = null;
+    this.isOaidReadingEnabled = null;
+    this.isPlayStoreKidsAppEnabled = null;
     this.fbAppId = null;
     // iOS only 
     this.isAdServicesEnabled = null;
@@ -165,8 +164,8 @@ function AdjustConfig(appToken, environment) {
         this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
     };
 
-    AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
-        this.shouldLaunchDeeplink = shouldLaunchDeeplink;
+    AdjustConfig.prototype.setDeferredDeeplinkOpeningEnabled = function(deferredDeeplinkOpeningEnabled) {
+        this.isDeferredDeeplinkOpeningEnabled = deferredDeeplinkOpeningEnabled;
     };
 
     AdjustConfig.prototype.enableCoppaCompliance = function() {
@@ -178,7 +177,7 @@ function AdjustConfig(appToken, environment) {
     };
 
     AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
-        this.preinstallTrackingEnabled = isEnabled;
+        this.isPreinstallTrackingEnabled = isEnabled;
     };
 
     AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
@@ -186,11 +185,11 @@ function AdjustConfig(appToken, environment) {
     };
 
     AdjustConfig.prototype.setOaidReadingEnabled = function(enableOaidReading) {
-        this.oaidReadingEnabled = enableOaidReading;
+        this.isOaidReadingEnabled = enableOaidReading;
     };
 
     AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
-        this.playStoreKidsAppEnabled = isEnabled;
+        this.isPlayStoreKidsAppEnabled = isEnabled;
     };
 
     AdjustConfig.prototype.setFbAppId = function (fbAppId) {
@@ -221,5 +220,11 @@ function AdjustConfig(appToken, environment) {
     AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
         this.attConsentWaitingInterval = attConsentWaitingInterval;
     };
+
+    AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomains, isDataResidency) {
+         this.urlStrategyDomains = urlStrategyDomains;
+         this.useSubdomains = useSubdomains;
+         this.isDataResidency = isDataResidency;
+     };
 
     module.exports = AdjustConfig;
