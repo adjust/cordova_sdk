@@ -73,25 +73,25 @@
 
 
 @implementation AdjustCordova {
-    NSString *attributionChangedCallbackId;
-    NSString *eventFailedCallbackId;
-    NSString *eventSucceededCallbackId;
-    NSString *sessionFailedCallbackId;
-    NSString *sessionSucceededCallbackId;
-    NSString *deferredDeeplinkReceivedCallbackId;
-    NSString *skanConversionDataUpdatedCallbackId;
+    NSString *attributionCallbackId;
+    NSString *eventTrackingFailedCallbackId;
+    NSString *eventTrackingSucceededCallbackId;
+    NSString *sessionTrackingFailedCallbackId;
+    NSString *sessionTrackingSucceededCallbackId;
+    NSString *deferredDeeplinkCallbackId;
+    NSString *skanUpdatedCallbackId;
 }
 
 #pragma mark - Object lifecycle methods
 
 - (void)pluginInitialize {
-    attributionChangedCallbackId = nil;
-    eventFailedCallbackId = nil;
-    eventSucceededCallbackId = nil;
-    sessionFailedCallbackId = nil;
-    sessionSucceededCallbackId = nil;
-    deferredDeeplinkReceivedCallbackId = nil;
-    skanConversionDataUpdatedCallbackId = nil;
+    attributionCallbackId = nil;
+    eventTrackingFailedCallbackId = nil;
+    eventTrackingSucceededCallbackId = nil;
+    sessionTrackingFailedCallbackId = nil;
+    sessionTrackingSucceededCallbackId = nil;
+    deferredDeeplinkCallbackId = nil;
+    skanUpdatedCallbackId = nil;
 }
 
 #pragma mark - Public methods
@@ -228,7 +228,7 @@
         [urlStrategyDomains count] > 0 &&
         [self isFieldValid:useSubdomains] &&
         [self isFieldValid:isDataResidency]) {
-        
+
         NSMutableArray *urlStrategyDomainsArray = [NSMutableArray array];
         for (int i = 0; i < [urlStrategyDomains count]; i += 1) {
             NSString *domain = [[urlStrategyDomains objectAtIndex:i] description];
@@ -242,24 +242,24 @@
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:isDeferredDeeplinkOpeningEnabled] ? [isDeferredDeeplinkOpeningEnabled boolValue] : YES;
 
     // Attribution delegate & other delegates
-    if (attributionChangedCallbackId != nil
-        || eventSucceededCallbackId != nil
-        || eventFailedCallbackId != nil
-        || sessionSucceededCallbackId != nil
-        || sessionFailedCallbackId != nil
-        || deferredDeeplinkReceivedCallbackId != nil
-        || skanConversionDataUpdatedCallbackId != nil
+    if (attributionCallbackId != nil
+        || eventTrackingSucceededCallbackId != nil
+        || eventTrackingFailedCallbackId != nil
+        || sessionTrackingSucceededCallbackId != nil
+        || sessionTrackingFailedCallbackId != nil
+        || deferredDeeplinkCallbackId != nil
+        || skanUpdatedCallbackId != nil
         ) {
         [adjustConfig setDelegate:
-            [AdjustCordovaDelegate getInstanceWithSwizzledAttributionCallbackId:attributionChangedCallbackId
-                                                      eventSucceededCallbackId:eventSucceededCallbackId
-                                                         eventFailedCallbackId:eventFailedCallbackId
-                                                    sessionSucceededCallbackId:sessionSucceededCallbackId
-                                                       sessionFailedCallbackId:sessionFailedCallbackId
-                                            deferredDeeplinkReceivedCallbackId:deferredDeeplinkReceivedCallbackId
-                                           skanConversionDataUpdatedCallbackId:skanConversionDataUpdatedCallbackId
-                                                  shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
-                                                           withCommandDelegate:self.commandDelegate]];
+         [AdjustCordovaDelegate getInstanceWithSwizzledAttributionCallbackId:attributionCallbackId
+                                            eventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId
+                                               eventTrackingFailedCallbackId:eventTrackingFailedCallbackId
+                                          sessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId
+                                             sessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId
+                                                  deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
+                                                       skanUpdatedCallbackId:skanUpdatedCallbackId
+                                                shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
+                                                         withCommandDelegate:self.commandDelegate]];
     }
 
     // Start SDK.
@@ -268,32 +268,32 @@
 
 #pragma mark - Adjust API Callbacks setters
 
-- (void)setAttributionChangedCallback:(CDVInvokedUrlCommand *)command {
-    attributionChangedCallbackId = command.callbackId;
+- (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
+    attributionCallbackId = command.callbackId;
 }
 
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command {
-    eventSucceededCallbackId = command.callbackId;
+    eventTrackingSucceededCallbackId = command.callbackId;
 }
 
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
-    eventFailedCallbackId = command.callbackId;
+    eventTrackingFailedCallbackId = command.callbackId;
 }
 
 - (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command {
-    sessionSucceededCallbackId = command.callbackId;
+    sessionTrackingSucceededCallbackId = command.callbackId;
 }
 
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command {
-    sessionFailedCallbackId = command.callbackId;
+    sessionTrackingFailedCallbackId = command.callbackId;
 }
 
-- (void)setDeferredDeeplinkReceivedCallback:(CDVInvokedUrlCommand *)command {
-    deferredDeeplinkReceivedCallbackId = command.callbackId;
+- (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command {
+    deferredDeeplinkCallbackId = command.callbackId;
 }
 
-- (void)setSkanConversionDataUpdatedCallback:(CDVInvokedUrlCommand *)command {
-    skanConversionDataUpdatedCallbackId = command.callbackId;
+- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command {
+    skanUpdatedCallbackId = command.callbackId;
 }
 
 #pragma mark - Adjust API
@@ -311,8 +311,8 @@
 
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
         if (attribution == nil) {
-        return;
-    }
+            return;
+        }
 
         NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
         [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
@@ -370,8 +370,8 @@
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
     if (!([self isFieldValid:key]) || !([self isFieldValid:value])) {
-            return;
-        }
+        return;
+    }
     [Adjust addGlobalCallbackParameter:value forKey:key];
 }
 
@@ -394,7 +394,7 @@
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
     if (!([self isFieldValid:key]) || !([self isFieldValid:value])) {
         return;
-        }
+    }
     [Adjust addGlobalPartnerParameter:value forKey:key];
 }
 
@@ -425,7 +425,7 @@
 }
 
 - (void)disable:(CDVInvokedUrlCommand *)command {
-     [Adjust disable];
+    [Adjust disable];
 }
 
 - (void)isEnabled:(CDVInvokedUrlCommand *)command {
@@ -619,8 +619,8 @@
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                           messageAsDictionary:dictionary];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        return;
-    }
+            return;
+        }
 
         dictionary = [self deserializePvResult:verificationResult];
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
@@ -643,8 +643,8 @@
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                           messageAsDictionary:dictionary];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        return;
-    }
+            return;
+        }
 
         dictionary = [self deserializePvResult:verificationResult];
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
@@ -787,27 +787,27 @@
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command {
     [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsNSUInteger:status];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command {
     int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:appTrackingAuthorizationStatus];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 #pragma mark - SKAN
 
-- (void)updateSkanConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command {
-    NSNumber *fineValue = [command argumentAtIndex:0 withDefault:nil];
+- (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command {
+    NSNumber *conversionValue = [command argumentAtIndex:0 withDefault:nil];
     NSString *coarseValue = [command argumentAtIndex:1 withDefault:nil];
     NSNumber *lockWindow = [command argumentAtIndex:2 withDefault:nil];
-    if (fineValue == nil || coarseValue == nil || lockWindow == nil) {
-            return;
-        }
+    if (![self isFieldValid:conversionValue]) {
+        return;
+    }
 
-    [Adjust updateSkanConversionValue:[fineValue intValue]
+    [Adjust updateSkanConversionValue:[conversionValue intValue]
                           coarseValue:coarseValue
                            lockWindow:lockWindow
                 withCompletionHandler:^(NSError * _Nullable error) {
@@ -817,8 +817,6 @@
 }
 
 #pragma mark - Android Only
-
-- (void)setReferrer:(CDVInvokedUrlCommand *)command {}
 
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
     NSString *googleAdId = @"";
@@ -926,13 +924,13 @@
 }
 
 - (void)teardown:(CDVInvokedUrlCommand *)command {
-    attributionChangedCallbackId = nil;
-    eventFailedCallbackId = nil;
-    eventSucceededCallbackId = nil;
-    sessionFailedCallbackId = nil;
-    sessionSucceededCallbackId = nil;
-    deferredDeeplinkReceivedCallbackId = nil;
-    skanConversionDataUpdatedCallbackId = nil;
+    attributionCallbackId = nil;
+    eventTrackingFailedCallbackId = nil;
+    eventTrackingSucceededCallbackId = nil;
+    sessionTrackingFailedCallbackId = nil;
+    sessionTrackingSucceededCallbackId = nil;
+    deferredDeeplinkCallbackId = nil;
+    skanUpdatedCallbackId = nil;
     [AdjustCordovaDelegate teardown];
 }
 
@@ -947,12 +945,12 @@
     if (field == nil) {
         return NO;
     }
-    
+
     // Check if its an instance of the singleton NSNull
     if ([field isKindOfClass:[NSNull class]]) {
         return NO;
     }
-    
+
     // If field can be converted to a string, check if it has any content.
     NSString *str = [NSString stringWithFormat:@"%@", field];
     if (str != nil) {
@@ -960,7 +958,7 @@
             return NO;
         }
     }
-    
+
     return YES;
 }
 

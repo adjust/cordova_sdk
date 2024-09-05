@@ -52,37 +52,33 @@ var Adjust = {
         if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
         }
-        if (adjustConfig.hasAttributionChangedListener()) {
-            callCordovaCallback('setAttributionChangedCallback', adjustConfig.getAttributionChangedCallback());
+        if (adjustConfig.hasAttributionCallback()) {
+            callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
-        if (adjustConfig.hasEventTrackingSucceededListener()) {
+        if (adjustConfig.hasEventTrackingSucceededCallback()) {
             callCordovaCallback('setEventTrackingSucceededCallback', adjustConfig.getEventTrackingSucceededCallback());
         }
-        if (adjustConfig.hasEventTrackingFailedListener()) {
+        if (adjustConfig.hasEventTrackingFailedCallback()) {
             callCordovaCallback('setEventTrackingFailedCallback', adjustConfig.getEventTrackingFailedCallback());
         }
-        if (adjustConfig.hasSessionTrackingSucceededListener()) {
+        if (adjustConfig.hasSessionTrackingSucceededCallback()) {
             callCordovaCallback('setSessionTrackingSucceededCallback', adjustConfig.getSessionTrackingSucceededCallback());
         }
-        if (adjustConfig.hasSessionTrackingFailedListener()) {
+        if (adjustConfig.hasSessionTrackingFailedCallback()) {
             callCordovaCallback('setSessionTrackingFailedCallback', adjustConfig.getSessionTrackingFailedCallback());
         }
-        if (adjustConfig.hasDeferredDeeplinkReceivedCallbackListener()) {
-            callCordovaCallback('setDeferredDeeplinkReceivedCallback', adjustConfig.getDeferredDeeplinkReceivedCallback());
+        if (adjustConfig.hasDeferredDeeplinkCallback()) {
+            callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
-        if (adjustConfig.hasSkanConversionDataUpdatedCallbackListener()) {
-            callCordovaCallback('setSkanConversionDataUpdatedCallback', adjustConfig.getSkanConversionDataUpdatedCallback());
+        if (adjustConfig.hasSkanUpdatedCallback()) {
+            callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }
 
         callCordovaStringify('initSdk', adjustConfig);
     },
 
-    setPushToken: function(pushToken) {
-        callCordova('setPushToken', pushToken);
-    },
-
-    setReferrer: function(referrer) {
-        callCordova('setReferrer', referrer);
+    setPushToken: function(token) {
+        callCordova('setPushToken', token);
     },
 
     getAttribution: function(callback) {
@@ -110,10 +106,6 @@ var Adjust = {
 
     getSdkPrefix: function () {
         return 'cordova5.0.0';
-    },
-
-    getGooglePlayInstallReferrer: function(callback) {
-        callCordovaCallback('getGooglePlayInstallReferrer', callback);
     },
 
     addGlobalCallbackParameter: function(key, value) {
@@ -181,16 +173,16 @@ var Adjust = {
         callCordovaStringify('trackEvent', adjustEvent);
     },
 
-    trackAdRevenue: function(adRevenue) {
-        callCordovaStringify('trackAdRevenue', adRevenue);
+    trackAdRevenue: function(adjustAdrevenue) {
+        callCordovaStringify('trackAdRevenue', adjustAdrevenue);
     },
 
-    trackPlayStoreSubscription: function(subscription) {
-        callCordovaStringify('trackPlayStoreSubscription', subscription);
+    trackPlayStoreSubscription: function(adjustPlayStoreSubscriptio) {
+        callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscriptio);
     },
 
-    verifyPlayStorePurchase: function(purchase, callback) {
-        callCordovaStringifyCallback('verifyPlayStorePurchase', purchase, callback);
+    verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
+        callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
     },
 
     verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
@@ -217,12 +209,12 @@ var Adjust = {
         callCordovaCallback('getLastDeeplink', callback);
     },
 
-   trackAppStoreSubscription: function(subscription) {
-        callCordovaStringify('trackAppStoreSubscription', subscription);
+   trackAppStoreSubscription: function(adjustAppStoreSubscription) {
+        callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
     },
 
-    verifyAppStorePurchase: function(purchase, callback) {
-        callCordovaStringifyCallback('verifyAppStorePurchase', purchase, callback);
+    verifyAppStorePurchase: function(adjustAppStorePurchase, callback) {
+        callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
     },
 
     verifyAndTrackAppStorePurchase: function(adjustEvent, callback) {
@@ -237,8 +229,8 @@ var Adjust = {
         callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
     },
 
-    updateSkanConversionValueWithErrorCallback: function(callback, fineValue, coarseValue, lockWindow) {
-        callCordovaCallback('updateSkanConversionValueWithErrorCallback', callback, fineValue, coarseValue, lockWindow);
+    updateSkanConversionValue: function(conversionValue, coarseValue, lockWindow, callback) {
+        callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
     },
 
     getIdfa: function(callback) {

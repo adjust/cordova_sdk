@@ -18,13 +18,13 @@
 // Initialization
 - (void)initSdk:(CDVInvokedUrlCommand *)command;
 // Adjust API Callbacks setters
-- (void)setAttributionChangedCallback:(CDVInvokedUrlCommand *)command;
+- (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
-- (void)setDeferredDeeplinkReceivedCallback:(CDVInvokedUrlCommand *)command;
-- (void)setSkanConversionDataUpdatedCallback:(CDVInvokedUrlCommand *)command;
+- (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
+- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command;
 // Adjust API
 // Setters
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
@@ -69,9 +69,8 @@
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command;
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 // SKAN
-- (void)updateSkanConversionValueWithErrorCallback:(CDVInvokedUrlCommand *)command;
+- (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command;
 // Android Only
-- (void)setReferrer:(CDVInvokedUrlCommand *)command;
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
 - (void)getGooglePlayInstallReferrer:(CDVInvokedUrlCommand *)command;

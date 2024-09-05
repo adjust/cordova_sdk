@@ -1,13 +1,13 @@
 function AdjustConfig(appToken, environment) {
     
     // Adjust callbacks
-    this.attributionChangedCallback = null;
+    this.attributionCallback = null;
     this.eventTrackingSucceededCallback = null;
     this.eventTrackingFailedCallback = null;
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
-    this.deferredDeeplinkReceivedCallback = null;
-    this.skanConversionDataUpdatedCallback = null;
+    this.deferredDeeplinkCallback = null;
+    this.skanUpdatedCallback = null;
 
     //  Common configuration fields
     this.appToken = appToken;
@@ -55,24 +55,24 @@ function AdjustConfig(appToken, environment) {
 
 
     // Adjust Callbacks
-    AdjustConfig.prototype.getAttributionChangedCallback = function() {
-        return this.attributionChangedCallback;
+    AdjustConfig.prototype.getAttributionCallback = function() {
+        return this.attributionCallback;
     };
-    AdjustConfig.prototype.setAttributionChangedCallbackListener = function(callback) {
-        this.attributionChangedCallback = callback;
+    AdjustConfig.prototype.setAttributionCallback = function(callback) {
+        this.attributionCallback = callback;
     };
-    AdjustConfig.prototype.hasAttributionChangedListener = function() {
-        return this.attributionChangedCallback !== null;
+    AdjustConfig.prototype.hasAttributionCallback = function() {
+        return this.attributionCallback !== null;
     };
 
 
     AdjustConfig.prototype.getEventTrackingSucceededCallback = function() {
         return this.eventTrackingSucceededCallback;
     };
-    AdjustConfig.prototype.setEventTrackingSucceededCallbackListener = function(eventTrackingSucceededCallback) {
-        this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
+    AdjustConfig.prototype.setEventTrackingSucceededCallback = function(callback) {
+        this.eventTrackingSucceededCallback = callback;
     };
-    AdjustConfig.prototype.hasEventTrackingSucceededListener = function() {
+    AdjustConfig.prototype.hasEventTrackingSucceededCallback = function() {
         return this.eventTrackingSucceededCallback !== null;
     };
 
@@ -80,10 +80,10 @@ function AdjustConfig(appToken, environment) {
     AdjustConfig.prototype.getEventTrackingFailedCallback = function() {
         return this.eventTrackingFailedCallback;
     };
-    AdjustConfig.prototype.setEventTrackingFailedCallbackListener = function(eventTrackingFailedCallback) {
-        this.eventTrackingFailedCallback = eventTrackingFailedCallback;
+    AdjustConfig.prototype.setEventTrackingFailedCallback = function(callback) {
+        this.eventTrackingFailedCallback = callback;
     };
-    AdjustConfig.prototype.hasEventTrackingFailedListener = function() {
+    AdjustConfig.prototype.hasEventTrackingFailedCallback = function() {
         return this.eventTrackingFailedCallback !== null;
     };
 
@@ -91,10 +91,10 @@ function AdjustConfig(appToken, environment) {
     AdjustConfig.prototype.getSessionTrackingSucceededCallback = function() {
         return this.sessionTrackingSucceededCallback;
     };
-    AdjustConfig.prototype.setSessionTrackingSucceededCallbackListener = function(sessionTrackingSucceededCallback) {
-        this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
+    AdjustConfig.prototype.setSessionTrackingSucceededCallback = function(callback) {
+        this.sessionTrackingSucceededCallback = callback;
     };
-    AdjustConfig.prototype.hasSessionTrackingSucceededListener = function() {
+    AdjustConfig.prototype.hasSessionTrackingSucceededCallback = function() {
         return this.sessionTrackingSucceededCallback !== null;
     };
 
@@ -102,33 +102,33 @@ function AdjustConfig(appToken, environment) {
     AdjustConfig.prototype.getSessionTrackingFailedCallback = function() {
         return this.sessionTrackingFailedCallback;
     };
-    AdjustConfig.prototype.setSessionTrackingFailedCallbackListener = function(sessionTrackingFailedCallback) {
-        this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
+    AdjustConfig.prototype.setSessionTrackingFailedCallback = function(callback) {
+        this.sessionTrackingFailedCallback = callback;
     };
-    AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
+    AdjustConfig.prototype.hasSessionTrackingFailedCallback = function() {
         return this.sessionTrackingFailedCallback !== null;
     };
 
 
-    AdjustConfig.prototype.getDeferredDeeplinkReceivedCallback = function() {
-        return this.deferredDeeplinkReceivedCallback;
+    AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
+        return this.deferredDeeplinkCallback;
     };
-    AdjustConfig.prototype.setDeferredDeeplinkReceivedCallbackListener = function(callback) {
-        this.deferredDeeplinkReceivedCallback = callback;
+    AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
+        this.deferredDeeplinkCallback = callback;
     };
-    AdjustConfig.prototype.hasDeferredDeeplinkReceivedCallbackListener = function() {
-        return this.deferredDeeplinkReceivedCallback !== null;
+    AdjustConfig.prototype.hasDeferredDeeplinkCallback = function() {
+        return this.deferredDeeplinkCallback !== null;
     };
 
 
-    AdjustConfig.prototype.getSkanConversionDataUpdatedCallback = function() {
-        return this.skanConversionDataUpdatedCallback;
+    AdjustConfig.prototype.getSkanUpdatedCallback = function() {
+        return this.skanUpdatedCallback;
     };
-    AdjustConfig.prototype.setSkanConversionDataUpdatedCallbackListener = function(callback) {
-        this.skanConversionDataUpdatedCallback = callback;
+    AdjustConfig.prototype.setSkanUpdatedCallback = function(callback) {
+        this.skanUpdatedCallback = callback;
     };
-    AdjustConfig.prototype.hasSkanConversionDataUpdatedCallbackListener = function() {
-        return this.skanConversionDataUpdatedCallback !== null;
+    AdjustConfig.prototype.hasSkanUpdatedCallback = function() {
+        return this.skanUpdatedCallback !== null;
     };
 
     // Configuration fields - common

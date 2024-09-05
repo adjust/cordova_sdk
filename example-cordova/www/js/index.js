@@ -28,7 +28,7 @@ var app = {
         // adjustConfig.setAttConsentWaitingInterval(16);
         // adjust.setFbAppId("your-fb-app-id");
 
-        adjustConfig.setAttributionChangedCallbackListener(function(attribution) {
+        adjustConfig.setAttributionCallback(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
             console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
             console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
@@ -40,7 +40,7 @@ var app = {
             console.log("[AdjustExample]: Adid = " + attribution.adid);
         });
 
-        adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
+        adjustConfig.setEventTrackingSucceededCallback(function(eventSuccess) {
             console.log("[AdjustExample]: Event tracking succeeded callback received.");
             console.log("[AdjustExample]: Message: " + eventSuccess.message);
             console.log("[AdjustExample]: Timestamp: " + eventSuccess.timestamp);
@@ -50,7 +50,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + eventSuccess.jsonResponse);
         });
 
-        adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
+        adjustConfig.setEventTrackingFailedCallback(function(eventFailed) {
             console.log("[AdjustExample]: Event tracking failed callback received.");
             console.log("[AdjustExample]: Message: " + eventFailed.message);
             console.log("[AdjustExample]: Timestamp: " + eventFailed.timestamp);
@@ -61,7 +61,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + eventFailed.jsonResponse);
         });
 
-        adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
+        adjustConfig.setSessionTrackingSucceededCallback(function(sessionSuccess) {
             console.log("[AdjustExample]: Session tracking succeeded callback received.");
             console.log("[AdjustExample]: Message: " + sessionSuccess.message);
             console.log("[AdjustExample]: Timestamp: " + sessionSuccess.timestamp);
@@ -69,7 +69,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + sessionSuccess.jsonResponse);
         });
 
-        adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
+        adjustConfig.setSessionTrackingFailedCallback(function(sessionFailed) {
             console.log("[AdjustExample]: Session tracking failed callback received.");
             console.log("[AdjustExample]: Message: " + sessionFailed.message);
             console.log("[AdjustExample]: Timestamp: " + sessionFailed.timestamp);
@@ -78,16 +78,17 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + sessionFailed.jsonResponse);
         });
 
-        adjustConfig.setDeferredDeeplinkReceivedCallbackListener(function(uri) {
+        adjustConfig.setDeferredDeeplinkCallback(function(uri) {
             console.log("[AdjustExample]: Deferred Deeplink Callback received.");
             console.log("[AdjustExample]: URL: " + uri);
         });
 
-        adjustConfig.setSkanConversionDataUpdatedCallbackListener(function(skanData) {
+        adjustConfig.setSkanUpdatedCallback(function(skanData) {
             console.log("[AdjustExample]: SKAdNetwork conversion data updated!");
-            console.log("[AdjustExample]: Fine value = " + skanData.fineValue);
-            console.log("[AdjustExample]: Coarse value = " + skanData.coarseValue);
-            console.log("[AdjustExample]: Lock window = " + skanData.lockWindow);
+            console.log("[AdjustExample]: Conversion Value = " + skanData.conversionValue);
+            console.log("[AdjustExample]: Coarse Value = " + skanData.coarseValue);
+            console.log("[AdjustExample]: Lock Window = " + skanData.lockWindow);
+            console.log("[AdjustExample]: Error = " + skanData.error);
         });
 
 

@@ -17,22 +17,22 @@
 @interface AdjustCordovaDelegate : NSObject<AdjustDelegate>
 
 @property (nonatomic) BOOL shouldLaunchDeferredDeeplink;
-@property (nonatomic, copy) NSString *attributionChangedCallbackId;
-@property (nonatomic, copy) NSString *eventSucceededCallbackId;
-@property (nonatomic, copy) NSString *eventFailedCallbackId;
-@property (nonatomic, copy) NSString *sessionSucceededCallbackId;
-@property (nonatomic, copy) NSString *sessionFailedCallbackId;
-@property (nonatomic, copy) NSString *deferredDeeplinkReceivedCallbackId;
-@property (nonatomic, copy) NSString *skanConversionDataUpdatedCallbackId;
+@property (nonatomic, copy) NSString *attributionCallbackId;
+@property (nonatomic, copy) NSString *eventTrackingSucceededCallbackId;
+@property (nonatomic, copy) NSString *eventTrackingFailedCallbackId;
+@property (nonatomic, copy) NSString *sessionTrackingSucceededCallbackId;
+@property (nonatomic, copy) NSString *sessionTrackingFailedCallbackId;
+@property (nonatomic, copy) NSString *deferredDeeplinkCallbackId;
+@property (nonatomic, copy) NSString *skanUpdatedCallbackId;
 @property (nonatomic) id<CDVCommandDelegate> adjustCordovaCommandDelegate;
 
-+ (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionChangedCallbackId
-                          eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
-                             eventFailedCallbackId:(NSString *)eventFailedCallbackId
-                        sessionSucceededCallbackId:(NSString *)sessionSucceededCallbackId
-                           sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
-                deferredDeeplinkReceivedCallbackId:(NSString *)deferredDeeplinkReceivedCallbackId
-               skanConversionDataUpdatedCallbackId:(NSString *)skanConversionDataUpdatedCallbackId
++ (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionCallbackId
+                  eventTrackingSucceededCallbackId:(NSString *)eventTrackingSucceededCallbackId
+                     eventTrackingFailedCallbackId:(NSString *)eventTrackingFailedCallbackId
+                sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
+                   sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
+                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                             skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate;
 + (void)teardown;

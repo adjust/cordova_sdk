@@ -26,20 +26,20 @@ public class AdjustCordova extends CordovaPlugin implements
         OnSessionTrackingFailedListener,
         OnDeferredDeeplinkResponseListener {
     private boolean isDeferredDeeplinkOpeningEnabled = true;
-    private CallbackContext attributionChangedCallbackContext;
+    private CallbackContext attributionCallbackContext;
     private CallbackContext eventTrackingSucceededCallbackContext;
     private CallbackContext eventTrackingFailedCallbackContext;
     private CallbackContext sessionTrackingSucceededCallbackContext;
     private CallbackContext sessionTrackingFailedCallbackContext;
-    private CallbackContext deferredDeeplinkReceivedCallbackContext;
+    private CallbackContext deferredDeeplinkCallbackContext;
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals(COMMAND_INIT_SDK)) {
             executeInitSdk(args);
-        } else if (action.equals(COMMAND_SET_ATTRIBUTION_CHANGED_CALLBACK)) {
-            attributionChangedCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
+            attributionCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK)) {
             eventTrackingSucceededCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK)) {
@@ -48,9 +48,9 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingSucceededCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK)) {
             sessionTrackingFailedCallbackContext = callbackContext;
-        } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_RECEIVED_CALLBACK)) {
-            deferredDeeplinkReceivedCallbackContext = callbackContext;
-        } else if (action.equals(COMMAND_SET_SKAN_CONVERSION_DATA_UPDATED_CALLBACK)) {
+        } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
+            deferredDeeplinkCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_SKAN_UPDATED_CALLBACK)) {
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
@@ -67,8 +67,6 @@ public class AdjustCordova extends CordovaPlugin implements
             executeGetAmazonAdid(callbackContext);
         } else if (action.equals(COMMAND_GET_SDK_VERSION)) {
             executeGetSdkVersion(callbackContext);
-        } else if (action.equals(COMMAND_GET_GOOGLE_PLAY_INSTALL_REFERRER)) {
-            executeGetGooglePlayInstallReferrer(callbackContext);
         } else if (action.equals(COMMAND_ADD_GLOBAL_CALLBACK_PARAMETER)) {
             final String key = args.getString(0);
             final String value = args.getString(1);
@@ -144,7 +142,7 @@ public class AdjustCordova extends CordovaPlugin implements
             // iOS method only
         } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
             // iOS method only
-        } else if (action.equals(COMMAND_UPDATE_SKAN_CONVERSION_VALUE_WITH_ERROR_CALLBACK)) {
+        } else if (action.equals(COMMAND_UPDATE_SKAN_CONVERSION_VALUE)) {
             // iOS method only
         } else if (action.equals(COMMAND_GET_IDFA)) {
             // iOS method only
@@ -161,12 +159,12 @@ public class AdjustCordova extends CordovaPlugin implements
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
-            attributionChangedCallbackContext = null;
+            attributionCallbackContext = null;
             eventTrackingSucceededCallbackContext = null;
             eventTrackingFailedCallbackContext = null;
             sessionTrackingSucceededCallbackContext = null;
             sessionTrackingFailedCallbackContext = null;
-            deferredDeeplinkReceivedCallbackContext = null;
+            deferredDeeplinkCallbackContext = null;
             isDeferredDeeplinkOpeningEnabled = true;
         } else {
             Logger logger = (Logger) AdjustFactory.getLogger();
@@ -404,7 +402,7 @@ public class AdjustCordova extends CordovaPlugin implements
         }
 
         // Attribution callback.
-        if (attributionChangedCallbackContext != null) {
+        if (attributionCallbackContext != null) {
             adjustConfig.setOnAttributionChangedListener(this);
         }
 
@@ -429,7 +427,7 @@ public class AdjustCordova extends CordovaPlugin implements
         }
 
         // Deferred deeplink callback listener.
-        if (deferredDeeplinkReceivedCallbackContext != null) {
+        if (deferredDeeplinkCallbackContext != null) {
             adjustConfig.setOnDeferredDeeplinkResponseListener(this);
         }
 
@@ -511,26 +509,6 @@ public class AdjustCordova extends CordovaPlugin implements
             public void onLastDeeplinkRead(Uri uri) {
                 String uriS = (uri != null) ? uri.toString() : "";
                 PluginResult pluginResult = new PluginResult(Status.OK, uriS);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
-            }
-        });
-    }
-
-    private void executeGetGooglePlayInstallReferrer(final CallbackContext callbackContext) throws JSONException {
-        Adjust.getGooglePlayInstallReferrer(this.cordova.getActivity().getApplicationContext(), new OnGooglePlayInstallReferrerReadListener() {
-            @Override
-            public void onInstallReferrerRead(GooglePlayInstallReferrerDetails googlePlayInstallReferrerDetails) {
-                JSONObject jsonData = new JSONObject(getGooglePlayInstallReferrerMap(googlePlayInstallReferrerDetails));
-                PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
-            }
-
-            @Override
-            public void onFail(String message) {
-                JSONObject jsonData = new JSONObject(getGooglePlayInstallReferrerFailureMap(message));
-                PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
             }
@@ -976,14 +954,14 @@ public class AdjustCordova extends CordovaPlugin implements
 
     @Override
     public void onAttributionChanged(AdjustAttribution attribution) {
-        if (attributionChangedCallbackContext == null) {
+        if (attributionCallbackContext == null) {
             return;
         }
 
         JSONObject attributionJsonData = new JSONObject(getAttributionMap(attribution));
         PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
         pluginResult.setKeepCallback(true);
-        attributionChangedCallbackContext.sendPluginResult(pluginResult);
+        attributionCallbackContext.sendPluginResult(pluginResult);
     }
 
     @Override
@@ -1036,10 +1014,10 @@ public class AdjustCordova extends CordovaPlugin implements
 
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
-        if (deferredDeeplinkReceivedCallbackContext != null) {
+        if (deferredDeeplinkCallbackContext != null) {
             PluginResult pluginResult = new PluginResult(Status.OK, deeplink.toString());
             pluginResult.setKeepCallback(true);
-            deferredDeeplinkReceivedCallbackContext.sendPluginResult(pluginResult);
+            deferredDeeplinkCallbackContext.sendPluginResult(pluginResult);
         }
 
         return this.isDeferredDeeplinkOpeningEnabled;

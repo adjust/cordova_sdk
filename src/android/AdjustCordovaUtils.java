@@ -35,28 +35,15 @@ public class AdjustCordovaUtils {
     public static final String KEY_PREINSTALL_FILE_PATH                             = "preinstallFilePath";
 
     public static final String KEY_TEST_URL_OVERWRITE                               = "testUrlOverwrite";
-    public static final String KEY_BASE_URL                                         = "baseUrl";
-    public static final String KEY_GDPR_URL                                         = "gdprUrl";
-    public static final String KEY_SUBSCRIPTION_URL                                 = "subscriptionUrl";
-    public static final String KEY_PURCHASE_VERIFICATION_URL                        = "purchaseVerificationUrl";
-
-
     public static final String KEY_EXTRA_PATH                                       = "extraPath";
-    public static final String KEY_BASE_PATH                                        = "basePath";
-    public static final String KEY_GDPR_PATH                                        = "gdprPath";
-    public static final String KEY_SUBSCRIPTION_PATH                                = "subscriptionPath";
-    public static final String KEY_PURCHASE_VERIFICATION_PATH                       = "purchaseVerificationPath";
-    public static final String KEY_USE_TEST_CONNECTION_OPTIONS                      = "useTestConnectionOptions";
     public static final String KEY_TIMER_INTERVAL                                   = "timerIntervalInMilliseconds";
     public static final String KEY_TIMER_START                                      = "timerStartInMilliseconds";
     public static final String KEY_SESSION_INTERVAL                                 = "sessionIntervalInMilliseconds";
     public static final String KEY_SUBSESSION_INTERVAL                              = "subsessionIntervalInMilliseconds";
     public static final String KEY_TEARDOWN                                         = "teardown";
     public static final String KEY_NO_BACKOFF_WAIT                                  = "noBackoffWait";
-//    public static final String KEY_HAS_CONTEXT                                      = "hasContext";
     public static final String KEY_DELETE_STATE                                     = "deleteState";
     public static final String KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP                = "ignoreSystemLifecycleBootstrap";
-
 
     public static final String KEY_ADID                                             = "adid";
     public static final String KEY_MESSAGE                                          = "message";
@@ -90,17 +77,9 @@ public class AdjustCordovaUtils {
     public static final String KEY_IS_PLAY_STORE_KIDS_APP_ENABLED                   = "isPlayStoreKidsAppEnabled";
     public static final String KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED               = "isDeviceIdsReadingOnceEnabled";
     public static final String KEY_FB_APP_ID                                        = "fbAppId";
-    public static final String KEY_INSTALL_REFERRER                                 = "installReferrer";
-    public static final String KEY_INSTALL_VERSION                                  = "installVersion";
-    public static final String KEY_REFERRER_CLICK_TS_SEC                            = "referrerClickTimestampSeconds";
-    public static final String KEY_REFERRER_CLICK_TS_SERVER_SEC                     = "referrerClickTimestampServerSeconds";
-    public static final String KEY_INSTALL_BEGIN_TS_SEC                             = "installBeginTimestampSeconds";
-    public static final String KEY_INSTALL_BEGIN_TS_SERVER_SEC                      = "installBeginTimestampServerSeconds";
-    public static final String KEY_GOOGLE_PLAY_INSTANT                              = "googlePlayInstant";
     public static final String KEY_VERIFICATION_STATUS                              = "verificationStatus";
     public static final String KEY_CODE                                             = "code";
     public static final String KEY_DEEPLINK                                         = "deeplink";
-    // TODO: GENA - implement when requirements are clear
     public static final String KEY_URL_STRATEGY_DOMAINS                             = "urlStrategyDomains";
     public static final String KEY_USE_SUBDOMAINS                                   = "useSubdomains";
     public static final String KEY_IS_DATA_RESIDENCY                                = "isDataResidency";
@@ -108,13 +87,13 @@ public class AdjustCordovaUtils {
     // Adjust Create Configuration and Initialize SDK command
     public static final String COMMAND_INIT_SDK                                     = "initSdk";
     // Callback setters commands
-    public static final String COMMAND_SET_ATTRIBUTION_CHANGED_CALLBACK             = "setAttributionChangedCallback";
+    public static final String COMMAND_SET_ATTRIBUTION_CALLBACK                     = "setAttributionCallback";
     public static final String COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK        = "setEventTrackingSucceededCallback";
     public static final String COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK           = "setEventTrackingFailedCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK      = "setSessionTrackingSucceededCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK         = "setSessionTrackingFailedCallback";
-    public static final String COMMAND_SET_DEFERRED_DEEPLINK_RECEIVED_CALLBACK      = "setDeferredDeeplinkReceivedCallback";
-    public static final String COMMAND_SET_SKAN_CONVERSION_DATA_UPDATED_CALLBACK    = "setSkanConversionDataUpdatedCallback";
+    public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK               = "setDeferredDeeplinkCallback";
+    public static final String COMMAND_SET_SKAN_UPDATED_CALLBACK                    = "setSkanUpdatedCallback";
     // Setters commands
     public static final String COMMAND_SET_PUSH_TOKEN                               = "setPushToken";
     public static final String COMMAND_SET_REFERRER                                 = "setReferrer";
@@ -124,7 +103,6 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_GET_GOOGLE_AD_ID                             = "getGoogleAdId";
     public static final String COMMAND_GET_AMAZON_AD_ID                             = "getAmazonAdId";
     public static final String COMMAND_GET_SDK_VERSION                              = "getSdkVersion";
-    public static final String COMMAND_GET_GOOGLE_PLAY_INSTALL_REFERRER             = "getGooglePlayInstallReferrer";
     // Global Parameters manipulation commands
     // Callback
     public static final String COMMAND_ADD_GLOBAL_CALLBACK_PARAMETER                = "addGlobalCallbackParameter";
@@ -162,7 +140,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE          = "verifyAndTrackAppStorePurchase";
     public static final String COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER = "requestTrackingAuthorizationWithCompletionHandler";
     public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS        = "getAppTrackingAuthorizationStatus";
-    public static final String COMMAND_UPDATE_SKAN_CONVERSION_VALUE_WITH_ERROR_CALLBACK = "updateSkanConversionValueWithErrorCallback";
+    public static final String COMMAND_UPDATE_SKAN_CONVERSION_VALUE                 = "updateSkanConversionValue";
     public static final String COMMAND_GET_IDFA                                     = "getIdfa";
     public static final String COMMAND_GET_IDFV                                     = "getIdfv";
     // Testing commands
@@ -263,24 +241,6 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_ADID, session.adid);
         addValueOrEmpty(map, KEY_WILL_RETRY, session.willRetry ? "true" : "false");;
         addValueOrEmpty(map, KEY_JSON_RESPONSE, session.jsonResponse);
-        return map;
-    }
-
-    public static Map<String, String> getGooglePlayInstallReferrerMap(GooglePlayInstallReferrerDetails referrerDetails) {
-        Map<String, String> map = new HashMap<String, String>();
-        addValueOrEmpty(map, KEY_INSTALL_REFERRER, referrerDetails.installReferrer);
-        addValueOrEmpty(map, KEY_INSTALL_VERSION, referrerDetails.installVersion);
-        addValueOrEmpty(map, KEY_REFERRER_CLICK_TS_SEC, Long.toString(referrerDetails.referrerClickTimestampSeconds));
-        addValueOrEmpty(map, KEY_REFERRER_CLICK_TS_SERVER_SEC, Long.toString(referrerDetails.referrerClickTimestampServerSeconds));
-        addValueOrEmpty(map, KEY_INSTALL_BEGIN_TS_SEC, Long.toString(referrerDetails.installBeginTimestampSeconds));
-        addValueOrEmpty(map, KEY_INSTALL_BEGIN_TS_SERVER_SEC, Long.toString(referrerDetails.installBeginTimestampServerSeconds));
-        addValueOrEmpty(map, KEY_GOOGLE_PLAY_INSTANT, referrerDetails.googlePlayInstant);
-        return map;
-    }
-
-    public static Map<String, String> getGooglePlayInstallReferrerFailureMap(String message) {
-        Map<String, String> map = new HashMap<String, String>();
-        addValueOrEmpty(map, KEY_MESSAGE, message);
         return map;
     }
 

@@ -27,62 +27,62 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
 #pragma mark - Public methods
 
-+ (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionChangedCallbackId
-                          eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
-                             eventFailedCallbackId:(NSString *)eventFailedCallbackId
-                        sessionSucceededCallbackId:(NSString *)sessionSucceededCallbackId
-                           sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
-                deferredDeeplinkReceivedCallbackId:(NSString *)deferredDeeplinkReceivedCallbackId
-               skanConversionDataUpdatedCallbackId:(NSString *)skanConversionDataUpdatedCallbackId
++ (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionCallbackId
+                  eventTrackingSucceededCallbackId:(NSString *)eventTrackingSucceededCallbackId
+                     eventTrackingFailedCallbackId:(NSString *)eventTrackingFailedCallbackId
+                sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
+                   sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
+                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                             skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
     dispatch_once(&onceToken, ^{
         defaultInstance = [[AdjustCordovaDelegate alloc] init];
 
         // Do the swizzling where and if needed.
-        if (attributionChangedCallbackId != nil &&
-            attributionChangedCallbackId.length > 0) {
+        if (attributionCallbackId != nil &&
+            attributionCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustAttributionChanged:)
                                   swizzledSelector:@selector(adjustAttributionChangedWannabe:)];
         }
-        if (eventSucceededCallbackId != nil &&
-            eventSucceededCallbackId.length > 0) {
+        if (eventTrackingSucceededCallbackId != nil &&
+            eventTrackingSucceededCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingSucceeded:)
                                   swizzledSelector:@selector(adjustEventTrackingSucceededWannabe:)];
         }
-        if (eventFailedCallbackId != nil &&
-            eventFailedCallbackId.length > 0) {
+        if (eventTrackingFailedCallbackId != nil &&
+            eventTrackingFailedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingFailed:)
                                   swizzledSelector:@selector(adjustEventTrackingFailedWannabe:)];
         }
-        if (sessionSucceededCallbackId != nil &&
-            sessionSucceededCallbackId.length > 0) {
+        if (sessionTrackingSucceededCallbackId != nil &&
+            sessionTrackingSucceededCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingSucceeded:)
                                   swizzledSelector:@selector(adjustSessionTrackingSucceededWannabe:)];
         }
-        if (sessionFailedCallbackId != nil &&
-            sessionFailedCallbackId.length > 0) {
+        if (sessionTrackingFailedCallbackId != nil &&
+            sessionTrackingFailedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                                   swizzledSelector:@selector(adjustSessionTrackingFailedWananbe:)];
         }
-        if (deferredDeeplinkReceivedCallbackId != nil &&
-            deferredDeeplinkReceivedCallbackId.length > 0) {
+        if (deferredDeeplinkCallbackId != nil &&
+            deferredDeeplinkCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustDeferredDeeplinkReceived:)
                                   swizzledSelector:@selector(adjustDeferredDeeplinkReceivedWannabe:)];
         }
-        if (skanConversionDataUpdatedCallbackId != nil &&
-            skanConversionDataUpdatedCallbackId.length > 0) {
+        if (skanUpdatedCallbackId != nil &&
+            skanUpdatedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
                                   swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabe:)];
         }
 
-        [defaultInstance setAttributionChangedCallbackId:attributionChangedCallbackId];
-        [defaultInstance setEventSucceededCallbackId:eventSucceededCallbackId];
-        [defaultInstance setEventFailedCallbackId:eventFailedCallbackId];
-        [defaultInstance setSessionSucceededCallbackId:sessionSucceededCallbackId];
-        [defaultInstance setSessionFailedCallbackId:sessionFailedCallbackId];
-        [defaultInstance setDeferredDeeplinkReceivedCallbackId:deferredDeeplinkReceivedCallbackId];
-        [defaultInstance setSkanConversionDataUpdatedCallbackId:skanConversionDataUpdatedCallbackId];
+        [defaultInstance setAttributionCallbackId:attributionCallbackId];
+        [defaultInstance setEventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId];
+        [defaultInstance setEventTrackingFailedCallbackId:eventTrackingFailedCallbackId];
+        [defaultInstance setSessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId];
+        [defaultInstance setSessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId];
+        [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
+        [defaultInstance setSkanUpdatedCallbackId:skanUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
     });
@@ -116,7 +116,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionChangedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_attributionCallbackId];
 }
 
 - (void)adjustEventTrackingSucceededWannabe:(ADJEventSuccess *)eventSuccessResponseData {
@@ -136,7 +136,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventSucceededCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventTrackingSucceededCallbackId];
 }
 
 - (void)adjustEventTrackingFailedWannabe:(ADJEventFailure *)eventFailureResponseData {
@@ -157,7 +157,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventFailedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventTrackingFailedCallbackId];
 }
 
 - (void)adjustSessionTrackingSucceededWannabe:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -175,7 +175,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionSucceededCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionTrackingSucceededCallbackId];
 }
 
 - (void)adjustSessionTrackingFailedWananbe:(ADJSessionFailure *)sessionFailureResponseData {
@@ -194,22 +194,27 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionFailedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionTrackingFailedCallbackId];
 }
 
 - (BOOL)adjustDeferredDeeplinkReceivedWannabe:(NSURL *)deeplink {
     NSString *path = [deeplink absoluteString];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_deferredDeeplinkReceivedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_deferredDeeplinkCallbackId];
 
     return _shouldLaunchDeferredDeeplink;
 }
 
 - (void)adjustSkanUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [self addValueOrEmpty:data[@"conversion_value"] withKey:@"conversionValue" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"coarse_value"] withKey:@"coarseValue" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"lock_window"] withKey:@"lockWindow" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"error"] withKey:@"error" toDictionary:dictionary];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skanConversionDataUpdatedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skanUpdatedCallbackId];
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector
