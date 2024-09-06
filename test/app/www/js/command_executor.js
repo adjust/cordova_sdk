@@ -807,13 +807,11 @@ AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
 };
 
 AdjustCommandExecutor.prototype.getLastDeeplink = function(params) {
-    if (device.platform === 'iOS') {
-        var _this = this;
-        Adjust.getLastDeeplink(function(lastDeeplink) {
-            AdjustTest.addInfoToSend('last_deeplink', lastDeeplink);
-            AdjustTest.sendInfoToServer(_this.extraPath);
-        });
-    }
+    var _this = this;
+    Adjust.getLastDeeplink(function(lastDeeplink) {
+        AdjustTest.addInfoToSend('last_deeplink', lastDeeplink);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
 };
 
 AdjustCommandExecutor.prototype.verifyPurchase = function(params) {
