@@ -23,8 +23,8 @@ var app = {
         // adjustConfig.setDeferredDeeplinkOpeningEnabled(true);
         // adjustConfig.enableSendingInBackground();
         // adjustConfig.enableCostDataInAttribution();
-        // adjustConfig.setOaidReadingEnabled(true);
-        // adjustConfig.setPlayStoreKidsAppEnabled(true);
+        // adjustConfig.enableOaidReading();
+        // adjustConfig.enablePlayStoreKidsCompliance();
         // adjustConfig.setAttConsentWaitingInterval(16);
         // adjust.setFbAppId("your-fb-app-id");
 

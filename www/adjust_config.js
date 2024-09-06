@@ -31,7 +31,7 @@ function AdjustConfig(appToken, environment) {
     this.isPreinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
     this.isOaidReadingEnabled = null;
-    this.isPlayStoreKidsAppEnabled = null;
+    this.isPlayStoreKidsComplianceEnabled = null;
     this.fbAppId = null;
     // iOS only 
     this.isAdServicesEnabled = null;
@@ -145,22 +145,42 @@ function AdjustConfig(appToken, environment) {
     };
 
     AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
+        if (typeof sdkPrefix !== 'string') {
+            console.log("[Adjust] SDK prefix is not of type string");
+            return;
+        }
         this.sdkPrefix = sdkPrefix;
     };
 
     AdjustConfig.prototype.setLogLevel = function(logLevel) {
+        if (typeof logLevel !== 'string') {
+            console.log("[Adjust] Log level is not of type string");
+            return;
+        }
         this.logLevel = logLevel;
     };
 
     AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
+        if (typeof defaultTracker !== 'string') {
+            console.log("[Adjust] Default tracker is not of type string");
+            return;
+        }
         this.defaultTracker = defaultTracker;
     };
 
     AdjustConfig.prototype.setExternalDeviceId = function(externalDeviceId) {
+        if (typeof externalDeviceId !== 'string') {
+            console.log("[Adjust] External device ID is not of type string");
+            return;
+        }
         this.externalDeviceId = externalDeviceId;
     };
 
     AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
+        if (!Number.isInteger(eventDeduplicationIdsMaxSize)) {
+            console.log("[Adjust] Maximum number of event deduplication IDs is not of type integer");
+            return;
+        }
         this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
     };
 
@@ -181,18 +201,26 @@ function AdjustConfig(appToken, environment) {
     };
 
     AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
+        if (typeof preinstallFilePath !== 'string') {
+            console.log("[Adjust] Preinstall file path is not of type string");
+            return;
+        }
         this.preinstallFilePath = preinstallFilePath;
     };
 
-    AdjustConfig.prototype.setOaidReadingEnabled = function(enableOaidReading) {
-        this.isOaidReadingEnabled = enableOaidReading;
+    AdjustConfig.prototype.enableOaidReading = function() {
+        this.isOaidReadingEnabled = true;
     };
 
-    AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
-        this.isPlayStoreKidsAppEnabled = isEnabled;
+    AdjustConfig.prototype.enablePlayStoreKidsCompliance = function () {
+        this.isPlayStoreKidsComplianceEnabled = true;
     };
 
     AdjustConfig.prototype.setFbAppId = function (fbAppId) {
+        if (typeof fbAppId !== 'string') {
+            console.log("[Adjust] FB app ID is not of type string");
+            return;
+        }
         this.fbAppId = fbAppId;
     };
 
@@ -218,13 +246,23 @@ function AdjustConfig(appToken, environment) {
     };
 
     AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
+        if (!Number.isInteger(attConsentWaitingInterval)) {
+            console.log("[Adjust] ATT consent waiting interval is not of type integer");
+            return;
+        }
         this.attConsentWaitingInterval = attConsentWaitingInterval;
     };
 
     AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomains, isDataResidency) {
-         this.urlStrategyDomains = urlStrategyDomains;
-         this.useSubdomains = useSubdomains;
-         this.isDataResidency = isDataResidency;
-     };
+        if (!Array.isArray(urlStrategyDomains) ||
+            typeof useSubdomains !== 'boolean' ||
+            typeof isDataResidency !== 'boolean') {
+            console.log("[Adjust] URL strategy parameters are not of a proper data types");
+            return;
+        }
+        this.urlStrategyDomains = urlStrategyDomains;
+        this.useSubdomains = useSubdomains;
+        this.isDataResidency = isDataResidency;
+    };
 
     module.exports = AdjustConfig;

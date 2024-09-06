@@ -11,15 +11,27 @@ function AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, p
 }
 
 AdjustPlayStoreSubscription.prototype.setPurchaseTime = function(purchaseTime) {
+    if (!Number.isInteger(purchaseTime)) {
+        console.log("[Adjust] Play Store subscription purchase time is not of type integer");
+        return;
+    }
     this.purchaseTime = purchaseTime;
 };
 
 AdjustPlayStoreSubscription.prototype.addCallbackParameter = function(key, value) {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+        console.log("[Adjust] Play Store subscription callback parameter key or value is not of type string");
+        return;
+    }
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
 };
 
 AdjustPlayStoreSubscription.prototype.addPartnerParameter = function(key, value) {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+        console.log("[Adjust] Play Store subscription partner parameter key or value is not of type string");
+        return;
+    }
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
 };

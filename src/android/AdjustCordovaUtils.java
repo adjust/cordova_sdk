@@ -74,7 +74,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_AD_REVENUE_UNIT                                  = "adRevenueUnit";
     public static final String KEY_AD_REVENUE_PLACEMENT                             = "adRevenuePlacement";
     public static final String KEY_IS_COPPA_COMPLIANCE_ENABLED                      = "isCoppaComplianceEnabled";
-    public static final String KEY_IS_PLAY_STORE_KIDS_APP_ENABLED                   = "isPlayStoreKidsAppEnabled";
+    public static final String KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED            = "isPlayStoreKidsComplianceEnabled";
     public static final String KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED               = "isDeviceIdsReadingOnceEnabled";
     public static final String KEY_FB_APP_ID                                        = "fbAppId";
     public static final String KEY_VERIFICATION_STATUS                              = "verificationStatus";

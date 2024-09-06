@@ -78,6 +78,10 @@ var Adjust = {
     },
 
     setPushToken: function(token) {
+        if (typeof token !== 'string') {
+            console.log("[Adjust] Push token is not of type string");
+            return;
+        }
         callCordova('setPushToken', token);
     },
 
@@ -109,10 +113,18 @@ var Adjust = {
     },
 
     addGlobalCallbackParameter: function(key, value) {
+        if (typeof key !== 'string' || typeof value !== 'string') {
+            console.log("[Adjust] Global callback parameter key or value is not of type string");
+            return;
+        }
         callCordova('addGlobalCallbackParameter', key, value);
     },
 
     removeGlobalCallbackParameter: function(key) {
+        if (typeof key !== 'string') {
+            console.log("[Adjust] Global callback parameter key is not of type string");
+            return;
+        }
         callCordova('removeGlobalCallbackParameter', key);
     },
 
@@ -121,10 +133,18 @@ var Adjust = {
     },
 
     addGlobalPartnerParameter: function(key, value) {
+        if (typeof key !== 'string' || typeof value !== 'string') {
+            console.log("[Adjust] Global partner parameter key or value is not of type string");
+            return;
+        }
         callCordova('addGlobalPartnerParameter', key, value);
     },
 
     removeGlobalPartnerParameter: function(key) {
+        if (typeof key !== 'string') {
+            console.log("[Adjust] Global partner parameter key is not of type string");
+            return;
+        }
         callCordova('removeGlobalPartnerParameter', key);
     },
 
@@ -194,6 +214,10 @@ var Adjust = {
     },
 
     trackMeasurementConsent: function(measurementConsent) {
+        if (typeof measurementConsent !== 'boolean') {
+            console.log("[Adjust] Measurement consent is not of type boolean");
+            return;
+        }
         callCordova('trackMeasurementConsent', measurementConsent);
     },
 
@@ -230,7 +254,15 @@ var Adjust = {
     },
 
     updateSkanConversionValue: function(conversionValue, coarseValue, lockWindow, callback) {
-        callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
+        if (device.platform === 'iOS') {
+            if (!Number.isInteger(conversionValue) ||
+                typeof coarseValue !== 'string' ||
+                typeof lockWindow !== 'boolean') {
+                console.log("[Adjust] SKAN parameters are not of a proper data types");
+                return;
+            }
+            callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
+        }
     },
 
     getIdfa: function(callback) {

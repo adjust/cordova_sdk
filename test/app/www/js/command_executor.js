@@ -113,7 +113,6 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
-        case 'sendReferrer' : this.sendReferrer(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -311,7 +310,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('attributionCallbackSendAll' in params) {
         var _this = this;
-        adjustConfig.setAttributionChangedCallbackListener(function(attribution) {
+        adjustConfig.setAttributionCallback(function(attribution) {
             AdjustTest.addInfoToSend('tracker_token', attribution.trackerToken);
             AdjustTest.addInfoToSend('tracker_name', attribution.trackerName);
             AdjustTest.addInfoToSend('network', attribution.network);
@@ -331,7 +330,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('sessionCallbackSendSuccess' in params) {
         var _this = this;
-        adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
+        adjustConfig.setSessionTrackingSucceededCallback(function(sessionSuccess) {
             AdjustTest.addInfoToSend('message', sessionSuccess.message);
             AdjustTest.addInfoToSend('timestamp', sessionSuccess.timestamp);
             AdjustTest.addInfoToSend('adid', sessionSuccess.adid);
@@ -342,7 +341,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('sessionCallbackSendFailure' in params) {
         var _this = this;
-        adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
+        adjustConfig.setSessionTrackingFailedCallback(function(sessionFailed) {
             AdjustTest.addInfoToSend('message', sessionFailed.message);
             AdjustTest.addInfoToSend('timestamp', sessionFailed.timestamp);
             AdjustTest.addInfoToSend('adid', sessionFailed.adid);
@@ -354,7 +353,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('eventCallbackSendSuccess' in params) {
         var _this = this;
-        adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
+        adjustConfig.setEventTrackingSucceededCallback(function(eventSuccess) {
             AdjustTest.addInfoToSend('message', eventSuccess.message);
             AdjustTest.addInfoToSend('timestamp', eventSuccess.timestamp);
             AdjustTest.addInfoToSend('adid', eventSuccess.adid);
@@ -367,7 +366,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('eventCallbackSendFailure' in params) {
         var _this = this;
-        adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
+        adjustConfig.setEventTrackingFailedCallback(function(eventFailed) {
             AdjustTest.addInfoToSend('message', eventFailed.message);
             AdjustTest.addInfoToSend('timestamp', eventFailed.timestamp);
             AdjustTest.addInfoToSend('adid', eventFailed.adid);
@@ -385,7 +384,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var launchDeferredDeeplink = launchDeferredDeeplinkS === 'true';
         console.log(`[*] Launch deferred deeplink set to: ${launchDeferredDeeplink}`);
         adjustConfig.setDeferredDeeplinkOpeningEnabled(launchDeferredDeeplink);
-        adjustConfig.setDeferredDeeplinkReceivedCallbackListener(function(uri) {
+        adjustConfig.setDeferredDeeplinkCallback(function(uri) {
             AdjustTest.addInfoToSend('deeplink', uri);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
@@ -393,10 +392,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('skanCallback' in params) {
         var _this = this;
-        adjustConfig.setSkanConversionDataUpdatedCallbackListener(function(data) {
+        adjustConfig.setSkanUpdatedCallback(function(data) {
             var jsonObject = JSON.parse(JSON.stringify(data));
             for (let [key, value] of Object.entries(jsonObject)) {
-                AdjustTest.addInfoToSend(key, value);
+                if (key === 'conversionValue') {
+                    AdjustTest.addInfoToSend('conversion_value', value);
+                }
+                if (key === 'coarseValue') {
+                    AdjustTest.addInfoToSend('coarse_value', value);
+                }
+                if (key === 'lockWindow') {
+                    AdjustTest.addInfoToSend('lock_window', value);
+                }
             }
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
@@ -424,13 +431,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('playStoreKids' in params) {
         var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
         var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
-        adjustConfig.setPlayStoreKidsAppEnabled(playStoreKidsEnabled);
-    }
-
-    if ('finalAttributionEnabled' in params) {
-        var finalAttributionEnabledS = getFirstParameterValue(params, 'finalAttributionEnabled');
-        var finalAttributionEnabled = finalAttributionEnabledS == 'true';
-        adjustConfig.setFinalAndroidAttributionEnabled(finalAttributionEnabled);
+        adjustConfig.enablePlayStoreKidsCompliance();
     }
 };
 
@@ -539,11 +540,6 @@ AdjustCommandExecutor.prototype.trackEvent = function(params) {
     delete this.savedEvents[0];
 };
 
-AdjustCommandExecutor.prototype.setReferrer = function(params) {
-    var referrer = getFirstParameterValue(params, 'referrer');
-    Adjust.setReferrer(referrer);
-};
-
 AdjustCommandExecutor.prototype.pause = function(params) {
     Adjust.onPause('test');
 };
@@ -628,11 +624,6 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
     Adjust.gdprForgetMe();
-};
-
-AdjustCommandExecutor.prototype.sendReferrer = function(params) {
-    var referrer = getFirstParameterValue(params, 'referrer');
-    Adjust.setReferrer(referrer);
 };
 
 AdjustCommandExecutor.prototype.trackThirdPartySharing = function(params) {

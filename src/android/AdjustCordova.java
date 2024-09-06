@@ -256,8 +256,8 @@ public class AdjustCordova extends CordovaPlugin implements
         }
 
         // Google Play Store kids compliance
-        if (parameters.containsKey(KEY_IS_PLAY_STORE_KIDS_APP_ENABLED)) {
-            String strIsPlayStoreKidsComplianceEnabled = parameters.get(KEY_IS_PLAY_STORE_KIDS_APP_ENABLED).toString();
+        if (parameters.containsKey(KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED)) {
+            String strIsPlayStoreKidsComplianceEnabled = parameters.get(KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED).toString();
             boolean isPlayStoreKidsComplianceEnabled = Boolean.parseBoolean(strIsPlayStoreKidsComplianceEnabled);
             if (isPlayStoreKidsComplianceEnabled) {
                 adjustConfig.enablePlayStoreKidsCompliance();
