@@ -11,8 +11,8 @@ function AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, p
 }
 
 AdjustPlayStoreSubscription.prototype.setPurchaseTime = function(purchaseTime) {
-    if (typeof purchaseTime !== 'string') {
-        console.log("[Adjust] Play Store subscription purchase time is not of type string");
+    if (!Number.isInteger(purchaseTime)) {
+        console.log("[Adjust] Play Store subscription purchase time is not of type integer");
         return;
     }
     this.purchaseTime = purchaseTime;

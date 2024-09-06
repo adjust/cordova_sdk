@@ -383,7 +383,9 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var launchDeferredDeeplinkS = getFirstParameterValue(params, 'deferredDeeplinkCallback');
         var launchDeferredDeeplink = launchDeferredDeeplinkS === 'true';
         console.log(`[*] Launch deferred deeplink set to: ${launchDeferredDeeplink}`);
-        adjustConfig.setDeferredDeeplinkOpeningEnabled(launchDeferredDeeplink);
+        if (launchDeferredDeeplink == false) {
+            adjustConfig.disableDeferredDeeplinkOpening();
+        }
         adjustConfig.setDeferredDeeplinkCallback(function(uri) {
             AdjustTest.addInfoToSend('deeplink', uri);
             AdjustTest.sendInfoToServer(_this.extraPath);
@@ -702,8 +704,8 @@ AdjustCommandExecutor.prototype.trackAppStoreSubscription = function(params) {
         var orderId = getFirstParameterValue(params, 'transactionId');
         var purchaseTime = getFirstParameterValue(params, 'transactionDate');
 
-        var subscription = new AdjustPlayStoreSubscription(price, currency, sku, orderId, signature, purchaseToken);
-        subscription.setPurchaseTime(purchaseTime);
+        var subscription = new AdjustPlayStoreSubscription(Number(price), currency, sku, orderId, signature, purchaseToken);
+        subscription.setPurchaseTime(Number(purchaseTime));
 
         if ('callbackParams' in params) {
             var callbackParams = getValueFromKey(params, 'callbackParams');

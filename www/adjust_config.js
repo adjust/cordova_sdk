@@ -184,8 +184,8 @@ function AdjustConfig(appToken, environment) {
         this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
     };
 
-    AdjustConfig.prototype.setDeferredDeeplinkOpeningEnabled = function(deferredDeeplinkOpeningEnabled) {
-        this.isDeferredDeeplinkOpeningEnabled = deferredDeeplinkOpeningEnabled;
+    AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
+        this.isDeferredDeeplinkOpeningEnabled = false;
     };
 
     AdjustConfig.prototype.enableCoppaCompliance = function() {
@@ -196,8 +196,8 @@ function AdjustConfig(appToken, environment) {
         this.processName = processName;
     };
 
-    AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
-        this.isPreinstallTrackingEnabled = isEnabled;
+    AdjustConfig.prototype.enablePreinstallTracking = function() {
+        this.isPreinstallTrackingEnabled = true;
     };
 
     AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {

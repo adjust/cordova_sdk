@@ -1,7 +1,8 @@
 function handleOpenURL(url) {
     setTimeout(function() {
         console.log(`TestApp, handleOpenURL: initiate Adjust.processDeeplink, with URL = ${url}`);
-        Adjust.processDeeplink(url);
+        var adjustDeeplink = new AdjustDeeplink(url);
+        Adjust.processDeeplink(adjustDeeplink);
     }, 0);
 }
 
