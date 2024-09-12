@@ -334,7 +334,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('message', sessionSuccess.message);
             AdjustTest.addInfoToSend('timestamp', sessionSuccess.timestamp);
             AdjustTest.addInfoToSend('adid', sessionSuccess.adid);
-            addJsonResponseInfo(sessionSuccess);
+            AdjustTest.addInfoToSend('jsonResponse', sessionSuccess.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -346,7 +346,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('timestamp', sessionFailed.timestamp);
             AdjustTest.addInfoToSend('adid', sessionFailed.adid);
             AdjustTest.addInfoToSend('willRetry', sessionFailed.willRetry);
-            addJsonResponseInfo(sessionFailed);
+            AdjustTest.addInfoToSend('jsonResponse', sessionFailed.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -359,7 +359,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('adid', eventSuccess.adid);
             AdjustTest.addInfoToSend('eventToken', eventSuccess.eventToken);
             AdjustTest.addInfoToSend('callbackId', eventSuccess.callbackId);
-            addJsonResponseInfo(eventSuccess);
+            AdjustTest.addInfoToSend('jsonResponse', eventSuccess.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -373,7 +373,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             AdjustTest.addInfoToSend('eventToken', eventFailed.eventToken);
             AdjustTest.addInfoToSend('callbackId', eventFailed.callbackId);
             AdjustTest.addInfoToSend('willRetry', eventFailed.willRetry);
-            addJsonResponseInfo(eventFailed);
+            AdjustTest.addInfoToSend('jsonResponse', eventFailed.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -907,18 +907,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
 };
 
 // Util methods
-
-function addJsonResponseInfo(event) {
-    if (event.jsonResponse == null) {
-        return;
-    }
-
-    if (device.platform === 'Android') {
-        AdjustTest.addInfoToSend('jsonResponse', event.jsonResponse);
-    } else {
-        AdjustTest.addInfoToSend('jsonResponse', JSON.stringify(event.jsonResponse));
-    }
-}
 
 function getValueFromKey(params, key) {
     if (key in params) {

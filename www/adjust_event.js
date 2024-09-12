@@ -4,10 +4,11 @@ function AdjustEvent(eventToken) {
     this.currency = null;
     this.deduplicationId = null;
     this.callbackId = null;
-    this.transactionId = null;
     this.productId = null;
     this.callbackParameters = [];
     this.partnerParameters = [];
+    // iOS only
+    this.transactionId = null;
     // Android only
     this.purchaseToken = null;
 }

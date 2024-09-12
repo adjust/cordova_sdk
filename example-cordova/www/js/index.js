@@ -12,21 +12,8 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        // // Register for universal links
-        // if (device.platform == 'iOS') {
-        //     universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-        // }
-
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
-
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-        // adjustConfig.setDeferredDeeplinkOpeningEnabled(true);
-        // adjustConfig.enableSendingInBackground();
-        // adjustConfig.enableCostDataInAttribution();
-        // adjustConfig.enableOaidReading();
-        // adjustConfig.enablePlayStoreKidsCompliance();
-        // adjustConfig.setAttConsentWaitingInterval(16);
-        // adjust.setFbAppId("your-fb-app-id");
 
         adjustConfig.setAttributionCallback(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
@@ -91,7 +78,6 @@ var app = {
             console.log("[AdjustExample]: Error = " + skanData.error);
         });
 
-
         Adjust.addGlobalCallbackParameter("dummy_foo", "dummy_bar");
         Adjust.addGlobalCallbackParameter("dummy_foo_foo", "dummy_bar");
 
@@ -101,20 +87,15 @@ var app = {
         Adjust.removeGlobalCallbackParameter("dummy_foo");
         Adjust.removeGlobalPartnerParameter("dummy_foo");
 
-        // Adjust.requestAppTrackingAuthorizationWithCompletionHandler(function(status) {
-        //     console.log("ATT status after dialog = " + status);
-        // });
-
         // Adjust.removeGlobalCallbackParameters();
         // Adjust.removeGlobalPartnerParameters();
 
+        Adjust.requestAppTrackingAuthorization(function(status) {
+            console.log("ATT status = " + status);
+        });
+
         Adjust.initSdk(adjustConfig);
-
     },
-
-    // didLaunchAppFromLink: function(eventData) {
-    //     Adjust.processDeeplink(eventData.url);
-    // },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -198,8 +179,8 @@ var app = {
                 console.log("[AdjustExample]: Google Ad Id = " + gpsAdId);
             });
 
-            Adjust.getAmazonAdId(function(gpsAdId) {
-                console.log("[AdjustExample]: Amazon Ad Id = " + gpsAdId);
+            Adjust.getAmazonAdId(function(amazonAdId) {
+                console.log("[AdjustExample]: Amazon Ad Id = " + amazonAdId);
             });
 
             Adjust.getAdid(function(adid) {

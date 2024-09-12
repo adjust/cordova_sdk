@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDVPluginResult.h>
@@ -11,66 +11,61 @@
 #import "AdjustCordova.h"
 #import "AdjustCordovaDelegate.h"
 
-#define KEY_APP_TOKEN                               @"appToken"
-#define KEY_ENVIRONMENT                             @"environment"
-#define KEY_LOG_LEVEL                               @"logLevel"
-#define KEY_SDK_PREFIX                              @"sdkPrefix"
-#define KEY_EVENT_TOKEN                             @"eventToken"
-#define KEY_REVENUE                                 @"revenue"
-#define KEY_CURRENCY                                @"currency"
-#define KEY_DEFAULT_TRACKER                         @"defaultTracker"
-#define KEY_EXTERNAL_DEVICE_ID                      @"externalDeviceId"
-#define KEY_TRANSACTION_ID                          @"transactionId"
-#define KEY_CALLBACK_ID                             @"callbackId"
-#define KEY_DEDUPLICATION_ID                        @"deduplicationId"
-#define KEY_CALLBACK_PARAMETERS                     @"callbackParameters"
-#define KEY_PARTNER_PARAMETERS                      @"partnerParameters"
-#define KEY_IS_ENABLED                              @"isEnabled"
-#define KEY_GRANULAR_OPTIONS                        @"granularOptions"
-#define KEY_PARTNER_SHARING_SETTINGS                @"partnerSharingSettings"
-#define KEY_REFERRER                                @"referrer"
-#define KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED   @"isDeferredDeeplinkOpeningEnabled"
-#define KEY_IS_SENDING_IN_BACKGROUND_ENABLED        @"isSendingInBackgroundEnabled"
-#define KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED     @"isCostDataInAttributionEnabled"
-#define KEY_IS_AD_SERVICES_ENABLED                  @"isAdServicesEnabled"
-#define KEY_IS_IDFA_READING_ENABLED                 @"isIdfaReadingEnabled"
-#define KEY_IS_IDFV_READING_ENABLED                 @"isIdfvReadingEnabled"
-#define KEY_IS_SKAN_ATTRIBUTION_ENABLED             @"isSkanAttributionEnabled"
-#define KEY_IS_LINK_ME_ENABLED                      @"isLinkMeEnabled"
-#define KEY_IS_COPPA_COMPLIANCE_ENABLED             @"isCoppaComplianceEnabled"
-#define KEY_TEST_URL_OVERWRITE                      @"testUrlOverwrite"
-#define KEY_EXTRA_PATH                              @"extraPath"
-#define KEY_USE_TEST_CONNECTION_OPTIONS             @"useTestConnectionOptions"
-#define KEY_TIMER_INTERVAL                          @"timerIntervalInMilliseconds"
-#define KEY_TIMER_START                             @"timerStartInMilliseconds"
-#define KEY_SESSION_INTERVAL                        @"sessionIntervalInMilliseconds"
-#define KEY_SUBSESSION_INTERVAL                     @"subsessionIntervalInMilliseconds"
-#define KEY_TEARDOWN                                @"teardown"
-#define KEY_NO_BACKOFF_WAIT                         @"noBackoffWait"
-#define KEY_ATT_STATUS                              @"attStatus"
-#define KEY_IDFA                                    @"idfa"
-#define KEY_DELETE_STATE                            @"deleteState"
-#define KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP       @"ignoreSystemLifecycleBootstrap"
-#define KEY_ADSERVICES_ENABLED                      @"adServicesFrameworkEnabled"
-#define KEY_PRICE                                   @"price"
-#define KEY_TRANSACTION_DATE                        @"transactionDate"
-#define KEY_SALES_REGION                            @"salesRegion"
-#define KEY_SOURCE                                  @"source"
-#define KEY_AD_IMPRESSIONS_COUNT                    @"adImpressionsCount"
-#define KEY_AD_REVENUE_NETWORK                      @"adRevenueNetwork"
-#define KEY_AD_REVENUE_UNIT                         @"adRevenueUnit"
-#define KEY_AD_REVENUE_PLACEMENT                    @"adRevenuePlacement"
-#define KEY_ATT_CONSENT_WAITING_INTERVAL            @"attConsentWaitingInterval"
-#define KEY_PRODUCT_ID                              @"productId"
-#define KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED      @"isDeviceIdsReadingOnceEnabled"
-
-#define KEY_URL_STRATEGY_DOMAINS                    @"urlStrategyDomains"
-#define KEY_USE_SUBDOMAINS                          @"useSubdomains"
-#define KEY_IS_DATA_RESIDENCY                       @"isDataResidency"
-#define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE        @"eventDeduplicationIdsMaxSize"
-#define KEY_DEEPLINK                                @"deeplink"
-
-
+#define KEY_APP_TOKEN @"appToken"
+#define KEY_ENVIRONMENT @"environment"
+#define KEY_LOG_LEVEL @"logLevel"
+#define KEY_SDK_PREFIX @"sdkPrefix"
+#define KEY_EVENT_TOKEN @"eventToken"
+#define KEY_REVENUE @"revenue"
+#define KEY_CURRENCY @"currency"
+#define KEY_DEFAULT_TRACKER @"defaultTracker"
+#define KEY_EXTERNAL_DEVICE_ID @"externalDeviceId"
+#define KEY_TRANSACTION_ID @"transactionId"
+#define KEY_CALLBACK_ID @"callbackId"
+#define KEY_DEDUPLICATION_ID @"deduplicationId"
+#define KEY_CALLBACK_PARAMETERS @"callbackParameters"
+#define KEY_PARTNER_PARAMETERS @"partnerParameters"
+#define KEY_IS_ENABLED @"isEnabled"
+#define KEY_GRANULAR_OPTIONS @"granularOptions"
+#define KEY_PARTNER_SHARING_SETTINGS @"partnerSharingSettings"
+#define KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED @"isDeferredDeeplinkOpeningEnabled"
+#define KEY_IS_SENDING_IN_BACKGROUND_ENABLED @"isSendingInBackgroundEnabled"
+#define KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED @"isCostDataInAttributionEnabled"
+#define KEY_IS_AD_SERVICES_ENABLED @"isAdServicesEnabled"
+#define KEY_IS_IDFA_READING_ENABLED @"isIdfaReadingEnabled"
+#define KEY_IS_IDFV_READING_ENABLED @"isIdfvReadingEnabled"
+#define KEY_IS_SKAN_ATTRIBUTION_ENABLED @"isSkanAttributionEnabled"
+#define KEY_IS_LINK_ME_ENABLED @"isLinkMeEnabled"
+#define KEY_IS_COPPA_COMPLIANCE_ENABLED @"isCoppaComplianceEnabled"
+#define KEY_TEST_URL_OVERWRITE @"testUrlOverwrite"
+#define KEY_EXTRA_PATH @"extraPath"
+#define KEY_USE_TEST_CONNECTION_OPTIONS @"useTestConnectionOptions"
+#define KEY_TIMER_INTERVAL @"timerIntervalInMilliseconds"
+#define KEY_TIMER_START @"timerStartInMilliseconds"
+#define KEY_SESSION_INTERVAL @"sessionIntervalInMilliseconds"
+#define KEY_SUBSESSION_INTERVAL @"subsessionIntervalInMilliseconds"
+#define KEY_TEARDOWN @"teardown"
+#define KEY_NO_BACKOFF_WAIT @"noBackoffWait"
+#define KEY_ATT_STATUS @"attStatus"
+#define KEY_IDFA @"idfa"
+#define KEY_DELETE_STATE @"deleteState"
+#define KEY_ADSERVICES_ENABLED @"adServicesFrameworkEnabled"
+#define KEY_PRICE @"price"
+#define KEY_TRANSACTION_DATE @"transactionDate"
+#define KEY_SALES_REGION @"salesRegion"
+#define KEY_SOURCE @"source"
+#define KEY_AD_IMPRESSIONS_COUNT @"adImpressionsCount"
+#define KEY_AD_REVENUE_NETWORK @"adRevenueNetwork"
+#define KEY_AD_REVENUE_UNIT @"adRevenueUnit"
+#define KEY_AD_REVENUE_PLACEMENT @"adRevenuePlacement"
+#define KEY_ATT_CONSENT_WAITING_INTERVAL @"attConsentWaitingInterval"
+#define KEY_PRODUCT_ID @"productId"
+#define KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED @"isDeviceIdsReadingOnceEnabled"
+#define KEY_URL_STRATEGY_DOMAINS @"urlStrategyDomains"
+#define KEY_USE_SUBDOMAINS @"useSubdomains"
+#define KEY_IS_DATA_RESIDENCY @"isDataResidency"
+#define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE @"eventDeduplicationIdsMaxSize"
+#define KEY_DEEPLINK @"deeplink"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -298,6 +293,7 @@
 
 #pragma mark - Adjust API
 #pragma mark - Setters
+
 - (void)setPushToken:(CDVInvokedUrlCommand *)command {
     NSString *token = [command argumentAtIndex:0 withDefault:nil];
     if (!([self isFieldValid:token])) {
@@ -307,6 +303,7 @@
 }
 
 #pragma mark - Getters
+
 - (void)getAttribution:(CDVInvokedUrlCommand *)command {
 
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
@@ -816,40 +813,6 @@
     }];
 }
 
-#pragma mark - Android Only
-
-- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
-    NSString *googleAdId = @"";
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:googleAdId];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {
-    NSString *amazonAdId = @"";
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:amazonAdId];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)getGooglePlayInstallReferrer:(CDVInvokedUrlCommand *)command {
-    NSDictionary *emptyDict = [NSDictionary dictionary];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:emptyDict];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command {}
-
-- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command {
-    NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command {
-    NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
 #pragma mark - Testing
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
@@ -861,7 +824,6 @@
     NSString *subsessionInterval = [[command.arguments valueForKey:KEY_SUBSESSION_INTERVAL] objectAtIndex:0];
     NSString *teardown = [[command.arguments valueForKey:KEY_TEARDOWN] objectAtIndex:0];
     NSString *deleteState = [[command.arguments valueForKey:KEY_DELETE_STATE] objectAtIndex:0];
-    NSString *ignoreSystemLifecycleBootstrap = [[command.arguments valueForKey:KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP] objectAtIndex:0];
     NSString *noBackoffWait = [[command.arguments valueForKey:KEY_NO_BACKOFF_WAIT] objectAtIndex:0];
     NSString *adServicesFrameworkEnabled = [[command.arguments valueForKey:KEY_ADSERVICES_ENABLED] objectAtIndex:0];
     NSString *attStatus = [[command.arguments valueForKey:KEY_ATT_STATUS] objectAtIndex:0];
@@ -914,10 +876,6 @@
     if ([self isFieldValid:adServicesFrameworkEnabled]) {
         NSNumber *adServicesFrameworkEnabledNum = [NSNumber numberWithBool:[adServicesFrameworkEnabled boolValue]];
         [testOptions setObject:adServicesFrameworkEnabledNum forKey:KEY_ADSERVICES_ENABLED];
-    }
-    if ([self isFieldValid:ignoreSystemLifecycleBootstrap]) {
-        NSNumber *ignoreSystemLifecycleBootstrapNum = [NSNumber numberWithBool:[ignoreSystemLifecycleBootstrap boolValue]];
-        [testOptions setObject:ignoreSystemLifecycleBootstrapNum forKey:KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP];
     }
 
     [Adjust setTestOptions:testOptions];

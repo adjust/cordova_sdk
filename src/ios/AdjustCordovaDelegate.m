@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2016-2021 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -131,7 +131,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventSuccessResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     if (eventSuccessResponseData.jsonResponse != nil) {
-        [dictionary setObject:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:eventSuccessResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
@@ -152,7 +156,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:eventFailureResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
     if (eventFailureResponseData.jsonResponse != nil) {
-        [dictionary setObject:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:eventFailureResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
@@ -170,7 +178,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:sessionSuccessResponseData.timestamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:sessionSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
     if (sessionSuccessResponseData.jsonResponse != nil) {
-        [dictionary setObject:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:sessionSuccessResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
@@ -189,7 +201,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:sessionFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
     if (sessionFailureResponseData.jsonResponse != nil) {
-        [dictionary setObject:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:sessionFailureResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];

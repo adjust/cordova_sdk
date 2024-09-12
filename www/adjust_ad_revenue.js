@@ -14,7 +14,7 @@ AdjustAdRevenue.prototype.setRevenue = function(revenue, currency) {
     if (typeof revenue !== 'number' || typeof currency !== 'string') {
         console.log("[Adjust] Ad revenue or currency is not of a proper data type");
     }
-    this.revenue = revenue.toString();
+    this.revenue = revenue;
     this.currency = currency;
 };
 
@@ -23,7 +23,7 @@ AdjustAdRevenue.prototype.setAdImpressionsCount = function(adImpressionsCount) {
         console.log("[Adjust] Ad impressions count is not of type integer");
         return;
     }
-    this.adImpressionsCount = adImpressionsCount.toString();
+    this.adImpressionsCount = adImpressionsCount;
 };
 
 AdjustAdRevenue.prototype.setAdRevenueNetwork = function(adRevenueNetwork) {

@@ -50,13 +50,9 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingFailedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
             deferredDeeplinkCallbackContext = callbackContext;
-        } else if (action.equals(COMMAND_SET_SKAN_UPDATED_CALLBACK)) {
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
-        } else if (action.equals(COMMAND_SET_REFERRER)) {
-            final String referrer = args.getString(0);
-            Adjust.setReferrer(referrer, this.cordova.getActivity().getApplicationContext());
         } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
             executeGetAttribution(callbackContext);
         } else if (action.equals(COMMAND_GET_ADID)) {
@@ -132,30 +128,6 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         } else if (action.equals(COMMAND_GET_LAST_DEEPLINK)) {
             executeGetLastDeeplink(callbackContext);
-        } else if (action.equals(COMMAND_TRACK_APP_STORE_SUBSCRIPTION)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_VERIFY_APP_STORE_PURCHASE)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_REQUEST_TRACKING_AUTHORIZATION_WITH_COMPLETION_HANDLER)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_UPDATE_SKAN_CONVERSION_VALUE)) {
-            // iOS method only
-        } else if (action.equals(COMMAND_GET_IDFA)) {
-            // iOS method only
-            final String idfa = "";
-            PluginResult pluginResult = new PluginResult(Status.OK, idfa);
-            pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
-        } else if (action.equals(COMMAND_GET_IDFV)) {
-            // iOS method only
-            final String idfv = "";
-            PluginResult pluginResult = new PluginResult(Status.OK, idfv);
-            pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -376,31 +348,6 @@ public class AdjustCordova extends CordovaPlugin implements
             isDeferredDeeplinkOpeningEnabled = strIsDeferredDeeplinkOpeningEnabled.equals("true");
         }
 
-        // OAID Reading enabled
-        if (parameters.containsKey(KEY_IS_OAID_READING_ENABLED)) {
-            String strIsOaidReadingEnabled = parameters.get(KEY_IS_OAID_READING_ENABLED).toString();
-            // PLUGIN
-            // Check if OAID reading is enabled to potentially ping OAID plugin if added natively.
-            if (strIsOaidReadingEnabled.equals("true")) {
-                Logger logger = (Logger) AdjustFactory.getLogger();
-                try {
-                    Class clazz = Class.forName("com.adjust.sdk.oaid.AdjustOaid");
-                    if (clazz != null) {
-                        Method method = clazz.getMethod("readOaid", (Class<?>[]) null);
-                        if (method != null) {
-                            method.invoke(null, (Object[]) null);
-                            logger.info(String.format("[AdjustCordova]: Adjust OAID plugin successfully found in the app"));
-                            logger.info(String.format("[AdjustCordova]: OAID reading enabled"));
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error(String.format("[AdjustCordova]: OAID reading failed"));
-                    e.printStackTrace();
-                }
-            }
-
-        }
-
         // Attribution callback.
         if (attributionCallbackContext != null) {
             adjustConfig.setOnAttributionChangedListener(this);
@@ -516,7 +463,6 @@ public class AdjustCordova extends CordovaPlugin implements
     }
 
     private void executeTrackEvent(final JSONArray args) throws JSONException {
-
         AdjustEvent adjustEvent = serializeAdjustEventFromJson(args);
         if (adjustEvent == null) {
             return;

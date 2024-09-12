@@ -71,7 +71,9 @@ var Adjust = {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
         if (adjustConfig.hasSkanUpdatedCallback()) {
-            callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
+            if (device.platform === 'iOS') {
+                callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
+            }
         }
 
         callCordovaStringify('initSdk', adjustConfig);
@@ -94,11 +96,15 @@ var Adjust = {
     },
 
     getGoogleAdId: function(callback) {
-        callCordovaCallback('getGoogleAdId', callback);
+        if (device.platform === 'Android') {
+            callCordovaCallback('getGoogleAdId', callback);
+        }
     },
 
     getAmazonAdId: function(callback) {
-        callCordovaCallback('getAmazonAdId', callback);
+        if (device.platform === 'Android') {
+            callCordovaCallback('getAmazonAdId', callback);
+        }
     },
 
     getSdkVersion: function(callback) {
@@ -177,13 +183,13 @@ var Adjust = {
     },
 
     onPause: function(testParam) {
-        if(testParam === null || testParam === undefined || testParam !== 'test') {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
            return;
         }
         callCordova('onPause');
     },
     onResume: function(testParam) {
-        if(testParam === null || testParam === undefined || testParam !== 'test') {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
            return;
         }
         callCordova('onResume');
@@ -197,16 +203,22 @@ var Adjust = {
         callCordovaStringify('trackAdRevenue', adjustAdrevenue);
     },
 
-    trackPlayStoreSubscription: function(adjustPlayStoreSubscriptio) {
-        callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscriptio);
+    trackPlayStoreSubscription: function(adjustPlayStoreSubscription) {
+        if (device.platform === 'Android') {
+            callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
+        }
     },
 
     verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
-        callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
+        if (device.platform === 'Android') {
+            callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
+        }
     },
 
     verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
-        callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
+        if (device.platform === 'Android') {
+            callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
+        }
     },
 
     trackThirdPartySharing: function(adjustThirdPartySharing) {
@@ -234,23 +246,33 @@ var Adjust = {
     },
 
    trackAppStoreSubscription: function(adjustAppStoreSubscription) {
-        callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
+        if (device.platform === 'iOS') {
+            callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
+        }
     },
 
     verifyAppStorePurchase: function(adjustAppStorePurchase, callback) {
-        callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
+        if (device.platform === 'iOS') {
+            callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
+        }
     },
 
     verifyAndTrackAppStorePurchase: function(adjustEvent, callback) {
-        callCordovaStringifyCallback('verifyAndTrackAppStorePurchase', adjustEvent, callback);
+        if (device.platform === 'iOS') {
+            callCordovaStringifyCallback('verifyAndTrackAppStorePurchase', adjustEvent, callback);
+        }
     },
 
    requestAppTrackingAuthorization: function(callback) {
-        callCordovaCallback('requestAppTrackingAuthorization', callback);
+        if (device.platform === 'iOS') {
+            callCordovaCallback('requestAppTrackingAuthorization', callback);
+        }
     },
 
     getAppTrackingAuthorizationStatus: function(callback) {
-        callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+        }
     },
 
     updateSkanConversionValue: function(conversionValue, coarseValue, lockWindow, callback) {
@@ -266,11 +288,15 @@ var Adjust = {
     },
 
     getIdfa: function(callback) {
-        callCordovaCallback('getIdfa', callback);
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getIdfa', callback);
+        }
     },
 
     getIdfv: function(callback) {
-        callCordovaCallback('getIdfv', callback);
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getIdfv', callback);
+        }
     },
 
     setTestOptions: function(testOptions) {
@@ -284,13 +310,5 @@ var Adjust = {
         callCordova('teardown');
     }
 };
-
-function onPause() {
-    callCordova('onPause');
-}
-
-function onResume() {
-    callCordova('onResume');
-}
 
 module.exports = Adjust;

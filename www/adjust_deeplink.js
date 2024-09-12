@@ -1,5 +1,5 @@
-function AdjustDeeplink(url) {
-    this.deeplink = url;
+function AdjustDeeplink(deeplink) {
+    this.deeplink = deeplink;
 }
 
 module.exports = AdjustDeeplink;

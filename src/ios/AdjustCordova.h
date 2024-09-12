@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Pedro Filipe (@nonelse) on 3rd April 2014.
-//  Copyright (c) 2012-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Cordova/CDV.h>
@@ -70,13 +70,6 @@
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 // SKAN
 - (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command;
-// Android Only
-- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
-- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
-- (void)getGooglePlayInstallReferrer:(CDVInvokedUrlCommand *)command;
-- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
-- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
-- (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command;
 // Testing
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;

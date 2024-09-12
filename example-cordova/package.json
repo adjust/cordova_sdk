@@ -36,8 +36,8 @@
       "com.adjust.sdk": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "dependencies": {

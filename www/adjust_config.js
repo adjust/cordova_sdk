@@ -9,7 +9,7 @@ function AdjustConfig(appToken, environment) {
     this.deferredDeeplinkCallback = null;
     this.skanUpdatedCallback = null;
 
-    //  Common configuration fields
+    // Common configuration fields
     this.appToken = appToken;
     this.environment = environment;
     this.isSendingInBackgroundEnabled = null;
@@ -30,7 +30,6 @@ function AdjustConfig(appToken, environment) {
     this.processName = null;
     this.isPreinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
-    this.isOaidReadingEnabled = null;
     this.isPlayStoreKidsComplianceEnabled = null;
     this.fbAppId = null;
     // iOS only 
@@ -206,10 +205,6 @@ function AdjustConfig(appToken, environment) {
             return;
         }
         this.preinstallFilePath = preinstallFilePath;
-    };
-
-    AdjustConfig.prototype.enableOaidReading = function() {
-        this.isOaidReadingEnabled = true;
     };
 
     AdjustConfig.prototype.enablePlayStoreKidsCompliance = function () {
