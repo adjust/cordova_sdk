@@ -3,7 +3,7 @@
 //  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 16th November 2016.
-//  Copyright (c) 2016-2021 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -27,69 +27,62 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
 #pragma mark - Public methods
 
-+ (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
-                           eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
-                              eventFailedCallback:(BOOL)swizzleEventFailedCallback
-                         sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
-                            sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
-                         deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
-                   conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
-              skad4ConversionValueUpdatedCallback:(BOOL)swizzleSkad4ConversionValueUpdatedCallback
-                         andAttributionCallbackId:(NSString *)attributionCallbackId
-                         eventSucceededCallbackId:(NSString *)eventSucceededCallbackId
-                            eventFailedCallbackId:(NSString *)eventFailedCallbackId
-                       sessionSucceededCallbackId:(NSString *)sessionSucceededCallbackId
-                          sessionFailedCallbackId:(NSString *)sessionFailedCallbackId
-                       deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
-                 conversionValueUpdatedCallbackId:(NSString *)conversionValueUpdatedCallbackId
-            skad4ConversionValueUpdatedCallbackId:(NSString *)skad4ConversionValueUpdatedCallbackId
-                     shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
-                              withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
++ (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionCallbackId
+                  eventTrackingSucceededCallbackId:(NSString *)eventTrackingSucceededCallbackId
+                     eventTrackingFailedCallbackId:(NSString *)eventTrackingFailedCallbackId
+                sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
+                   sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
+                        deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                             skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
+                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
+                               withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
     dispatch_once(&onceToken, ^{
         defaultInstance = [[AdjustCordovaDelegate alloc] init];
 
         // Do the swizzling where and if needed.
-        if (swizzleAttributionCallback) {
+        if (attributionCallbackId != nil &&
+            attributionCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustAttributionChanged:)
                                   swizzledSelector:@selector(adjustAttributionChangedWannabe:)];
         }
-        if (swizzleEventSucceededCallback) {
+        if (eventTrackingSucceededCallbackId != nil &&
+            eventTrackingSucceededCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingSucceeded:)
                                   swizzledSelector:@selector(adjustEventTrackingSucceededWannabe:)];
         }
-        if (swizzleEventFailedCallback) {
+        if (eventTrackingFailedCallbackId != nil &&
+            eventTrackingFailedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustEventTrackingFailed:)
                                   swizzledSelector:@selector(adjustEventTrackingFailedWannabe:)];
         }
-        if (swizzleSessionSucceededCallback) {
+        if (sessionTrackingSucceededCallbackId != nil &&
+            sessionTrackingSucceededCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingSucceeded:)
                                   swizzledSelector:@selector(adjustSessionTrackingSucceededWannabe:)];
         }
-        if (swizzleSessionFailedCallback) {
+        if (sessionTrackingFailedCallbackId != nil &&
+            sessionTrackingFailedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                                   swizzledSelector:@selector(adjustSessionTrackingFailedWananbe:)];
         }
-        if (swizzleDeferredDeeplinkCallback) {
-            [defaultInstance swizzleCallbackMethod:@selector(adjustDeeplinkResponse:)
-                                  swizzledSelector:@selector(adjustDeeplinkResponseWannabe:)];
+        if (deferredDeeplinkCallbackId != nil &&
+            deferredDeeplinkCallbackId.length > 0) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustDeferredDeeplinkReceived:)
+                                  swizzledSelector:@selector(adjustDeferredDeeplinkReceivedWannabe:)];
         }
-        if (swizzleConversionValueUpdatedCallback) {
-            [defaultInstance swizzleCallbackMethod:@selector(adjustConversionValueUpdated:)
-                                  swizzledSelector:@selector(adjustConversionValueUpdatedWannabe:)];
-        }
-        if (swizzleSkad4ConversionValueUpdatedCallback) {
-            [defaultInstance swizzleCallbackMethod:@selector(adjustConversionValueUpdated:coarseValue:lockWindow:)
-                                  swizzledSelector:@selector(adjustConversionValueUpdatedWannabe:coarseValue:lockWindow:)];
+        if (skanUpdatedCallbackId != nil &&
+            skanUpdatedCallbackId.length > 0) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
+                                  swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabe:)];
         }
 
         [defaultInstance setAttributionCallbackId:attributionCallbackId];
-        [defaultInstance setEventSucceededCallbackId:eventSucceededCallbackId];
-        [defaultInstance setEventFailedCallbackId:eventFailedCallbackId];
-        [defaultInstance setSessionSucceededCallbackId:sessionSucceededCallbackId];
-        [defaultInstance setSessionFailedCallbackId:sessionFailedCallbackId];
+        [defaultInstance setEventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId];
+        [defaultInstance setEventTrackingFailedCallbackId:eventTrackingFailedCallbackId];
+        [defaultInstance setSessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId];
+        [defaultInstance setSessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId];
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
-        [defaultInstance setConversionValueUpdatedCallbackId:conversionValueUpdatedCallbackId];
-        [defaultInstance setSkad4ConversionValueUpdatedCallbackId:skad4ConversionValueUpdatedCallbackId];
+        [defaultInstance setSkanUpdatedCallbackId:skanUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
     });
@@ -117,7 +110,6 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
-    [self addValueOrEmpty:attribution.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
@@ -134,17 +126,21 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.message withKey:@"message" toDictionary:dictionary];
-    [self addValueOrEmpty:eventSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:eventSuccessResponseData.timestamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
     [self addValueOrEmpty:eventSuccessResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     if (eventSuccessResponseData.jsonResponse != nil) {
-        [dictionary setObject:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:eventSuccessResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventSucceededCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventTrackingSucceededCallbackId];
 }
 
 - (void)adjustEventTrackingFailedWannabe:(ADJEventFailure *)eventFailureResponseData {
@@ -154,18 +150,22 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:eventFailureResponseData.message withKey:@"message" toDictionary:dictionary];
-    [self addValueOrEmpty:eventFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:eventFailureResponseData.timestamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.eventToken withKey:@"eventToken" toDictionary:dictionary];
     [self addValueOrEmpty:eventFailureResponseData.callbackId withKey:@"callbackId" toDictionary:dictionary];
     [dictionary setObject:(eventFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
     if (eventFailureResponseData.jsonResponse != nil) {
-        [dictionary setObject:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:eventFailureResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventFailedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_eventTrackingFailedCallbackId];
 }
 
 - (void)adjustSessionTrackingSucceededWannabe:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -175,15 +175,19 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:sessionSuccessResponseData.message withKey:@"message" toDictionary:dictionary];
-    [self addValueOrEmpty:sessionSuccessResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionSuccessResponseData.timestamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:sessionSuccessResponseData.adid withKey:@"adid" toDictionary:dictionary];
     if (sessionSuccessResponseData.jsonResponse != nil) {
-        [dictionary setObject:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:sessionSuccessResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionSucceededCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionTrackingSucceededCallbackId];
 }
 
 - (void)adjustSessionTrackingFailedWananbe:(ADJSessionFailure *)sessionFailureResponseData {
@@ -193,19 +197,23 @@ static AdjustCordovaDelegate *defaultInstance = nil;
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [self addValueOrEmpty:sessionFailureResponseData.message withKey:@"message" toDictionary:dictionary];
-    [self addValueOrEmpty:sessionFailureResponseData.timeStamp withKey:@"timestamp" toDictionary:dictionary];
+    [self addValueOrEmpty:sessionFailureResponseData.timestamp withKey:@"timestamp" toDictionary:dictionary];
     [self addValueOrEmpty:sessionFailureResponseData.adid withKey:@"adid" toDictionary:dictionary];
     [dictionary setObject:(sessionFailureResponseData.willRetry ? @"true" : @"false") forKey:@"willRetry"];
     if (sessionFailureResponseData.jsonResponse != nil) {
-        [dictionary setObject:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:sessionFailureResponseData.jsonResponse options:0 error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
     }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionFailedCallbackId];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_sessionTrackingFailedCallbackId];
 }
 
-- (BOOL)adjustDeeplinkResponseWannabe:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceivedWannabe:(NSURL *)deeplink {
     NSString *path = [deeplink absoluteString];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
@@ -214,24 +222,15 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     return _shouldLaunchDeferredDeeplink;
 }
 
-- (void)adjustConversionValueUpdatedWannabe:(NSNumber *)conversionValue {
-    int intConversionValue = [conversionValue intValue];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:intConversionValue];
-    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_conversionValueUpdatedCallbackId];
-}
-
-- (void)adjustConversionValueUpdatedWannabe:(nullable NSNumber *)fineValue
-                                coarseValue:(nullable NSString *)coarseValue
-                                 lockWindow:(nullable NSNumber *)lockWindow {
+- (void)adjustSkanUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [self addValueOrEmpty:[fineValue stringValue] withKey:@"fineValue" toDictionary:dictionary];
-    [self addValueOrEmpty:coarseValue withKey:@"coarseValue" toDictionary:dictionary];
-    [self addValueOrEmpty:[lockWindow stringValue] withKey:@"lockWindow" toDictionary:dictionary];
-
+    [self addValueOrEmpty:data[@"conversion_value"] withKey:@"conversionValue" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"coarse_value"] withKey:@"coarseValue" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"lock_window"] withKey:@"lockWindow" toDictionary:dictionary];
+    [self addValueOrEmpty:data[@"error"] withKey:@"error" toDictionary:dictionary];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
-    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skad4ConversionValueUpdatedCallbackId];    
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult callbackId:_skanUpdatedCallbackId];
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector

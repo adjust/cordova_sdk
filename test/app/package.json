@@ -1,11 +1,11 @@
 {
   "name": "com.adjust.examples",
-  "version": "4.38.1",
+  "version": "5.0.0",
   "displayName": "AdjustTestApp",
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-console": {},
@@ -33,8 +33,8 @@
   "devDependencies": {
     "com.adjust.sdk": "file:../../temp_plugin",
     "com.adjust.test": "file:../plugin",
-    "cordova-android": "^12.0.1",
-    "cordova-ios": "^7.1.0",
+    "cordova-android": "^13.0.0",
+    "cordova-ios": "^7.1.1",
     "cordova-plugin-whitelist": "^1.3.5"
   }
 }

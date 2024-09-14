@@ -1,51 +1,44 @@
 function AdjustConfig(appToken, environment) {
-    this.appToken = appToken;
-    this.environment = environment;
-    this.delayStart = 0.0;
-    this.logLevel = null;
-    this.userAgent = null;
-    this.isDeviceKnown = null;
-    this.defaultTracker = null;
-    this.externalDeviceId = null;
-    this.urlStrategy = null;
-    this.sendInBackground = null;
-    this.shouldLaunchDeeplink = null;
-    this.eventBufferingEnabled = null;
-    this.needsCost = null;
+    // Adjust callbacks
     this.attributionCallback = null;
     this.eventTrackingSucceededCallback = null;
     this.eventTrackingFailedCallback = null;
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
-    this.conversionValueUpdatedCallback = null;
-    this.skad4ConversionValueUpdatedCallback = null;
-    this.coppaCompliantEnabled = null;
-    this.readDeviceInfoOnceEnabled = null;
+    this.skanUpdatedCallback = null;
+
+    // Common configuration fields
+    this.appToken = appToken;
+    this.environment = environment;
+    this.isSendingInBackgroundEnabled = null;
+    this.isCostDataInAttributionEnabled = null;
+    this.isDeviceIdsReadingOnceEnabled = null;
+    this.urlStrategyDomains = null;
+    this.useSubdomains = null;
+    this.isDataResidency = null;
     this.sdkPrefix = null;
-    this.secretId = null;
-    this.info1 = null;
-    this.info2 = null;
-    this.info3 = null;
-    this.info4 = null;
+    this.logLevel = null;
+    this.defaultTracker = null;
+    this.externalDeviceId = null;
+    this.eventDeduplicationIdsMaxSize = null;
+    this.isDeferredDeeplinkOpeningEnabled = null;
+    this.isCoppaComplianceEnabled = null;
+
     // Android only
-    this.referrer = null;
     this.processName = null;
-    this.readMobileEquipmentIdentity = null;
-    this.preinstallTrackingEnabled = null;
+    this.isPreinstallTrackingEnabled = null;
     this.preinstallFilePath = null;
-    this.oaidReadingEnabled = null;
-    this.playStoreKidsAppEnabled = null;
-    this.finalAndroidAttributionEnabled = null;
+    this.isPlayStoreKidsComplianceEnabled = null;
     this.fbAppId = null;
     // iOS only 
-    this.allowiAdInfoReading = null;
-    this.allowAdServicesInfoReading = null;
-    this.allowIdfaReading = null;
-    this.handleSkAdNetwork = null;
-    this.linkMeEnabled = null;
+    this.isAdServicesEnabled = null;
+    this.isIdfaReadingEnabled = null;
+    this.isIdfvReadingEnabled = null;
+    this.isSkanAttributionEnabled = null;
+    this.isLinkMeEnabled = null;
     this.attConsentWaitingInterval = null;
-};
+}
 
 AdjustConfig.EnvironmentSandbox = "sandbox";
 AdjustConfig.EnvironmentProduction = "production";
@@ -58,294 +51,212 @@ AdjustConfig.LogLevelError = "ERROR";
 AdjustConfig.LogLevelAssert = "ASSERT";
 AdjustConfig.LogLevelSuppress = "SUPPRESS";
 
-AdjustConfig.UrlStrategyChina = "china";
-AdjustConfig.UrlStrategyIndia = "india";
-AdjustConfig.UrlStrategyCn = "cn";
-AdjustConfig.UrlStrategyCnOnly = "cn-only";
 
-AdjustConfig.DataResidencyEU = "data-residency-eu";
-AdjustConfig.DataResidencyTR = "data-residency-tr";
-AdjustConfig.DataResidencyUS = "data-residency-us";
-
-AdjustConfig.AdRevenueSourceAppLovinMAX = "applovin_max_sdk";
-AdjustConfig.AdRevenueSourceMopub = "mopub";
-AdjustConfig.AdRevenueSourceAdMob = "admob_sdk";
-AdjustConfig.AdRevenueSourceIronSource = "ironsource_sdk";
-AdjustConfig.AdRevenueSourceAdMost = "admost_sdk";
-AdjustConfig.AdRevenueSourceUnity = "unity_sdk";
-AdjustConfig.AdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
-AdjustConfig.AdRevenueSourcePublisher = "publisher_sdk";
-AdjustConfig.AdRevenueSourceTopOn = "topon_sdk";
-AdjustConfig.AdRevenueSourceAdx = "adx_sdk";
-
-AdjustConfig.prototype.getUserAgent = function() {
-    return this.userAgent;
-};
-
-AdjustConfig.prototype.getDelayStart = function() {
-    return this.delayStart;
-};
-
-AdjustConfig.prototype.getReferrer = function() {
-    return this.referrer;
-};
-
-AdjustConfig.prototype.getSendInBackground = function() {
-    return this.sendInBackground;
-};
-
-AdjustConfig.prototype.getShouldLaunchDeeplink = function() {
-    return this.shouldLaunchDeeplink;
-};
-
+// Adjust Callbacks
 AdjustConfig.prototype.getAttributionCallback = function() {
     return this.attributionCallback;
 };
+AdjustConfig.prototype.setAttributionCallback = function(callback) {
+    this.attributionCallback = callback;
+};
+AdjustConfig.prototype.hasAttributionCallback = function() {
+    return this.attributionCallback !== null;
+};
+
 
 AdjustConfig.prototype.getEventTrackingSucceededCallback = function() {
     return this.eventTrackingSucceededCallback;
 };
+AdjustConfig.prototype.setEventTrackingSucceededCallback = function(callback) {
+    this.eventTrackingSucceededCallback = callback;
+};
+AdjustConfig.prototype.hasEventTrackingSucceededCallback = function() {
+    return this.eventTrackingSucceededCallback !== null;
+};
+
 
 AdjustConfig.prototype.getEventTrackingFailedCallback = function() {
     return this.eventTrackingFailedCallback;
 };
+AdjustConfig.prototype.setEventTrackingFailedCallback = function(callback) {
+    this.eventTrackingFailedCallback = callback;
+};
+AdjustConfig.prototype.hasEventTrackingFailedCallback = function() {
+    return this.eventTrackingFailedCallback !== null;
+};
+
 
 AdjustConfig.prototype.getSessionTrackingSucceededCallback = function() {
     return this.sessionTrackingSucceededCallback;
 };
+AdjustConfig.prototype.setSessionTrackingSucceededCallback = function(callback) {
+    this.sessionTrackingSucceededCallback = callback;
+};
+AdjustConfig.prototype.hasSessionTrackingSucceededCallback = function() {
+    return this.sessionTrackingSucceededCallback !== null;
+};
+
 
 AdjustConfig.prototype.getSessionTrackingFailedCallback = function() {
     return this.sessionTrackingFailedCallback;
 };
+AdjustConfig.prototype.setSessionTrackingFailedCallback = function(callback) {
+    this.sessionTrackingFailedCallback = callback;
+};
+AdjustConfig.prototype.hasSessionTrackingFailedCallback = function() {
+    return this.sessionTrackingFailedCallback !== null;
+};
+
 
 AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
     return this.deferredDeeplinkCallback;
 };
-
-AdjustConfig.prototype.getConversionValueUpdatedCallback = function() {
-    return this.conversionValueUpdatedCallback;
+AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
+    this.deferredDeeplinkCallback = callback;
+};
+AdjustConfig.prototype.hasDeferredDeeplinkCallback = function() {
+    return this.deferredDeeplinkCallback !== null;
 };
 
-AdjustConfig.prototype.getSkad4ConversionValueUpdatedCallback = function() {
-    return this.skad4ConversionValueUpdatedCallback;
+
+AdjustConfig.prototype.getSkanUpdatedCallback = function() {
+    return this.skanUpdatedCallback;
+};
+AdjustConfig.prototype.setSkanUpdatedCallback = function(callback) {
+    this.skanUpdatedCallback = callback;
+};
+AdjustConfig.prototype.hasSkanUpdatedCallback = function() {
+    return this.skanUpdatedCallback !== null;
 };
 
-AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
-    this.eventBufferingEnabled = isEnabled;
+// Configuration fields - common
+AdjustConfig.prototype.enableSendingInBackground = function() {
+    this.isSendingInBackgroundEnabled = true;
 };
 
-AdjustConfig.prototype.setPreinstallTrackingEnabled = function(isEnabled) {
-    this.preinstallTrackingEnabled = isEnabled;
+AdjustConfig.prototype.enableCostDataInAttribution = function() {
+    this.isCostDataInAttributionEnabled = true;
 };
 
-AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
-    this.preinstallFilePath = preinstallFilePath;
+AdjustConfig.prototype.enableDeviceIdsReadingOnce = function () {
+    this.isDeviceIdsReadingOnceEnabled = true;
 };
 
-AdjustConfig.prototype.setOaidReadingEnabled = function(enableOaidReading) {
-    this.oaidReadingEnabled = enableOaidReading;
-};
-
-AdjustConfig.prototype.setNeedsCost = function(needsCost) {
-    this.needsCost = needsCost;
+AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
+    if (typeof sdkPrefix !== 'string') {
+        console.log("[Adjust] SDK prefix is not of type string");
+        return;
+    }
+    this.sdkPrefix = sdkPrefix;
 };
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
+    if (typeof logLevel !== 'string') {
+        console.log("[Adjust] Log level is not of type string");
+        return;
+    }
     this.logLevel = logLevel;
+};
+
+AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
+    if (typeof defaultTracker !== 'string') {
+        console.log("[Adjust] Default tracker is not of type string");
+        return;
+    }
+    this.defaultTracker = defaultTracker;
+};
+
+AdjustConfig.prototype.setExternalDeviceId = function(externalDeviceId) {
+    if (typeof externalDeviceId !== 'string') {
+        console.log("[Adjust] External device ID is not of type string");
+        return;
+    }
+    this.externalDeviceId = externalDeviceId;
+};
+
+AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
+    if (!Number.isInteger(eventDeduplicationIdsMaxSize)) {
+        console.log("[Adjust] Maximum number of event deduplication IDs is not of type integer");
+        return;
+    }
+    this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
+};
+
+AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
+    this.isDeferredDeeplinkOpeningEnabled = false;
+};
+
+AdjustConfig.prototype.enableCoppaCompliance = function() {
+    this.isCoppaComplianceEnabled = true;
 };
 
 AdjustConfig.prototype.setProcessName = function(processName) {
     this.processName = processName;
 };
 
-AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
-    this.defaultTracker = defaultTracker;
+AdjustConfig.prototype.enablePreinstallTracking = function() {
+    this.isPreinstallTrackingEnabled = true;
 };
 
-AdjustConfig.prototype.setExternalDeviceId = function(externalDeviceId) {
-    this.externalDeviceId = externalDeviceId;
-};
-
-AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
-    this.urlStrategy = urlStrategy;
-};
-
-AdjustConfig.prototype.setUserAgent = function(userAgent) {
-    this.userAgent = userAgent;
-};
-
-AdjustConfig.prototype.setDeviceKnown = function(isDeviceKnown) {
-    this.isDeviceKnown = isDeviceKnown;
-};
-
-AdjustConfig.prototype.getSdkPrefix = function() {
-    return this.sdkPrefix;
-};
-
-AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
-    this.sdkPrefix = sdkPrefix;
-};
-
-// @deprecated
-AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
-    console.warn("Calling deprecated function! Apple Search Ads attribution with usage of iAd.framework has been sunset by Apple as of February 7th 2023.");
-    // this.allowiAdInfoReading = allowiAdInfoReading;
-};
-
-AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
-    this.allowAdServicesInfoReading = allowAdServicesInfoReading;
-};
-
-AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
-    this.allowIdfaReading = allowIdfaReading;
-};
-
-AdjustConfig.prototype.deactivateSKAdNetworkHandling = function() {
-    this.handleSkAdNetwork = false;
-};
-
-AdjustConfig.prototype.setLinkMeEnabled = function(linkMeEnabled) {
-    this.linkMeEnabled = linkMeEnabled;
-};
-
-AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
-    this.attConsentWaitingInterval = attConsentWaitingInterval;
-};
-
-// @deprecated
-AdjustConfig.prototype.setReadMobileEquipmentIdentity = function(readMobileEquipmentIdentity) {
-    console.warn("Calling deprecated function! This functionality has been removed from the SDK.");
-    // this.readMobileEquipmentIdentity = readMobileEquipmentIdentity;
-};
-
-AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
-    if (secretId !== null) {
-        this.secretId = secretId.toString();
+AdjustConfig.prototype.setPreinstallFilePath = function(preinstallFilePath) {
+    if (typeof preinstallFilePath !== 'string') {
+        console.log("[Adjust] Preinstall file path is not of type string");
+        return;
     }
-    if (info1 !== null) {
-        this.info1 = info1.toString();
-    }
-    if (info2 !== null) {
-        this.info2 = info2.toString();
-    }
-    if (info3 !== null) {
-        this.info3 = info3.toString();
-    }
-    if (info4 !== null) {
-        this.info4 = info4.toString();
-    }
+    this.preinstallFilePath = preinstallFilePath;
 };
 
-AdjustConfig.prototype.setDelayStart = function(delayStart) {
-    this.delayStart = delayStart;
-};
-
-AdjustConfig.prototype.setReferrer = function(referrer) {
-    this.referrer = referrer;
-};
-
-AdjustConfig.prototype.setSendInBackground = function(sendInBackground) {
-    this.sendInBackground = sendInBackground;
-};
-
-AdjustConfig.prototype.setShouldLaunchDeeplink = function(shouldLaunchDeeplink) {
-    this.shouldLaunchDeeplink = shouldLaunchDeeplink;
-};
-
-// @deprecated
-AdjustConfig.prototype.setCallbackListener = function(callbackListener) {
-    console.warn("Calling deprecated function! Use the setAttributionCallbackListener instead. Check adjust_config.js for more info.");
-    this.attributionCallback = callbackListener;
-};
-
-AdjustConfig.prototype.setAttributionCallbackListener = function(attributionCallback) {
-    this.attributionCallback = attributionCallback;
-};
-
-AdjustConfig.prototype.setEventTrackingSucceededCallbackListener = function(eventTrackingSucceededCallback) {
-    this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
-};
-
-AdjustConfig.prototype.setEventTrackingFailedCallbackListener = function(eventTrackingFailedCallback) {
-    this.eventTrackingFailedCallback = eventTrackingFailedCallback;
-};
-
-AdjustConfig.prototype.setSessionTrackingSucceededCallbackListener = function(sessionTrackingSucceededCallback) {
-    this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
-};
-
-AdjustConfig.prototype.setSessionTrackingFailedCallbackListener = function(sessionTrackingFailedCallback) {
-    this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
-};
-
-AdjustConfig.prototype.setDeferredDeeplinkCallbackListener = function(deferredDeeplinkCallback) {
-    this.deferredDeeplinkCallback = deferredDeeplinkCallback;
-};
-
-AdjustConfig.prototype.setConversionValueUpdatedCallbackListener = function(conversionValueUpdatedCallback) {
-    this.conversionValueUpdatedCallback = conversionValueUpdatedCallback;
-};
-
-AdjustConfig.prototype.setSkad4ConversionValueUpdatedCallbackListener = function(skad4ConversionValueUpdatedCallback) {
-    this.skad4ConversionValueUpdatedCallback = skad4ConversionValueUpdatedCallback;
-};
-
-// @deprecated
-AdjustConfig.prototype.hasListener = function() {
-    console.warn("Calling deprecated function! Use the hasAttributionListener instead. Check adjust_config.js for more info");
-    return this.attributionCallback !== null;
-};
-
-AdjustConfig.prototype.hasAttributionListener = function() {
-    return this.attributionCallback !== null;
-};
-
-AdjustConfig.prototype.hasEventTrackingSucceededListener = function() {
-    return this.eventTrackingSucceededCallback !== null;
-};
-
-AdjustConfig.prototype.hasEventTrackingFailedListener = function() {
-    return this.eventTrackingFailedCallback !== null;
-};
-
-AdjustConfig.prototype.hasSessionTrackingSucceededListener = function() {
-    return this.sessionTrackingSucceededCallback !== null;
-};
-
-AdjustConfig.prototype.hasSessionTrackingFailedListener = function() {
-    return this.sessionTrackingFailedCallback !== null;
-};
-
-AdjustConfig.prototype.hasDeferredDeeplinkCallbackListener = function() {
-    return this.deferredDeeplinkCallback !== null;
-};
-
-AdjustConfig.prototype.hasConversionValueUpdatedCallbackListener = function() {
-    return this.conversionValueUpdatedCallback !== null;
-};
-
-AdjustConfig.prototype.hasSkad4ConversionValueUpdatedCallbackListener = function() {
-    return this.skad4ConversionValueUpdatedCallback !== null;
-};
-
-AdjustConfig.prototype.setCoppaCompliantEnabled = function (isEnabled) {
-    this.coppaCompliantEnabled = isEnabled;
-};
-
-AdjustConfig.prototype.setReadDeviceInfoOnceEnabled = function (isEnabled) {
-    this.readDeviceInfoOnceEnabled = isEnabled;
-};
-
-AdjustConfig.prototype.setPlayStoreKidsAppEnabled = function (isEnabled) {
-    this.playStoreKidsAppEnabled = isEnabled;
-};
-
-AdjustConfig.prototype.setFinalAndroidAttributionEnabled = function (isEnabled) {
-    this.finalAndroidAttributionEnabled = isEnabled;
+AdjustConfig.prototype.enablePlayStoreKidsCompliance = function () {
+    this.isPlayStoreKidsComplianceEnabled = true;
 };
 
 AdjustConfig.prototype.setFbAppId = function (fbAppId) {
+    if (typeof fbAppId !== 'string') {
+        console.log("[Adjust] FB app ID is not of type string");
+        return;
+    }
     this.fbAppId = fbAppId;
+};
+
+// Configuration fields - iOS only
+AdjustConfig.prototype.disableAdServices = function() {
+    this.isAdServicesEnabled = false;
+};
+
+AdjustConfig.prototype.disableIdfaReading = function() {
+    this.isIdfaReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableIdfvReading = function() {
+    this.isIdfvReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableSkanAttribution = function() {
+    this.isSkanAttributionEnabled = false;
+};
+
+AdjustConfig.prototype.enableLinkMe = function() {
+    this.isLinkMeEnabled = true;
+};
+
+AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingInterval) {
+    if (!Number.isInteger(attConsentWaitingInterval)) {
+        console.log("[Adjust] ATT consent waiting interval is not of type integer");
+        return;
+    }
+    this.attConsentWaitingInterval = attConsentWaitingInterval;
+};
+
+AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomains, isDataResidency) {
+    if (!Array.isArray(urlStrategyDomains) ||
+        typeof useSubdomains !== 'boolean' ||
+        typeof isDataResidency !== 'boolean') {
+        console.log("[Adjust] URL strategy parameters are not of a proper data types");
+        return;
+    }
+    this.urlStrategyDomains = urlStrategyDomains;
+    this.useSubdomains = useSubdomains;
+    this.isDataResidency = isDataResidency;
 };
 
 module.exports = AdjustConfig;

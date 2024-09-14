@@ -12,28 +12,10 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        // // Register for universal links
-        // if (device.platform == 'iOS') {
-        //     universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-        // }
-
         var adjustConfig = new AdjustConfig("2fm9gkqubvpc", AdjustConfig.EnvironmentSandbox);
-
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-        // adjustConfig.setShouldLaunchDeeplink(true);
-        // adjustConfig.setDelayStart(3.0);
-        // adjustConfig.setSendInBackground(true);
-        // adjustConfig.setEventBufferingEnabled(true);
-        // adjustConfig.setDeviceKnown(true);
-        // adjustConfig.setUserAgent("Custom Adjust User Agent");
-        // adjustConfig.setNeedsCost(true);
-        // adjustConfig.setOaidReadingEnabled(true);
-        // adjustConfig.setCoppaCompliantEnabled(true);
-        // adjustConfig.setPlayStoreKidsAppEnabled(true);
-        // adjustConfig.setAttConsentWaitingInterval(16);
-        // adjust.setFbAppId("your-fb-app-id");
 
-        adjustConfig.setAttributionCallbackListener(function(attribution) {
+        adjustConfig.setAttributionCallback(function(attribution) {
             console.log("[AdjustExample]: Attribution callback received.");
             console.log("[AdjustExample]: Tracker token = " + attribution.trackerToken);
             console.log("[AdjustExample]: Tracker name = " + attribution.trackerName);
@@ -45,7 +27,7 @@ var app = {
             console.log("[AdjustExample]: Adid = " + attribution.adid);
         });
 
-        adjustConfig.setEventTrackingSucceededCallbackListener(function(eventSuccess) {
+        adjustConfig.setEventTrackingSucceededCallback(function(eventSuccess) {
             console.log("[AdjustExample]: Event tracking succeeded callback received.");
             console.log("[AdjustExample]: Message: " + eventSuccess.message);
             console.log("[AdjustExample]: Timestamp: " + eventSuccess.timestamp);
@@ -55,7 +37,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + eventSuccess.jsonResponse);
         });
 
-        adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailed) {
+        adjustConfig.setEventTrackingFailedCallback(function(eventFailed) {
             console.log("[AdjustExample]: Event tracking failed callback received.");
             console.log("[AdjustExample]: Message: " + eventFailed.message);
             console.log("[AdjustExample]: Timestamp: " + eventFailed.timestamp);
@@ -66,7 +48,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + eventFailed.jsonResponse);
         });
 
-        adjustConfig.setSessionTrackingSucceededCallbackListener(function(sessionSuccess) {
+        adjustConfig.setSessionTrackingSucceededCallback(function(sessionSuccess) {
             console.log("[AdjustExample]: Session tracking succeeded callback received.");
             console.log("[AdjustExample]: Message: " + sessionSuccess.message);
             console.log("[AdjustExample]: Timestamp: " + sessionSuccess.timestamp);
@@ -74,7 +56,7 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + sessionSuccess.jsonResponse);
         });
 
-        adjustConfig.setSessionTrackingFailedCallbackListener(function(sessionFailed) {
+        adjustConfig.setSessionTrackingFailedCallback(function(sessionFailed) {
             console.log("[AdjustExample]: Session tracking failed callback received.");
             console.log("[AdjustExample]: Message: " + sessionFailed.message);
             console.log("[AdjustExample]: Timestamp: " + sessionFailed.timestamp);
@@ -83,48 +65,37 @@ var app = {
             console.log("[AdjustExample]: JSON response: " + sessionFailed.jsonResponse);
         });
 
-        adjustConfig.setDeferredDeeplinkCallbackListener(function(uri) {
+        adjustConfig.setDeferredDeeplinkCallback(function(uri) {
             console.log("[AdjustExample]: Deferred Deeplink Callback received.");
             console.log("[AdjustExample]: URL: " + uri);
         });
 
-        adjustConfig.setConversionValueUpdatedCallbackListener(function(conversionValue) {
-            console.log("[AdjustExample]: Conversion value updated!");
-            console.log("[AdjustExample]: Conversion value = " + conversionValue);
+        adjustConfig.setSkanUpdatedCallback(function(skanData) {
+            console.log("[AdjustExample]: SKAdNetwork conversion data updated!");
+            console.log("[AdjustExample]: Conversion Value = " + skanData.conversionValue);
+            console.log("[AdjustExample]: Coarse Value = " + skanData.coarseValue);
+            console.log("[AdjustExample]: Lock Window = " + skanData.lockWindow);
+            console.log("[AdjustExample]: Error = " + skanData.error);
         });
 
-        adjustConfig.setSkad4ConversionValueUpdatedCallbackListener(function(skad4data) {
-            console.log("[AdjustExample]: SKAdNetwork 4 conversion value updated!");
-            console.log("[AdjustExample]: Fine value = " + skad4data.fineValue);
-            console.log("[AdjustExample]: Coarse value = " + skad4data.coarseValue);
-            console.log("[AdjustExample]: Lock window = " + skad4data.lockWindow);
+        Adjust.addGlobalCallbackParameter("dummy_foo", "dummy_bar");
+        Adjust.addGlobalCallbackParameter("dummy_foo_foo", "dummy_bar");
+
+        Adjust.addGlobalPartnerParameter("dummy_foo", "dummy_bar");
+        Adjust.addGlobalPartnerParameter("dummy_foo_foo", "dummy_bar");
+
+        Adjust.removeGlobalCallbackParameter("dummy_foo");
+        Adjust.removeGlobalPartnerParameter("dummy_foo");
+
+        // Adjust.removeGlobalCallbackParameters();
+        // Adjust.removeGlobalPartnerParameters();
+
+        Adjust.requestAppTrackingAuthorization(function(status) {
+            console.log("ATT status = " + status);
         });
 
-        Adjust.addSessionCallbackParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionCallbackParameter("dummy_foo_foo", "dummy_bar");
-
-        Adjust.addSessionPartnerParameter("dummy_foo", "dummy_bar");
-        Adjust.addSessionPartnerParameter("dummy_foo_foo", "dummy_bar");
-
-        Adjust.removeSessionCallbackParameter("dummy_foo");
-        Adjust.removeSessionPartnerParameter("dummy_foo");
-
-        // Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
-        //     console.log("ATT status after dialog = " + status);
-        // });
-
-        // Adjust.resetSessionCallbackParameters();
-        // Adjust.resetSessionPartnerParameters();
-        // Adjust.checkForNewAttStatus();
-    
-        Adjust.create(adjustConfig);
-
-        // Adjust.sendFirstPackages();
+        Adjust.initSdk(adjustConfig);
     },
-
-    // didLaunchAppFromLink: function(eventData) {
-    //     Adjust.appWillOpenUrl(eventData.url);
-    // },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -170,19 +141,19 @@ var app = {
         }, false);
 
         btnEnableOfflineMode.addEventListener('click', function() {
-            Adjust.setOfflineMode(true);
+            Adjust.switchToOfflineMode();
         }, false);
 
         btnDisableOfflineMode.addEventListener('click', function() {
-            Adjust.setOfflineMode(false);
+            Adjust.switchBackToOnlineMode();
         }, false);
 
         btnEnableSdk.addEventListener('click', function() {
-            Adjust.setEnabled(true);
+            Adjust.enable();
         }, false);
 
         btnDisableSdk.addEventListener('click', function() {
-            Adjust.setEnabled(false);
+            Adjust.disable();
         }, false);
 
         btnIsSdkEnabled.addEventListener('click', function() {
@@ -200,16 +171,20 @@ var app = {
                 console.log("[AdjustExample]: IDFA = " + idfa);
             });
 
+            Adjust.getIdfv(function(idfv) {
+                console.log("[AdjustExample]: IDFV = " + idfv);
+            });
+
             Adjust.getGoogleAdId(function(gpsAdId) {
                 console.log("[AdjustExample]: Google Ad Id = " + gpsAdId);
             });
 
-            Adjust.getAmazonAdId(function(gpsAdId) {
-                console.log("[AdjustExample]: Amazon Ad Id = " + gpsAdId);
+            Adjust.getAmazonAdId(function(amazonAdId) {
+                console.log("[AdjustExample]: Amazon Ad Id = " + amazonAdId);
             });
 
             Adjust.getAdid(function(adid) {
-                console.log("[AdjustExample]: Adid = " + adid);
+                console.log("[AdjustExample]: Adjust Id = " + adid);
             });
 
             Adjust.getAttribution(function(attribution) {
@@ -220,7 +195,9 @@ var app = {
                 console.log("[AdjustExample]: Adgroup = " + attribution.adgroup);
                 console.log("[AdjustExample]: Creative = " + attribution.creative);
                 console.log("[AdjustExample]: Click label = " + attribution.clickLabel);
-                console.log("[AdjustExample]: Adid = " + attribution.adid);
+                console.log("[AdjustExample]: Cost Type = " + attribution.costType);
+                console.log("[AdjustExample]: Cost Amount = " + attribution.costAmount);
+                console.log("[AdjustExample]: Cost Currency = " + attribution.costCurrency);
             });
         }, false);
 

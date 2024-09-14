@@ -48,119 +48,63 @@ function callCordovaStringifyCallback(action, data, callback) {
 }
 
 var Adjust = {
-    create: function(adjustConfig) {
+    initSdk: function(adjustConfig) {
         if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
         }
-
-        if (adjustConfig.hasAttributionListener()) {
+        if (adjustConfig.hasAttributionCallback()) {
             callCordovaCallback('setAttributionCallback', adjustConfig.getAttributionCallback());
         }
-        if (adjustConfig.hasEventTrackingSucceededListener()) {
+        if (adjustConfig.hasEventTrackingSucceededCallback()) {
             callCordovaCallback('setEventTrackingSucceededCallback', adjustConfig.getEventTrackingSucceededCallback());
         }
-        if (adjustConfig.hasEventTrackingFailedListener()) {
+        if (adjustConfig.hasEventTrackingFailedCallback()) {
             callCordovaCallback('setEventTrackingFailedCallback', adjustConfig.getEventTrackingFailedCallback());
         }
-        if (adjustConfig.hasSessionTrackingSucceededListener()) {
+        if (adjustConfig.hasSessionTrackingSucceededCallback()) {
             callCordovaCallback('setSessionTrackingSucceededCallback', adjustConfig.getSessionTrackingSucceededCallback());
         }
-        if (adjustConfig.hasSessionTrackingFailedListener()) {
+        if (adjustConfig.hasSessionTrackingFailedCallback()) {
             callCordovaCallback('setSessionTrackingFailedCallback', adjustConfig.getSessionTrackingFailedCallback());
         }
-        if (adjustConfig.hasDeferredDeeplinkCallbackListener()) {
+        if (adjustConfig.hasDeferredDeeplinkCallback()) {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
-        if (adjustConfig.hasConversionValueUpdatedCallbackListener()) {
-            callCordovaCallback('setConversionValueUpdatedCallback', adjustConfig.getConversionValueUpdatedCallback());
+        if (adjustConfig.hasSkanUpdatedCallback()) {
+            if (device.platform === 'iOS') {
+                callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
+            }
         }
-        if (adjustConfig.hasSkad4ConversionValueUpdatedCallbackListener()) {
-            callCordovaCallback('setSkad4ConversionValueUpdatedCallback', adjustConfig.getSkad4ConversionValueUpdatedCallback());
+
+        callCordovaStringify('initSdk', adjustConfig);
+    },
+
+    setPushToken: function(token) {
+        if (typeof token !== 'string') {
+            console.log("[Adjust] Push token is not of type string");
+            return;
         }
-
-        callCordovaStringify('create', adjustConfig);
+        callCordova('setPushToken', token);
     },
 
-    trackEvent: function(adjustEvent) {
-        callCordovaStringify('trackEvent', adjustEvent);
-    },
-
-    setOfflineMode: function(enabled) {
-        callCordova('setOfflineMode', enabled);
-    },
-
-    appWillOpenUrl: function(url) {
-        callCordova('appWillOpenUrl', url);
-    },
-
-    setEnabled: function(enabled) {
-        callCordova('setEnabled', enabled);
-    },
-
-    setPushToken: function(pushToken) {
-        callCordova('setPushToken', pushToken);
-    },
-
-    setReferrer: function(referrer) {
-        callCordova('setReferrer', referrer);
-    },
-
-    isEnabled: function(callback) {
-        callCordovaCallback('isEnabled', callback);
-    },
-
-    gdprForgetMe: function() {
-        callCordova('gdprForgetMe');
-    },
-
-    disableThirdPartySharing: function() {
-        callCordova('disableThirdPartySharing');
-    },
-
-    trackAdRevenue: function(source, payload = undefined) {
-        if (payload === undefined) {
-            // new API
-            callCordovaStringify('trackAdRevenue', source);
-        } else {
-            // old API
-            callCordova('trackAdRevenue', source, payload);
-        }
-    },
-
-    trackAppStoreSubscription: function(subscription) {
-        callCordovaStringify('trackAppStoreSubscription', subscription);
-    },
-
-    trackPlayStoreSubscription: function(subscription) {
-        callCordovaStringify('trackPlayStoreSubscription', subscription);
-    },
-
-    verifyAppStorePurchase: function(purchase, callback) {
-        callCordovaStringifyCallback('verifyAppStorePurchase', purchase, callback);
-    },
-
-    verifyPlayStorePurchase: function(purchase, callback) {
-        callCordovaStringifyCallback('verifyPlayStorePurchase', purchase, callback);
-    },
-
-    getGoogleAdId: function(callback) {
-        callCordovaCallback('getGoogleAdId', callback);
-    },
-
-    getAmazonAdId: function(callback) {
-        callCordovaCallback('getAmazonAdId', callback);
-    },
-
-    getIdfa: function(callback) {
-        callCordovaCallback('getIdfa', callback);
+    getAttribution: function(callback) {
+        callCordovaCallback('getAttribution', callback);
     },
 
     getAdid: function(callback) {
         callCordovaCallback('getAdid', callback);
     },
 
-    getAttribution: function(callback) {
-        callCordovaCallback('getAttribution', callback);
+    getGoogleAdId: function(callback) {
+        if (device.platform === 'Android') {
+            callCordovaCallback('getGoogleAdId', callback);
+        }
+    },
+
+    getAmazonAdId: function(callback) {
+        if (device.platform === 'Android') {
+            callCordovaCallback('getAmazonAdId', callback);
+        }
     },
 
     getSdkVersion: function(callback) {
@@ -171,55 +115,110 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova4.38.1';
+        return 'cordova5.0.0';
     },
 
-    addSessionCallbackParameter: function(key, value) {
-        callCordova('addSessionCallbackParameter', key, value);
+    addGlobalCallbackParameter: function(key, value) {
+        if (typeof key !== 'string' || typeof value !== 'string') {
+            console.log("[Adjust] Global callback parameter key or value is not of type string");
+            return;
+        }
+        callCordova('addGlobalCallbackParameter', key, value);
     },
 
-    removeSessionCallbackParameter: function(key) {
-        callCordova('removeSessionCallbackParameter', key);
+    removeGlobalCallbackParameter: function(key) {
+        if (typeof key !== 'string') {
+            console.log("[Adjust] Global callback parameter key is not of type string");
+            return;
+        }
+        callCordova('removeGlobalCallbackParameter', key);
     },
 
-    resetSessionCallbackParameters: function() {
-        callCordova('resetSessionCallbackParameters');
+    removeGlobalCallbackParameters: function() {
+        callCordova('removeGlobalCallbackParameters');
     },
 
-    addSessionPartnerParameter: function(key, value) {
-        callCordova('addSessionPartnerParameter', key, value);
+    addGlobalPartnerParameter: function(key, value) {
+        if (typeof key !== 'string' || typeof value !== 'string') {
+            console.log("[Adjust] Global partner parameter key or value is not of type string");
+            return;
+        }
+        callCordova('addGlobalPartnerParameter', key, value);
     },
 
-    removeSessionPartnerParameter: function(key) {
-        callCordova('removeSessionPartnerParameter', key);
+    removeGlobalPartnerParameter: function(key) {
+        if (typeof key !== 'string') {
+            console.log("[Adjust] Global partner parameter key is not of type string");
+            return;
+        }
+        callCordova('removeGlobalPartnerParameter', key);
     },
 
-    resetSessionPartnerParameters: function() {
-        callCordova('resetSessionPartnerParameters');
+    removeGlobalPartnerParameters: function() {
+        callCordova('removeGlobalPartnerParameters');
     },
 
-    sendFirstPackages: function() {
-        callCordova('sendFirstPackages');
+    switchToOfflineMode: function() {
+        callCordova('switchToOfflineMode');
     },
 
-    requestTrackingAuthorizationWithCompletionHandler: function(callback) {
-        callCordovaCallback('requestTrackingAuthorizationWithCompletionHandler', callback);
+    switchBackToOnlineMode: function() {
+        callCordova('switchBackToOnlineMode');
     },
 
-    updateConversionValue: function(conversionValue) {
-        callCordova('updateConversionValue', conversionValue);
+    enable: function() {
+        callCordova('enable');
     },
 
-    updateConversionValueWithErrorCallback: function(callback, conversionValue) {
-        callCordovaCallback('updateConversionValueWithErrorCallback', callback, conversionValue);
+    disable: function() {
+        callCordova('disable');
     },
 
-    updateSkad4ConversionValueWithErrorCallback: function(callback, fineValue, coarseValue, lockWindow) {
-        callCordovaCallback('updateSkad4ConversionValueWithErrorCallback', callback, fineValue, coarseValue, lockWindow);
+    isEnabled: function(callback) {
+        callCordovaCallback('isEnabled', callback);
     },
 
-    getAppTrackingAuthorizationStatus: function(callback) {
-        callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+    gdprForgetMe: function() {
+        callCordova('gdprForgetMe');
+    },
+
+    onPause: function(testParam) {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
+        callCordova('onPause');
+    },
+    onResume: function(testParam) {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
+        callCordova('onResume');
+    },
+
+    trackEvent: function(adjustEvent) {
+        callCordovaStringify('trackEvent', adjustEvent);
+    },
+
+    trackAdRevenue: function(adjustAdrevenue) {
+        callCordovaStringify('trackAdRevenue', adjustAdrevenue);
+    },
+
+    trackPlayStoreSubscription: function(adjustPlayStoreSubscription) {
+        if (device.platform === 'Android') {
+            callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
+        }
+    },
+
+    verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
+        if (device.platform === 'Android') {
+            callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
+        }
+    },
+
+    verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
+        if (device.platform === 'Android') {
+            callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
+        }
     },
 
     trackThirdPartySharing: function(adjustThirdPartySharing) {
@@ -227,19 +226,77 @@ var Adjust = {
     },
 
     trackMeasurementConsent: function(measurementConsent) {
+        if (typeof measurementConsent !== 'boolean') {
+            console.log("[Adjust] Measurement consent is not of type boolean");
+            return;
+        }
         callCordova('trackMeasurementConsent', measurementConsent);
+    },
+
+    processDeeplink: function(adjustDeeplink) {
+        callCordovaStringify('processDeeplink', adjustDeeplink);
+    },
+
+    processAndResolveDeeplink: function(adjustDeeplink, callback) {
+        callCordovaStringifyCallback('processAndResolveDeeplink', adjustDeeplink, callback);
     },
 
     getLastDeeplink: function(callback) {
         callCordovaCallback('getLastDeeplink', callback);
     },
 
-    getIdfv: function(callback) {
-        callCordovaCallback('getIdfv', callback);
+   trackAppStoreSubscription: function(adjustAppStoreSubscription) {
+        if (device.platform === 'iOS') {
+            callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
+        }
     },
 
-    processDeeplink: function(deeplink, callback) {
-        callCordovaCallback('processDeeplink', callback, deeplink);
+    verifyAppStorePurchase: function(adjustAppStorePurchase, callback) {
+        if (device.platform === 'iOS') {
+            callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
+        }
+    },
+
+    verifyAndTrackAppStorePurchase: function(adjustEvent, callback) {
+        if (device.platform === 'iOS') {
+            callCordovaStringifyCallback('verifyAndTrackAppStorePurchase', adjustEvent, callback);
+        }
+    },
+
+   requestAppTrackingAuthorization: function(callback) {
+        if (device.platform === 'iOS') {
+            callCordovaCallback('requestAppTrackingAuthorization', callback);
+        }
+    },
+
+    getAppTrackingAuthorizationStatus: function(callback) {
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
+        }
+    },
+
+    updateSkanConversionValue: function(conversionValue, coarseValue, lockWindow, callback) {
+        if (device.platform === 'iOS') {
+            if (!Number.isInteger(conversionValue) ||
+                typeof coarseValue !== 'string' ||
+                typeof lockWindow !== 'boolean') {
+                console.log("[Adjust] SKAN parameters are not of a proper data types");
+                return;
+            }
+            callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
+        }
+    },
+
+    getIdfa: function(callback) {
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getIdfa', callback);
+        }
+    },
+
+    getIdfv: function(callback) {
+        if (device.platform === 'iOS') {
+            callCordovaCallback('getIdfv', callback);
+        }
     },
 
     setTestOptions: function(testOptions) {
@@ -251,36 +308,7 @@ var Adjust = {
            return;
         }
         callCordova('teardown');
-    },
-
-    onResume: function(testParam) {
-        if(testParam === null || testParam === undefined || testParam !== 'test') {
-           return;
-        }
-        callCordova('onResume');
-    },
-
-    onPause: function(testParam) {
-        if(testParam === null || testParam === undefined || testParam !== 'test') {
-           return;
-        }
-        callCordova('onPause');
-    },
-
-    checkForNewAttStatus: function() {
-        callCordova('checkForNewAttStatus');
     }
 };
-
-function onPause() {
-    callCordova('onPause');
-}
-
-function onResume() {
-    callCordova('onResume');
-}
-
-document.addEventListener('resume', onResume, false);
-document.addEventListener('pause', onPause, false);
 
 module.exports = Adjust;

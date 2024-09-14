@@ -1,7 +1,8 @@
 function handleOpenURL(url) {
     setTimeout(function() {
-        console.log(`TestApp, handleOpenURL: initiate Adjust.appWillOpenUrl, with URL = ${url}`);
-        Adjust.appWillOpenUrl(url);
+        console.log(`TestApp, handleOpenURL: initiate Adjust.processDeeplink, with URL = ${url}`);
+        var adjustDeeplink = new AdjustDeeplink(url);
+        Adjust.processDeeplink(adjustDeeplink);
     }, 0);
 }
 
@@ -20,7 +21,7 @@ var app = {
             }
 
             var urlOverwrite = "";
-            var ipAddress = "192.168.86.53";
+            var ipAddress = "192.168.86.80";
             if (device.platform === "Android") {
                 urlOverwrite = "https://" + ipAddress + ":8443";
             } else if (device.platform === "iOS") {
@@ -30,6 +31,7 @@ var app = {
 
             var commandExecutor = new CommandExecutor(urlOverwrite);
             // AdjustTest.addTestDirectory('purchase-verification');
+
             AdjustTest.startTestSession(urlOverwrite, controlUrl, sdkVersion, function(json) {
                 var commandDict = JSON.parse(json);
                 var className = commandDict['className'];
@@ -42,8 +44,8 @@ var app = {
     },
 
     didLaunchAppFromLink: function(eventData) {
-        console.log(`TestApp, didLaunchAppFromLink: initiate Adjust.appWillOpenUrl, with URL = ${eventData.url}`);
-        Adjust.appWillOpenUrl(eventData.url);
+        console.log(`TestApp, didLaunchAppFromLink: initiate Adjust.processDeeplink, with URL = ${eventData.url}`);
+        Adjust.processDeeplink(eventData.url);
     },
 
     receivedEvent: function(id) {
