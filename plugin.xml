@@ -100,7 +100,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust" spec="5.0.0" />
+                <pod name="Adjust" spec="5.0.1" />
             </pods>
         </podspec>
 
