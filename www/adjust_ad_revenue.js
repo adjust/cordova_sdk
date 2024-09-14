@@ -1,4 +1,4 @@
-var AdjustAdRevenue = function(source) {
+function AdjustAdRevenue(source) {
     this.source = source;
     this.revenue = null;
     this.currency = null;
@@ -8,7 +8,7 @@ var AdjustAdRevenue = function(source) {
     this.adRevenuePlacement = null;
     this.callbackParameters = [];
     this.partnerParameters = [];
-};
+}
 
 AdjustAdRevenue.prototype.setRevenue = function(revenue, currency) {
     if (typeof revenue !== 'number' || typeof currency !== 'string') {

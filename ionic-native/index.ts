@@ -47,43 +47,43 @@ export class AdjustConfig {
     this.environment = environment;
   }
 
-  setLogLevel(logLevel: AdjustLogLevel) {
+  setLogLevel(logLevel: AdjustLogLevel): void {
     this.logLevel = logLevel;
   }
 
-  setDefaultTracker(defaultTracker: string) {
+  setDefaultTracker(defaultTracker: string): void {
     this.defaultTracker = defaultTracker;
   }
 
-  setExternalDeviceId(externalDeviceId: string) {
+  setExternalDeviceId(externalDeviceId: string): void {
     this.externalDeviceId = externalDeviceId;
   }
 
-  setUrlStrategy(urlStrategyDomains: string[], useSubdomains: boolean, isDataResidency: boolean) {
+  setUrlStrategy(urlStrategyDomains: string[], useSubdomains: boolean, isDataResidency: boolean): void {
     this.urlStrategy = urlStrategy;
   }
 
-  enableSendingInBackground() {
+  enableSendingInBackground(): void {
     this.isSendingInBackgroundEnabled = true;
   }
 
-  disableDeferredDeeplinkOpening() {
+  disableDeferredDeeplinkOpening(): void {
     this.isDeferredDeeplinkOpeningEnabled = false;
   }
 
-  enableCoppaCompliance() {
+  enableCoppaCompliance(): void {
     this.isCoppaComplianceEnabled = true;
   }
 
-  enableDeviceIdsReadingOnce() {
+  enableDeviceIdsReadingOnce(): void {
     this.isDeviceIdsReadingOnceEnabled = true;
   }
 
-  enablePlayStoreKidsCompliance() {
+  enablePlayStoreKidsCompliance(): void {
     this.isPlayStoreKidsComplianceEnabled = true;
   }
 
-  enableCostDataInAttribution() {
+  enableCostDataInAttribution(): void {
     this.isCostDataInAttributionEnabled = true;
   }
 
@@ -91,119 +91,123 @@ export class AdjustConfig {
     this.processName = processName;
   }
 
-  enablePreinstallTracking() {
+  enablePreinstallTracking(): void {
     this.isPreinstallTrackingEnabled = true;
   }
 
-  setPreinstallFilePath(preinstallFilePath: string) {
+  setPreinstallFilePath(preinstallFilePath: string): void {
     this.preinstallFilePath = preinstallFilePath;
   }
 
-  setFbAppId(fbAppId: string) {
+  setFbAppId(fbAppId: string): void {
     this.fbAppId = fbAppId;
   }
 
-  disableIdfaReading() {
+  disableIdfaReading(): void {
     this.isIdfaReadingEnabled = false;
   }
 
-  disableIdfvReading() {
+  disableIdfvReading(): void {
     this.isIdfvReadingEnabled = false;
   }
 
-  disableAdServices() {
+  disableAdServices(): void {
     this.isAdServicesEnabled = false;
   }
 
-  enableLinkMe() {
+  enableLinkMe(): void {
     this.isLinkMeEnabled = true;
   }
 
-  setAttConsentWaitingInterval(attConsentWaitingInterval: number) {
+  disableSkanAttribution(): void {
+    this.isSkanAttributionEnabled = false;
+  }
+
+  setAttConsentWaitingInterval(attConsentWaitingInterval: number): void {
     this.attConsentWaitingInterval = attConsentWaitingInterval;
   }
 
-  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void) {
+  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void): void {
     this.attributionCallback = attributionCallback;
   }
 
-  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void) {
+  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void): void {
     this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
   }
 
-  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void) {
+  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void): void {
     this.eventTrackingFailedCallback = eventTrackingFailedCallback;
   }
 
-  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void) {
+  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void): void {
     this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
   }
 
-  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void) {
+  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void): void {
     this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
   }
 
-  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (uri: string) => void) {
+  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (deeplink: string) => void): void {
     this.deferredDeeplinkCallback = deferredDeeplinkCallback;
   }
 
-  setSkanUpdatedCallback(skanUpdatedCallback: (skanData: AdjustSkanData) => void) {
+  setSkanUpdatedCallback(skanUpdatedCallback: (skanData: AdjustSkanData) => void): void {
     this.skanUpdatedCallback = skanUpdatedCallback;
   }
 
-  private getAttributionCallback() {
+  private getAttributionCallback(): void {
     return this.attributionCallback;
   }
 
-  private getEventTrackingSucceededCallback() {
+  private getEventTrackingSucceededCallback(): void {
     return this.eventTrackingSucceededCallback;
   }
 
-  private getEventTrackingFailedCallback() {
+  private getEventTrackingFailedCallback(): void {
     return this.eventTrackingFailedCallback;
   }
 
-  private getSessionTrackingSucceededCallback() {
+  private getSessionTrackingSucceededCallback(): void {
     return this.sessionTrackingSucceededCallback;
   }
 
-  private getSessionTrackingFailedCallback() {
+  private getSessionTrackingFailedCallback(): void {
     return this.sessionTrackingFailedCallback;
   }
 
-  private getDeferredDeeplinkCallback() {
+  private getDeferredDeeplinkCallback(): void {
     return this.deferredDeeplinkCallback;
   }
 
-  private getSkanUpdatedCallback() {
+  private getSkanUpdatedCallback(): void {
     return this.skanUpdatedCallback;
   }
 
-  private hasAttributionCallback() {
+  private hasAttributionCallback(): void {
     return this.attributionCallback !== null;
   }
 
-  private hasEventTrackingSucceededCallback() {
+  private hasEventTrackingSucceededCallback(): void {
     return this.eventTrackingSucceededCallback !== null;
   }
 
-  private hasEventTrackingFailedCallback() {
+  private hasEventTrackingFailedCallback(): void {
     return this.eventTrackingFailedCallback !== null;
   }
 
-  private hasSessionTrackingSucceededCallback() {
+  private hasSessionTrackingSucceededCallback(): void {
     return this.sessionTrackingSucceededCallback !== null;
   }
 
-  private hasSessionTrackingFailedCallback() {
+  private hasSessionTrackingFailedCallback(): void {
     return this.sessionTrackingFailedCallback !== null;
   }
 
-  private hasDeferredDeeplinkCallback() {
+  private hasDeferredDeeplinkCallback(): void {
     return this.deferredDeeplinkCallback !== null;
   }
 
-  private hasSkanUpdatedCallback() {
+  private hasSkanUpdatedCallback(): void {
     return this.skanUpdatedCallback !== null;
   }
 }
@@ -214,6 +218,7 @@ export class AdjustEvent {
   private currency: string;
   private productId: string;
   private transactionId: string;
+  private deduplicationId: string;
   private purchaseToken: string;
   private callbackId: string;
   private callbackParameters: string[] = [];
@@ -238,19 +243,23 @@ export class AdjustEvent {
     this.partnerParameters.push(value);
   }
 
-  setTransactionId(transactionId: string) {
+  setTransactionId(transactionId: string): void {
     this.transactionId = transactionId;
   }
 
-  setCallbackId(callbackId: string) {
+  setDeduplicationId(deduplicationId: string): void {
+    this.deduplicationId = deduplicationId;
+  }
+
+  setCallbackId(callbackId: string): void {
     this.callbackId = callbackId;
   }
 
-  setProductId(productId: string) {
+  setProductId(productId: string): void {
     this.productId = productId;
   }
 
-  setPurchaseToken(purchaseToken: string) {
+  setPurchaseToken(purchaseToken: string): void {
     this.purchaseToken = purchaseToken;
   }
 }
@@ -376,19 +385,19 @@ export class AdjustAdRevenue {
     this.partnerParameters.push(value);
   }
 
-  setAdImpressionsCount(adImpressionsCount: number) {
+  setAdImpressionsCount(adImpressionsCount: number): void {
     this.adImpressionsCount = adImpressionsCount;
   }
 
-  setAdRevenueNetwork(adRevenueNetwork: string) {
+  setAdRevenueNetwork(adRevenueNetwork: string): void {
     this.adRevenueNetwork = adRevenueNetwork;
   }
 
-  setAdRevenueUnit(adRevenueUnit: string) {
+  setAdRevenueUnit(adRevenueUnit: string): void {
     this.adRevenueUnit = adRevenueUnit;
   }
 
-  setAdRevenuePlacement(adRevenuePlacement: string) {
+  setAdRevenuePlacement(adRevenuePlacement: string): void {
     this.adRevenuePlacement = adRevenuePlacement;
   }
 }
@@ -596,7 +605,7 @@ export class Adjust extends AwesomeCordovaNativePlugin {
    * @param {AdjustAdRevenue} adjustAdRevenue Adjust ad revenue object
    */
   @Cordova({ sync: true })
-  trackAdRevenue(adjustAdRevenue: AdjustAdRevenue): void;
+  trackAdRevenue(adjustAdRevenue: AdjustAdRevenue): void {}
 
   /**
    * This method tracks measurement consent choice
