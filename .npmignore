@@ -4,10 +4,8 @@
 .DS_Store
 
 # Adjust SDK repository
-doc/
 ext/
 example-cordova/
 example-ionic-capacitor/
 ionic-native/
 test/
-plugins/
