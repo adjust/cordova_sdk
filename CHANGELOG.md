@@ -1,5 +1,6 @@
 ### Version 5.0.1 (23rd September 2024)
 #### Fixed
+- Fixed errors from `index.ts` (https://github.com/adjust/cordova_sdk/issues/190).
 - Fixed occasional ANRs while reading install referrer from Shared Preferences during the SDK initialization.
 
 #### Native SDKs
