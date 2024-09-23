@@ -209,7 +209,7 @@ public class AdjustCordova extends CordovaPlugin implements
                     adjustConfig.setLogLevel(LogLevel.ASSERT);
                     break;
                 case "SUPPRESS":
-                    adjustConfig.setLogLevel(LogLevel.SUPRESS);
+                    adjustConfig.setLogLevel(LogLevel.SUPPRESS);
                     break;
                 case "INFO":
                 default:

@@ -39,8 +39,8 @@ export class AdjustConfig {
   private eventTrackingFailedCallback: (event: AdjustEventFailure) => void = null;
   private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
   private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
-  private deferredDeeplinkCallback: (uri: string) => void = null;
-  private skanUpdatedCallback: (skad4Data: AdjustSkanData) => void = null;
+  private deferredDeeplinkCallback: (deeplink: string) => void = null;
+  private skanUpdatedCallback: (skanData: AdjustSkanData) => void = null;
 
   constructor(appToken: string, environment: AdjustEnvironment) {
     this.appToken = appToken;
@@ -479,7 +479,7 @@ export interface AdjustEventFailure {
   jsonResponse: string;
 }
 
-export interface AdjustSkadData {
+export interface AdjustSkanData {
   conversionValue: number;
   coarseValue: string;
   lockWindow: boolean;
@@ -534,7 +534,7 @@ export enum AdjustLogLevel {
  * AdjustSessionFailure
  * AdjustEventSuccess
  * AdjustEventFailure
- * AdjustSkadData
+ * AdjustSkanData
  * AdjustPurchaseVerificationResult
  * @classes
  * AdjustConfig
@@ -776,7 +776,7 @@ export class Adjust extends AwesomeCordovaNativePlugin {
    * If all keys and values from the global callback parameters have to be removed, call this method
    */
   @Cordova({ sync: true })
-  removeGlobalPartnerParameter(): void {}
+  removeGlobalCallbackParameters(): void {}
 
   /**
    * Method used to add global partner parameters
