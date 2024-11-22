@@ -813,6 +813,40 @@
     }];
 }
 
+#pragma mark - Android methods
+
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
+    // ignore on ios
+    NSString *googleAdId = @"";
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:googleAdId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {
+    // ignore on ios
+    NSString *amazonAdId = @"";
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:amazonAdId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command {
+    // ignore on ios
+}
+
+- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command {
+    // ignore on ios
+    NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command {
+    // ignore on ios
+    NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 #pragma mark - Testing
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {

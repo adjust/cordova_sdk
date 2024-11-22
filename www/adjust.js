@@ -71,9 +71,7 @@ var Adjust = {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
         if (adjustConfig.hasSkanUpdatedCallback()) {
-            if (device.platform === 'iOS') {
-                callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
-            }
+            callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }
 
         callCordovaStringify('initSdk', adjustConfig);
@@ -96,15 +94,11 @@ var Adjust = {
     },
 
     getGoogleAdId: function(callback) {
-        if (device.platform === 'Android') {
-            callCordovaCallback('getGoogleAdId', callback);
-        }
+        callCordovaCallback('getGoogleAdId', callback);
     },
 
     getAmazonAdId: function(callback) {
-        if (device.platform === 'Android') {
-            callCordovaCallback('getAmazonAdId', callback);
-        }
+        callCordovaCallback('getAmazonAdId', callback);
     },
 
     getSdkVersion: function(callback) {
@@ -115,7 +109,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.0.1';
+        return 'cordova5.0.2';
     },
 
     addGlobalCallbackParameter: function(key, value) {
@@ -204,21 +198,15 @@ var Adjust = {
     },
 
     trackPlayStoreSubscription: function(adjustPlayStoreSubscription) {
-        if (device.platform === 'Android') {
-            callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
-        }
+        callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
     },
 
     verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
-        if (device.platform === 'Android') {
-            callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
-        }
+        callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
     },
 
     verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
-        if (device.platform === 'Android') {
-            callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
-        }
+        callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
     },
 
     trackThirdPartySharing: function(adjustThirdPartySharing) {
@@ -245,58 +233,42 @@ var Adjust = {
         callCordovaCallback('getLastDeeplink', callback);
     },
 
-   trackAppStoreSubscription: function(adjustAppStoreSubscription) {
-        if (device.platform === 'iOS') {
-            callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
-        }
+    trackAppStoreSubscription: function(adjustAppStoreSubscription) {
+        callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
     },
 
     verifyAppStorePurchase: function(adjustAppStorePurchase, callback) {
-        if (device.platform === 'iOS') {
-            callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
-        }
+        callCordovaStringifyCallback('verifyAppStorePurchase', adjustAppStorePurchase, callback);
     },
 
     verifyAndTrackAppStorePurchase: function(adjustEvent, callback) {
-        if (device.platform === 'iOS') {
-            callCordovaStringifyCallback('verifyAndTrackAppStorePurchase', adjustEvent, callback);
-        }
+        callCordovaStringifyCallback('verifyAndTrackAppStorePurchase', adjustEvent, callback);
     },
 
-   requestAppTrackingAuthorization: function(callback) {
-        if (device.platform === 'iOS') {
-            callCordovaCallback('requestAppTrackingAuthorization', callback);
-        }
+    requestAppTrackingAuthorization: function(callback) {
+        callCordovaCallback('requestAppTrackingAuthorization', callback);
     },
 
     getAppTrackingAuthorizationStatus: function(callback) {
-        if (device.platform === 'iOS') {
-            callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
-        }
+        callCordovaCallback('getAppTrackingAuthorizationStatus', callback);
     },
 
     updateSkanConversionValue: function(conversionValue, coarseValue, lockWindow, callback) {
-        if (device.platform === 'iOS') {
-            if (!Number.isInteger(conversionValue) ||
-                typeof coarseValue !== 'string' ||
-                typeof lockWindow !== 'boolean') {
-                console.log("[Adjust] SKAN parameters are not of a proper data types");
-                return;
-            }
-            callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
+        if (!Number.isInteger(conversionValue) ||
+            typeof coarseValue !== 'string' ||
+            typeof lockWindow !== 'boolean') {
+            console.log("[Adjust] SKAN parameters are not of a proper data types");
+            return;
         }
+        callCordovaCallback('updateSkanConversionValue', callback, conversionValue, coarseValue, lockWindow);
     },
 
     getIdfa: function(callback) {
-        if (device.platform === 'iOS') {
-            callCordovaCallback('getIdfa', callback);
-        }
+        callCordovaCallback('getIdfa', callback);
     },
 
     getIdfv: function(callback) {
-        if (device.platform === 'iOS') {
-            callCordovaCallback('getIdfv', callback);
-        }
+        callCordovaCallback('getIdfv', callback);
     },
 
     setTestOptions: function(testOptions) {
@@ -304,7 +276,7 @@ var Adjust = {
     },
 
     teardown: function(testParam) {
-        if(testParam === null || testParam === undefined || testParam !== 'test') {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
            return;
         }
         callCordova('teardown');

@@ -1,3 +1,13 @@
+### Version 5.0.2 (22nd November 2024)
+#### Fixed
+- Removed platform detection logic from JS layer which was requiring `cordova-plugin-device` dependency.
+
+#### Native SDKs
+- [iOS@v5.0.1][ios_sdk_v5.0.1]
+- [Android@v5.0.1][android_sdk_v5.0.1]
+
+---
+
 ### Version 5.0.1 (23rd September 2024)
 #### Fixed
 - Fixed errors from `index.ts` (https://github.com/adjust/cordova_sdk/issues/190).

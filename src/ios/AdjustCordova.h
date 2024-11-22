@@ -70,6 +70,12 @@
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
 // SKAN
 - (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command;
+// android
+- (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
+- (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
+- (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
+- (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command;
 // Testing
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;
