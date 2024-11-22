@@ -131,6 +131,15 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_PROCESS_DEEPLINK = "processDeeplink";
     public static final String COMMAND_PROCESS_AND_RESOLVE_DEEPLINK = "processAndResolveDeeplink";
     public static final String COMMAND_GET_LAST_DEEPLINK = "getLastDeeplink";
+    // ios commands
+    public static final String COMMAND_SET_SKAN_UPDATED_CALLBACK = "setSkanUpdatedCallback";
+    public static final String COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE = "verifyAndTrackPlayStorePurchase";
+    public static final String COMMAND_VERIFY_APP_STORE_PURCHASE = "verifyAppStorePurchase";
+    public static final String COMMAND_REQUEST_APP_TRACKING_AUTHORIZATION = "requestAppTrackingAuthorization";
+    public static final String COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS = "getAppTrackingAuthorizationStatus";
+    public static final String COMMAND_UPDATE_SKAN_CONVERSION_VALUE = "updateSkanConversionValue";
+    public static final String COMMAND_GET_IDFA = "getIdfa";
+    public static final String COMMAND_GET_IDFV = "getIdfv";
     // Testing commands
     public static final String COMMAND_SET_TEST_OPTIONS = "setTestOptions";
     public static final String COMMAND_TEARDOWN = "teardown";

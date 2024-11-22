@@ -90,10 +90,6 @@ var app = {
         // Adjust.removeGlobalCallbackParameters();
         // Adjust.removeGlobalPartnerParameters();
 
-        Adjust.requestAppTrackingAuthorization(function(status) {
-            console.log("ATT status = " + status);
-        });
-
         Adjust.initSdk(adjustConfig);
     },
 
@@ -198,6 +194,14 @@ var app = {
                 console.log("[AdjustExample]: Cost Type = " + attribution.costType);
                 console.log("[AdjustExample]: Cost Amount = " + attribution.costAmount);
                 console.log("[AdjustExample]: Cost Currency = " + attribution.costCurrency);
+            });
+
+            Adjust.requestAppTrackingAuthorization(function(status) {
+                console.log("[AdjustExample]: ATT status = " + status);
+            });
+
+            Adjust.getAppTrackingAuthorizationStatus(function(status) {
+                console.log("[AdjustExample]: ATT status = " + status);
             });
         }, false);
 

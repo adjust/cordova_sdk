@@ -3,6 +3,7 @@ package com.adjust.sdk;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,6 +139,50 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingFailedCallbackContext = null;
             deferredDeeplinkCallbackContext = null;
             isDeferredDeeplinkOpeningEnabled = true;
+        } else if (action.equals(COMMAND_SET_SKAN_UPDATED_CALLBACK)) {
+            // ignore on android
+        } else if (action.equals(COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE)) {
+            // ignore on android
+            HashMap<String, String> mapResponse = new HashMap<>();
+            JSONObject response = new JSONObject(mapResponse);
+            PluginResult pluginResult = new PluginResult(Status.OK, response);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_VERIFY_APP_STORE_PURCHASE)) {
+            // ignore on android
+            HashMap<String, String> mapResponse = new HashMap<>();
+            JSONObject response = new JSONObject(mapResponse);
+            PluginResult pluginResult = new PluginResult(Status.OK, response);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_REQUEST_APP_TRACKING_AUTHORIZATION)) {
+            // ignore on android
+            PluginResult pluginResult = new PluginResult(Status.OK, -1);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_APP_TRACKING_AUTHORIZATION_STATUS)) {
+            // ignore on android
+            PluginResult pluginResult = new PluginResult(Status.OK, -1);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_UPDATE_SKAN_CONVERSION_VALUE)) {
+            // ignore on android
+            HashMap<String, String> skanResponse = new HashMap<>();
+            skanResponse.put("error", "SKAdNetwork functionality not available on Android platform");
+            JSONObject response = new JSONObject(skanResponse);
+            PluginResult pluginResult = new PluginResult(Status.OK, response);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_IDFA)) {
+            // ignore on android
+            PluginResult pluginResult = new PluginResult(Status.OK, "");
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+        } else if (action.equals(COMMAND_GET_IDFV)) {
+            // ignore on android
+            PluginResult pluginResult = new PluginResult(Status.OK, "");
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
         } else {
             Logger logger = (Logger) AdjustFactory.getLogger();
             logger.error(String.format("[AdjustCordova]: Invalid call (%s).", action));
