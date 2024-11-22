@@ -109,7 +109,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.0.1';
+        return 'cordova5.0.2';
     },
 
     addGlobalCallbackParameter: function(key, value) {
