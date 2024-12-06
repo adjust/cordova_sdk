@@ -1,3 +1,13 @@
+### Version 5.0.3 (6th December 2024)
+#### Changed
+- Switched to native Android SDK version that depends on a specific version of the signature library.
+
+#### Native SDKs
+- [iOS@v5.0.1][ios_sdk_v5.0.1]
+- [Android@v5.0.2][android_sdk_v5.0.2]
+
+---
+
 ### Version 5.0.2 (22nd November 2024)
 #### Fixed
 - Removed platform detection logic from JS layer which was requiring `cordova-plugin-device` dependency.
@@ -761,3 +771,4 @@ In case you were using beta version of the SDK v5, please switch to the official
 [android_sdk_v4.38.3]: https://github.com/adjust/android_sdk/tree/v4.38.3
 [android_sdk_v5.0.0]: https://github.com/adjust/android_sdk/tree/v5.0.0
 [android_sdk_v5.0.1]: https://github.com/adjust/android_sdk/tree/v5.0.1
+[android_sdk_v5.0.2]: https://github.com/adjust/android_sdk/tree/v5.0.2
