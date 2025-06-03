@@ -409,6 +409,23 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
+        // store info
+        if (parameters.containsKey(KEY_STORE_INFO)) {
+            String strStoreInfo = parameters.get(KEY_STORE_INFO).toString();
+            try {
+                JSONObject storeInfoJson = new JSONObject(strStoreInfo);
+                String storeName = storeInfoJson.optString(KEY_STORE_NAME, null);
+                if (isFieldValid(storeName)) {
+                    AdjustStoreInfo adjustStoreInfo = new AdjustStoreInfo(storeName);
+                    String storeAppId = storeInfoJson.optString(KEY_STORE_APP_ID, null);
+                    if (isFieldValid(storeAppId)) {
+                        adjustStoreInfo.setStoreAppId(storeAppId);
+                    }
+                    adjustConfig.setStoreInfo(adjustStoreInfo);
+                }
+            } catch (JSONException e) {}
+        }
+
         // Launching deferred deep link.
         if (parameters.containsKey(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED)) {
             String strIsDeferredDeeplinkOpeningEnabled = parameters.get(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED).toString();

@@ -84,6 +84,9 @@ public class AdjustCordovaUtils {
     public static final String KEY_IS_DATA_RESIDENCY = "isDataResidency";
     public static final String KEY_REFERRER = "referrer";
     public static final String KEY_IS_FIRST_SESSION_DELAY_ENABLED = "isFirstSessionDelayEnabled";
+    public static final String KEY_STORE_INFO = "storeInfo";
+    public static final String KEY_STORE_NAME = "storeName";
+    public static final String KEY_STORE_APP_ID = "storeAppId";
 
     // Adjust Create Configuration and Initialize SDK command
     public static final String COMMAND_INIT_SDK = "initSdk";
