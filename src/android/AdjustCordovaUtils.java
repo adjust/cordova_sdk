@@ -32,18 +32,6 @@ public class AdjustCordovaUtils {
     public static final String KEY_GRANULAR_OPTIONS = "granularOptions";
     public static final String KEY_PARTNER_SHARING_SETTINGS = "partnerSharingSettings";
     public static final String KEY_PREINSTALL_FILE_PATH = "preinstallFilePath";
-
-    public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
-    public static final String KEY_EXTRA_PATH = "extraPath";
-    public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
-    public static final String KEY_TIMER_START = "timerStartInMilliseconds";
-    public static final String KEY_SESSION_INTERVAL = "sessionIntervalInMilliseconds";
-    public static final String KEY_SUBSESSION_INTERVAL = "subsessionIntervalInMilliseconds";
-    public static final String KEY_TEARDOWN = "teardown";
-    public static final String KEY_NO_BACKOFF_WAIT = "noBackoffWait";
-    public static final String KEY_DELETE_STATE = "deleteState";
-    public static final String KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP = "ignoreSystemLifecycleBootstrap";
-
     public static final String KEY_ADID = "adid";
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_NETWORK = "network";
@@ -87,63 +75,61 @@ public class AdjustCordovaUtils {
     public static final String KEY_STORE_INFO = "storeInfo";
     public static final String KEY_STORE_NAME = "storeName";
     public static final String KEY_STORE_APP_ID = "storeAppId";
+    public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
+    public static final String KEY_EXTRA_PATH = "extraPath";
+    public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
+    public static final String KEY_TIMER_START = "timerStartInMilliseconds";
+    public static final String KEY_SESSION_INTERVAL = "sessionIntervalInMilliseconds";
+    public static final String KEY_SUBSESSION_INTERVAL = "subsessionIntervalInMilliseconds";
+    public static final String KEY_TEARDOWN = "teardown";
+    public static final String KEY_NO_BACKOFF_WAIT = "noBackoffWait";
+    public static final String KEY_DELETE_STATE = "deleteState";
+    public static final String KEY_IGNORE_SYSTEM_LIFECYCLE_BOOTSTRAP = "ignoreSystemLifecycleBootstrap";
 
-    // Adjust Create Configuration and Initialize SDK command
+    // common
     public static final String COMMAND_INIT_SDK = "initSdk";
-    // Callback setters commands
     public static final String COMMAND_SET_ATTRIBUTION_CALLBACK = "setAttributionCallback";
     public static final String COMMAND_SET_EVENT_TRACKING_SUCCEEDED_CALLBACK = "setEventTrackingSucceededCallback";
     public static final String COMMAND_SET_EVENT_TRACKING_FAILED_CALLBACK = "setEventTrackingFailedCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK = "setSessionTrackingSucceededCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
-    // Setters commands
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
-    // Getters commands
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
     public static final String COMMAND_GET_ADID = "getAdid";
-    public static final String COMMAND_GET_GOOGLE_AD_ID = "getGoogleAdId";
-    public static final String COMMAND_GET_AMAZON_AD_ID = "getAmazonAdId";
     public static final String COMMAND_GET_SDK_VERSION = "getSdkVersion";
-    // Global Parameters manipulation commands
-    // Callback
     public static final String COMMAND_ADD_GLOBAL_CALLBACK_PARAMETER = "addGlobalCallbackParameter";
     public static final String COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETER = "removeGlobalCallbackParameter";
     public static final String COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETERS = "removeGlobalCallbackParameters";
-    // Partner
     public static final String COMMAND_ADD_GLOBAL_PARTNER_PARAMETER = "addGlobalPartnerParameter";
     public static final String COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETER = "removeGlobalPartnerParameter";
     public static final String COMMAND_REMOVE_GLOBAL_PARTNER_PARAMETERS = "removeGlobalPartnerParameters";
-    // SDK State commands
     public static final String COMMAND_SWITCH_TO_OFFLINE_MODE = "switchToOfflineMode";
     public static final String COMMAND_SWITCH_BACK_TO_ONLINE_MODE = "switchBackToOnlineMode";
     public static final String COMMAND_IS_ENABLED = "isEnabled";
     public static final String COMMAND_ENABLE = "enable";
     public static final String COMMAND_DISABLE = "disable";
     public static final String COMMAND_GDPR_FORGET_ME = "gdprForgetMe";
-    // SDK Lifecycle commands
-    public static final String COMMAND_ON_RESUME = "onResume";
-    public static final String COMMAND_ON_PAUSE = "onPause";
-    // Tracking commands
     public static final String COMMAND_TRACK_EVENT = "trackEvent";
     public static final String COMMAND_TRACK_AD_REVENUE = "trackAdRevenue";
-    public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
-    public static final String COMMAND_VERIFY_PLAY_STORE_PURCHASE = "verifyPlayStorePurchase";
-    public static final String COMMAND_VERIFY_AND_TRACK_PLAY_STORE_PURCHASE = "verifyAndTrackPlayStorePurchase";
     public static final String COMMAND_TRACK_THIRD_PARTY_SHARING = "trackThirdPartySharing";
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
-    // Deeplink commands
     public static final String COMMAND_PROCESS_DEEPLINK = "processDeeplink";
     public static final String COMMAND_PROCESS_AND_RESOLVE_DEEPLINK = "processAndResolveDeeplink";
     public static final String COMMAND_GET_LAST_DEEPLINK = "getLastDeeplink";
-
     public static final String COMMAND_END_FIRST_SESSION_DELAY = "endFirstSessionDelay";
     public static final String COMMAND_ENABLE_COPPA_COMPLIANCE_IN_DELAY = "enableCoppaComplianceInDelay";
     public static final String COMMAND_DISABLE_COPPA_COMPLIANCE_IN_DELAY = "disableCoppaComplianceInDelay";
+    public static final String COMMAND_SET_EXTERNAL_DEVICE_ID_IN_DELAY = "setExternalDeviceIdInDelay";
+    // android only
+    public static final String COMMAND_GET_GOOGLE_AD_ID = "getGoogleAdId";
+    public static final String COMMAND_GET_AMAZON_AD_ID = "getAmazonAdId";
+    public static final String COMMAND_TRACK_PLAY_STORE_SUBSCRIPTION = "trackPlayStoreSubscription";
+    public static final String COMMAND_VERIFY_PLAY_STORE_PURCHASE = "verifyPlayStorePurchase";
+    public static final String COMMAND_VERIFY_AND_TRACK_PLAY_STORE_PURCHASE = "verifyAndTrackPlayStorePurchase";
     public static final String COMMAND_ENABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY = "enablePlayStoreKidsComplianceInDelay";
     public static final String COMMAND_DISABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY = "disablePlayStoreKidsComplianceInDelay";
-    public static final String COMMAND_SET_EXTERNAL_DEVICE_ID_IN_DELAY = "setExternalDeviceIdInDelay";
-    // ios commands
+    // ios only
     public static final String COMMAND_SET_SKAN_UPDATED_CALLBACK = "setSkanUpdatedCallback";
     public static final String COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE = "verifyAndTrackPlayStorePurchase";
     public static final String COMMAND_VERIFY_APP_STORE_PURCHASE = "verifyAppStorePurchase";
@@ -152,11 +138,13 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_UPDATE_SKAN_CONVERSION_VALUE = "updateSkanConversionValue";
     public static final String COMMAND_GET_IDFA = "getIdfa";
     public static final String COMMAND_GET_IDFV = "getIdfv";
-    // Testing commands
+    // testing only
+    public static final String COMMAND_ON_RESUME = "onResume";
+    public static final String COMMAND_ON_PAUSE = "onPause";
     public static final String COMMAND_SET_TEST_OPTIONS = "setTestOptions";
     public static final String COMMAND_TEARDOWN = "teardown";
 
-    public static void addValueOrEmpty(Map<String, String> map, String key, Object value){
+    public static void addValueOrEmpty(Map<String, String> map, String key, Object value) {
         if (value != null) {
             map.put(key, value.toString());
         } else {
@@ -261,5 +249,4 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_MESSAGE, verificationResult.getMessage());
         return map;
     }
-
 }

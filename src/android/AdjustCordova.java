@@ -36,7 +36,6 @@ public class AdjustCordova extends CordovaPlugin implements
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
-
         if (action.equals(COMMAND_INIT_SDK)) {
             executeInitSdk(args);
         } else if (action.equals(COMMAND_SET_ATTRIBUTION_CALLBACK)) {
@@ -215,15 +214,15 @@ public class AdjustCordova extends CordovaPlugin implements
         String logLevel = null;
         boolean isLogLevelSuppress = false;
 
-        // App Token
+        // app token
         if (parameters.containsKey(KEY_APP_TOKEN)) {
             appToken = parameters.get(KEY_APP_TOKEN).toString();
         }
-        // Environment
+        // environment
         if (parameters.containsKey(KEY_ENVIRONMENT)) {
             environment = parameters.get(KEY_ENVIRONMENT).toString();
         }
-        // Log Level Suppress
+        // suppress log level
         if (parameters.containsKey(KEY_LOG_LEVEL)) {
             logLevel = parameters.get(KEY_LOG_LEVEL).toString().toUpperCase();
             if (isFieldValid(logLevel) && logLevel.equals("SUPPRESS")) {
@@ -240,7 +239,7 @@ public class AdjustCordova extends CordovaPlugin implements
             return;
         }
 
-        // SDK prefix.
+        // SDK prefix
         if (parameters.containsKey(KEY_SDK_PREFIX)) {
             String sdkPrefix = parameters.get(KEY_SDK_PREFIX).toString();
             if (isFieldValid(sdkPrefix)) {
@@ -248,7 +247,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Log level.
+        // log level
         if (isFieldValid(logLevel)) {
             switch (logLevel) {
                 case "VERBOSE":
@@ -294,7 +293,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Read device info only once
+        // read device info only once
         if (parameters.containsKey(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED)) {
             String strIsDeviceIdsReadingOnceEnabled = parameters.get(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED).toString();
             boolean isDeviceIdsReadingOnceEnabled = Boolean.parseBoolean(strIsDeviceIdsReadingOnceEnabled);
@@ -303,7 +302,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Event deduplication buffer size
+        // event deduplication buffer size
         if (parameters.containsKey(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE)) {
             String strEventDeduplicationIdsMaxSize = parameters.get(KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE).toString();
             try {
@@ -333,7 +332,7 @@ public class AdjustCordova extends CordovaPlugin implements
             } catch (JSONException ignored) {}
         }
 
-        // Main process name.
+        // main process name
         if (parameters.containsKey(KEY_PROCESS_NAME)) {
             String processName = parameters.get(KEY_PROCESS_NAME).toString();
             if (isFieldValid(processName)) {
@@ -341,7 +340,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Default tracker
+        // default tracker
         if (parameters.containsKey(KEY_DEFAULT_TRACKER)) {
             String defaultTracker = parameters.get(KEY_DEFAULT_TRACKER).toString();
             if (isFieldValid(defaultTracker)) {
@@ -349,7 +348,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // External device ID
+        // external device ID
         if (parameters.containsKey(KEY_EXTERNAL_DEVICE_ID)) {
             String externalDeviceId = parameters.get(KEY_EXTERNAL_DEVICE_ID).toString();
             if (isFieldValid(externalDeviceId)) {
@@ -357,7 +356,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Custom preinstall file path.
+        // custom preinstall file path
         if (parameters.containsKey(KEY_PREINSTALL_FILE_PATH)) {
             String preinstallFilePath = parameters.get(KEY_PREINSTALL_FILE_PATH).toString();
             if (isFieldValid(preinstallFilePath)) {
@@ -365,7 +364,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // FB app ID (META install referrer).
+        // FB app ID (META install referrer)
         if (parameters.containsKey(KEY_FB_APP_ID)) {
             String fbAppId = parameters.get(KEY_FB_APP_ID).toString();
             if (isFieldValid(fbAppId)) {
@@ -373,7 +372,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Sending in background
+        // sending in background
         if (parameters.containsKey(KEY_IS_SENDING_IN_BACKGROUND_ENABLED)) {
             String strIsSendingInBackgroundEnabled = parameters.get(KEY_IS_SENDING_IN_BACKGROUND_ENABLED).toString();
             boolean isSendingInBackgroundEnabled = Boolean.parseBoolean(strIsSendingInBackgroundEnabled);
@@ -382,7 +381,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Cost data in attribution callback
+        // cost data in attribution callback
         if (parameters.containsKey(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED)) {
             String strIsCostDataInAttributionEnabled = parameters.get(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED).toString();
             boolean isCostDataInAttributionEnabled = Boolean.parseBoolean(strIsCostDataInAttributionEnabled);
@@ -391,7 +390,7 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Preinstall tracking
+        // preinstall tracking
         if (parameters.containsKey(KEY_IS_PREINSTALL_TRACKING_ENABLED)) {
             String strIsPreinstallTrackingEnabled = parameters.get(KEY_IS_PREINSTALL_TRACKING_ENABLED).toString();
             boolean isPreinstallTrackingEnabled = Boolean.parseBoolean(strIsPreinstallTrackingEnabled);
@@ -426,43 +425,43 @@ public class AdjustCordova extends CordovaPlugin implements
             } catch (JSONException e) {}
         }
 
-        // Launching deferred deep link.
+        // launching deferred deep link
         if (parameters.containsKey(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED)) {
             String strIsDeferredDeeplinkOpeningEnabled = parameters.get(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED).toString();
             isDeferredDeeplinkOpeningEnabled = strIsDeferredDeeplinkOpeningEnabled.equals("true");
         }
 
-        // Attribution callback.
+        // attribution callback
         if (attributionCallbackContext != null) {
             adjustConfig.setOnAttributionChangedListener(this);
         }
 
-        // Event tracking succeeded callback.
+        // event tracking success callback
         if (eventTrackingSucceededCallbackContext != null) {
             adjustConfig.setOnEventTrackingSucceededListener(this);
         }
 
-        // Event tracking failed callback.
+        // event tracking failure callback
         if (eventTrackingFailedCallbackContext != null) {
             adjustConfig.setOnEventTrackingFailedListener(this);
         }
 
-        // Session tracking succeeded callback.
+        // session tracking success callback
         if (sessionTrackingSucceededCallbackContext != null) {
             adjustConfig.setOnSessionTrackingSucceededListener(this);
         }
 
-        // Session tracking failed callback.
+        // session tracking failure callback
         if (sessionTrackingFailedCallbackContext != null) {
             adjustConfig.setOnSessionTrackingFailedListener(this);
         }
 
-        // Deferred deeplink callback listener.
+        // deferred deep link callback
         if (deferredDeeplinkCallbackContext != null) {
             adjustConfig.setOnDeferredDeeplinkResponseListener(this);
         }
 
-        // Start SDK.
+        // initialize SDK
         Adjust.initSdk(adjustConfig);
     }
 
@@ -551,7 +550,6 @@ public class AdjustCordova extends CordovaPlugin implements
         if (adjustEvent == null) {
             return;
         }
-        // Track event.
         Adjust.trackEvent(adjustEvent);
     }
 
@@ -568,30 +566,35 @@ public class AdjustCordova extends CordovaPlugin implements
         String signature = null;
         String purchaseToken = null;
 
-        // Price.
+        // price
         if (parameters.containsKey(KEY_PRICE)) {
             try {
                 price = Long.parseLong(parameters.get(KEY_PRICE).toString());
             } catch (NumberFormatException ignore) {
             }
         }
-        // Currency.
+
+        // currency
         if (parameters.containsKey(KEY_CURRENCY)) {
             currency = parameters.get(KEY_CURRENCY).toString();
         }
-        // SKU.
+
+        // SKU
         if (parameters.containsKey(KEY_SKU)) {
             sku = parameters.get(KEY_SKU).toString();
         }
-        // Order ID.
+
+        // order ID
         if (parameters.containsKey(KEY_ORDER_ID)) {
             orderId = parameters.get(KEY_ORDER_ID).toString();
         }
-        // Signature.
+
+        // signature
         if (parameters.containsKey(KEY_SIGNATURE)) {
             signature = parameters.get(KEY_SIGNATURE).toString();
         }
-        // Purchase token.
+
+        // purchase token
         if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
             purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
         }
@@ -604,7 +607,7 @@ public class AdjustCordova extends CordovaPlugin implements
                 signature,
                 purchaseToken);
 
-        // Purchase time.
+        // purchase time
         if (parameters.containsKey(KEY_PURCHASE_TIME)) {
             try {
                 long purchaseTime = Long.parseLong(parameters.get(KEY_PURCHASE_TIME).toString());
@@ -618,28 +621,27 @@ public class AdjustCordova extends CordovaPlugin implements
         String[] partnerParameters = jsonArrayToArray(partnerParametersJson);
         String[] callbackParameters = jsonArrayToArray(callbackParametersJson);
 
-        // Callback parameters.
+        // callback parameters
         for (int i = 0; i < callbackParameters.length; i += 2) {
             String key = callbackParameters[i];
             String value = callbackParameters[i + 1];
             subscription.addCallbackParameter(key, value);
         }
 
-        // Partner parameters.
+        // partner parameters
         for (int i = 0; i < partnerParameters.length; i += 2) {
             String key = partnerParameters[i];
             String value = partnerParameters[i + 1];
             subscription.addPartnerParameter(key, value);
         }
 
-        // Track subscription.
+        // track subscription
         Adjust.trackPlayStoreSubscription(subscription);
     }
 
     private void executeVerifyPlayStorePurchase(
             final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
-
         String params = args.getString(0);
         JSONArray jsonArrayParams = new JSONArray(params);
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
@@ -648,18 +650,19 @@ public class AdjustCordova extends CordovaPlugin implements
         String productId = null;
         String purchaseToken = null;
 
-        // Product ID.
+        // product ID
         if (parameters.containsKey(KEY_PRODUCT_ID)) {
             productId = parameters.get(KEY_PRODUCT_ID).toString();
         }
-        // Purchase token.
+
+        // purchase token
         if (parameters.containsKey(KEY_PURCHASE_TOKEN)) {
             purchaseToken = parameters.get(KEY_PURCHASE_TOKEN).toString();
         }
 
-        // Create purchase instance.
         final AdjustPlayStorePurchase playStorePurchase = new AdjustPlayStorePurchase(productId, purchaseToken);
-        // Verify purchase.
+
+        // verify purchase
         Adjust.verifyPlayStorePurchase(playStorePurchase, new OnPurchaseVerificationFinishedListener() {
             @Override
             public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
@@ -675,11 +678,11 @@ public class AdjustCordova extends CordovaPlugin implements
     private void executeVerifyAndTrackPlayStorePurchase(
             final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
-
         AdjustEvent adjustEvent = serializeAdjustEventFromJson(args);
         if (adjustEvent == null) {
             return;
         }
+
         Adjust.verifyAndTrackPlayStorePurchase(adjustEvent, new OnPurchaseVerificationFinishedListener() {
             @Override
             public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
@@ -753,7 +756,7 @@ public class AdjustCordova extends CordovaPlugin implements
 
         Boolean isEnabled = null;
 
-        // Is enabled.
+        // is sharing enabled
         if (parameters.containsKey(KEY_IS_ENABLED)) {
             if (parameters.get(KEY_IS_ENABLED) != null) {
                 isEnabled = Boolean.valueOf(parameters.get(KEY_IS_ENABLED).toString());
@@ -765,7 +768,7 @@ public class AdjustCordova extends CordovaPlugin implements
         JSONArray granularOptionsJson = (JSONArray) parameters.get(KEY_GRANULAR_OPTIONS);
         String[] granularOptions = jsonArrayToArray(granularOptionsJson);
 
-        // Granular options.
+        // granular options
         for (int i = 0; i < granularOptions.length; i += 3) {
             adjustThirdPartySharing.addGranularOption(
                     granularOptions[i],
@@ -776,7 +779,7 @@ public class AdjustCordova extends CordovaPlugin implements
         JSONArray partnerSharingSettingsJson = (JSONArray) parameters.get(KEY_PARTNER_SHARING_SETTINGS);
         String[] partnerSharingSettings = jsonArrayToArray(partnerSharingSettingsJson);
 
-        // Partner sharing settings.
+        // partner sharing settings
         for (int i = 0; i < partnerSharingSettings.length; i += 3) {
             adjustThirdPartySharing.addPartnerSharingSetting(
                     partnerSharingSettings[i],
@@ -784,7 +787,7 @@ public class AdjustCordova extends CordovaPlugin implements
                     Boolean.parseBoolean(partnerSharingSettings[i + 2]));
         }
 
-        // Track third party sharing.
+        // track third party sharing
         Adjust.trackThirdPartySharing(adjustThirdPartySharing);
     }
 
@@ -831,7 +834,7 @@ public class AdjustCordova extends CordovaPlugin implements
 
         final AdjustAdRevenue adjustAdRevenue = new AdjustAdRevenue(source);
 
-        // Revenue and currency.
+        // revenue and currency
         if (isFieldValid(revenue) && isFieldValid(currency)) {
             try {
                 double revenueValue = Double.parseDouble(revenue);
@@ -842,21 +845,21 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Callback parameters.
+        // callback parameters
         for (int i = 0; i < callbackParameters.length; i += 2) {
             String key = callbackParameters[i];
             String value = callbackParameters[i + 1];
             adjustAdRevenue.addCallbackParameter(key, value);
         }
 
-        // Partner parameters.
+        // partner parameters
         for (int i = 0; i < partnerParameters.length; i += 2) {
             String key = partnerParameters[i];
             String value = partnerParameters[i + 1];
             adjustAdRevenue.addPartnerParameter(key, value);
         }
 
-        // Ad impressions count.
+        // ad impressions count
         if (isFieldValid(adImpressionsCount)) {
             try {
                 int adImpressionsCountValue = Integer.parseInt(adImpressionsCount);
@@ -867,22 +870,22 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Ad revenue network.
+        // ad revenue network
         if (isFieldValid(adRevenueNetwork)) {
             adjustAdRevenue.setAdRevenueNetwork(adRevenueNetwork);
         }
 
-        // Ad revenue unit.
+        // ad revenue unit
         if (isFieldValid(adRevenueUnit)) {
             adjustAdRevenue.setAdRevenueUnit(adRevenueUnit);
         }
 
-        // Ad revenue placement.
+        // ad revenue placement
         if (isFieldValid(adRevenuePlacement)) {
             adjustAdRevenue.setAdRevenuePlacement(adRevenuePlacement);
         }
 
-        // Track ad revenue.
+        // track ad revenue
         Adjust.trackAdRevenue(adjustAdRevenue);
     }
 
@@ -1114,7 +1117,7 @@ public class AdjustCordova extends CordovaPlugin implements
             return null;
         }
 
-        // Revenue and currency.
+        // revenue and currency
         if (isFieldValid(revenue) && isFieldValid(currency)) {
             try {
                 double revenueValue = Double.parseDouble(revenue);
@@ -1125,44 +1128,45 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
-        // Callback parameters.
+        // callback parameters
         for (int i = 0; i < callbackParameters.length; i += 2) {
             String key = callbackParameters[i];
             String value = callbackParameters[i + 1];
             adjustEvent.addCallbackParameter(key, value);
         }
 
-        // Partner parameters.
+        // partner parameters
         for (int i = 0; i < partnerParameters.length; i += 2) {
             String key = partnerParameters[i];
             String value = partnerParameters[i + 1];
             adjustEvent.addPartnerParameter(key, value);
         }
 
-        // Transaction ID.
+        // transaction ID
         if (isFieldValid(transactionId)) {
             adjustEvent.setOrderId(transactionId);
         }
 
-        // Callback ID.
+        // callback ID
         if (isFieldValid(callbackId)) {
             adjustEvent.setCallbackId(callbackId);
         }
 
-        // Product ID.
+        // product ID
         if (isFieldValid(productId)) {
             adjustEvent.setProductId(productId);
         }
 
-        // Purchase token.
+        // purchase token
         if (isFieldValid(purchaseToken)) {
             adjustEvent.setPurchaseToken(purchaseToken);
         }
 
-        // Deduplication ID.
+        // deduplication ID
         if (isFieldValid(deduplicationId)) {
             adjustEvent.setDeduplicationId(deduplicationId);
         }
+
         return adjustEvent;
     }
 }

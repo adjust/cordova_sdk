@@ -93,6 +93,8 @@
     skanUpdatedCallbackId = nil;
 }
 
+#pragma mark - Common
+
 - (void)initSdk:(CDVInvokedUrlCommand *)command {
     NSString *arguments = [command.arguments objectAtIndex:0];
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
@@ -125,7 +127,7 @@
 
     BOOL allowSuppressLogLevel = NO;
 
-    // Check for SUPPRESS log level.
+    // suppress log level
     if ([self isFieldValid:logLevel]) {
         if ([ADJLogger logLevelFromString:[logLevel lowercaseString]] == ADJLogLevelSuppress) {
             allowSuppressLogLevel = YES;
@@ -140,72 +142,73 @@
         return;
     }
 
-    // Log level.
+    // log level
     if ([self isFieldValid:logLevel]) {
         [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
     }
 
-    // Read device info just once.
+    // read device info just once
     if ([self isFieldValid:isDeviceIdsReadingOnceEnabled] &&
         [isDeviceIdsReadingOnceEnabled boolValue]) {
         [adjustConfig enableDeviceIdsReadingOnce];
     }
 
-    // SDK prefix.
+    // SDK prefix
     if ([self isFieldValid:sdkPrefix]) {
         [adjustConfig setSdkPrefix:sdkPrefix];
     }
 
-    // Default tracker.
+    // default tracker
     if ([self isFieldValid:defaultTracker]) {
         [adjustConfig setDefaultTracker:defaultTracker];
     }
 
-    // External device ID.
+    // external device ID
     if ([self isFieldValid:externalDeviceId]) {
         [adjustConfig setExternalDeviceId:externalDeviceId];
     }
 
-    // ATT consent waiting interval.
+    // ATT consent waiting interval
     if ([self isFieldValid:attConsentWaitingInterval]) {
         [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingInterval intValue]];
     }
 
+    // event deduplication buffer size
     if ([self isFieldValid:eventDeduplicationIdsMaxSize]) {
         [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
     }
 
-    // Send in background.
+    // send in background
     if ([self isFieldValid:isSendingInBackgroundEnabled] &&
         [isSendingInBackgroundEnabled boolValue]) {
         [adjustConfig enableSendingInBackground];
     }
 
-    // Cost data.
+    // cost data in attribution callback
     if ([self isFieldValid:isCostDataInAttributionEnabled] &&
         [isCostDataInAttributionEnabled boolValue]) {
         [adjustConfig enableCostDataInAttribution];
     }
 
-    // AdServices info reading.
+    // AdServices info reading
     if ([self isFieldValid:isAdServicesEnabled] &&
         ![isAdServicesEnabled boolValue]) {
         [adjustConfig disableAdServices];
     }
 
-    // IDFA reading.
+    // IDFA reading
     if ([self isFieldValid:isIdfaReadingEnabled] &&
         ![isIdfaReadingEnabled boolValue]) {
         [adjustConfig disableIdfaReading];
     }
 
-    // IDFV reading.
+    // IDFV reading
     if ([self isFieldValid:isIdfvReadingEnabled] &&
         ![isIdfvReadingEnabled boolValue]) {
         [adjustConfig disableIdfvReading];
     }
 
-    // SKAdNetwork handling.
+    // SKAdNetwork handling
     if ([self isFieldValid:isSkanAttributionEnabled] &&
         ![isSkanAttributionEnabled boolValue]) {
         [adjustConfig disableSkanAttribution];
@@ -217,24 +220,19 @@
         [adjustConfig disableAppTrackingTransparencyUsage];
     }
 
-    // LinkMe.
+    // LinkMe
     if ([self isFieldValid:isLinkMeEnabled] &&
         [isLinkMeEnabled boolValue]) {
         [adjustConfig enableLinkMe];
     }
 
-    // Coppa
+    // COPPA compliance
     if ([self isFieldValid:isCoppaComplianceEnabled] &&
         [isCoppaComplianceEnabled boolValue]) {
         [adjustConfig enableCoppaCompliance];
     }
 
-    if ([self isFieldValid:isFirstSessionDelayEnabled] &&
-        [isFirstSessionDelayEnabled boolValue]) {
-        [adjustConfig enableFirstSessionDelay];
-    }
-
-    // Url Strategy
+    // URL strategy
     if ([self isFieldValid:urlStrategyDomains] &&
         [urlStrategyDomains count] > 0 &&
         [self isFieldValid:useSubdomains] &&
@@ -248,6 +246,12 @@
         [adjustConfig setUrlStrategy:urlStrategyDomains
                        useSubdomains:[useSubdomains boolValue]
                      isDataResidency:[isDataResidency boolValue]];
+    }
+
+    // first session delay
+    if ([self isFieldValid:isFirstSessionDelayEnabled] &&
+        [isFirstSessionDelayEnabled boolValue]) {
+        [adjustConfig enableFirstSessionDelay];
     }
 
     // store info
@@ -265,15 +269,14 @@
 
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:isDeferredDeeplinkOpeningEnabled] ? [isDeferredDeeplinkOpeningEnabled boolValue] : YES;
 
-    // Attribution delegate & other delegates
+    // callbacks
     if (attributionCallbackId != nil
         || eventTrackingSucceededCallbackId != nil
         || eventTrackingFailedCallbackId != nil
         || sessionTrackingSucceededCallbackId != nil
         || sessionTrackingFailedCallbackId != nil
         || deferredDeeplinkCallbackId != nil
-        || skanUpdatedCallbackId != nil
-        ) {
+        || skanUpdatedCallbackId != nil) {
         [adjustConfig setDelegate:
          [AdjustCordovaDelegate getInstanceWithSwizzledAttributionCallbackId:attributionCallbackId
                                             eventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId
@@ -286,7 +289,7 @@
                                                          withCommandDelegate:self.commandDelegate]];
     }
 
-    // Start SDK.
+    // initialize SDK
     [Adjust initSdk:adjustConfig];
 }
 
@@ -323,7 +326,6 @@
 }
 
 - (void)getAttribution:(CDVInvokedUrlCommand *)command {
-
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
         if (attribution == nil) {
             return;
@@ -361,7 +363,6 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
-
 
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
     [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
@@ -447,8 +448,6 @@
     if (adjustEvent == nil) {
         return;
     }
-
-    // Track event.
     [Adjust trackEvent:adjustEvent];
 }
 
@@ -458,7 +457,6 @@
         NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                               options:0
                                                                 error:NULL];
-
         NSString *source = [[jsonObject valueForKey:KEY_SOURCE] objectAtIndex:0];
         NSString *revenue = [[jsonObject valueForKey:KEY_REVENUE] objectAtIndex:0];
         NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
@@ -482,48 +480,48 @@
 
         ADJAdRevenue *adjustAdRevenue = [[ADJAdRevenue alloc] initWithSource:source];
 
-        // Revenue and currency.
+        // revenue and currency
         if ([self isFieldValid:revenue]) {
             double revenueValue = [revenue doubleValue];
             [adjustAdRevenue setRevenue:revenueValue currency:currency];
         }
 
-        // Ad impressions count.
+        // ad impressions count
         if ([self isFieldValid:adImpressionsCount]) {
             int adImpressionsCountValue = [adImpressionsCount intValue];
             [adjustAdRevenue setAdImpressionsCount:adImpressionsCountValue];
         }
 
-        // Ad revenue network.
+        // ad revenue network
         if ([self isFieldValid:adRevenueNetwork]) {
             [adjustAdRevenue setAdRevenueNetwork:adRevenueNetwork];
         }
 
-        // Ad revenue unit.
+        // ad revenue unit
         if ([self isFieldValid:adRevenueUnit]) {
             [adjustAdRevenue setAdRevenueUnit:adRevenueUnit];
         }
 
-        // Ad revenue placement.
+        // ad revenue placement
         if ([self isFieldValid:adRevenuePlacement]) {
             [adjustAdRevenue setAdRevenuePlacement:adRevenuePlacement];
         }
 
-        // Callback parameters.
+        // callback parameters
         for (int i = 0; i < [callbackParameters count]; i += 2) {
             NSString *key = [callbackParameters objectAtIndex:i];
             NSObject *value = [callbackParameters objectAtIndex:(i+1)];
             [adjustAdRevenue addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
         }
 
-        // Partner parameters.
+        // partner parameters
         for (int i = 0; i < [partnerParameters count]; i += 2) {
             NSString *key = [partnerParameters objectAtIndex:i];
             NSObject *value = [partnerParameters objectAtIndex:(i+1)];
             [adjustAdRevenue addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
         }
 
-        // Track ad revenue.
+        // track ad revenue
         [Adjust trackAdRevenue:adjustAdRevenue];
     }
 }
@@ -533,7 +531,6 @@
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                           options:0
                                                             error:NULL];
-
     NSNumber *isEnabled = [[jsonObject valueForKey:KEY_IS_ENABLED] objectAtIndex:0];
     NSMutableArray *granularOptions = [[NSMutableArray alloc] init];
     if ([self isFieldValid:[[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]]) {
@@ -554,7 +551,7 @@
 
     ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
 
-    // Granular options.
+    // granular options
     if ([self isFieldValid:granularOptions]) {
         for (int i = 0; i < [granularOptions count]; i += 3) {
             NSString *partnerName = [granularOptions objectAtIndex:i];
@@ -564,7 +561,7 @@
         }
     }
 
-    // Partner sharing settings.
+    // partner sharing settings
     if ([self isFieldValid:partnerSharingSettings]) {
         for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
             NSString *partnerName = [partnerSharingSettings objectAtIndex:i];
@@ -574,7 +571,7 @@
         }
     }
 
-    // Track third party sharing.
+    // track third party sharing
     [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 }
 
@@ -672,7 +669,7 @@
     [Adjust setExternalDeviceIdInDelay:externalDeviceId];
 }
 
-#pragma mark - iOS methods
+#pragma mark - iOS only
 
 - (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command {
     skanUpdatedCallbackId = command.callbackId;
@@ -697,7 +694,6 @@
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                           options:0
                                                             error:NULL];
-
     NSString *price = [[jsonObject valueForKey:KEY_PRICE] objectAtIndex:0];
     NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
     NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
@@ -713,7 +709,7 @@
         [partnerParameters addObject:item];
     }
 
-    // Price.
+    // price
     NSDecimalNumber *priceValue;
     if ([self isFieldValid:price]) {
         priceValue = [NSDecimalNumber decimalNumberWithString:price];
@@ -723,33 +719,33 @@
                                                                                   currency:currency
                                                                              transactionId:transactionId];
 
-    // Transaction date.
+    // transaction date
     if ([self isFieldValid:transactionDate]) {
         NSTimeInterval transactionDateInterval = [transactionDate doubleValue];
         NSDate *oTransactionDate = [NSDate dateWithTimeIntervalSince1970:transactionDateInterval];
         [subscription setTransactionDate:oTransactionDate];
     }
 
-    // Sales region.
+    // sales region
     if ([self isFieldValid:salesRegion]) {
         [subscription setSalesRegion:salesRegion];
     }
 
-    // Callback parameters.
+    // callback parameters
     for (int i = 0; i < [callbackParameters count]; i += 2) {
         NSString *key = [callbackParameters objectAtIndex:i];
         NSObject *value = [callbackParameters objectAtIndex:(i+1)];
         [subscription addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
-    // Partner parameters.
+    // partner parameters
     for (int i = 0; i < [partnerParameters count]; i += 2) {
         NSString *key = [partnerParameters objectAtIndex:i];
         NSObject *value = [partnerParameters objectAtIndex:(i+1)];
         [subscription addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
-    // Track subscription.
+    // track subscription
     [Adjust trackAppStoreSubscription:subscription];
 }
 
@@ -762,10 +758,8 @@
     NSString *productId = [[jsonObject valueForKey:KEY_PRODUCT_ID] objectAtIndex:0];
     NSString *transactionId = [[jsonObject valueForKey:KEY_TRANSACTION_ID] objectAtIndex:0];
 
-    // Create purchase instance.
     ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
                                                                              productId:productId];
-    // Verify purchase.
     [Adjust verifyAppStorePurchase:purchase
              withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         NSDictionary *dictionary = nil;
@@ -810,14 +804,16 @@
 
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command {
     [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsNSUInteger:status];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsNSUInteger:status];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command {
     int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:appTrackingAuthorizationStatus];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                         messageAsInt:appTrackingAuthorizationStatus];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -833,24 +829,27 @@
                           coarseValue:coarseValue
                            lockWindow:lockWindow
                 withCompletionHandler:^(NSError * _Nullable error) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[error localizedDescription]];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                          messageAsString:[error localizedDescription]];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
-#pragma mark - Android methods
+#pragma mark - Android only
 
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command {
     // ignore on ios
     NSString *googleAdId = @"";
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:googleAdId];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsString:googleAdId];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command {
     // ignore on ios
     NSString *amazonAdId = @"";
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:amazonAdId];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsString:amazonAdId];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -861,18 +860,20 @@
 - (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command {
     // ignore on ios
     NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:verificationResult];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command {
     // ignore on ios
     NSMutableDictionary *verificationResult = [NSMutableDictionary dictionary];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:verificationResult];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:verificationResult];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-#pragma mark - Testing methods
+#pragma mark - Testing only
 
 - (void)onPause:(CDVInvokedUrlCommand *)command {
     [Adjust trackSubsessionEnd];
@@ -971,12 +972,12 @@
         return NO;
     }
 
-    // Check if its an instance of the singleton NSNull
+    // check if its an instance of the singleton NSNull
     if ([field isKindOfClass:[NSNull class]]) {
         return NO;
     }
 
-    // If field can be converted to a string, check if it has any content.
+    // if the field can be converted to a string, check if it has any content
     NSString *str = [NSString stringWithFormat:@"%@", field];
     if (str != nil) {
         if ([str length] == 0) {
@@ -1002,7 +1003,6 @@
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
                                                           options:0
                                                             error:NULL];
-
     NSString *eventToken = [[jsonObject valueForKey:KEY_EVENT_TOKEN] objectAtIndex:0];
     NSString *revenue = [[jsonObject valueForKey:KEY_REVENUE] objectAtIndex:0];
     NSString *currency = [[jsonObject valueForKey:KEY_CURRENCY] objectAtIndex:0];
@@ -1030,43 +1030,42 @@
         return nil;
     }
 
-    // Revenue and currency.
+    // revenue and currency
     if ([self isFieldValid:revenue]) {
         double revenueValue = [revenue doubleValue];
         [adjustEvent setRevenue:revenueValue currency:currency];
     }
 
-    // Callback parameters.
+    // callback parameters
     for (int i = 0; i < [callbackParameters count]; i += 2) {
         NSString *key = [callbackParameters objectAtIndex:i];
         NSObject *value = [callbackParameters objectAtIndex:(i+1)];
         [adjustEvent addCallbackParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
-    // Partner parameters.
+    // partner parameters
     for (int i = 0; i < [partnerParameters count]; i += 2) {
         NSString *key = [partnerParameters objectAtIndex:i];
         NSObject *value = [partnerParameters objectAtIndex:(i+1)];
         [adjustEvent addPartnerParameter:key value:[NSString stringWithFormat:@"%@", value]];
     }
 
-    // Deduplication ID.
+    // deduplication ID
     if ([self isFieldValid:deduplicationId]) {
         [adjustEvent setDeduplicationId:deduplicationId];
     }
 
-    // Callback ID.
+    // callback ID
     if ([self isFieldValid:callbackId]) {
         [adjustEvent setCallbackId:callbackId];
     }
 
-
-    // Product ID.
+    // product ID
     if ([self isFieldValid:productId]) {
         [adjustEvent setProductId:productId];
     }
 
-    // Transaction ID.
+    // transaction ID
     if ([self isFieldValid:transactionId]) {
         [adjustEvent setTransactionId:transactionId];
     }
@@ -1088,6 +1087,5 @@
 
     return dictionary;
 }
-
 
 @end
