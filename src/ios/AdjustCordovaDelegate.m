@@ -113,6 +113,15 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
+    if (attribution.jsonResponse != nil) {
+        NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
+                                                                   options:0
+                                                                     error:nil];
+        NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                length:[dataJsonResponse length]
+                                                              encoding:NSUTF8StringEncoding];
+        [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
+    }
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];

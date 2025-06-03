@@ -331,6 +331,19 @@ AdjustCommandExecutor.prototype.config = function(params) {
             if (device.platform === 'Android') {
                 AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
             }
+
+            // Remove fb_install_referrer from jsonResponse if it exists
+            if (attribution.jsonResponse) {
+                try {
+                    var json = JSON.parse(attribution.jsonResponse);
+                    delete json.fb_install_referrer;
+                    attribution.jsonResponse = JSON.stringify(json);
+                } catch (e) {
+                    console.warn('Failed to parse attribution.jsonResponse:', e);
+                }
+            }
+
+            AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -909,6 +922,19 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         if (device.platform === 'Android') {
             AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
         }
+
+        // Remove fb_install_referrer from jsonResponse if it exists
+        if (attribution.jsonResponse) {
+            try {
+                var json = JSON.parse(attribution.jsonResponse);
+                delete json.fb_install_referrer;
+                attribution.jsonResponse = JSON.stringify(json);
+            } catch (e) {
+                console.warn('Failed to parse attribution.jsonResponse:', e);
+            }
+        }
+
+        AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
 };
