@@ -68,6 +68,7 @@
 #define KEY_DEEPLINK @"deeplink"
 #define KEY_IS_ATT_USAGE_ENABLED @"isAppTrackingTransparencyUsageEnabled"
 #define KEY_REFERRER @"referrer"
+#define KEY_IS_FIRST_SESSION_DELAY_ENABLED @"isFirstSessionDelayEnabled"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -79,8 +80,6 @@
     NSString *skanUpdatedCallbackId;
 }
 
-#pragma mark - Object lifecycle methods
-
 - (void)pluginInitialize {
     attributionCallbackId = nil;
     eventTrackingFailedCallbackId = nil;
@@ -91,8 +90,6 @@
     skanUpdatedCallbackId = nil;
 }
 
-#pragma mark - Public methods
-#pragma mark - Create
 - (void)initSdk:(CDVInvokedUrlCommand *)command {
     NSString *arguments = [command.arguments objectAtIndex:0];
     NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
@@ -120,6 +117,7 @@
     NSNumber *useSubdomains = [[jsonObject valueForKey:KEY_USE_SUBDOMAINS] objectAtIndex:0];
     NSNumber *isDataResidency = [[jsonObject valueForKey:KEY_IS_DATA_RESIDENCY] objectAtIndex:0];
     NSNumber *isAppTrackingTransparencyUsageEnabled = [[jsonObject valueForKey:KEY_IS_ATT_USAGE_ENABLED] objectAtIndex:0];
+    NSNumber *isFirstSessionDelayEnabled = [[jsonObject valueForKey:KEY_IS_FIRST_SESSION_DELAY_ENABLED] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = NO;
 
@@ -227,6 +225,11 @@
         [adjustConfig enableCoppaCompliance];
     }
 
+    if ([self isFieldValid:isFirstSessionDelayEnabled] &&
+        [isFirstSessionDelayEnabled boolValue]) {
+        [adjustConfig enableFirstSessionDelay];
+    }
+
     // Url Strategy
     if ([self isFieldValid:urlStrategyDomains] &&
         [urlStrategyDomains count] > 0 &&
@@ -270,8 +273,6 @@
     [Adjust initSdk:adjustConfig];
 }
 
-#pragma mark - Adjust API Callbacks setters
-
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command {
     attributionCallbackId = command.callbackId;
 }
@@ -296,13 +297,6 @@
     deferredDeeplinkCallbackId = command.callbackId;
 }
 
-- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command {
-    skanUpdatedCallbackId = command.callbackId;
-}
-
-#pragma mark - Adjust API
-#pragma mark - Setters
-
 - (void)setPushToken:(CDVInvokedUrlCommand *)command {
     NSString *token = [command argumentAtIndex:0 withDefault:nil];
     if (!([self isFieldValid:token])) {
@@ -310,8 +304,6 @@
     }
     [Adjust setPushTokenAsString:token];
 }
-
-#pragma mark - Getters
 
 - (void)getAttribution:(CDVInvokedUrlCommand *)command {
 
@@ -353,21 +345,6 @@
     }];
 }
 
-- (void)getIdfa:(CDVInvokedUrlCommand *)command {
-
-    [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
-}
-
-- (void)getIdfv:(CDVInvokedUrlCommand *)command {
-    [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
-}
-
 
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
     [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
@@ -378,8 +355,6 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
-
-#pragma mark - Global Callback Parameters
 
 - (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command {
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
@@ -402,8 +377,6 @@
     [Adjust removeGlobalCallbackParameters];
 }
 
-#pragma mark - Global Partner Parameters
-
 - (void)addGlobalPartnerParameter:(CDVInvokedUrlCommand *)command {
     NSString *key = [command argumentAtIndex:0 withDefault:nil];
     NSString *value = [command argumentAtIndex:1 withDefault:nil];
@@ -424,8 +397,6 @@
 - (void)removeGlobalPartnerParameters:(CDVInvokedUrlCommand *)command {
     [Adjust removeGlobalPartnerParameters];
 }
-
-#pragma mark - SDK State
 
 - (void)switchToOfflineMode:(CDVInvokedUrlCommand *)command {
     [Adjust switchToOfflineMode];
@@ -453,18 +424,6 @@
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command {
     [Adjust gdprForgetMe];
 }
-
-#pragma mark - SDK Lifecycle
-
-- (void)onPause:(CDVInvokedUrlCommand *)command {
-    [Adjust trackSubsessionEnd];
-}
-
-- (void)onResume:(CDVInvokedUrlCommand *)command {
-    [Adjust trackSubsessionStart];
-}
-
-#pragma mark - Tracking
 
 - (void)trackEvent:(CDVInvokedUrlCommand *)command {
     ADJEvent *adjustEvent = [self serializeAdjustEventFromCommand:command];
@@ -550,6 +509,170 @@
         // Track ad revenue.
         [Adjust trackAdRevenue:adjustAdRevenue];
     }
+}
+
+- (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+
+    NSNumber *isEnabled = [[jsonObject valueForKey:KEY_IS_ENABLED] objectAtIndex:0];
+    NSMutableArray *granularOptions = [[NSMutableArray alloc] init];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]) {
+            [granularOptions addObject:item];
+        }
+    }
+    NSMutableArray *partnerSharingSettings = [[NSMutableArray alloc] init];
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]]) {
+        for (id item in [[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]) {
+            [partnerSharingSettings addObject:item];
+        }
+    }
+
+    if (isEnabled != nil && [isEnabled isKindOfClass:[NSNull class]]) {
+        isEnabled = nil;
+    }
+
+    ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
+
+    // Granular options.
+    if ([self isFieldValid:granularOptions]) {
+        for (int i = 0; i < [granularOptions count]; i += 3) {
+            NSString *partnerName = [granularOptions objectAtIndex:i];
+            NSString *key = [granularOptions objectAtIndex:i+1];
+            NSString *value = [granularOptions objectAtIndex:i+2];
+            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+    }
+
+    // Partner sharing settings.
+    if ([self isFieldValid:partnerSharingSettings]) {
+        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
+            NSString *partnerName = [partnerSharingSettings objectAtIndex:i];
+            NSString *key = [partnerSharingSettings objectAtIndex:i+1];
+            NSString *value = [partnerSharingSettings objectAtIndex:i+2];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
+        }
+    }
+
+    // Track third party sharing.
+    [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+}
+
+- (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command {
+    NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
+    if (isEnabledNumber == nil) {
+        return;
+    }
+
+    [Adjust trackMeasurementConsent:[isEnabledNumber boolValue]];
+}
+
+- (void)processDeeplink:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSString *deeplink;
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
+        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
+    } else {
+        return;
+    }
+
+    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
+    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
+
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
+        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
+        NSURL *urlReferrer = [NSURL URLWithString:referrer];
+        [adjustDeeplink setReferrer:urlReferrer];
+    }
+
+    [Adjust processDeeplink:adjustDeeplink];
+}
+
+- (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSString *deeplink;
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
+        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
+    } else {
+        return;
+    }
+
+    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
+    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
+
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
+        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
+        NSURL *urlReferrer = [NSURL URLWithString:referrer];
+        [adjustDeeplink setReferrer:urlReferrer];
+    }
+
+    [Adjust processAndResolveDeeplink:adjustDeeplink
+                withCompletionHandler:^(NSString * _Nullable resolvedLink) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command {
+    [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
+        NSString *lastDeeplinkString = nil;
+        if (lastDeeplink == nil) {
+            lastDeeplinkString = @"";
+        } else {
+            lastDeeplinkString = [lastDeeplink absoluteString];
+        }
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)endFirstSessionDelay:(CDVInvokedUrlCommand *)command {
+    [Adjust endFirstSessionDelay];
+}
+
+- (void)enableCoppaComplianceInDelay:(CDVInvokedUrlCommand *)command {
+    [Adjust enableCoppaComplianceInDelay];
+}
+
+- (void)disableCoppaComplianceInDelay:(CDVInvokedUrlCommand *)command {
+    [Adjust disableCoppaComplianceInDelay];
+}
+
+- (void)setExternalDeviceIdInDelay:(CDVInvokedUrlCommand *)command {
+    NSString *externalDeviceId = [command argumentAtIndex:0 withDefault:nil];
+    if (!([self isFieldValid:externalDeviceId])) {
+        return;
+    }
+    [Adjust setExternalDeviceIdInDelay:externalDeviceId];
+}
+
+#pragma mark - iOS methods
+
+- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command {
+    skanUpdatedCallbackId = command.callbackId;
+}
+
+- (void)getIdfa:(CDVInvokedUrlCommand *)command {
+    [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)getIdfv:(CDVInvokedUrlCommand *)command {
+    [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 - (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command {
@@ -668,134 +791,6 @@
     }];
 }
 
-- (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command {
-    NSString *arguments = [command.arguments objectAtIndex:0];
-    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
-                                                          options:0
-                                                            error:NULL];
-
-    NSNumber *isEnabled = [[jsonObject valueForKey:KEY_IS_ENABLED] objectAtIndex:0];
-    NSMutableArray *granularOptions = [[NSMutableArray alloc] init];
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]]) {
-        for (id item in [[jsonObject valueForKey:KEY_GRANULAR_OPTIONS] objectAtIndex:0]) {
-            [granularOptions addObject:item];
-        }
-    }
-    NSMutableArray *partnerSharingSettings = [[NSMutableArray alloc] init];
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]]) {
-        for (id item in [[jsonObject valueForKey:KEY_PARTNER_SHARING_SETTINGS] objectAtIndex:0]) {
-            [partnerSharingSettings addObject:item];
-        }
-    }
-
-    if (isEnabled != nil && [isEnabled isKindOfClass:[NSNull class]]) {
-        isEnabled = nil;
-    }
-
-    ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
-
-    // Granular options.
-    if ([self isFieldValid:granularOptions]) {
-        for (int i = 0; i < [granularOptions count]; i += 3) {
-            NSString *partnerName = [granularOptions objectAtIndex:i];
-            NSString *key = [granularOptions objectAtIndex:i+1];
-            NSString *value = [granularOptions objectAtIndex:i+2];
-            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
-        }
-    }
-
-    // Partner sharing settings.
-    if ([self isFieldValid:partnerSharingSettings]) {
-        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
-            NSString *partnerName = [partnerSharingSettings objectAtIndex:i];
-            NSString *key = [partnerSharingSettings objectAtIndex:i+1];
-            NSString *value = [partnerSharingSettings objectAtIndex:i+2];
-            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
-        }
-    }
-
-    // Track third party sharing.
-    [Adjust trackThirdPartySharing:adjustThirdPartySharing];
-}
-
-- (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command {
-    NSNumber *isEnabledNumber = [command argumentAtIndex:0 withDefault:nil];
-    if (isEnabledNumber == nil) {
-        return;
-    }
-
-    [Adjust trackMeasurementConsent:[isEnabledNumber boolValue]];
-}
-
-#pragma mark - Deeplink
-
-- (void)processDeeplink:(CDVInvokedUrlCommand *)command {
-    NSString *arguments = [command.arguments objectAtIndex:0];
-    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
-                                                          options:0
-                                                            error:NULL];
-    NSString *deeplink;
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
-        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
-    } else {
-        return;
-    }
-
-    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
-    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
-
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
-        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
-        NSURL *urlReferrer = [NSURL URLWithString:referrer];
-        [adjustDeeplink setReferrer:urlReferrer];
-    }
-
-    [Adjust processDeeplink:adjustDeeplink];
-}
-
-- (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command {
-    NSString *arguments = [command.arguments objectAtIndex:0];
-    NSArray *jsonObject = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
-                                                          options:0
-                                                            error:NULL];
-    NSString *deeplink;
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
-        deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
-    } else {
-        return;
-    }
-
-    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
-    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
-
-    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
-        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
-        NSURL *urlReferrer = [NSURL URLWithString:referrer];
-        [adjustDeeplink setReferrer:urlReferrer];
-    }
-
-    [Adjust processAndResolveDeeplink:adjustDeeplink
-                withCompletionHandler:^(NSString * _Nullable resolvedLink) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
-}
-
-- (void)getLastDeeplink:(CDVInvokedUrlCommand *)command {
-    [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
-        NSString *lastDeeplinkString = nil;
-        if (lastDeeplink == nil) {
-            lastDeeplinkString = @"";
-        } else {
-            lastDeeplinkString = [lastDeeplink absoluteString];
-        }
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
-}
-
-#pragma mark App Tracking Authorization
-
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command {
     [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsNSUInteger:status];
@@ -808,8 +803,6 @@
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:appTrackingAuthorizationStatus];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
-
-#pragma mark - SKAN
 
 - (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command {
     NSNumber *conversionValue = [command argumentAtIndex:0 withDefault:nil];
@@ -862,7 +855,15 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-#pragma mark - Testing
+#pragma mark - Testing methods
+
+- (void)onPause:(CDVInvokedUrlCommand *)command {
+    [Adjust trackSubsessionEnd];
+}
+
+- (void)onResume:(CDVInvokedUrlCommand *)command {
+    [Adjust trackSubsessionStart];
+}
 
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command {
     NSString *testUrlOverwrite = [[command.arguments valueForKey:KEY_TEST_URL_OVERWRITE] objectAtIndex:0];

@@ -271,6 +271,26 @@ var Adjust = {
         callCordovaCallback('getIdfv', callback);
     },
 
+    endFirstSessionDelay: function() {
+        callCordova('endFirstSessionDelay');
+    },
+
+    enableCoppaComplianceInDelay: function() {
+        callCordova('enableCoppaComplianceInDelay');
+    },
+
+    disableCoppaComplianceInDelay: function() {
+        callCordova('disableCoppaComplianceInDelay');
+    },
+
+    setExternalDeviceIdInDelay: function(externalDeviceId) {
+        if (typeof externalDeviceId !== 'string') {
+            console.log("[Adjust] External device ID is not of type string");
+            return;
+        }
+        callCordova('setExternalDeviceIdInDelay', externalDeviceId);
+    },
+
     setTestOptions: function(testOptions) {
         callCordova('setTestOptions', testOptions);
     },

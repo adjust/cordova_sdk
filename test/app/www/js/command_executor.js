@@ -113,6 +113,9 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
+        case 'endFirstSessionDelay' : this.endFirstSessionDelay(command.params); break;
+        case 'coppaComplianceInDelay' : this.coppaComplianceInDelay(command.params); break;
+        case 'externalDeviceIdInDelay' : this.externalDeviceIdInDelay(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -454,6 +457,13 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
         var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
         adjustConfig.enablePlayStoreKidsCompliance();
+    }
+
+    if ('firstSessionDelayEnabled' in params) {
+        var firstSessionDelayEnabledS = getFirstParameterValue(params, 'firstSessionDelayEnabled');
+        if (firstSessionDelayEnabledS == 'true') {
+            adjustConfig.enableFirstSessionDelay();
+        }
     }
 };
 
@@ -945,6 +955,23 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
+};
+
+AdjustCommandExecutor.prototype.endFirstSessionDelay = function(params) {
+    Adjust.endFirstSessionDelay();
+};
+
+AdjustCommandExecutor.prototype.coppaComplianceInDelay = function(params) {
+    if (getFirstParameterValue(params, 'isEnabled') == 'true') {
+        Adjust.enableCoppaComplianceInDelay();
+    } else {
+        Adjust.disableCoppaComplianceInDelay();
+    }
+};
+
+AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
+    var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
+    Adjust.setExternalDeviceIdInDelay(externalDeviceId);
 };
 
 // Util methods

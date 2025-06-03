@@ -24,6 +24,7 @@ function AdjustConfig(appToken, environment) {
     this.eventDeduplicationIdsMaxSize = null;
     this.isDeferredDeeplinkOpeningEnabled = null;
     this.isCoppaComplianceEnabled = null;
+    this.isFirstSessionDelayEnabled = null;
 
     // Android only
     this.processName = null;
@@ -189,6 +190,10 @@ AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
 
 AdjustConfig.prototype.enableCoppaCompliance = function() {
     this.isCoppaComplianceEnabled = true;
+};
+
+AdjustConfig.prototype.enableFirstSessionDelay = function() {
+    this.isFirstSessionDelayEnabled = true;
 };
 
 AdjustConfig.prototype.setProcessName = function(processName) {
