@@ -82,6 +82,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_URL_STRATEGY_DOMAINS = "urlStrategyDomains";
     public static final String KEY_USE_SUBDOMAINS = "useSubdomains";
     public static final String KEY_IS_DATA_RESIDENCY = "isDataResidency";
+    public static final String KEY_REFERRER = "referrer";
 
     // Adjust Create Configuration and Initialize SDK command
     public static final String COMMAND_INIT_SDK = "initSdk";

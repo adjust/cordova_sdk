@@ -666,6 +666,11 @@ public class AdjustCordova extends CordovaPlugin implements
             return false;
         }
         AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(deeplink));
+        if (parameters.containsKey(KEY_REFERRER)) {
+            String referrer = parameters.get(KEY_REFERRER).toString();
+            adjustDeeplink.setReferrer(Uri.parse(referrer));
+        }
+
         Adjust.processDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext());
         return true;
     }
@@ -685,6 +690,11 @@ public class AdjustCordova extends CordovaPlugin implements
             return false;
         }
         AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(deeplink));
+        if (parameters.containsKey(KEY_REFERRER)) {
+            String referrer = parameters.get(KEY_REFERRER).toString();
+            adjustDeeplink.setReferrer(Uri.parse(referrer));
+        }
+
         Adjust.processAndResolveDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext(), new OnDeeplinkResolvedListener() {
             @Override
             public void onDeeplinkResolved(String resolvedLink) {
