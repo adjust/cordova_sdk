@@ -67,6 +67,7 @@
 #define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE @"eventDeduplicationIdsMaxSize"
 #define KEY_DEEPLINK @"deeplink"
 #define KEY_IS_ATT_USAGE_ENABLED @"isAppTrackingTransparencyUsageEnabled"
+#define KEY_REFERRER @"referrer"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -740,8 +741,16 @@
         return;
     }
 
-    NSURL *url = [NSURL URLWithString:deeplink];
-    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
+    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
+    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
+
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
+        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
+        NSURL *urlReferrer = [NSURL URLWithString:referrer];
+        [adjustDeeplink setReferrer:urlReferrer];
+    }
+
+    [Adjust processDeeplink:adjustDeeplink];
 }
 
 - (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command {
@@ -756,8 +765,15 @@
         return;
     }
 
-    NSURL *url = [NSURL URLWithString:deeplink];
-    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:url];
+    NSURL *urlDeeplink = [NSURL URLWithString:deeplink];
+    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:urlDeeplink];
+
+    if ([self isFieldValid:[[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0]]) {
+        NSString *referrer = [[jsonObject valueForKey:KEY_REFERRER] objectAtIndex:0];
+        NSURL *urlReferrer = [NSURL URLWithString:referrer];
+        [adjustDeeplink setReferrer:urlReferrer];
+    }
+
     [Adjust processAndResolveDeeplink:adjustDeeplink
                 withCompletionHandler:^(NSString * _Nullable resolvedLink) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];

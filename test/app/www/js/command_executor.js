@@ -641,6 +641,10 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
         return;
     }
     var adjustDeeplink = new AdjustDeeplink(deeplink);
+    var referrer = getFirstParameterValue(params, 'referrer');
+    if (typeof referrer === 'string') {
+        adjustDeeplink.setReferrer(referrer);
+    }
     Adjust.processDeeplink(adjustDeeplink);
 };
 
@@ -899,6 +903,10 @@ AdjustCommandExecutor.prototype.processDeeplink = function(params) {
         return;
     }
     var adjustDeeplink = new AdjustDeeplink(deeplink);
+    var referrer = getFirstParameterValue(params, 'referrer');
+    if (typeof referrer === 'string') {
+        adjustDeeplink.setReferrer(referrer);
+    }
     var _this = this;
     Adjust.processAndResolveDeeplink(adjustDeeplink, function(resolvedLink) {
         AdjustTest.addInfoToSend('resolved_link', resolvedLink);
