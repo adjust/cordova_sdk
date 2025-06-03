@@ -303,6 +303,13 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
 
+    if ('allowAttUsage' in params) {
+        var allowAttUsageS = getFirstParameterValue(params, 'allowAttUsage');
+        if (allowAttUsageS != 'true') {
+            adjustConfig.disableAppTrackingTransparencyUsage();
+        }
+    }
+
     if ('externalDeviceId' in params) {
         var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);

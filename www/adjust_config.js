@@ -38,6 +38,7 @@ function AdjustConfig(appToken, environment) {
     this.isSkanAttributionEnabled = null;
     this.isLinkMeEnabled = null;
     this.attConsentWaitingInterval = null;
+    this.isAppTrackingTransparencyUsageEnabled = null;
 }
 
 AdjustConfig.EnvironmentSandbox = "sandbox";
@@ -257,6 +258,10 @@ AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomai
     this.urlStrategyDomains = urlStrategyDomains;
     this.useSubdomains = useSubdomains;
     this.isDataResidency = isDataResidency;
+};
+
+AdjustConfig.prototype.disableAppTrackingTransparencyUsage = function() {
+    this.isAppTrackingTransparencyUsageEnabled = false;
 };
 
 module.exports = AdjustConfig;

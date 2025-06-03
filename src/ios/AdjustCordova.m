@@ -66,6 +66,7 @@
 #define KEY_IS_DATA_RESIDENCY @"isDataResidency"
 #define KEY_EVENT_DEDUPLICATION_IDS_MAX_SIZE @"eventDeduplicationIdsMaxSize"
 #define KEY_DEEPLINK @"deeplink"
+#define KEY_IS_ATT_USAGE_ENABLED @"isAppTrackingTransparencyUsageEnabled"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -117,6 +118,7 @@
     id urlStrategyDomains = [[jsonObject valueForKey:KEY_URL_STRATEGY_DOMAINS] objectAtIndex:0];
     NSNumber *useSubdomains = [[jsonObject valueForKey:KEY_USE_SUBDOMAINS] objectAtIndex:0];
     NSNumber *isDataResidency = [[jsonObject valueForKey:KEY_IS_DATA_RESIDENCY] objectAtIndex:0];
+    NSNumber *isAppTrackingTransparencyUsageEnabled = [[jsonObject valueForKey:KEY_IS_ATT_USAGE_ENABLED] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = NO;
 
@@ -204,6 +206,12 @@
     if ([self isFieldValid:isSkanAttributionEnabled] &&
         ![isSkanAttributionEnabled boolValue]) {
         [adjustConfig disableSkanAttribution];
+    }
+
+    // ATT usage
+    if ([self isFieldValid:isAppTrackingTransparencyUsageEnabled] &&
+        ![isAppTrackingTransparencyUsageEnabled boolValue]) {
+        [adjustConfig disableAppTrackingTransparencyUsage];
     }
 
     // LinkMe.
