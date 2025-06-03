@@ -129,6 +129,19 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         } else if (action.equals(COMMAND_GET_LAST_DEEPLINK)) {
             executeGetLastDeeplink(callbackContext);
+        } else if (action.equals(COMMAND_END_FIRST_SESSION_DELAY)) {
+            Adjust.endFirstSessionDelay();
+        } else if (action.equals(COMMAND_ENABLE_COPPA_COMPLIANCE_IN_DELAY)) {
+            Adjust.enableCoppaComplianceInDelay();
+        } else if (action.equals(COMMAND_DISABLE_COPPA_COMPLIANCE_IN_DELAY)) {
+            Adjust.disableCoppaComplianceInDelay();
+        } else if (action.equals(COMMAND_ENABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY)) {
+            Adjust.enablePlayStoreKidsComplianceInDelay();
+        } else if (action.equals(COMMAND_DISABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY)) {
+            Adjust.disablePlayStoreKidsComplianceInDelay();
+        } else if (action.equals(COMMAND_SET_EXTERNAL_DEVICE_ID_IN_DELAY)) {
+            final String externalDeviceId = args.getString(0);
+            Adjust.setExternalDeviceIdInDelay(externalDeviceId);
         } else if (action.equals(COMMAND_SET_TEST_OPTIONS)) {
             executeSetTestOptions(args);
         } else if (action.equals(COMMAND_TEARDOWN)) {
@@ -384,6 +397,15 @@ public class AdjustCordova extends CordovaPlugin implements
             boolean isPreinstallTrackingEnabled = Boolean.parseBoolean(strIsPreinstallTrackingEnabled);
             if (isPreinstallTrackingEnabled) {
                 adjustConfig.enablePreinstallTracking();
+            }
+        }
+
+        // first session delay
+        if (parameters.containsKey(KEY_IS_FIRST_SESSION_DELAY_ENABLED)) {
+            String strIsFirstSessionDelayEnabled = parameters.get(KEY_IS_FIRST_SESSION_DELAY_ENABLED).toString();
+            boolean isFirstSessionDelayEnabled = Boolean.parseBoolean(strIsFirstSessionDelayEnabled);
+            if (isFirstSessionDelayEnabled) {
+                adjustConfig.enableFirstSessionDelay();
             }
         }
 

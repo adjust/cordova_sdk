@@ -115,6 +115,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
         case 'endFirstSessionDelay' : this.endFirstSessionDelay(command.params); break;
         case 'coppaComplianceInDelay' : this.coppaComplianceInDelay(command.params); break;
+        case 'playStoreKidsComplianceInDelay' : this.playStoreKidsComplianceInDelay(command.params); break;
         case 'externalDeviceIdInDelay' : this.externalDeviceIdInDelay(command.params); break;
     }
 
@@ -976,6 +977,14 @@ AdjustCommandExecutor.prototype.coppaComplianceInDelay = function(params) {
         Adjust.enableCoppaComplianceInDelay();
     } else {
         Adjust.disableCoppaComplianceInDelay();
+    }
+};
+
+AdjustCommandExecutor.prototype.playStoreKidsComplianceInDelay = function(params) {
+    if (getFirstParameterValue(params, 'isEnabled') == 'true') {
+        Adjust.enablePlayStoreKidsComplianceInDelay();
+    } else {
+        Adjust.disablePlayStoreKidsComplianceInDelay();
     }
 };
 

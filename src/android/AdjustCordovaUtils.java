@@ -83,6 +83,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_USE_SUBDOMAINS = "useSubdomains";
     public static final String KEY_IS_DATA_RESIDENCY = "isDataResidency";
     public static final String KEY_REFERRER = "referrer";
+    public static final String KEY_IS_FIRST_SESSION_DELAY_ENABLED = "isFirstSessionDelayEnabled";
 
     // Adjust Create Configuration and Initialize SDK command
     public static final String COMMAND_INIT_SDK = "initSdk";
@@ -132,6 +133,13 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_PROCESS_DEEPLINK = "processDeeplink";
     public static final String COMMAND_PROCESS_AND_RESOLVE_DEEPLINK = "processAndResolveDeeplink";
     public static final String COMMAND_GET_LAST_DEEPLINK = "getLastDeeplink";
+
+    public static final String COMMAND_END_FIRST_SESSION_DELAY = "endFirstSessionDelay";
+    public static final String COMMAND_ENABLE_COPPA_COMPLIANCE_IN_DELAY = "enableCoppaComplianceInDelay";
+    public static final String COMMAND_DISABLE_COPPA_COMPLIANCE_IN_DELAY = "disableCoppaComplianceInDelay";
+    public static final String COMMAND_ENABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY = "enablePlayStoreKidsComplianceInDelay";
+    public static final String COMMAND_DISABLE_PLAY_STORE_KIDS_COMPLIANCE_IN_DELAY = "disablePlayStoreKidsComplianceInDelay";
+    public static final String COMMAND_SET_EXTERNAL_DEVICE_ID_IN_DELAY = "setExternalDeviceIdInDelay";
     // ios commands
     public static final String COMMAND_SET_SKAN_UPDATED_CALLBACK = "setSkanUpdatedCallback";
     public static final String COMMAND_VERIFY_AND_TRACK_APP_STORE_PURCHASE = "verifyAndTrackPlayStorePurchase";

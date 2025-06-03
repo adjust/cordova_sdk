@@ -283,6 +283,14 @@ var Adjust = {
         callCordova('disableCoppaComplianceInDelay');
     },
 
+    enablePlayStoreKidsComplianceInDelay: function() {
+        callCordova('enablePlayStoreKidsComplianceInDelay');
+    },
+
+    disablePlayStoreKidsComplianceInDelay: function() {
+        callCordova('disablePlayStoreKidsComplianceInDelay');
+    },
+
     setExternalDeviceIdInDelay: function(externalDeviceId) {
         if (typeof externalDeviceId !== 'string') {
             console.log("[Adjust] External device ID is not of type string");
