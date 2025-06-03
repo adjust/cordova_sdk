@@ -336,7 +336,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
             }
 
             // Remove fb_install_referrer from jsonResponse if it exists
-            if (attribution.jsonResponse) {
+            if (attribution.jsonResponse && device.platform === 'iOS') {
                 try {
                     var json = JSON.parse(attribution.jsonResponse);
                     delete json.fb_install_referrer;
@@ -952,7 +952,7 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         }
 
         // Remove fb_install_referrer from jsonResponse if it exists
-        if (attribution.jsonResponse) {
+        if (attribution.jsonResponse && device.platform === 'iOS') {
             try {
                 var json = JSON.parse(attribution.jsonResponse);
                 delete json.fb_install_referrer;

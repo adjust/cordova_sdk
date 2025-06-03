@@ -196,6 +196,7 @@ public class AdjustCordovaUtils {
             null != attribution.costAmount && !attribution.costAmount.isNaN() ? attribution.costAmount.toString() : null);
         addValueOrEmpty(map, KEY_COST_CURRENCY, attribution.costCurrency);
         addValueOrEmpty(map, KEY_FB_INSTALL_REFERRER, attribution.fbInstallReferrer);
+        addValueOrEmpty(map, KEY_JSON_RESPONSE, attribution.jsonResponse);
         return map;
     }
 
