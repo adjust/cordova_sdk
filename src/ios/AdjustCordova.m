@@ -69,6 +69,9 @@
 #define KEY_IS_ATT_USAGE_ENABLED @"isAppTrackingTransparencyUsageEnabled"
 #define KEY_REFERRER @"referrer"
 #define KEY_IS_FIRST_SESSION_DELAY_ENABLED @"isFirstSessionDelayEnabled"
+#define KEY_STORE_INFO @"storeInfo"
+#define KEY_STORE_NAME @"storeName"
+#define KEY_STORE_APP_ID @"storeAppId"
 
 @implementation AdjustCordova {
     NSString *attributionCallbackId;
@@ -118,6 +121,7 @@
     NSNumber *isDataResidency = [[jsonObject valueForKey:KEY_IS_DATA_RESIDENCY] objectAtIndex:0];
     NSNumber *isAppTrackingTransparencyUsageEnabled = [[jsonObject valueForKey:KEY_IS_ATT_USAGE_ENABLED] objectAtIndex:0];
     NSNumber *isFirstSessionDelayEnabled = [[jsonObject valueForKey:KEY_IS_FIRST_SESSION_DELAY_ENABLED] objectAtIndex:0];
+    id storeInfo = [[jsonObject valueForKey:KEY_STORE_INFO] objectAtIndex:0];
 
     BOOL allowSuppressLogLevel = NO;
 
@@ -244,6 +248,19 @@
         [adjustConfig setUrlStrategy:urlStrategyDomains
                        useSubdomains:[useSubdomains boolValue]
                      isDataResidency:[isDataResidency boolValue]];
+    }
+
+    // store info
+    if ([self isFieldValid:storeInfo]) {
+        NSString *storeName = [storeInfo valueForKey:KEY_STORE_NAME];
+        if ([self isFieldValid:storeName]) {
+            ADJStoreInfo *adjustStoreInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
+            NSString *storeAppId = [storeInfo valueForKey:KEY_STORE_APP_ID];
+            if ([self isFieldValid:storeAppId]) {
+                [adjustStoreInfo setStoreAppId:storeAppId];
+            }
+            [adjustConfig setStoreInfo:adjustStoreInfo];
+        }
     }
 
     BOOL shouldLaunchDeferredDeeplink = [self isFieldValid:isDeferredDeeplinkOpeningEnabled] ? [isDeferredDeeplinkOpeningEnabled boolValue] : YES;

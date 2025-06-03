@@ -45,6 +45,9 @@
     <js-module src="www/adjust_deeplink.js" name="AdjustDeeplink">
         <clobbers target="AdjustDeeplink" />
     </js-module>
+    <js-module src="www/adjust_store_info.js" name="AdjustStoreInfo">
+        <clobbers target="AdjustStoreInfo" />
+    </js-module>
 
     <!-- Android -->
     <platform name="android">

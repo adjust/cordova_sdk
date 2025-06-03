@@ -25,6 +25,7 @@ function AdjustConfig(appToken, environment) {
     this.isDeferredDeeplinkOpeningEnabled = null;
     this.isCoppaComplianceEnabled = null;
     this.isFirstSessionDelayEnabled = null;
+    this.storeInfo = null;
 
     // Android only
     this.processName = null;
@@ -195,6 +196,10 @@ AdjustConfig.prototype.enableCoppaCompliance = function() {
 AdjustConfig.prototype.enableFirstSessionDelay = function() {
     this.isFirstSessionDelayEnabled = true;
 };
+
+AdjustConfig.prototype.setStoreInfo = function(storeInfo) {
+    this.storeInfo = storeInfo;
+}
 
 AdjustConfig.prototype.setProcessName = function(processName) {
     this.processName = processName;

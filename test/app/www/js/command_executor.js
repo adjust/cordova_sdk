@@ -465,6 +465,16 @@ AdjustCommandExecutor.prototype.config = function(params) {
             adjustConfig.enableFirstSessionDelay();
         }
     }
+    
+    if ('storeName' in params) {
+        var storeNameS = getFirstParameterValue(params, 'storeName');
+        var storeInfo = new AdjustStoreInfo(storeNameS);
+        if ('storeAppId' in params) {
+            var storeAppIdS = getFirstParameterValue(params, 'storeAppId');
+            storeInfo.setStoreAppId(storeAppIdS);
+        }
+        adjustConfig.setStoreInfo(storeInfo);
+    }
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {
