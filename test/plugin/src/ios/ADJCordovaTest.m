@@ -79,6 +79,8 @@
     [selectedTestDirs addObject:testDirToAdd];
 }
 
+- (void)setTestConnectionOptions:(CDVInvokedUrlCommand *)command {}
+
 #pragma mark - Private & helper methods
 
 - (BOOL)isFieldValid:(NSObject *)field {

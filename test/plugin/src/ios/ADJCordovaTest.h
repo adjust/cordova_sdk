@@ -15,5 +15,6 @@
 - (void)sendInfoToServer:(CDVInvokedUrlCommand *)command;
 - (void)addTest:(CDVInvokedUrlCommand *)command;
 - (void)addTestDirectory:(CDVInvokedUrlCommand *)command;
+- (void)setTestConnectionOptions:(CDVInvokedUrlCommand *)command;
 
 @end
