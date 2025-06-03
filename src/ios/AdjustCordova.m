@@ -723,15 +723,7 @@
         return;
     }
 
-    NSURL *url;
-    if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
-        url = [NSURL URLWithString:[deeplink stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
-    } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        url = [NSURL URLWithString:[deeplink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }
-#pragma clang diagnostic pop
+    NSURL *url = [NSURL URLWithString:deeplink];
     [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
 }
 
@@ -747,19 +739,9 @@
         return;
     }
 
-    NSURL *url;
-    if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
-        url = [NSURL URLWithString:[deeplink stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
-    } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        url = [NSURL URLWithString:[deeplink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }
-#pragma clang diagnostic pop
-
-
-    ADJDeeplink *deepLink = [[ADJDeeplink alloc] initWithDeeplink:url];
-    [Adjust processAndResolveDeeplink:deepLink
+    NSURL *url = [NSURL URLWithString:deeplink];
+    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:url];
+    [Adjust processAndResolveDeeplink:adjustDeeplink
                 withCompletionHandler:^(NSString * _Nullable resolvedLink) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
