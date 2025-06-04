@@ -17,6 +17,8 @@ export class AdjustConfig {
   private urlStrategyDomains: string[] = [];
   private useSubdomains: boolean = null;
   private isDataResidency: boolean = null;
+  private isFirstSessionDelayEnabled: boolean = null;
+  private storeInfo: AdjustStoreInfo = null;
 
   // android only
   private processName: string = null;
@@ -32,6 +34,7 @@ export class AdjustConfig {
   private isSkanAttributionEnabled: boolean = null;
   private isLinkMeEnabled: boolean = null;
   private attConsentWaitingInterval: number = null;
+  private isAppTrackingTransparencyUsageEnabled: boolean = null;
 
   // callbacks
   private attributionCallback: (attribution: AdjustAttribution) => void = null;
@@ -87,6 +90,14 @@ export class AdjustConfig {
     this.isCostDataInAttributionEnabled = true;
   }
 
+  enableFirstSessionDelay(): void {
+    this.isFirstSessionDelayEnabled = true;
+  }
+
+  setStoreInfo(storeInfo: AdjustStoreInfo): void {
+    this.storeInfo = storeInfo;
+  }
+
   setProcessName(processName: string) {
     this.processName = processName;
   }
@@ -125,6 +136,10 @@ export class AdjustConfig {
 
   setAttConsentWaitingInterval(attConsentWaitingInterval: number): void {
     this.attConsentWaitingInterval = attConsentWaitingInterval;
+  }
+
+  disableAppTrackingTransparencyUsage(): void {
+    this.isAppTrackingTransparencyUsageEnabled = false;
   }
 
   setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void): void {
@@ -424,9 +439,27 @@ export class AdjustPlayStorePurchase {
 
 export class AdjustDeeplink {
   private deeplink: string;
+  private referrer: string;
 
   constructor(deeplink: string) {
     this.deeplink = deeplink;
+  }
+
+  setReferrer(referrer: string): void {
+    this.referrer = referrer;
+  }
+}
+
+export class AdjustStoreInfo {
+  private storeName: string;
+  private storeAppId: string;
+
+  constructor(storeName: string) {
+    this.storeName = storeName;
+  }
+
+  setStoreAppId(storeAppId: string): void {
+    this.storeAppId = storeAppId;
   }
 }
 
@@ -443,6 +476,7 @@ export interface AdjustAttribution {
   costAmount: string;
   costCurrency: string;
   fbInstallReferrer: string; // android only
+  jsonResponse: string;
 }
 
 export interface AdjustSessionSuccess {
@@ -546,6 +580,7 @@ export enum AdjustLogLevel {
  * AdjustAppStorePurchase
  * AdjustPlayStorePurchase
  * AdjustDeeplink
+ * AdjustStoreInfo
  * @enums
  * AdjustEnvironment
  * AdjustLogLevel
@@ -863,4 +898,42 @@ export class Adjust extends AwesomeCordovaNativePlugin {
   verifyPlayStorePurchase(adjustPlayStorePurchase: AdjustPlayStorePurchase): Promise<AdjustPurchaseVerificationResult> {
     return;
   }
+
+  /**
+   * This method ends first session delay
+   */
+  @Cordova({ sync: true })
+  endFirstSessionDelay(): void {}
+
+  /**
+   * This method enables COPPA compliance while in first session delay
+   */
+  @Cordova({ sync: true })
+  enableCoppaComplianceInDelay(): void {}
+
+  /**
+   * This method disables COPPA compliance while in first session delay
+   */
+  @Cordova({ sync: true })
+  disableCoppaComplianceInDelay(): void {}
+
+  /**
+   * This method enables Play Store Kids compliance while in first session delay
+   */
+  @Cordova({ sync: true })
+  enablePlayStoreKidsComplianceInDelay(): void {}
+
+  /**
+   * This method disables Play Store Kids compliance while in first session delay
+   */
+  @Cordova({ sync: true })
+  disablePlayStoreKidsComplianceInDelay(): void {}
+
+  /**
+   * This method allows you to set external device ID while in first session delay
+   *
+   * @param {string} externalDeviceId External device ID value
+   */
+  @Cordova({ sync: true })
+  setExternalDeviceIdInDelay(externalDeviceId: string): void {}
 }
