@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Cordova, AwesomeCordovaNativePlugin, Plugin } from '@awesome-cordova-plugins/core';
 
 export class AdjustConfig {
+  // common
   private appToken: string;
   private environment: AdjustEnvironment;
   private sdkPrefix: string;
@@ -20,6 +21,13 @@ export class AdjustConfig {
   private isFirstSessionDelayEnabled: boolean = null;
   private storeInfo: AdjustStoreInfo = null;
 
+  private attributionCallback: (attribution: AdjustAttribution) => void = null;
+  private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
+  private eventTrackingFailedCallback: (event: AdjustEventFailure) => void = null;
+  private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
+  private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
+  private deferredDeeplinkCallback: (deeplink: string) => void = null;
+
   // android only
   private processName: string = null;
   private isPreinstallTrackingEnabled: boolean = null;
@@ -35,16 +43,9 @@ export class AdjustConfig {
   private isLinkMeEnabled: boolean = null;
   private attConsentWaitingInterval: number = null;
   private isAppTrackingTransparencyUsageEnabled: boolean = null;
-
-  // callbacks
-  private attributionCallback: (attribution: AdjustAttribution) => void = null;
-  private eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void = null;
-  private eventTrackingFailedCallback: (event: AdjustEventFailure) => void = null;
-  private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
-  private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
-  private deferredDeeplinkCallback: (deeplink: string) => void = null;
   private skanUpdatedCallback: (skanData: AdjustSkanData) => void = null;
 
+  // common
   constructor(appToken: string, environment: AdjustEnvironment) {
     this.appToken = appToken;
     this.environment = environment;
@@ -98,6 +99,79 @@ export class AdjustConfig {
     this.storeInfo = storeInfo;
   }
 
+  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void): void {
+    this.attributionCallback = attributionCallback;
+  }
+
+  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void): void {
+    this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
+  }
+
+  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void): void {
+    this.eventTrackingFailedCallback = eventTrackingFailedCallback;
+  }
+
+  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void): void {
+    this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
+  }
+
+  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void): void {
+    this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
+  }
+
+  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (deeplink: string) => void): void {
+    this.deferredDeeplinkCallback = deferredDeeplinkCallback;
+  }
+
+  private getAttributionCallback(): void {
+    return this.attributionCallback;
+  }
+
+  private getEventTrackingSucceededCallback(): void {
+    return this.eventTrackingSucceededCallback;
+  }
+
+  private getEventTrackingFailedCallback(): void {
+    return this.eventTrackingFailedCallback;
+  }
+
+  private getSessionTrackingSucceededCallback(): void {
+    return this.sessionTrackingSucceededCallback;
+  }
+
+  private getSessionTrackingFailedCallback(): void {
+    return this.sessionTrackingFailedCallback;
+  }
+
+  private getDeferredDeeplinkCallback(): void {
+    return this.deferredDeeplinkCallback;
+  }
+
+  private hasAttributionCallback(): void {
+    return this.attributionCallback !== null;
+  }
+
+  private hasEventTrackingSucceededCallback(): void {
+    return this.eventTrackingSucceededCallback !== null;
+  }
+
+  private hasEventTrackingFailedCallback(): void {
+    return this.eventTrackingFailedCallback !== null;
+  }
+
+  private hasSessionTrackingSucceededCallback(): void {
+    return this.sessionTrackingSucceededCallback !== null;
+  }
+
+  private hasSessionTrackingFailedCallback(): void {
+    return this.sessionTrackingFailedCallback !== null;
+  }
+
+  private hasDeferredDeeplinkCallback(): void {
+    return this.deferredDeeplinkCallback !== null;
+  }
+
+  // android only
   setProcessName(processName: string) {
     this.processName = processName;
   }
@@ -114,6 +188,7 @@ export class AdjustConfig {
     this.fbAppId = fbAppId;
   }
 
+  // ios only
   disableIdfaReading(): void {
     this.isIdfaReadingEnabled = false;
   }
@@ -142,84 +217,12 @@ export class AdjustConfig {
     this.isAppTrackingTransparencyUsageEnabled = false;
   }
 
-  setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void): void {
-    this.attributionCallback = attributionCallback;
-  }
-
-  setEventTrackingSucceededCallback(eventTrackingSucceededCallback: (event: AdjustEventSuccess) => void): void {
-    this.eventTrackingSucceededCallback = eventTrackingSucceededCallback;
-  }
-
-  setEventTrackingFailedCallback(eventTrackingFailedCallback: (event: AdjustEventFailure) => void): void {
-    this.eventTrackingFailedCallback = eventTrackingFailedCallback;
-  }
-
-  setSessionTrackingSucceededCallback(sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void): void {
-    this.sessionTrackingSucceededCallback = sessionTrackingSucceededCallback;
-  }
-
-  setSessionTrackingFailedCallback(sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void): void {
-    this.sessionTrackingFailedCallback = sessionTrackingFailedCallback;
-  }
-
-  setDeferredDeeplinkCallback(deferredDeeplinkCallback: (deeplink: string) => void): void {
-    this.deferredDeeplinkCallback = deferredDeeplinkCallback;
-  }
-
   setSkanUpdatedCallback(skanUpdatedCallback: (skanData: AdjustSkanData) => void): void {
     this.skanUpdatedCallback = skanUpdatedCallback;
   }
 
-  private getAttributionCallback(): void {
-    return this.attributionCallback;
-  }
-
-  private getEventTrackingSucceededCallback(): void {
-    return this.eventTrackingSucceededCallback;
-  }
-
-  private getEventTrackingFailedCallback(): void {
-    return this.eventTrackingFailedCallback;
-  }
-
-  private getSessionTrackingSucceededCallback(): void {
-    return this.sessionTrackingSucceededCallback;
-  }
-
-  private getSessionTrackingFailedCallback(): void {
-    return this.sessionTrackingFailedCallback;
-  }
-
-  private getDeferredDeeplinkCallback(): void {
-    return this.deferredDeeplinkCallback;
-  }
-
   private getSkanUpdatedCallback(): void {
     return this.skanUpdatedCallback;
-  }
-
-  private hasAttributionCallback(): void {
-    return this.attributionCallback !== null;
-  }
-
-  private hasEventTrackingSucceededCallback(): void {
-    return this.eventTrackingSucceededCallback !== null;
-  }
-
-  private hasEventTrackingFailedCallback(): void {
-    return this.eventTrackingFailedCallback !== null;
-  }
-
-  private hasSessionTrackingSucceededCallback(): void {
-    return this.sessionTrackingSucceededCallback !== null;
-  }
-
-  private hasSessionTrackingFailedCallback(): void {
-    return this.sessionTrackingFailedCallback !== null;
-  }
-
-  private hasDeferredDeeplinkCallback(): void {
-    return this.deferredDeeplinkCallback !== null;
   }
 
   private hasSkanUpdatedCallback(): void {

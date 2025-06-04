@@ -48,6 +48,7 @@ function callCordovaStringifyCallback(action, data, callback) {
 }
 
 var Adjust = {
+    // common
     initSdk: function(adjustConfig) {
         if (adjustConfig) {
             adjustConfig.sdkPrefix = this.getSdkPrefix();
@@ -77,39 +78,60 @@ var Adjust = {
         callCordovaStringify('initSdk', adjustConfig);
     },
 
+    enable: function() {
+        callCordova('enable');
+    },
+
+    disable: function() {
+        callCordova('disable');
+    },
+
+    switchToOfflineMode: function() {
+        callCordova('switchToOfflineMode');
+    },
+
+    switchBackToOnlineMode: function() {
+        callCordova('switchBackToOnlineMode');
+    },
+
+    trackEvent: function(adjustEvent) {
+        callCordovaStringify('trackEvent', adjustEvent);
+    },
+
+    trackAdRevenue: function(adjustAdrevenue) {
+        callCordovaStringify('trackAdRevenue', adjustAdrevenue);
+    },
+
+    trackThirdPartySharing: function(adjustThirdPartySharing) {
+        callCordovaStringify('trackThirdPartySharing', adjustThirdPartySharing);
+    },
+
+    trackMeasurementConsent: function(measurementConsent) {
+        if (typeof measurementConsent !== 'boolean') {
+            console.log("[Adjust] Measurement consent is not of type boolean");
+            return;
+        }
+        callCordova('trackMeasurementConsent', measurementConsent);
+    },
+
+    gdprForgetMe: function() {
+        callCordova('gdprForgetMe');
+    },
+
+    processDeeplink: function(adjustDeeplink) {
+        callCordovaStringify('processDeeplink', adjustDeeplink);
+    },
+
+    processAndResolveDeeplink: function(adjustDeeplink, callback) {
+        callCordovaStringifyCallback('processAndResolveDeeplink', adjustDeeplink, callback);
+    },
+
     setPushToken: function(token) {
         if (typeof token !== 'string') {
             console.log("[Adjust] Push token is not of type string");
             return;
         }
         callCordova('setPushToken', token);
-    },
-
-    getAttribution: function(callback) {
-        callCordovaCallback('getAttribution', callback);
-    },
-
-    getAdid: function(callback) {
-        callCordovaCallback('getAdid', callback);
-    },
-
-    getGoogleAdId: function(callback) {
-        callCordovaCallback('getGoogleAdId', callback);
-    },
-
-    getAmazonAdId: function(callback) {
-        callCordovaCallback('getAmazonAdId', callback);
-    },
-
-    getSdkVersion: function(callback) {
-        var sdkPrefix = this.getSdkPrefix();
-        callCordovaCallback('getSdkVersion', function(sdkVersion) {
-            callback(sdkPrefix + "@" + sdkVersion);
-        });
-    },
-
-    getSdkPrefix: function () {
-        return 'cordova5.4.0';
     },
 
     addGlobalCallbackParameter: function(key, value) {
@@ -152,86 +174,54 @@ var Adjust = {
         callCordova('removeGlobalPartnerParameters');
     },
 
-    switchToOfflineMode: function() {
-        callCordova('switchToOfflineMode');
+    endFirstSessionDelay: function() {
+        callCordova('endFirstSessionDelay');
     },
 
-    switchBackToOnlineMode: function() {
-        callCordova('switchBackToOnlineMode');
+    enableCoppaComplianceInDelay: function() {
+        callCordova('enableCoppaComplianceInDelay');
     },
 
-    enable: function() {
-        callCordova('enable');
+    disableCoppaComplianceInDelay: function() {
+        callCordova('disableCoppaComplianceInDelay');
     },
 
-    disable: function() {
-        callCordova('disable');
+    setExternalDeviceIdInDelay: function(externalDeviceId) {
+        if (typeof externalDeviceId !== 'string') {
+            console.log("[Adjust] External device ID is not of type string");
+            return;
+        }
+        callCordova('setExternalDeviceIdInDelay', externalDeviceId);
     },
 
     isEnabled: function(callback) {
         callCordovaCallback('isEnabled', callback);
     },
 
-    gdprForgetMe: function() {
-        callCordova('gdprForgetMe');
+    getAttribution: function(callback) {
+        callCordovaCallback('getAttribution', callback);
     },
 
-    onPause: function(testParam) {
-        if (testParam === null || testParam === undefined || testParam !== 'test') {
-           return;
-        }
-        callCordova('onPause');
-    },
-    onResume: function(testParam) {
-        if (testParam === null || testParam === undefined || testParam !== 'test') {
-           return;
-        }
-        callCordova('onResume');
-    },
-
-    trackEvent: function(adjustEvent) {
-        callCordovaStringify('trackEvent', adjustEvent);
-    },
-
-    trackAdRevenue: function(adjustAdrevenue) {
-        callCordovaStringify('trackAdRevenue', adjustAdrevenue);
-    },
-
-    trackPlayStoreSubscription: function(adjustPlayStoreSubscription) {
-        callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
-    },
-
-    verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
-        callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
-    },
-
-    verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
-        callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
-    },
-
-    trackThirdPartySharing: function(adjustThirdPartySharing) {
-        callCordovaStringify('trackThirdPartySharing', adjustThirdPartySharing);
-    },
-
-    trackMeasurementConsent: function(measurementConsent) {
-        if (typeof measurementConsent !== 'boolean') {
-            console.log("[Adjust] Measurement consent is not of type boolean");
-            return;
-        }
-        callCordova('trackMeasurementConsent', measurementConsent);
-    },
-
-    processDeeplink: function(adjustDeeplink) {
-        callCordovaStringify('processDeeplink', adjustDeeplink);
-    },
-
-    processAndResolveDeeplink: function(adjustDeeplink, callback) {
-        callCordovaStringifyCallback('processAndResolveDeeplink', adjustDeeplink, callback);
+    getAdid: function(callback) {
+        callCordovaCallback('getAdid', callback);
     },
 
     getLastDeeplink: function(callback) {
         callCordovaCallback('getLastDeeplink', callback);
     },
+
+    getSdkVersion: function(callback) {
+        var sdkPrefix = this.getSdkPrefix();
+        callCordovaCallback('getSdkVersion', function(sdkVersion) {
+            callback(sdkPrefix + "@" + sdkVersion);
+        });
+    },
+
+    getSdkPrefix: function () {
+        return 'cordova5.4.0';
+    },
+
+    // ios only
 
     trackAppStoreSubscription: function(adjustAppStoreSubscription) {
         callCordovaStringify('trackAppStoreSubscription', adjustAppStoreSubscription);
@@ -271,16 +261,18 @@ var Adjust = {
         callCordovaCallback('getIdfv', callback);
     },
 
-    endFirstSessionDelay: function() {
-        callCordova('endFirstSessionDelay');
+    // android only
+
+    trackPlayStoreSubscription: function(adjustPlayStoreSubscription) {
+        callCordovaStringify('trackPlayStoreSubscription', adjustPlayStoreSubscription);
     },
 
-    enableCoppaComplianceInDelay: function() {
-        callCordova('enableCoppaComplianceInDelay');
+    verifyPlayStorePurchase: function(adjustPlayStorePurchase, callback) {
+        callCordovaStringifyCallback('verifyPlayStorePurchase', adjustPlayStorePurchase, callback);
     },
 
-    disableCoppaComplianceInDelay: function() {
-        callCordova('disableCoppaComplianceInDelay');
+    verifyAndTrackPlayStorePurchase: function(adjustEvent, callback) {
+        callCordovaStringifyCallback('verifyAndTrackPlayStorePurchase', adjustEvent, callback);
     },
 
     enablePlayStoreKidsComplianceInDelay: function() {
@@ -291,12 +283,28 @@ var Adjust = {
         callCordova('disablePlayStoreKidsComplianceInDelay');
     },
 
-    setExternalDeviceIdInDelay: function(externalDeviceId) {
-        if (typeof externalDeviceId !== 'string') {
-            console.log("[Adjust] External device ID is not of type string");
-            return;
+    getGoogleAdId: function(callback) {
+        callCordovaCallback('getGoogleAdId', callback);
+    },
+
+    getAmazonAdId: function(callback) {
+        callCordovaCallback('getAmazonAdId', callback);
+    },
+
+    // testing only
+
+    onResume: function(testParam) {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
         }
-        callCordova('setExternalDeviceIdInDelay', externalDeviceId);
+        callCordova('onResume');
+    },
+
+    onPause: function(testParam) {
+        if (testParam === null || testParam === undefined || testParam !== 'test') {
+           return;
+        }
+        callCordova('onPause');
     },
 
     setTestOptions: function(testOptions) {

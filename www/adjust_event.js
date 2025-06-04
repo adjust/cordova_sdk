@@ -7,9 +7,11 @@ function AdjustEvent(eventToken) {
     this.productId = null;
     this.callbackParameters = [];
     this.partnerParameters = [];
-    // iOS only
+    
+    // ios only
     this.transactionId = null;
-    // Android only
+    
+    // android only
     this.purchaseToken = null;
 }
 
@@ -63,6 +65,8 @@ AdjustEvent.prototype.setProductId = function(productId) {
     this.productId = productId;
 };
 
+// ios only
+
 AdjustEvent.prototype.setTransactionId = function(transactionId) {
     if (typeof transactionId !== 'string') {
         console.log("[Adjust] Event transaction ID is not of type string");
@@ -71,7 +75,7 @@ AdjustEvent.prototype.setTransactionId = function(transactionId) {
     this.transactionId = transactionId;
 };
 
-// Android only
+// android only
 
 AdjustEvent.prototype.setPurchaseToken = function(purchaseToken) {
     if (typeof purchaseToken !== 'string') {
