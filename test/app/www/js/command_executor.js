@@ -113,6 +113,10 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
+        case 'endFirstSessionDelay' : this.endFirstSessionDelay(command.params); break;
+        case 'coppaComplianceInDelay' : this.coppaComplianceInDelay(command.params); break;
+        case 'playStoreKidsComplianceInDelay' : this.playStoreKidsComplianceInDelay(command.params); break;
+        case 'externalDeviceIdInDelay' : this.externalDeviceIdInDelay(command.params); break;
     }
 
     this.nextToSendCounter++;
@@ -303,6 +307,13 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
 
+    if ('allowAttUsage' in params) {
+        var allowAttUsageS = getFirstParameterValue(params, 'allowAttUsage');
+        if (allowAttUsageS != 'true') {
+            adjustConfig.disableAppTrackingTransparencyUsage();
+        }
+    }
+
     if ('externalDeviceId' in params) {
         var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
@@ -324,6 +335,19 @@ AdjustCommandExecutor.prototype.config = function(params) {
             if (device.platform === 'Android') {
                 AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
             }
+
+            // Remove fb_install_referrer from jsonResponse if it exists
+            if (attribution.jsonResponse && device.platform === 'iOS') {
+                try {
+                    var json = JSON.parse(attribution.jsonResponse);
+                    delete json.fb_install_referrer;
+                    attribution.jsonResponse = JSON.stringify(json);
+                } catch (e) {
+                    console.warn('Failed to parse attribution.jsonResponse:', e);
+                }
+            }
+
+            AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
             AdjustTest.sendInfoToServer(_this.extraPath);
         });
     }
@@ -434,6 +458,23 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
         var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
         adjustConfig.enablePlayStoreKidsCompliance();
+    }
+
+    if ('firstSessionDelayEnabled' in params) {
+        var firstSessionDelayEnabledS = getFirstParameterValue(params, 'firstSessionDelayEnabled');
+        if (firstSessionDelayEnabledS == 'true') {
+            adjustConfig.enableFirstSessionDelay();
+        }
+    }
+    
+    if ('storeName' in params) {
+        var storeNameS = getFirstParameterValue(params, 'storeName');
+        var storeInfo = new AdjustStoreInfo(storeNameS);
+        if ('storeAppId' in params) {
+            var storeAppIdS = getFirstParameterValue(params, 'storeAppId');
+            storeInfo.setStoreAppId(storeAppIdS);
+        }
+        adjustConfig.setStoreInfo(storeInfo);
     }
 };
 
@@ -621,6 +662,10 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
         return;
     }
     var adjustDeeplink = new AdjustDeeplink(deeplink);
+    var referrer = getFirstParameterValue(params, 'referrer');
+    if (typeof referrer === 'string') {
+        adjustDeeplink.setReferrer(referrer);
+    }
     Adjust.processDeeplink(adjustDeeplink);
 };
 
@@ -879,6 +924,10 @@ AdjustCommandExecutor.prototype.processDeeplink = function(params) {
         return;
     }
     var adjustDeeplink = new AdjustDeeplink(deeplink);
+    var referrer = getFirstParameterValue(params, 'referrer');
+    if (typeof referrer === 'string') {
+        adjustDeeplink.setReferrer(referrer);
+    }
     var _this = this;
     Adjust.processAndResolveDeeplink(adjustDeeplink, function(resolvedLink) {
         AdjustTest.addInfoToSend('resolved_link', resolvedLink);
@@ -902,8 +951,46 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         if (device.platform === 'Android') {
             AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
         }
+
+        // Remove fb_install_referrer from jsonResponse if it exists
+        if (attribution.jsonResponse && device.platform === 'iOS') {
+            try {
+                var json = JSON.parse(attribution.jsonResponse);
+                delete json.fb_install_referrer;
+                attribution.jsonResponse = JSON.stringify(json);
+            } catch (e) {
+                console.warn('Failed to parse attribution.jsonResponse:', e);
+            }
+        }
+
+        AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
+};
+
+AdjustCommandExecutor.prototype.endFirstSessionDelay = function(params) {
+    Adjust.endFirstSessionDelay();
+};
+
+AdjustCommandExecutor.prototype.coppaComplianceInDelay = function(params) {
+    if (getFirstParameterValue(params, 'isEnabled') == 'true') {
+        Adjust.enableCoppaComplianceInDelay();
+    } else {
+        Adjust.disableCoppaComplianceInDelay();
+    }
+};
+
+AdjustCommandExecutor.prototype.playStoreKidsComplianceInDelay = function(params) {
+    if (getFirstParameterValue(params, 'isEnabled') == 'true') {
+        Adjust.enablePlayStoreKidsComplianceInDelay();
+    } else {
+        Adjust.disablePlayStoreKidsComplianceInDelay();
+    }
+};
+
+AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
+    var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
+    Adjust.setExternalDeviceIdInDelay(externalDeviceId);
 };
 
 // Util methods

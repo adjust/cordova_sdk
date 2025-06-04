@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "com.adjust.sdk": "file:../temp_plugin",
-    "cordova-android": "^13.0.0",
+    "cordova-android": "^14.0.1",
     "cordova-ios": "^7.1.1",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^5.0.2",

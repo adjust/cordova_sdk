@@ -15,68 +15,60 @@
 
 @interface AdjustCordova : CDVPlugin
 
-// Initialization
+// common
 - (void)initSdk:(CDVInvokedUrlCommand *)command;
-// Adjust API Callbacks setters
 - (void)setAttributionCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setEventTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
-- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command;
-// Adjust API
-// Setters
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
-// Getters
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getAdid:(CDVInvokedUrlCommand *)command;
-- (void)getIdfa:(CDVInvokedUrlCommand *)command;
-- (void)getIdfv:(CDVInvokedUrlCommand *)command;
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command;
-// Global Parameters manipulation commands
-// Callback
 - (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalCallbackParameters:(CDVInvokedUrlCommand *)command;
-// Partner
 - (void)addGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalPartnerParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalPartnerParameters:(CDVInvokedUrlCommand *)command;
-// SDK State
 - (void)switchToOfflineMode:(CDVInvokedUrlCommand *)command;
 - (void)switchBackToOnlineMode:(CDVInvokedUrlCommand *)command;
 - (void)enable:(CDVInvokedUrlCommand *)command;
 - (void)disable:(CDVInvokedUrlCommand *)command;
 - (void)isEnabled:(CDVInvokedUrlCommand *)command;
 - (void)gdprForgetMe:(CDVInvokedUrlCommand *)command;
-// SDK Lifecycle
-- (void)onPause:(CDVInvokedUrlCommand *)command;
-- (void)onResume:(CDVInvokedUrlCommand *)command;
-// Tracking
 - (void)trackEvent:(CDVInvokedUrlCommand *)command;
 - (void)trackAdRevenue:(CDVInvokedUrlCommand *)command;
-- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
-- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
-- (void)verifyAndTrackAppStorePurchase:(CDVInvokedUrlCommand *)command;
 - (void)trackThirdPartySharing:(CDVInvokedUrlCommand *)command;
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
-// Deeplink
 - (void)processDeeplink:(CDVInvokedUrlCommand *)command;
 - (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command;
 - (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
-// App Tracking Authorization
+- (void)endFirstSessionDelay:(CDVInvokedUrlCommand *)command;
+- (void)enableCoppaComplianceInDelay:(CDVInvokedUrlCommand *)command;
+- (void)disableCoppaComplianceInDelay:(CDVInvokedUrlCommand *)command;
+- (void)setExternalDeviceIdInDelay:(CDVInvokedUrlCommand *)command;
+// ios only
+- (void)setSkanUpdatedCallback:(CDVInvokedUrlCommand *)command;
+- (void)getIdfa:(CDVInvokedUrlCommand *)command;
+- (void)getIdfv:(CDVInvokedUrlCommand *)command;
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command;
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command;
-// SKAN
 - (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command;
-// android
+- (void)trackAppStoreSubscription:(CDVInvokedUrlCommand *)command;
+- (void)verifyAppStorePurchase:(CDVInvokedUrlCommand *)command;
+- (void)verifyAndTrackAppStorePurchase:(CDVInvokedUrlCommand *)command;
+// android only
 - (void)getGoogleAdId:(CDVInvokedUrlCommand *)command;
 - (void)getAmazonAdId:(CDVInvokedUrlCommand *)command;
 - (void)trackPlayStoreSubscription:(CDVInvokedUrlCommand *)command;
 - (void)verifyPlayStorePurchase:(CDVInvokedUrlCommand *)command;
 - (void)verifyAndTrackPlayStorePurchase:(CDVInvokedUrlCommand *)command;
-// Testing
+// testing only
+- (void)onPause:(CDVInvokedUrlCommand *)command;
+- (void)onResume:(CDVInvokedUrlCommand *)command;
 - (void)setTestOptions:(CDVInvokedUrlCommand *)command;
 - (void)teardown:(CDVInvokedUrlCommand *)command;
 
