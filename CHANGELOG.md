@@ -1,9 +1,9 @@
 ### Version 5.4.0 (4th June 2025)
 #### Added
-- Added support for configuring store information via the `AdjustStoreInfo` object. You can now specify the store name and store app ID via `setStoreInfo` method on your `AdjustConfig` instance. This enables the SDK to record the intended app store source during initialization.
+- Added support for configuring store information via the `AdjustStoreInfo` object. You can now specify the store name and store app ID via `setStoreInfo` method on your `AdjustConfig` instance. This enables the SDK to record the intended app store source during initialization. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/cordova/setup/store-type).
 - Added ability to initialize the SDK for the first session in delayed mode. You can start the SDK in the delayed mode by calling the `enableFirstSessionDelay` method on your `AdjustConfig` instance. To end the delay, make sure to call `endFirstSessionDelay` method of `Adjust` instance. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/cordova/features/first-session-delay).
-- Added ability to send organic search referrer together with deep link. You can send it via `setReferrer` method of the `AdjustDeeplink` instance.
-- Added ability to disable SDK's interaction with `AppTrackingTransparency.framework` API. You can disable it by calling the `disableAppTrackingTransparencyUsage` method on your `AdjustConfig` instance.
+- Added ability to send organic search referrer together with deep link. You can send it via `setReferrer` method of the `AdjustDeeplink` instance. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/cordova/features/deep-links#handling-deeplinks-with-referrer).
+- Added ability to disable SDK's interaction with `AppTrackingTransparency.framework` API. You can disable it by calling the `disableAppTrackingTransparencyUsage` method on your `AdjustConfig` instance. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/cordova/features/att#disable-att-framework).
 - Added `jsonResponse` to attribution which represents the JSON string sent by the backend as part of the attribution response.
 
 #### Native SDKs
