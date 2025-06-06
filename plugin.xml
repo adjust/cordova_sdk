@@ -9,12 +9,12 @@
     <license>MIT License</license>
     <keywords>adjust</keywords>
     <author>adjust</author>
-    
+
     <engines>
         <engine name="cordova-android" version=">=4.0.0" />
         <engine name="cordova-ios" version=">=3.0.0" />
     </engines>
-    
+
     <js-module src="www/adjust.js" name="Adjust">
         <clobbers target="Adjust" />
     </js-module>
@@ -55,7 +55,7 @@
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
         </config-file>
-        
+
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <receiver
                 android:name="com.adjust.sdk.AdjustReferrerReceiver"
@@ -66,22 +66,22 @@
                 </intent-filter>
             </receiver>
         </config-file>
-        
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Adjust">
                 <param name="android-package" value="com.adjust.sdk.AdjustCordova"/>
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-        
+
         <source-file src="src/android/AdjustCordova.java" target-dir="src/com/adjust/sdk" />
         <source-file src="src/android/AdjustCordovaUtils.java" target-dir="src/com/adjust/sdk" />
-        
+
         <framework src="com.adjust.sdk:adjust-android:5.4.0"/>
         <framework src="com.google.android.gms:play-services-ads-identifier:18.2.0" />
         <framework src="com.android.installreferrer:installreferrer:2.2" />
     </platform>
-    
+
     <!-- iOS -->
     <platform name="ios">
 
@@ -90,14 +90,13 @@
                 <param name="ios-package" value="AdjustCordova"/>
                 <param name="onload" value="true" />
             </feature>
-            <preference name="deployment-target" value="12.0" />
         </config-file>
-        
+
         <header-file src="src/ios/AdjustCordova.h" />
         <source-file src="src/ios/AdjustCordova.m" />
         <header-file src="src/ios/AdjustCordovaDelegate.h" />
         <source-file src="src/ios/AdjustCordovaDelegate.m" />
-        
+
         <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
