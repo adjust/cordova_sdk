@@ -21,6 +21,7 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <preference name="deployment-target" value="12.0" />
     </platform>
     <preference name="AndroidXEnabled" value="true" />
 </widget>

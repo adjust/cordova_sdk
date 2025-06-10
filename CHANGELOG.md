@@ -1,3 +1,13 @@
+### Version 5.4.1 (10th June 2025)
+#### Changed
+- Removed `deployment-target` iOS preference from `plugin.xml` (https://github.com/adjust/cordova_sdk/pull/198).
+
+#### Native SDKs
+- [iOS@v5.4.0][ios_sdk_v5.4.0]
+- [Android@v5.4.0][android_sdk_v5.4.0]
+
+---
+
 ### Version 5.4.0 (4th June 2025)
 #### Added
 - Added support for configuring store information via the `AdjustStoreInfo` object. You can now specify the store name and store app ID via `setStoreInfo` method on your `AdjustConfig` instance. This enables the SDK to record the intended app store source during initialization. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/cordova/setup/store-type).
