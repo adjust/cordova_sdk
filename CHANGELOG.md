@@ -1,4 +1,4 @@
-### Version 5.4.0 (4th June 2025)
+### Version 5.4.1 (10th June 2025)
 #### Changed
 - Removed `deployment-target` iOS preference from `plugin.xml` (https://github.com/adjust/cordova_sdk/pull/198).
 
