@@ -40,7 +40,8 @@ public class AdjustCordovaTest extends CordovaPlugin {
             this.commandCallbackContext = callbackContext;
             testLibrary = new TestLibrary(
                 baseUrl, 
-                controlUrl, 
+                controlUrl,
+                this.cordova.getActivity().getApplicationContext(),
                 new CommandListener(
                     this.cordova.getActivity().getApplicationContext(),
                     this.commandCallbackContext));
