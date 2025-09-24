@@ -218,7 +218,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.4.2';
+        return 'cordova5.4.3';
     },
 
     // ios only
