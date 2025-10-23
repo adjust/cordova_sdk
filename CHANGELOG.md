@@ -1,3 +1,13 @@
+### Version 5.4.4 (23rd October 2025)
+#### Changed
+- Updated the Adjust Signature library version to 3.61.0.
+
+#### Native SDKs
+- [iOS@v5.4.6][ios_sdk_v5.4.6]
+- [Android@v5.4.5][android_sdk_v5.4.5]
+
+---
+
 ### Version 5.4.3 (24th September 2025)
 #### Added
 - Added support for processing deferred deep links in session responses.
@@ -805,6 +815,7 @@ In case you were using beta version of the SDK v5, please switch to the official
 [ios_sdk_v5.4.0]: https://github.com/adjust/ios_sdk/tree/v5.4.0
 [ios_sdk_v5.4.3]: https://github.com/adjust/ios_sdk/tree/v5.4.3
 [ios_sdk_v5.4.4]: https://github.com/adjust/ios_sdk/tree/v5.4.4
+[ios_sdk_v5.4.6]: https://github.com/adjust/ios_sdk/tree/v5.4.6
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -846,3 +857,4 @@ In case you were using beta version of the SDK v5, please switch to the official
 [android_sdk_v5.4.0]: https://github.com/adjust/android_sdk/tree/v5.4.0
 [android_sdk_v5.4.2]: https://github.com/adjust/android_sdk/tree/v5.4.2
 [android_sdk_v5.4.4]: https://github.com/adjust/android_sdk/tree/v5.4.4
+[android_sdk_v5.4.5]: https://github.com/adjust/android_sdk/tree/v5.4.5
