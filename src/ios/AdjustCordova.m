@@ -327,50 +327,144 @@
 
 - (void)getAttribution:(CDVInvokedUrlCommand *)command {
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
-        if (attribution == nil) {
-            return;
-        }
+        if (command.callbackId != nil) {
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+            if (attribution == nil) {
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                return;
+            }
 
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-        [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.network withKey:@"network" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.campaign withKey:@"campaign" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
-        [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
-        if (attribution.jsonResponse != nil) {
-            NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
-                                                                       options:0
-                                                                         error:nil];
-            NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
-                                                                    length:[dataJsonResponse length]
-                                                                  encoding:NSUTF8StringEncoding];
-            [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
-        }
+            [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.network withKey:@"network" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.campaign withKey:@"campaign" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
+            if (attribution.jsonResponse != nil) {
+                NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
+                                                                           options:0
+                                                                             error:nil];
+                NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                        length:[dataJsonResponse length]
+                                                                      encoding:NSUTF8StringEncoding];
+                [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
+            }
 
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
+- (void)getAttributionWithTimeout:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSDictionary *timeoutMap = [jsonArray objectAtIndex:0];
+    NSNumber *timeoutInMilliseconds = timeoutMap[@"timeoutInMilliseconds"];
+    if (![self isFieldValid:timeoutInMilliseconds]) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[NSMutableDictionary dictionary]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+        return;
+    }
+    
+    NSInteger timeoutMs = [timeoutInMilliseconds integerValue];
+    [Adjust attributionWithTimeout:timeoutMs completionHandler:^(ADJAttribution * _Nullable attribution) {
+        if (command.callbackId != nil) {
+            if (attribution == nil) {
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[NSMutableDictionary dictionary]];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                return;
+            }
+            
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+            [self addValueOrEmpty:attribution.trackerToken withKey:@"trackerToken" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.trackerName withKey:@"trackerName" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.network withKey:@"network" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.campaign withKey:@"campaign" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.creative withKey:@"creative" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.adgroup withKey:@"adgroup" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.clickLabel withKey:@"clickLabel" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costType withKey:@"costType" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costAmount withKey:@"costAmount" toDictionary:dictionary];
+            [self addValueOrEmpty:attribution.costCurrency withKey:@"costCurrency" toDictionary:dictionary];
+            if (attribution.jsonResponse != nil) {
+                NSData *dataJsonResponse = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
+                                                                           options:0
+                                                                             error:nil];
+                NSString *stringJsonResponse = [[NSString alloc] initWithBytes:[dataJsonResponse bytes]
+                                                                        length:[dataJsonResponse length]
+                                                                      encoding:NSUTF8StringEncoding];
+                [dictionary setObject:stringJsonResponse forKey:@"jsonResponse"];
+            }
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
 - (void)getAdid:(CDVInvokedUrlCommand *)command {
     [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (adid != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
+- (void)getAdidWithTimeout:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSDictionary *timeoutMap = [jsonArray objectAtIndex:0];
+    NSNumber *timeoutInMilliseconds = timeoutMap[@"timeoutInMilliseconds"];
+    if (![self isFieldValid:timeoutInMilliseconds]) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+        return;
+    }
+    
+    NSInteger timeoutMs = [timeoutInMilliseconds integerValue];
+    [Adjust adidWithTimeout:timeoutMs completionHandler:^(NSString * _Nullable adid) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (adid != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command {
     [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
-        if (sdkVersion == nil) {
-            sdkVersion = @"";
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (sdkVersion != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sdkVersion];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sdkVersion];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
@@ -434,8 +528,10 @@
 
 - (void)isEnabled:(CDVInvokedUrlCommand *)command {
     [Adjust isEnabledWithCompletionHandler:^(BOOL isEnabled) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isEnabled];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isEnabled];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
@@ -617,6 +713,10 @@
     if ([self isFieldValid:[[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0]]) {
         deeplink = [[jsonObject valueForKey:KEY_DEEPLINK] objectAtIndex:0];
     } else {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
         return;
     }
 
@@ -631,21 +731,56 @@
 
     [Adjust processAndResolveDeeplink:adjustDeeplink
                 withCompletionHandler:^(NSString * _Nullable resolvedLink) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (resolvedLink != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedLink];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
+- (void)resolveLinkWithUrl:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSDictionary *params = [jsonArray objectAtIndex:0];
+    NSString *url = params[@"url"];
+    if (![self isFieldValid:url]) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+        return;
+    }
+
+    NSArray *resolveUrlSuffixArray = params[@"resolveUrlSuffixArray"];
+    [ADJLinkResolution resolveLinkWithUrl:[NSURL URLWithString:url] resolveUrlSuffixArray:resolveUrlSuffixArray
+                                 callback:^(NSURL *resolvedLink) {
+        if (command.callbackId != nil) {
+            NSString *resolvedUrl = resolvedLink != nil ? resolvedLink.absoluteString : nil;
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resolvedUrl];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
 - (void)getLastDeeplink:(CDVInvokedUrlCommand *)command {
     [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
-        NSString *lastDeeplinkString = nil;
-        if (lastDeeplink == nil) {
-            lastDeeplinkString = @"";
-        } else {
-            lastDeeplinkString = [lastDeeplink absoluteString];
+        if (command.callbackId != nil) {
+            NSString *lastDeeplinkString = nil;
+            if (lastDeeplink == nil) {
+                lastDeeplinkString = nil;
+            } else {
+                lastDeeplinkString = [lastDeeplink absoluteString];
+            }
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:lastDeeplinkString];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
@@ -677,15 +812,29 @@
 
 - (void)getIdfa:(CDVInvokedUrlCommand *)command {
     [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (idfa != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfa];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
 - (void)getIdfv:(CDVInvokedUrlCommand *)command {
     [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (idfv != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:idfv];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
@@ -762,59 +911,73 @@
                                                                              productId:productId];
     [Adjust verifyAppStorePurchase:purchase
              withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
-        NSDictionary *dictionary = nil;
-        if (verificationResult == nil) {
-            dictionary = [NSMutableDictionary dictionary];
+        if (command.callbackId != nil) {
+            NSDictionary *dictionary = nil;
+            if (verificationResult == nil) {
+                dictionary = [NSMutableDictionary dictionary];
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsDictionary:dictionary];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                return;
+            }
+
+            dictionary = [self deserializePvResult:verificationResult];
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                           messageAsDictionary:dictionary];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-            return;
         }
-
-        dictionary = [self deserializePvResult:verificationResult];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                      messageAsDictionary:dictionary];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
 - (void)verifyAndTrackAppStorePurchase:(CDVInvokedUrlCommand *)command {
     ADJEvent *adjustEvent = [self serializeAdjustEventFromCommand:command];
     if (adjustEvent == nil) {
+        if (command.callbackId != nil) {
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                          messageAsDictionary:dictionary];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
         return;
     }
 
     [Adjust verifyAndTrackAppStorePurchase:adjustEvent
                      withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
-        NSDictionary *dictionary = nil;;
-        if (verificationResult == nil) {
-            dictionary = [NSMutableDictionary dictionary];
+        if (command.callbackId != nil) {
+            NSDictionary *dictionary = nil;
+            if (verificationResult == nil) {
+                dictionary = [NSMutableDictionary dictionary];
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsDictionary:dictionary];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                return;
+            }
+
+            dictionary = [self deserializePvResult:verificationResult];
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                           messageAsDictionary:dictionary];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-            return;
         }
-
-        dictionary = [self deserializePvResult:verificationResult];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                      messageAsDictionary:dictionary];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
 - (void)requestAppTrackingAuthorization:(CDVInvokedUrlCommand *)command {
     [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                      messageAsNSUInteger:status];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                          messageAsNSUInteger:status];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 
 - (void)getAppTrackingAuthorizationStatus:(CDVInvokedUrlCommand *)command {
-    int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                         messageAsInt:appTrackingAuthorizationStatus];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    if (command.callbackId != nil) {
+        int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                             messageAsInt:appTrackingAuthorizationStatus];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
 }
 
 - (void)updateSkanConversionValue:(CDVInvokedUrlCommand *)command {
@@ -822,6 +985,11 @@
     NSString *coarseValue = [command argumentAtIndex:1 withDefault:nil];
     NSNumber *lockWindow = [command argumentAtIndex:2 withDefault:nil];
     if (![self isFieldValid:conversionValue]) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsString:@"Invalid conversion value passed."];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
         return;
     }
 
@@ -829,9 +997,12 @@
                           coarseValue:coarseValue
                            lockWindow:lockWindow
                 withCompletionHandler:^(NSError * _Nullable error) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                          messageAsString:[error localizedDescription]];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if (command.callbackId != nil) {
+            NSString *errorMessage = error != nil ? [error localizedDescription] : nil;
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsString:errorMessage];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     }];
 }
 

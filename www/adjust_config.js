@@ -31,6 +31,7 @@ function AdjustConfig(appToken, environment) {
     this.preinstallFilePath = null;
     this.isPlayStoreKidsComplianceEnabled = null;
     this.fbAppId = null;
+    this.isAppSetIdReadingEnabled = null;
 
     // ios only 
     this.isAdServicesEnabled = null;
@@ -235,6 +236,10 @@ AdjustConfig.prototype.setFbAppId = function (fbAppId) {
         return;
     }
     this.fbAppId = fbAppId;
+};
+
+AdjustConfig.prototype.disableAppSetIdReading = function () {
+    this.isAppSetIdReadingEnabled = false;
 };
 
 // ios only

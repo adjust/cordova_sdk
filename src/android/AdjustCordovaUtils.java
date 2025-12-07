@@ -75,6 +75,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_STORE_INFO = "storeInfo";
     public static final String KEY_STORE_NAME = "storeName";
     public static final String KEY_STORE_APP_ID = "storeAppId";
+    public static final String KEY_IS_APP_SET_ID_READING_ENABLED = "isAppSetIdReadingEnabled";
     public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
     public static final String KEY_EXTRA_PATH = "extraPath";
     public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
@@ -96,7 +97,9 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
+    public static final String COMMAND_GET_ATTRIBUTION_WITH_TIMEOUT = "getAttributionWithTimeout";
     public static final String COMMAND_GET_ADID = "getAdid";
+    public static final String COMMAND_GET_ADID_WITH_TIMEOUT = "getAdidWithTimeout";
     public static final String COMMAND_GET_SDK_VERSION = "getSdkVersion";
     public static final String COMMAND_ADD_GLOBAL_CALLBACK_PARAMETER = "addGlobalCallbackParameter";
     public static final String COMMAND_REMOVE_GLOBAL_CALLBACK_PARAMETER = "removeGlobalCallbackParameter";
@@ -116,6 +119,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_TRACK_MEASUREMENT_CONSENT = "trackMeasurementConsent";
     public static final String COMMAND_PROCESS_DEEPLINK = "processDeeplink";
     public static final String COMMAND_PROCESS_AND_RESOLVE_DEEPLINK = "processAndResolveDeeplink";
+    public static final String COMMAND_RESOLVE_LINK_WITH_URL = "resolveLinkWithUrl";
     public static final String COMMAND_GET_LAST_DEEPLINK = "getLastDeeplink";
     public static final String COMMAND_END_FIRST_SESSION_DELAY = "endFirstSessionDelay";
     public static final String COMMAND_ENABLE_COPPA_COMPLIANCE_IN_DELAY = "enableCoppaComplianceInDelay";

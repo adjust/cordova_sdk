@@ -25,7 +25,9 @@
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
+- (void)getAttributionWithTimeout:(CDVInvokedUrlCommand *)command;
 - (void)getAdid:(CDVInvokedUrlCommand *)command;
+- (void)getAdidWithTimeout:(CDVInvokedUrlCommand *)command;
 - (void)getSdkVersion:(CDVInvokedUrlCommand *)command;
 - (void)addGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
 - (void)removeGlobalCallbackParameter:(CDVInvokedUrlCommand *)command;
@@ -45,6 +47,7 @@
 - (void)trackMeasurementConsent:(CDVInvokedUrlCommand *)command;
 - (void)processDeeplink:(CDVInvokedUrlCommand *)command;
 - (void)processAndResolveDeeplink:(CDVInvokedUrlCommand *)command;
+- (void)resolveLinkWithUrl:(CDVInvokedUrlCommand *)command;
 - (void)getLastDeeplink:(CDVInvokedUrlCommand *)command;
 - (void)endFirstSessionDelay:(CDVInvokedUrlCommand *)command;
 - (void)enableCoppaComplianceInDelay:(CDVInvokedUrlCommand *)command;

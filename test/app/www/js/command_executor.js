@@ -103,6 +103,14 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'setPushToken' : this.setPushToken(command.params); break;
         case 'gdprForgetMe' : this.gdprForgetMe(command.params); break;
         case 'attributionGetter' : this.attributionGetter(command.params); break;
+        case 'adidGetter': this.adidGetter(command.params); break;
+        case 'adidGetterWithTimeout': this.adidGetterWithTimeout(command.params); break;
+        case 'attributionGetterWithTimeout': this.attributionGetterWithTimeout(command.params); break;
+        case 'idfaGetter': this.idfaGetter(command.params); break;
+        case 'idfvGetter': this.idfvGetter(command.params); break;
+        case 'googleAdIdGetter': this.googleAdIdGetter(command.params); break;
+        case 'amazonAdIdGetter': this.amazonAdIdGetter(command.params); break;
+        case 'sdkVersionGetter': this.sdkVersionGetter(command.params); break;
         case 'trackEvent' : this.trackEvent(command.params); break;
         case 'trackAdRevenue' : this.trackAdRevenue(command.params); break;
         case 'trackSubscription' : this.trackAppStoreSubscription(command.params); break;
@@ -456,8 +464,16 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('playStoreKids' in params) {
         var playStoreKidsEnabledS = getFirstParameterValue(params, 'playStoreKids');
-        var playStoreKidsEnabled = playStoreKidsEnabledS == 'true';
-        adjustConfig.enablePlayStoreKidsCompliance();
+        if (playStoreKidsEnabledS == 'true') {
+            adjustConfig.enablePlayStoreKidsCompliance();
+        }
+    }
+
+    if ('appSetIdReadingEnabled' in params) {
+        var appSetIdReadingEnabledS = getFirstParameterValue(params, 'appSetIdReadingEnabled');
+        if (appSetIdReadingEnabledS != 'true') {
+            adjustConfig.disableAppSetIdReading();
+        }
     }
 
     if ('firstSessionDelayEnabled' in params) {
@@ -854,9 +870,11 @@ AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
 };
 
 AdjustCommandExecutor.prototype.getLastDeeplink = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
     var _this = this;
     Adjust.getLastDeeplink(function(lastDeeplink) {
-        AdjustTest.addInfoToSend('last_deeplink', lastDeeplink);
+        AdjustTest.addInfoToSend('last_deeplink', lastDeeplink == null ? "" : lastDeeplink);
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
 };
@@ -936,6 +954,7 @@ AdjustCommandExecutor.prototype.processDeeplink = function(params) {
 };
 
 AdjustCommandExecutor.prototype.attributionGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
     var _this = this;
     Adjust.getAttribution(function(attribution) {
         AdjustTest.addInfoToSend('tracker_token', attribution.trackerToken);
@@ -946,13 +965,12 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         AdjustTest.addInfoToSend('creative', attribution.creative);
         AdjustTest.addInfoToSend('click_label', attribution.clickLabel);
         AdjustTest.addInfoToSend('cost_type', attribution.costType);
-        AdjustTest.addInfoToSend('cost_amount', attribution.costAmount);
+        AdjustTest.addInfoToSend('cost_amount', attribution.costAmount.toString());
         AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
         if (device.platform === 'Android') {
             AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
         }
 
-        // Remove fb_install_referrer from jsonResponse if it exists
         if (attribution.jsonResponse && device.platform === 'iOS') {
             try {
                 var json = JSON.parse(attribution.jsonResponse);
@@ -962,8 +980,51 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
                 console.warn('Failed to parse attribution.jsonResponse:', e);
             }
         }
-
         AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) {
+    var timeoutStr = getFirstParameterValue(params, 'timeout');
+    var timeout = parseInt(timeoutStr);
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    Adjust.getAttributionWithTimeout(timeout, function(attribution) {
+        if (attribution != null) {
+            AdjustTest.addInfoToSend('tracker_token', attribution.trackerToken);
+            AdjustTest.addInfoToSend('tracker_name', attribution.trackerName);
+            AdjustTest.addInfoToSend('network', attribution.network);
+            AdjustTest.addInfoToSend('campaign', attribution.campaign);
+            AdjustTest.addInfoToSend('adgroup', attribution.adgroup);
+            AdjustTest.addInfoToSend('creative', attribution.creative);
+            AdjustTest.addInfoToSend('click_label', attribution.clickLabel);
+            AdjustTest.addInfoToSend('cost_type', attribution.costType);
+            AdjustTest.addInfoToSend('cost_amount', attribution.costAmount.toString());
+            AdjustTest.addInfoToSend('cost_currency', attribution.costCurrency);
+            if (device.platform === 'Android') {
+                AdjustTest.addInfoToSend('fb_install_referrer', attribution.fbInstallReferrer);
+            }
+
+            if (attribution.jsonResponse && device.platform === 'iOS') {
+                try {
+                    var json = JSON.parse(attribution.jsonResponse);
+                    delete json.fb_install_referrer;
+                    attribution.jsonResponse = JSON.stringify(json);
+                } catch (e) {
+                    console.warn('Failed to parse attribution.jsonResponse:', e);
+                }
+            }
+            AdjustTest.addInfoToSend('json_response', attribution.jsonResponse);
+        } else {
+            if (device.platform === 'iOS') {
+                AdjustTest.addInfoToSend('attribution', 'nil');
+            } else if (device.platform === 'Android') {
+                AdjustTest.addInfoToSend('attribution', 'null');
+            }
+        }
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
         AdjustTest.sendInfoToServer(_this.extraPath);
     });
 };
@@ -991,6 +1052,102 @@ AdjustCommandExecutor.prototype.playStoreKidsComplianceInDelay = function(params
 AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
     var externalDeviceId = getFirstParameterValue(params, 'externalDeviceId');
     Adjust.setExternalDeviceIdInDelay(externalDeviceId);
+};
+
+AdjustCommandExecutor.prototype.adidGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    Adjust.getAdid(function(adid) {
+        AdjustTest.addInfoToSend('adid', adid);
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
+    var timeoutStr = getFirstParameterValue(params, 'timeout');
+    var timeout = parseInt(timeoutStr);
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    Adjust.getAdidWithTimeout(timeout, function(adid) {
+        if (adid != null) {
+            AdjustTest.addInfoToSend('adid', adid);
+        } else {
+            if (device.platform === 'iOS') {
+                AdjustTest.addInfoToSend('adid', 'nil');
+            } else if (device.platform === 'Android') {
+                AdjustTest.addInfoToSend('adid', 'null');
+            }
+        }
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.idfaGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    if (device.platform === 'iOS') {
+        Adjust.getIdfa(function(idfa) {
+            AdjustTest.addInfoToSend('idfa', idfa);
+            AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    } else {
+        console.log('[Adjust]: Error! IDFA is not available on this platform.');
+    }
+};
+
+AdjustCommandExecutor.prototype.idfvGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    if (device.platform === 'iOS') {
+        Adjust.getIdfv(function(idfv) {
+            AdjustTest.addInfoToSend('idfv', idfv);
+            AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    } else {
+        console.log('[Adjust]: Error! IDFV is not available on this platform.');
+    }
+};
+
+AdjustCommandExecutor.prototype.googleAdIdGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    if (device.platform === 'Android') {
+        Adjust.getGoogleAdId(function(googleAdId) {
+            AdjustTest.addInfoToSend('gps_adid', googleAdId);
+            AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    } else {
+        console.log('[Adjust]: Error! Google Advertising ID is not available on this platform.');
+    }
+};
+
+AdjustCommandExecutor.prototype.amazonAdIdGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    if (device.platform === 'Android') {
+        Adjust.getAmazonAdId(function(amazonAdId) {
+            AdjustTest.addInfoToSend('fire_adid', amazonAdId);
+            AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    } else {
+        console.log('[Adjust]: Error! Amazon Fire Advertising ID is not available on this platform.');
+    }
+};
+
+AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    Adjust.getSdkVersion(function(sdkVersion) {
+        AdjustTest.addInfoToSend('sdk_version', sdkVersion);
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
 };
 
 // Util methods
