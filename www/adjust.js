@@ -27,7 +27,14 @@ function callCordovaCallback(action, callback) {
     var args = Array.prototype.slice.call(arguments, 2);
 
     cordova.exec(
-        callback,
+        function(data) {
+            // handle Cordova returning [null] for null values
+            if (Array.isArray(data) && data.length === 1 && data[0] === null) {
+                callback(null);
+            } else {
+                callback(data);
+            }
+        },
         function errorHandler(err) { },
         'Adjust',
         action,
@@ -39,7 +46,18 @@ function callCordovaStringifyCallback(action, data, callback) {
     var args = Array.prototype.slice.call(arguments, 1);
 
     cordova.exec(
-        callback,
+        function(data) {
+            // handle Cordova returning [null] for null values
+            if (Array.isArray(data) && data.length === 1 && data[0] === null) {
+                if (callback) {
+                    callback(null);
+                }
+            } else {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        },
         function errorHandler(err) { },
         'Adjust',
         action,
@@ -126,6 +144,21 @@ var Adjust = {
         callCordovaStringifyCallback('processAndResolveDeeplink', adjustDeeplink, callback);
     },
 
+    resolveLinkWithUrl: function(url, resolveUrlSuffixArray, callback) {
+        if (typeof url !== 'string') {
+            console.log("[Adjust] URL is not of type string");
+            if (callback) {
+                callback(null);
+            }
+            return;
+        }
+        var params = {
+            url: url,
+            resolveUrlSuffixArray: resolveUrlSuffixArray || []
+        };
+        callCordovaStringifyCallback('resolveLinkWithUrl', params, callback);
+    },
+
     setPushToken: function(token) {
         if (typeof token !== 'string') {
             console.log("[Adjust] Push token is not of type string");
@@ -202,8 +235,57 @@ var Adjust = {
         callCordovaCallback('getAttribution', callback);
     },
 
+    getAttributionWithTimeout: function(timeoutInMilliseconds, callback) {
+        if (!Number.isInteger(timeoutInMilliseconds)) {
+            console.log("[Adjust] Timeout in milliseconds is not of type integer");
+            if (callback) {
+                callback(null);
+            }
+            return;
+        }
+        callCordovaStringifyCallback('getAttributionWithTimeout', {timeoutInMilliseconds: timeoutInMilliseconds}, function(attribution) {
+            if (callback) {
+                // convert empty object to null
+                // when native SDK returns null attribution, we get an empty object {}
+                if (attribution && typeof attribution === 'object') {
+                    var hasAnyValue = false;
+                    for (var key in attribution) {
+                        if (attribution.hasOwnProperty(key)) {
+                            var value = attribution[key];
+                            // check if value is not empty (not null, undefined, or empty string)
+                            if (value !== null && value !== undefined && value !== '') {
+                                hasAnyValue = true;
+                                break;
+                            }
+                        }
+                    }
+                    // if object has no meaningful values, return null
+                    callback(hasAnyValue ? attribution : null);
+                } else {
+                    callback(attribution);
+                }
+            }
+        });
+    },
+
     getAdid: function(callback) {
         callCordovaCallback('getAdid', callback);
+    },
+
+    getAdidWithTimeout: function(timeoutInMilliseconds, callback) {
+        if (!Number.isInteger(timeoutInMilliseconds)) {
+            console.log("[Adjust] Timeout in milliseconds is not of type integer");
+            if (callback) {
+                callback(null);
+            }
+            return;
+        }
+        callCordovaStringifyCallback('getAdidWithTimeout', {timeoutInMilliseconds: timeoutInMilliseconds}, function(adid) {
+            if (callback) {
+                // convert null/empty string to null
+                callback(adid === null || adid === undefined || adid === '' ? null : adid);
+            }
+        });
     },
 
     getLastDeeplink: function(callback) {

@@ -55,8 +55,12 @@ public class AdjustCordova extends CordovaPlugin implements
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
         } else if (action.equals(COMMAND_GET_ATTRIBUTION)) {
             executeGetAttribution(callbackContext);
+        } else if (action.equals(COMMAND_GET_ATTRIBUTION_WITH_TIMEOUT)) {
+            executeGetAttributionWithTimeout(args, callbackContext);
         } else if (action.equals(COMMAND_GET_ADID)) {
             executeGetAdid(callbackContext);
+        } else if (action.equals(COMMAND_GET_ADID_WITH_TIMEOUT)) {
+            executeGetAdidWithTimeout(args, callbackContext);
         } else if (action.equals(COMMAND_GET_GOOGLE_AD_ID)) {
             executeGetGoogleAdid(callbackContext);
         } else if (action.equals(COMMAND_GET_AMAZON_AD_ID)) {
@@ -124,6 +128,10 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         } else if (action.equals(COMMAND_PROCESS_AND_RESOLVE_DEEPLINK)) {
             if (executeProcessAndResolveDeeplink(args, callbackContext) == false) {
+                return false;
+            }
+        } else if (action.equals(COMMAND_RESOLVE_LINK_WITH_URL)) {
+            if (executeResolveLinkWithUrl(args, callbackContext) == false) {
                 return false;
             }
         } else if (action.equals(COMMAND_GET_LAST_DEEPLINK)) {
@@ -277,28 +285,37 @@ public class AdjustCordova extends CordovaPlugin implements
 
         // COPPA compliance
         if (parameters.containsKey(KEY_IS_COPPA_COMPLIANCE_ENABLED)) {
-            String strIsCoppaComplianceEnabled = parameters.get(KEY_IS_COPPA_COMPLIANCE_ENABLED).toString();
-            boolean isCoppaComplianceEnabled = Boolean.parseBoolean(strIsCoppaComplianceEnabled);
-            if (isCoppaComplianceEnabled) {
-                adjustConfig.enableCoppaCompliance();
+            Object isCoppaComplianceEnabledObj = parameters.get(KEY_IS_COPPA_COMPLIANCE_ENABLED);
+            if (isCoppaComplianceEnabledObj != null && !JSONObject.NULL.equals(isCoppaComplianceEnabledObj)) {
+                String strIsCoppaComplianceEnabled = isCoppaComplianceEnabledObj.toString();
+                boolean isCoppaComplianceEnabled = Boolean.parseBoolean(strIsCoppaComplianceEnabled);
+                if (isCoppaComplianceEnabled) {
+                    adjustConfig.enableCoppaCompliance();
+                }
             }
         }
 
         // Google Play Store kids compliance
         if (parameters.containsKey(KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED)) {
-            String strIsPlayStoreKidsComplianceEnabled = parameters.get(KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED).toString();
-            boolean isPlayStoreKidsComplianceEnabled = Boolean.parseBoolean(strIsPlayStoreKidsComplianceEnabled);
-            if (isPlayStoreKidsComplianceEnabled) {
-                adjustConfig.enablePlayStoreKidsCompliance();
+            Object isPlayStoreKidsComplianceEnabledObj = parameters.get(KEY_IS_PLAY_STORE_KIDS_COMPLIANCE_ENABLED);
+            if (isPlayStoreKidsComplianceEnabledObj != null && !JSONObject.NULL.equals(isPlayStoreKidsComplianceEnabledObj)) {
+                String strIsPlayStoreKidsComplianceEnabled = isPlayStoreKidsComplianceEnabledObj.toString();
+                boolean isPlayStoreKidsComplianceEnabled = Boolean.parseBoolean(strIsPlayStoreKidsComplianceEnabled);
+                if (isPlayStoreKidsComplianceEnabled) {
+                    adjustConfig.enablePlayStoreKidsCompliance();
+                }
             }
         }
 
         // read device info only once
         if (parameters.containsKey(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED)) {
-            String strIsDeviceIdsReadingOnceEnabled = parameters.get(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED).toString();
-            boolean isDeviceIdsReadingOnceEnabled = Boolean.parseBoolean(strIsDeviceIdsReadingOnceEnabled);
-            if (isDeviceIdsReadingOnceEnabled) {
-                adjustConfig.enableDeviceIdsReadingOnce();
+            Object isDeviceIdsReadingOnceEnabledObj = parameters.get(KEY_IS_DEVICE_IDS_READING_ONCE_ENABLED);
+            if (isDeviceIdsReadingOnceEnabledObj != null && !JSONObject.NULL.equals(isDeviceIdsReadingOnceEnabledObj)) {
+                String strIsDeviceIdsReadingOnceEnabled = isDeviceIdsReadingOnceEnabledObj.toString();
+                boolean isDeviceIdsReadingOnceEnabled = Boolean.parseBoolean(strIsDeviceIdsReadingOnceEnabled);
+                if (isDeviceIdsReadingOnceEnabled) {
+                    adjustConfig.enableDeviceIdsReadingOnce();
+                }
             }
         }
 
@@ -315,21 +332,28 @@ public class AdjustCordova extends CordovaPlugin implements
         if (parameters.containsKey(KEY_URL_STRATEGY_DOMAINS) &&
                 parameters.containsKey(KEY_USE_SUBDOMAINS) &&
                 parameters.containsKey(KEY_IS_DATA_RESIDENCY)) {
-            String strUrlStrategyDomains = parameters.get(KEY_URL_STRATEGY_DOMAINS).toString();
-            try {
-                JSONArray jsonArray = new JSONArray(strUrlStrategyDomains);
-                ArrayList<String> urlStrategyDomainsArray = new ArrayList<>();
-                for (int i = 0; i < jsonArray.length(); i += 1) {
-                    urlStrategyDomainsArray.add((String) jsonArray.get(i));
-                }
-                String strShouldUseSubdomains = parameters.get(KEY_USE_SUBDOMAINS).toString();
-                boolean useSubdomains = Boolean.parseBoolean(strShouldUseSubdomains);
+            Object urlStrategyDomainsObj = parameters.get(KEY_URL_STRATEGY_DOMAINS);
+            Object useSubdomainsObj = parameters.get(KEY_USE_SUBDOMAINS);
+            Object isDataResidencyObj = parameters.get(KEY_IS_DATA_RESIDENCY);
+            if (urlStrategyDomainsObj != null && !JSONObject.NULL.equals(urlStrategyDomainsObj) &&
+                useSubdomainsObj != null && !JSONObject.NULL.equals(useSubdomainsObj) &&
+                isDataResidencyObj != null && !JSONObject.NULL.equals(isDataResidencyObj)) {
+                String strUrlStrategyDomains = urlStrategyDomainsObj.toString();
+                try {
+                    JSONArray jsonArray = new JSONArray(strUrlStrategyDomains);
+                    ArrayList<String> urlStrategyDomainsArray = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i += 1) {
+                        urlStrategyDomainsArray.add((String) jsonArray.get(i));
+                    }
+                    String strShouldUseSubdomains = useSubdomainsObj.toString();
+                    boolean useSubdomains = Boolean.parseBoolean(strShouldUseSubdomains);
 
-                String strIsDataResidency = parameters.get(KEY_IS_DATA_RESIDENCY).toString();
-                boolean isDataResidency = Boolean.parseBoolean(strIsDataResidency);
+                    String strIsDataResidency = isDataResidencyObj.toString();
+                    boolean isDataResidency = Boolean.parseBoolean(strIsDataResidency);
 
-                adjustConfig.setUrlStrategy(urlStrategyDomainsArray, useSubdomains, isDataResidency);
-            } catch (JSONException ignored) {}
+                    adjustConfig.setUrlStrategy(urlStrategyDomainsArray, useSubdomains, isDataResidency);
+                } catch (JSONException ignored) {}
+            }
         }
 
         // main process name
@@ -374,37 +398,60 @@ public class AdjustCordova extends CordovaPlugin implements
 
         // sending in background
         if (parameters.containsKey(KEY_IS_SENDING_IN_BACKGROUND_ENABLED)) {
-            String strIsSendingInBackgroundEnabled = parameters.get(KEY_IS_SENDING_IN_BACKGROUND_ENABLED).toString();
-            boolean isSendingInBackgroundEnabled = Boolean.parseBoolean(strIsSendingInBackgroundEnabled);
-            if (isSendingInBackgroundEnabled) {
-                adjustConfig.enableSendingInBackground();
+            Object isSendingInBackgroundEnabledObj = parameters.get(KEY_IS_SENDING_IN_BACKGROUND_ENABLED);
+            if (isSendingInBackgroundEnabledObj != null && !JSONObject.NULL.equals(isSendingInBackgroundEnabledObj)) {
+                String strIsSendingInBackgroundEnabled = isSendingInBackgroundEnabledObj.toString();
+                boolean isSendingInBackgroundEnabled = Boolean.parseBoolean(strIsSendingInBackgroundEnabled);
+                if (isSendingInBackgroundEnabled) {
+                    adjustConfig.enableSendingInBackground();
+                }
             }
         }
 
         // cost data in attribution callback
         if (parameters.containsKey(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED)) {
-            String strIsCostDataInAttributionEnabled = parameters.get(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED).toString();
-            boolean isCostDataInAttributionEnabled = Boolean.parseBoolean(strIsCostDataInAttributionEnabled);
-            if (isCostDataInAttributionEnabled) {
-                adjustConfig.enableCostDataInAttribution();
+            Object isCostDataInAttributionEnabledObj = parameters.get(KEY_IS_COST_DATA_IN_ATTRIBUTION_ENABLED);
+            if (isCostDataInAttributionEnabledObj != null && !JSONObject.NULL.equals(isCostDataInAttributionEnabledObj)) {
+                String strIsCostDataInAttributionEnabled = isCostDataInAttributionEnabledObj.toString();
+                boolean isCostDataInAttributionEnabled = Boolean.parseBoolean(strIsCostDataInAttributionEnabled);
+                if (isCostDataInAttributionEnabled) {
+                    adjustConfig.enableCostDataInAttribution();
+                }
             }
         }
 
         // preinstall tracking
         if (parameters.containsKey(KEY_IS_PREINSTALL_TRACKING_ENABLED)) {
-            String strIsPreinstallTrackingEnabled = parameters.get(KEY_IS_PREINSTALL_TRACKING_ENABLED).toString();
-            boolean isPreinstallTrackingEnabled = Boolean.parseBoolean(strIsPreinstallTrackingEnabled);
-            if (isPreinstallTrackingEnabled) {
-                adjustConfig.enablePreinstallTracking();
+            Object isPreinstallTrackingEnabledObj = parameters.get(KEY_IS_PREINSTALL_TRACKING_ENABLED);
+            if (isPreinstallTrackingEnabledObj != null && !JSONObject.NULL.equals(isPreinstallTrackingEnabledObj)) {
+                String strIsPreinstallTrackingEnabled = isPreinstallTrackingEnabledObj.toString();
+                boolean isPreinstallTrackingEnabled = Boolean.parseBoolean(strIsPreinstallTrackingEnabled);
+                if (isPreinstallTrackingEnabled) {
+                    adjustConfig.enablePreinstallTracking();
+                }
             }
         }
 
         // first session delay
         if (parameters.containsKey(KEY_IS_FIRST_SESSION_DELAY_ENABLED)) {
-            String strIsFirstSessionDelayEnabled = parameters.get(KEY_IS_FIRST_SESSION_DELAY_ENABLED).toString();
-            boolean isFirstSessionDelayEnabled = Boolean.parseBoolean(strIsFirstSessionDelayEnabled);
-            if (isFirstSessionDelayEnabled) {
-                adjustConfig.enableFirstSessionDelay();
+            Object isFirstSessionDelayEnabledObj = parameters.get(KEY_IS_FIRST_SESSION_DELAY_ENABLED);
+            if (isFirstSessionDelayEnabledObj != null && !JSONObject.NULL.equals(isFirstSessionDelayEnabledObj)) {
+                String strIsFirstSessionDelayEnabled = isFirstSessionDelayEnabledObj.toString();
+                boolean isFirstSessionDelayEnabled = Boolean.parseBoolean(strIsFirstSessionDelayEnabled);
+                if (isFirstSessionDelayEnabled) {
+                    adjustConfig.enableFirstSessionDelay();
+                }
+            }
+        }
+
+        // app set ID reading
+        if (parameters.containsKey(KEY_IS_APP_SET_ID_READING_ENABLED)) {
+            Object isAppSetIdReadingEnabledObj = parameters.get(KEY_IS_APP_SET_ID_READING_ENABLED);
+            if (isAppSetIdReadingEnabledObj != null && !JSONObject.NULL.equals(isAppSetIdReadingEnabledObj)) {
+                String strIsAppSetIdReadingEnabled = isAppSetIdReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsAppSetIdReadingEnabled)) {
+                    adjustConfig.disableAppSetIdReading();
+                }
             }
         }
 
@@ -427,8 +474,11 @@ public class AdjustCordova extends CordovaPlugin implements
 
         // launching deferred deep link
         if (parameters.containsKey(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED)) {
-            String strIsDeferredDeeplinkOpeningEnabled = parameters.get(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED).toString();
-            isDeferredDeeplinkOpeningEnabled = strIsDeferredDeeplinkOpeningEnabled.equals("true");
+            Object isDeferredDeeplinkOpeningEnabledObj = parameters.get(KEY_IS_DEFERRED_DEEP_LINK_OPENING_ENABLED);
+            if (isDeferredDeeplinkOpeningEnabledObj != null && !JSONObject.NULL.equals(isDeferredDeeplinkOpeningEnabledObj)) {
+                String strIsDeferredDeeplinkOpeningEnabled = isDeferredDeeplinkOpeningEnabledObj.toString();
+                isDeferredDeeplinkOpeningEnabled = strIsDeferredDeeplinkOpeningEnabled.equals("true");
+            }
         }
 
         // attribution callback
@@ -469,9 +519,11 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.getGoogleAdId(this.cordova.getActivity().getApplicationContext(), new OnGoogleAdIdReadListener() {
             @Override
             public void onGoogleAdIdRead(String googleAdId) {
-                PluginResult pluginResult = new PluginResult(Status.OK, googleAdId);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, googleAdId);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -480,10 +532,11 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.getAmazonAdId(this.cordova.getActivity().getApplicationContext(), new OnAmazonAdIdReadListener() {
             @Override
             public void onAmazonAdIdRead(String amazonAdId) {
-                amazonAdId = (amazonAdId != null) ? amazonAdId : "";
-                PluginResult pluginResult = new PluginResult(Status.OK, amazonAdId);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, amazonAdId);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -492,33 +545,136 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.getAdid(new OnAdidReadListener() {
             @Override
             public void onAdidRead(String adid) {
-                adid = (adid != null) ? adid : "";
-                PluginResult pluginResult = new PluginResult(Status.OK, adid);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, adid != null ? adid : null);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
+            }
+        });
+    }
+
+    private void executeGetAdidWithTimeout(final JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        
+        if (jsonParameters == null || !jsonParameters.has("timeoutInMilliseconds")) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
             }
-        });
+            return;
+        }
+
+        long timeoutInMilliseconds;
+        try {
+            timeoutInMilliseconds = jsonParameters.getLong("timeoutInMilliseconds");
+        } catch (JSONException e) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return;
+        }
+
+        Adjust.getAdidWithTimeout(
+            this.cordova.getActivity().getApplicationContext(),
+            timeoutInMilliseconds,
+            new OnAdidReadListener() {
+                @Override
+                public void onAdidRead(String adid) {
+                    if (callbackContext != null) {
+                        PluginResult pluginResult = new PluginResult(Status.OK, adid != null ? adid : null);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                }
+            });
     }
 
     private void executeGetAttribution(final CallbackContext callbackContext) throws JSONException {
         Adjust.getAttribution(new OnAttributionReadListener() {
             @Override
             public void onAttributionRead(AdjustAttribution adjustAttribution) {
-                JSONObject attributionJsonData = new JSONObject(getAttributionMap(adjustAttribution));
-                PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
+                if (callbackContext != null) {
+                    if (adjustAttribution == null) {
+                        JSONObject emptyMap = new JSONObject();
+                        PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    } else {
+                        JSONObject attributionJsonData = new JSONObject(getAttributionMap(adjustAttribution));
+                        PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                }
+            }
+        });
+    }
+
+    private void executeGetAttributionWithTimeout(final JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        
+        if (jsonParameters == null || !jsonParameters.has("timeoutInMilliseconds")) {
+            if (callbackContext != null) {
+                JSONObject emptyMap = new JSONObject();
+                PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
             }
-        });
+            return;
+        }
+
+        long timeoutInMilliseconds;
+        try {
+            timeoutInMilliseconds = jsonParameters.getLong("timeoutInMilliseconds");
+        } catch (JSONException e) {
+            if (callbackContext != null) {
+                JSONObject emptyMap = new JSONObject();
+                PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return;
+        }
+
+        Adjust.getAttributionWithTimeout(
+            this.cordova.getActivity().getApplicationContext(),
+            timeoutInMilliseconds,
+            new OnAttributionReadListener() {
+                @Override
+                public void onAttributionRead(AdjustAttribution adjustAttribution) {
+                    if (callbackContext != null) {
+                        if (adjustAttribution == null) {
+                            JSONObject emptyMap = new JSONObject();
+                            PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
+                            pluginResult.setKeepCallback(true);
+                            callbackContext.sendPluginResult(pluginResult);
+                        } else {
+                            JSONObject attributionJsonData = new JSONObject(getAttributionMap(adjustAttribution));
+                            PluginResult pluginResult = new PluginResult(Status.OK, attributionJsonData);
+                            pluginResult.setKeepCallback(true);
+                            callbackContext.sendPluginResult(pluginResult);
+                        }
+                    }
+                }
+            });
     }
 
     private void executeGetSdkVersion(final CallbackContext callbackContext) throws JSONException {
         Adjust.getSdkVersion(new OnSdkVersionReadListener() {
             @Override
             public void onSdkVersionRead(String sdkVersion) {
-                sdkVersion = (sdkVersion != null) ? sdkVersion : "";
-                PluginResult pluginResult = new PluginResult(Status.OK, sdkVersion);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, sdkVersion != null ? sdkVersion : null);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -527,8 +683,10 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.isEnabled(this.cordova.getActivity().getApplicationContext(), new OnIsEnabledListener() {
             @Override
             public void onIsEnabledRead(boolean isEnabled) {
-                PluginResult pluginResult = new PluginResult(Status.OK, isEnabled);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, isEnabled);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -537,10 +695,12 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.getLastDeeplink(this.cordova.getActivity().getApplicationContext(), new OnLastDeeplinkReadListener() {
             @Override
             public void onLastDeeplinkRead(Uri uri) {
-                String uriS = (uri != null) ? uri.toString() : "";
-                PluginResult pluginResult = new PluginResult(Status.OK, uriS);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    String uriS = (uri != null) ? uri.toString() : null;
+                    PluginResult pluginResult = new PluginResult(Status.OK, uriS);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -645,6 +805,17 @@ public class AdjustCordova extends CordovaPlugin implements
         String params = args.getString(0);
         JSONArray jsonArrayParams = new JSONArray(params);
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        
+        if (jsonParameters == null) {
+            if (callbackContext != null) {
+                JSONObject emptyMap = new JSONObject();
+                PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return;
+        }
+        
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
         String productId = null;
@@ -666,11 +837,13 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.verifyPlayStorePurchase(playStorePurchase, new OnPurchaseVerificationFinishedListener() {
             @Override
             public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
-                Map<String, String> resultMap = getPurchaseVerificationResultMap(verificationResult);
-                JSONObject verificationResultJsonData = new JSONObject(resultMap);
-                PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    Map<String, String> resultMap = getPurchaseVerificationResultMap(verificationResult);
+                    JSONObject verificationResultJsonData = new JSONObject(resultMap);
+                    PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -680,17 +853,25 @@ public class AdjustCordova extends CordovaPlugin implements
             final CallbackContext callbackContext) throws JSONException {
         AdjustEvent adjustEvent = serializeAdjustEventFromJson(args);
         if (adjustEvent == null) {
+            if (callbackContext != null) {
+                JSONObject emptyMap = new JSONObject();
+                PluginResult pluginResult = new PluginResult(Status.OK, emptyMap);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
             return;
         }
 
         Adjust.verifyAndTrackPlayStorePurchase(adjustEvent, new OnPurchaseVerificationFinishedListener() {
             @Override
             public void onVerificationFinished(AdjustPurchaseVerificationResult verificationResult) {
-                Map<String, String> resultMap = getPurchaseVerificationResultMap(verificationResult);
-                JSONObject verificationResultJsonData = new JSONObject(resultMap);
-                PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
-                pluginResult.setKeepCallback(true);
-                callbackContext.sendPluginResult(pluginResult);
+                if (callbackContext != null) {
+                    Map<String, String> resultMap = getPurchaseVerificationResultMap(verificationResult);
+                    JSONObject verificationResultJsonData = new JSONObject(resultMap);
+                    PluginResult pluginResult = new PluginResult(Status.OK, verificationResultJsonData);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
             }
         });
     }
@@ -723,12 +904,27 @@ public class AdjustCordova extends CordovaPlugin implements
         String params = args.getString(0);
         JSONArray jsonArrayParams = new JSONArray(params);
         JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        
+        if (jsonParameters == null) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return false;
+        }
+        
         Map<String, Object> parameters = jsonObjectToMap(jsonParameters);
 
         String deeplink = null;
         if (parameters.containsKey(KEY_DEEPLINK)) {
             deeplink = parameters.get(KEY_DEEPLINK).toString();
         } else {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
             return false;
         }
         AdjustDeeplink adjustDeeplink = new AdjustDeeplink(Uri.parse(deeplink));
@@ -740,11 +936,71 @@ public class AdjustCordova extends CordovaPlugin implements
         Adjust.processAndResolveDeeplink(adjustDeeplink, this.cordova.getActivity().getApplicationContext(), new OnDeeplinkResolvedListener() {
             @Override
             public void onDeeplinkResolved(String resolvedLink) {
-                PluginResult pluginResult = new PluginResult(Status.OK, resolvedLink);
+                if (callbackContext != null) {
+                    PluginResult pluginResult = new PluginResult(Status.OK, resolvedLink);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+                }
+            }
+        });
+        return true;
+    }
+
+    private Boolean executeResolveLinkWithUrl(
+            final JSONArray args,
+            final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+        
+        if (jsonParameters == null) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
             }
-        });
+            return false;
+        }
+        
+        String url = null;
+        if (jsonParameters.has("url")) {
+            url = jsonParameters.getString("url");
+        } else {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return false;
+        }
+        
+        String[] suffixArray = null;
+        if (jsonParameters.has("resolveUrlSuffixArray")) {
+            JSONArray suffixJsonArray = jsonParameters.optJSONArray("resolveUrlSuffixArray");
+            if (suffixJsonArray != null && suffixJsonArray.length() > 0) {
+                int n = suffixJsonArray.length();
+                suffixArray = new String[n];
+                for (int i = 0; i < n; i++) {
+                    suffixArray[i] = suffixJsonArray.getString(i);
+                }
+            }
+        }
+        
+        com.adjust.sdk.AdjustLinkResolution.resolveLink(
+            url,
+            suffixArray,
+            new com.adjust.sdk.AdjustLinkResolution.AdjustLinkResolutionCallback() {
+                @Override
+                public void resolvedLinkCallback(Uri resolvedLink) {
+                    if (callbackContext != null) {
+                        String resolvedUrl = resolvedLink != null ? resolvedLink.toString() : null;
+                        PluginResult pluginResult = new PluginResult(Status.OK, resolvedUrl);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                }
+            }
+        );
         return true;
     }
 

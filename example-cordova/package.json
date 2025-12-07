@@ -16,7 +16,7 @@
     "com.adjust.sdk": "file:../temp_plugin",
     "cordova-android": "^14.0.1",
     "cordova-custom-config": "^5.1.1",
-    "cordova-ios": "^7.1.1",
+    "cordova-ios": "^8.0.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^5.0.2",
     "cordova-plugin-device": "github:apache/cordova-plugin-device",
