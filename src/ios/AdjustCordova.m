@@ -80,6 +80,7 @@
     NSString *sessionTrackingFailedCallbackId;
     NSString *sessionTrackingSucceededCallbackId;
     NSString *deferredDeeplinkCallbackId;
+    NSString *remoteTriggerCallbackId;
     NSString *skanUpdatedCallbackId;
 }
 
@@ -90,6 +91,7 @@
     sessionTrackingFailedCallbackId = nil;
     sessionTrackingSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
+    remoteTriggerCallbackId = nil;
     skanUpdatedCallbackId = nil;
 }
 
@@ -276,6 +278,7 @@
         || sessionTrackingSucceededCallbackId != nil
         || sessionTrackingFailedCallbackId != nil
         || deferredDeeplinkCallbackId != nil
+        || remoteTriggerCallbackId != nil
         || skanUpdatedCallbackId != nil) {
         [adjustConfig setDelegate:
          [AdjustCordovaDelegate getInstanceWithSwizzledAttributionCallbackId:attributionCallbackId
@@ -284,6 +287,7 @@
                                           sessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId
                                              sessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId
                                                   deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
+                                                   remoteTriggerCallbackId:remoteTriggerCallbackId
                                                        skanUpdatedCallbackId:skanUpdatedCallbackId
                                                 shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
                                                          withCommandDelegate:self.commandDelegate]];
@@ -315,6 +319,10 @@
 
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command {
     deferredDeeplinkCallbackId = command.callbackId;
+}
+
+- (void)setRemoteTriggerCallback:(CDVInvokedUrlCommand *)command {
+    remoteTriggerCallbackId = command.callbackId;
 }
 
 - (void)setPushToken:(CDVInvokedUrlCommand *)command {
@@ -1127,6 +1135,7 @@
     sessionTrackingFailedCallbackId = nil;
     sessionTrackingSucceededCallbackId = nil;
     deferredDeeplinkCallbackId = nil;
+    remoteTriggerCallbackId = nil;
     skanUpdatedCallbackId = nil;
     [AdjustCordovaDelegate teardown];
 }

@@ -23,6 +23,7 @@
 - (void)setSessionTrackingSucceededCallback:(CDVInvokedUrlCommand *)command;
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
+- (void)setRemoteTriggerCallback:(CDVInvokedUrlCommand *)command;
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getAttributionWithTimeout:(CDVInvokedUrlCommand *)command;

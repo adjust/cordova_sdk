@@ -75,6 +75,8 @@ public class AdjustCordovaUtils {
     public static final String KEY_STORE_INFO = "storeInfo";
     public static final String KEY_STORE_NAME = "storeName";
     public static final String KEY_STORE_APP_ID = "storeAppId";
+    public static final String KEY_LABEL = "label";
+    public static final String KEY_PAYLOAD = "payload";
     public static final String KEY_IS_APP_SET_ID_READING_ENABLED = "isAppSetIdReadingEnabled";
     public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
     public static final String KEY_EXTRA_PATH = "extraPath";
@@ -95,6 +97,7 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_SESSION_TRACKING_SUCCEEDED_CALLBACK = "setSessionTrackingSucceededCallback";
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
+    public static final String COMMAND_SET_REMOTE_TRIGGER_CALLBACK = "setRemoteTriggerCallback";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
     public static final String COMMAND_GET_ATTRIBUTION_WITH_TIMEOUT = "getAttributionWithTimeout";
@@ -252,5 +255,16 @@ public class AdjustCordovaUtils {
         addValueOrEmpty(map, KEY_VERIFICATION_STATUS, verificationResult.getVerificationStatus());
         addValueOrEmpty(map, KEY_MESSAGE, verificationResult.getMessage());
         return map;
+    }
+
+    public static JSONObject getRemoteTriggerJson(AdjustRemoteTrigger remoteTrigger) throws JSONException {
+        JSONObject jsonRemoteTrigger = new JSONObject();
+        if (remoteTrigger == null) {
+            return jsonRemoteTrigger;
+        }
+
+        jsonRemoteTrigger.put(KEY_LABEL, remoteTrigger.getLabel() != null ? remoteTrigger.getLabel() : JSONObject.NULL);
+        jsonRemoteTrigger.put(KEY_PAYLOAD, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload() : JSONObject.NULL);
+        return jsonRemoteTrigger;
     }
 }

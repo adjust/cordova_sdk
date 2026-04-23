@@ -33,6 +33,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                 sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
                    sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
                         deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                           remoteTriggerCallbackId:(NSString *)remoteTriggerCallbackId
                              skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
@@ -70,6 +71,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
             [defaultInstance swizzleCallbackMethod:@selector(adjustDeferredDeeplinkReceived:)
                                   swizzledSelector:@selector(adjustDeferredDeeplinkReceivedWannabe:)];
         }
+        if (remoteTriggerCallbackId != nil &&
+            remoteTriggerCallbackId.length > 0) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustRemoteTriggerReceived:)
+                                  swizzledSelector:@selector(adjustRemoteTriggerReceivedWannabe:)];
+        }
         if (skanUpdatedCallbackId != nil &&
             skanUpdatedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
@@ -82,6 +88,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         [defaultInstance setSessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId];
         [defaultInstance setSessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId];
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
+        [defaultInstance setRemoteTriggerCallbackId:remoteTriggerCallbackId];
         [defaultInstance setSkanUpdatedCallbackId:skanUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
@@ -323,6 +330,23 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult
                                          callbackId:_skanUpdatedCallbackId];
+}
+
+- (void)adjustRemoteTriggerReceivedWannabe:(ADJRemoteTrigger *)remoteTrigger {
+    if (remoteTrigger == nil) {
+        return;
+    }
+
+    NSDictionary *remoteTriggerDictionary = @{
+        @"label": remoteTrigger.label == nil ? [NSNull null] : remoteTrigger.label,
+        @"payload": remoteTrigger.payload == nil ? [NSNull null] : remoteTrigger.payload
+    };
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:remoteTriggerDictionary];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult
+                                         callbackId:_remoteTriggerCallbackId];
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector

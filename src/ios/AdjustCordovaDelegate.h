@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *sessionTrackingSucceededCallbackId;
 @property (nonatomic, copy) NSString *sessionTrackingFailedCallbackId;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackId;
+@property (nonatomic, copy) NSString *remoteTriggerCallbackId;
 @property (nonatomic, copy) NSString *skanUpdatedCallbackId;
 @property (nonatomic) id<CDVCommandDelegate> adjustCordovaCommandDelegate;
 
@@ -32,6 +33,7 @@
                 sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
                    sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
                         deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                           remoteTriggerCallbackId:(NSString *)remoteTriggerCallbackId
                              skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate;

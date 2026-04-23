@@ -24,6 +24,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingSucceededCallback = null;
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
+    this.remoteTriggerCallback = null;
 
     // android only
     this.processName = null;
@@ -206,6 +207,18 @@ AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
 
 AdjustConfig.prototype.hasDeferredDeeplinkCallback = function() {
     return this.deferredDeeplinkCallback !== null;
+};
+
+AdjustConfig.prototype.getRemoteTriggerCallback = function() {
+    return this.remoteTriggerCallback;
+};
+
+AdjustConfig.prototype.setRemoteTriggerCallback = function(callback) {
+    this.remoteTriggerCallback = callback;
+};
+
+AdjustConfig.prototype.hasRemoteTriggerCallback = function() {
+    return this.remoteTriggerCallback !== null;
 };
 
 // android only

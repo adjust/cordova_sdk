@@ -89,6 +89,9 @@ var Adjust = {
         if (adjustConfig.hasDeferredDeeplinkCallback()) {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
+        if (adjustConfig.hasRemoteTriggerCallback()) {
+            callCordovaCallback('setRemoteTriggerCallback', adjustConfig.getRemoteTriggerCallback());
+        }
         if (adjustConfig.hasSkanUpdatedCallback()) {
             callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }

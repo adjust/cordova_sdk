@@ -25,7 +25,8 @@ public class AdjustCordova extends CordovaPlugin implements
         OnEventTrackingFailedListener,
         OnSessionTrackingSucceededListener,
         OnSessionTrackingFailedListener,
-        OnDeferredDeeplinkResponseListener {
+        OnDeferredDeeplinkResponseListener,
+        OnRemoteTriggerListener {
     private boolean isDeferredDeeplinkOpeningEnabled = true;
     private CallbackContext attributionCallbackContext;
     private CallbackContext eventTrackingSucceededCallbackContext;
@@ -33,6 +34,7 @@ public class AdjustCordova extends CordovaPlugin implements
     private CallbackContext sessionTrackingSucceededCallbackContext;
     private CallbackContext sessionTrackingFailedCallbackContext;
     private CallbackContext deferredDeeplinkCallbackContext;
+    private CallbackContext remoteTriggerCallbackContext;
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -50,6 +52,8 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingFailedCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK)) {
             deferredDeeplinkCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_REMOTE_TRIGGER_CALLBACK)) {
+            remoteTriggerCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
@@ -158,6 +162,7 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingSucceededCallbackContext = null;
             sessionTrackingFailedCallbackContext = null;
             deferredDeeplinkCallbackContext = null;
+            remoteTriggerCallbackContext = null;
             isDeferredDeeplinkOpeningEnabled = true;
         } else if (action.equals(COMMAND_SET_SKAN_UPDATED_CALLBACK)) {
             // ignore on android
@@ -509,6 +514,11 @@ public class AdjustCordova extends CordovaPlugin implements
         // deferred deep link callback
         if (deferredDeeplinkCallbackContext != null) {
             adjustConfig.setOnDeferredDeeplinkResponseListener(this);
+        }
+
+        // remote trigger callback
+        if (remoteTriggerCallbackContext != null) {
+            adjustConfig.setOnRemoteTriggerListener(this);
         }
 
         // initialize SDK
@@ -1320,6 +1330,21 @@ public class AdjustCordova extends CordovaPlugin implements
         }
 
         return this.isDeferredDeeplinkOpeningEnabled;
+    }
+
+    @Override
+    public void onRemoteTrigger(AdjustRemoteTrigger remoteTrigger) {
+        if (remoteTriggerCallbackContext == null) {
+            return;
+        }
+
+        try {
+            JSONObject jsonData = getRemoteTriggerJson(remoteTrigger);
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
+            remoteTriggerCallbackContext.sendPluginResult(pluginResult);
+        } catch (JSONException ignored) {
+        }
     }
 
     private AdjustEvent serializeAdjustEventFromJson(final JSONArray args) throws JSONException {
