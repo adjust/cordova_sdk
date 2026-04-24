@@ -260,11 +260,13 @@ public class AdjustCordovaUtils {
     public static JSONObject getRemoteTriggerJson(AdjustRemoteTrigger remoteTrigger) throws JSONException {
         JSONObject jsonRemoteTrigger = new JSONObject();
         if (remoteTrigger == null) {
+            jsonRemoteTrigger.put(KEY_LABEL, "");
+            jsonRemoteTrigger.put(KEY_PAYLOAD, new JSONObject());
             return jsonRemoteTrigger;
         }
 
-        jsonRemoteTrigger.put(KEY_LABEL, remoteTrigger.getLabel() != null ? remoteTrigger.getLabel() : JSONObject.NULL);
-        jsonRemoteTrigger.put(KEY_PAYLOAD, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload() : JSONObject.NULL);
+        jsonRemoteTrigger.put(KEY_LABEL, remoteTrigger.getLabel() != null ? remoteTrigger.getLabel() : "");
+        jsonRemoteTrigger.put(KEY_PAYLOAD, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload() : new JSONObject());
         return jsonRemoteTrigger;
     }
 }

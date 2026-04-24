@@ -337,10 +337,12 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         return;
     }
 
-    NSDictionary *remoteTriggerDictionary = @{
-        @"label": remoteTrigger.label == nil ? [NSNull null] : remoteTrigger.label,
-        @"payload": remoteTrigger.payload == nil ? [NSNull null] : remoteTrigger.payload
-    };
+    NSMutableDictionary *remoteTriggerDictionary = [NSMutableDictionary dictionary];
+    [self addValueOrEmpty:remoteTrigger.label
+                  withKey:@"label"
+             toDictionary:remoteTriggerDictionary];
+    [remoteTriggerDictionary setObject:(remoteTrigger.payload == nil ? @{} : remoteTrigger.payload)
+                                forKey:@"payload"];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                   messageAsDictionary:remoteTriggerDictionary];
