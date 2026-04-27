@@ -545,7 +545,7 @@ export interface AdjustSkanData {
 
 export interface AdjustRemoteTrigger {
   label: string;
-  payload: { [key: string]: any };
+  payloadJson: string;
 }
 
 export interface AdjustPurchaseVerificationResult {

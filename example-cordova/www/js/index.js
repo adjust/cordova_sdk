@@ -73,7 +73,7 @@ var app = {
         adjustConfig.setRemoteTriggerCallback(function(remoteTrigger) {
             console.log("[AdjustExample]: Remote trigger callback received.");
             console.log("[AdjustExample]: Label: " + remoteTrigger.label);
-            console.log("[AdjustExample]: Payload: " + JSON.stringify(remoteTrigger.payload));
+            console.log("[AdjustExample]: Payload JSON: " + remoteTrigger.payloadJson);
         });
 
         adjustConfig.setSkanUpdatedCallback(function(skanData) {

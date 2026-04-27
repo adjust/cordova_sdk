@@ -76,7 +76,7 @@ public class AdjustCordovaUtils {
     public static final String KEY_STORE_NAME = "storeName";
     public static final String KEY_STORE_APP_ID = "storeAppId";
     public static final String KEY_LABEL = "label";
-    public static final String KEY_PAYLOAD = "payload";
+    public static final String KEY_PAYLOAD_JSON = "payloadJson";
     public static final String KEY_IS_APP_SET_ID_READING_ENABLED = "isAppSetIdReadingEnabled";
     public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
     public static final String KEY_EXTRA_PATH = "extraPath";
@@ -261,12 +261,12 @@ public class AdjustCordovaUtils {
         JSONObject jsonRemoteTrigger = new JSONObject();
         if (remoteTrigger == null) {
             jsonRemoteTrigger.put(KEY_LABEL, "");
-            jsonRemoteTrigger.put(KEY_PAYLOAD, new JSONObject());
+            jsonRemoteTrigger.put(KEY_PAYLOAD_JSON, "{}");
             return jsonRemoteTrigger;
         }
 
         jsonRemoteTrigger.put(KEY_LABEL, remoteTrigger.getLabel() != null ? remoteTrigger.getLabel() : "");
-        jsonRemoteTrigger.put(KEY_PAYLOAD, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload() : new JSONObject());
+        jsonRemoteTrigger.put(KEY_PAYLOAD_JSON, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload().toString() : "{}");
         return jsonRemoteTrigger;
     }
 }

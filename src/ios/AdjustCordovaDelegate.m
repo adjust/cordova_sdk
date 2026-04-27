@@ -341,8 +341,8 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     [self addValueOrEmpty:remoteTrigger.label
                   withKey:@"label"
              toDictionary:remoteTriggerDictionary];
-    [remoteTriggerDictionary setObject:(remoteTrigger.payload == nil ? @{} : remoteTrigger.payload)
-                                forKey:@"payload"];
+    [remoteTriggerDictionary setObject:[self jsonStringOrEmptyObject:remoteTrigger.payload]
+                                forKey:@"payloadJson"];
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                   messageAsDictionary:remoteTriggerDictionary];
@@ -378,6 +378,23 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     } else {
         [dictionary setObject:@"" forKey:key];
     }
+}
+
+- (NSString *)jsonStringOrEmptyObject:(id)object {
+    if (object == nil || ![NSJSONSerialization isValidJSONObject:object]) {
+        return @"{}";
+    }
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object
+                                                       options:0
+                                                         error:nil];
+    if (jsonData == nil) {
+        return @"{}";
+    }
+
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                 encoding:NSUTF8StringEncoding];
+    return jsonString == nil ? @"{}" : jsonString;
 }
 
 @end

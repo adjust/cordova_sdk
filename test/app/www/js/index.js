@@ -21,7 +21,7 @@ var app = {
             }
 
             var urlOverwrite = "";
-            var ipAddress = "192.168.21.36";
+            var ipAddress = "192.168.86.245";
             if (device.platform === "Android") {
                 urlOverwrite = "https://" + ipAddress + ":8443";
             } else if (device.platform === "iOS") {
