@@ -33,6 +33,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                 sessionTrackingSucceededCallbackId:(NSString *)sessionTrackingSucceededCallbackId
                    sessionTrackingFailedCallbackId:(NSString *)sessionTrackingFailedCallbackId
                         deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
+                           remoteTriggerCallbackId:(NSString *)remoteTriggerCallbackId
                              skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
@@ -70,6 +71,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
             [defaultInstance swizzleCallbackMethod:@selector(adjustDeferredDeeplinkReceived:)
                                   swizzledSelector:@selector(adjustDeferredDeeplinkReceivedWannabe:)];
         }
+        if (remoteTriggerCallbackId != nil &&
+            remoteTriggerCallbackId.length > 0) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustRemoteTriggerReceived:)
+                                  swizzledSelector:@selector(adjustRemoteTriggerReceivedWannabe:)];
+        }
         if (skanUpdatedCallbackId != nil &&
             skanUpdatedCallbackId.length > 0) {
             [defaultInstance swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
@@ -82,6 +88,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         [defaultInstance setSessionTrackingSucceededCallbackId:sessionTrackingSucceededCallbackId];
         [defaultInstance setSessionTrackingFailedCallbackId:sessionTrackingFailedCallbackId];
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
+        [defaultInstance setRemoteTriggerCallbackId:remoteTriggerCallbackId];
         [defaultInstance setSkanUpdatedCallbackId:skanUpdatedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
@@ -325,6 +332,25 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                                          callbackId:_skanUpdatedCallbackId];
 }
 
+- (void)adjustRemoteTriggerReceivedWannabe:(ADJRemoteTrigger *)remoteTrigger {
+    if (remoteTrigger == nil) {
+        return;
+    }
+
+    NSMutableDictionary *remoteTriggerDictionary = [NSMutableDictionary dictionary];
+    [self addValueOrEmpty:remoteTrigger.label
+                  withKey:@"label"
+             toDictionary:remoteTriggerDictionary];
+    [remoteTriggerDictionary setObject:[self jsonStringOrEmptyObject:remoteTrigger.payload]
+                                forKey:@"payloadJson"];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:remoteTriggerDictionary];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult
+                                         callbackId:_remoteTriggerCallbackId];
+}
+
 - (void)swizzleCallbackMethod:(SEL)originalSelector
              swizzledSelector:(SEL)swizzledSelector {
     Class class = [self class];
@@ -352,6 +378,23 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     } else {
         [dictionary setObject:@"" forKey:key];
     }
+}
+
+- (NSString *)jsonStringOrEmptyObject:(id)object {
+    if (object == nil || ![NSJSONSerialization isValidJSONObject:object]) {
+        return @"{}";
+    }
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object
+                                                       options:0
+                                                         error:nil];
+    if (jsonData == nil) {
+        return @"{}";
+    }
+
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                 encoding:NSUTF8StringEncoding];
+    return jsonString == nil ? @"{}" : jsonString;
 }
 
 @end

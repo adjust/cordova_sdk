@@ -27,6 +27,7 @@ export class AdjustConfig {
   private sessionTrackingSucceededCallback: (session: AdjustSessionSuccess) => void = null;
   private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
   private deferredDeeplinkCallback: (deeplink: string) => void = null;
+  private remoteTriggerCallback: (remoteTrigger: AdjustRemoteTrigger) => void = null;
 
   // android only
   private processName: string = null;
@@ -126,6 +127,10 @@ export class AdjustConfig {
     this.deferredDeeplinkCallback = deferredDeeplinkCallback;
   }
 
+  setRemoteTriggerCallback(remoteTriggerCallback: (remoteTrigger: AdjustRemoteTrigger) => void): void {
+    this.remoteTriggerCallback = remoteTriggerCallback;
+  }
+
   private getAttributionCallback(): ((attribution: AdjustAttribution) => void) | null {
     return this.attributionCallback;
   }
@@ -150,6 +155,10 @@ export class AdjustConfig {
     return this.deferredDeeplinkCallback;
   }
 
+  private getRemoteTriggerCallback(): ((remoteTrigger: AdjustRemoteTrigger) => void) | null {
+    return this.remoteTriggerCallback;
+  }
+
   private hasAttributionCallback(): boolean {
     return this.attributionCallback !== null;
   }
@@ -172,6 +181,10 @@ export class AdjustConfig {
 
   private hasDeferredDeeplinkCallback(): boolean {
     return this.deferredDeeplinkCallback !== null;
+  }
+
+  private hasRemoteTriggerCallback(): boolean {
+    return this.remoteTriggerCallback !== null;
   }
 
   // android only
@@ -530,6 +543,11 @@ export interface AdjustSkanData {
   error: string;
 }
 
+export interface AdjustRemoteTrigger {
+  label: string;
+  payloadJson: string;
+}
+
 export interface AdjustPurchaseVerificationResult {
   verificationStatus: string;
   code: number;
@@ -579,6 +597,7 @@ export enum AdjustLogLevel {
  * AdjustEventSuccess
  * AdjustEventFailure
  * AdjustSkanData
+ * AdjustRemoteTrigger
  * AdjustPurchaseVerificationResult
  * @classes
  * AdjustConfig

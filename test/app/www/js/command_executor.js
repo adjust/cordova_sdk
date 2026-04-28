@@ -424,6 +424,15 @@ AdjustCommandExecutor.prototype.config = function(params) {
         });
     }
 
+    if ('remoteTriggerCallback' in params) {
+        var _this = this;
+        adjustConfig.setRemoteTriggerCallback(function(remoteTrigger) {
+            AdjustTest.addInfoToSend('label', remoteTrigger.label);
+            AdjustTest.addInfoToSend('payload', remoteTrigger.payloadJson);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    }
+
     if ('skanCallback' in params) {
         var _this = this;
         adjustConfig.setSkanUpdatedCallback(function(data) {

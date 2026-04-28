@@ -89,6 +89,9 @@ var Adjust = {
         if (adjustConfig.hasDeferredDeeplinkCallback()) {
             callCordovaCallback('setDeferredDeeplinkCallback', adjustConfig.getDeferredDeeplinkCallback());
         }
+        if (adjustConfig.hasRemoteTriggerCallback()) {
+            callCordovaCallback('setRemoteTriggerCallback', adjustConfig.getRemoteTriggerCallback());
+        }
         if (adjustConfig.hasSkanUpdatedCallback()) {
             callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }
@@ -300,7 +303,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.5.0';
+        return 'cordova5.6.0';
     },
 
     // ios only
