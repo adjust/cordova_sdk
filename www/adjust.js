@@ -303,7 +303,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.6.0';
+        return 'cordova5.8.0';
     },
 
     // ios only
