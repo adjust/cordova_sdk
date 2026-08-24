@@ -5,6 +5,8 @@ function AdjustConfig(appToken, environment) {
     this.isSendingInBackgroundEnabled = null;
     this.isCostDataInAttributionEnabled = null;
     this.isDeviceIdsReadingOnceEnabled = null;
+    this.isDeviceIdsReadingEnabled = null;
+    this.isFbIdReadingEnabled = null;
     this.urlStrategyDomains = null;
     this.useSubdomains = null;
     this.isDataResidency = null;
@@ -25,6 +27,7 @@ function AdjustConfig(appToken, environment) {
     this.sessionTrackingFailedCallback = null;
     this.deferredDeeplinkCallback = null;
     this.remoteTriggerCallback = null;
+    this.thirdPartySharingSettingsChangedCallback = null;
 
     // android only
     this.processName = null;
@@ -33,6 +36,10 @@ function AdjustConfig(appToken, environment) {
     this.isPlayStoreKidsComplianceEnabled = null;
     this.fbAppId = null;
     this.isAppSetIdReadingEnabled = null;
+    this.isGoogleAdIdReadingEnabled = null;
+    this.isAndroidIdReadingEnabled = null;
+    this.isFireAdIdReadingEnabled = null;
+    this.isDeviceIdsFromPluginsReadingEnabled = null;
 
     // ios only 
     this.isAdServicesEnabled = null;
@@ -99,6 +106,14 @@ AdjustConfig.prototype.enableCostDataInAttribution = function() {
 
 AdjustConfig.prototype.enableDeviceIdsReadingOnce = function () {
     this.isDeviceIdsReadingOnceEnabled = true;
+};
+
+AdjustConfig.prototype.disableDeviceIdsReading = function() {
+    this.isDeviceIdsReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableFbIdReading = function() {
+    this.isFbIdReadingEnabled = false;
 };
 
 AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
@@ -221,6 +236,18 @@ AdjustConfig.prototype.hasRemoteTriggerCallback = function() {
     return this.remoteTriggerCallback !== null;
 };
 
+AdjustConfig.prototype.getThirdPartySharingSettingsChangedCallback = function() {
+    return this.thirdPartySharingSettingsChangedCallback;
+};
+
+AdjustConfig.prototype.setThirdPartySharingSettingsChangedCallback = function(callback) {
+    this.thirdPartySharingSettingsChangedCallback = callback;
+};
+
+AdjustConfig.prototype.hasThirdPartySharingSettingsChangedCallback = function() {
+    return this.thirdPartySharingSettingsChangedCallback !== null;
+};
+
 // android only
 
 AdjustConfig.prototype.setProcessName = function(processName) {
@@ -253,6 +280,22 @@ AdjustConfig.prototype.setFbAppId = function (fbAppId) {
 
 AdjustConfig.prototype.disableAppSetIdReading = function () {
     this.isAppSetIdReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableGoogleAdIdReading = function() {
+    this.isGoogleAdIdReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableAndroidIdReading = function() {
+    this.isAndroidIdReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableFireAdIdReading = function() {
+    this.isFireAdIdReadingEnabled = false;
+};
+
+AdjustConfig.prototype.disableDeviceIdsFromPluginsReading = function() {
+    this.isDeviceIdsFromPluginsReadingEnabled = false;
 };
 
 // ios only

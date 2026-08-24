@@ -95,6 +95,9 @@ var Adjust = {
         if (adjustConfig.hasSkanUpdatedCallback()) {
             callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }
+        if (adjustConfig.hasThirdPartySharingSettingsChangedCallback()) {
+            callCordovaCallback('setThirdPartySharingSettingsChangedCallback', adjustConfig.getThirdPartySharingSettingsChangedCallback());
+        }
 
         callCordovaStringify('initSdk', adjustConfig);
     },
@@ -293,6 +296,21 @@ var Adjust = {
 
     getLastDeeplink: function(callback) {
         callCordovaCallback('getLastDeeplink', callback);
+    },
+
+    getThirdPartySharingSettingsWithTimeout: function(timeoutInMilliseconds, callback) {
+        if (!Number.isInteger(timeoutInMilliseconds)) {
+            console.log("[Adjust] Timeout in milliseconds is not of type integer");
+            if (callback) {
+                callback(null);
+            }
+            return;
+        }
+        callCordovaStringifyCallback('getThirdPartySharingSettingsWithTimeout', {timeoutInMilliseconds: timeoutInMilliseconds}, function(thirdPartySharingSettingsJson) {
+            if (callback) {
+                callback(thirdPartySharingSettingsJson === null || thirdPartySharingSettingsJson === undefined || thirdPartySharingSettingsJson === '' ? null : thirdPartySharingSettingsJson);
+            }
+        });
     },
 
     getSdkVersion: function(callback) {

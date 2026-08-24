@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackId;
 @property (nonatomic, copy) NSString *remoteTriggerCallbackId;
 @property (nonatomic, copy) NSString *skanUpdatedCallbackId;
+@property (nonatomic, copy) NSString *thirdPartySharingSettingsChangedCallbackId;
 @property (nonatomic) id<CDVCommandDelegate> adjustCordovaCommandDelegate;
 
 + (id)getInstanceWithSwizzledAttributionCallbackId:(NSString *)attributionCallbackId
@@ -35,6 +36,7 @@
                         deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                            remoteTriggerCallbackId:(NSString *)remoteTriggerCallbackId
                              skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
+        thirdPartySharingSettingsChangedCallbackId:(NSString *)thirdPartySharingSettingsChangedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate;
 + (void)teardown;

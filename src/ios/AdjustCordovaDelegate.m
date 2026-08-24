@@ -35,6 +35,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
                         deferredDeeplinkCallbackId:(NSString *)deferredDeeplinkCallbackId
                            remoteTriggerCallbackId:(NSString *)remoteTriggerCallbackId
                              skanUpdatedCallbackId:(NSString *)skanUpdatedCallbackId
+        thirdPartySharingSettingsChangedCallbackId:(NSString *)thirdPartySharingSettingsChangedCallbackId
                       shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
                                withCommandDelegate:(id<CDVCommandDelegate>)adjustCordovaCommandDelegate {
     dispatch_once(&onceToken, ^{
@@ -81,6 +82,11 @@ static AdjustCordovaDelegate *defaultInstance = nil;
             [defaultInstance swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
                                   swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabe:)];
         }
+        if (thirdPartySharingSettingsChangedCallbackId != nil &&
+            thirdPartySharingSettingsChangedCallbackId.length > 0) {
+            [defaultInstance swizzleCallbackMethod:@selector(adjustThirdPartySharingSettingsChanged:)
+                                  swizzledSelector:@selector(adjustThirdPartySharingSettingsChangedWannabe:)];
+        }
 
         [defaultInstance setAttributionCallbackId:attributionCallbackId];
         [defaultInstance setEventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId];
@@ -90,6 +96,7 @@ static AdjustCordovaDelegate *defaultInstance = nil;
         [defaultInstance setDeferredDeeplinkCallbackId:deferredDeeplinkCallbackId];
         [defaultInstance setRemoteTriggerCallbackId:remoteTriggerCallbackId];
         [defaultInstance setSkanUpdatedCallbackId:skanUpdatedCallbackId];
+        [defaultInstance setThirdPartySharingSettingsChangedCallbackId:thirdPartySharingSettingsChangedCallbackId];
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
         [defaultInstance setAdjustCordovaCommandDelegate:adjustCordovaCommandDelegate];
     });
@@ -349,6 +356,19 @@ static AdjustCordovaDelegate *defaultInstance = nil;
     pluginResult.keepCallback = [NSNumber numberWithBool:YES];
     [_adjustCordovaCommandDelegate sendPluginResult:pluginResult
                                          callbackId:_remoteTriggerCallbackId];
+}
+
+- (void)adjustThirdPartySharingSettingsChangedWannabe:(ADJThirdPartySharingResult *)thirdPartySharingResult {
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [self addValueOrEmpty:thirdPartySharingResult != nil ? thirdPartySharingResult.thirdPartySharingSettingsJson : nil
+                  withKey:@"thirdPartySharingSettingsJson"
+             toDictionary:dictionary];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:dictionary];
+    pluginResult.keepCallback = [NSNumber numberWithBool:YES];
+    [_adjustCordovaCommandDelegate sendPluginResult:pluginResult
+                                         callbackId:_thirdPartySharingSettingsChangedCallbackId];
 }
 
 - (void)swizzleCallbackMethod:(SEL)originalSelector
