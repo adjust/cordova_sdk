@@ -10,6 +10,6 @@ export class AppComponent {
   constructor(private adjust: Adjust) {
     const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
     config.setLogLevel(AdjustLogLevel.Verbose);
-    this.adjust.create(config);
+    this.adjust.initSdk(config);
   }
 }
