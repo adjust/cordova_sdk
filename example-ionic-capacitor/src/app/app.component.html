@@ -1,7 +1,23 @@
 <ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Ionic Capacitor Example</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-content class="ion-padding">
-    <div class="center">
-      <h1>Ionic Capacitor Example</h1>
-    </div>
+    <ion-list>
+      <ion-item button (click)="trackSimpleEvent()">Track Simple Event</ion-item>
+      <ion-item button (click)="trackRevenueEvent()">Track Revenue Event</ion-item>
+      <ion-item button (click)="trackCallbackEvent()">Track Callback Event</ion-item>
+      <ion-item button (click)="trackPartnerEvent()">Track Partner Event</ion-item>
+      <ion-item button (click)="enableOfflineMode()">Enable offline mode</ion-item>
+      <ion-item button (click)="disableOfflineMode()">Disable offline mode</ion-item>
+      <ion-item button (click)="enableSdk()">Enable SDK</ion-item>
+      <ion-item button (click)="disableSdk()">Disable SDK</ion-item>
+      <ion-item button (click)="isSdkEnabled()">Is SDK enabled?</ion-item>
+      <ion-item button (click)="getIds()">Get IDs</ion-item>
+      <ion-item button (click)="getSdkVersion()">Get SDK Version</ion-item>
+    </ion-list>
   </ion-content>
 </ion-app>
