@@ -30,7 +30,9 @@ export class AdjustConfig {
   private sessionTrackingFailedCallback: (session: AdjustSessionFailure) => void = null;
   private deferredDeeplinkCallback: (deeplink: string) => void = null;
   private remoteTriggerCallback: (remoteTrigger: AdjustRemoteTrigger) => void = null;
-  private thirdPartySharingSettingsChangedCallback: (thirdPartySharingSettings: AdjustThirdPartySharingSettings) => void = null;
+  private thirdPartySharingSettingsChangedCallback: (
+    thirdPartySharingSettings: AdjustThirdPartySharingSettings
+  ) => void = null;
 
   // android only
   private processName: string = null;
@@ -146,7 +148,9 @@ export class AdjustConfig {
     this.remoteTriggerCallback = remoteTriggerCallback;
   }
 
-  setThirdPartySharingSettingsChangedCallback(thirdPartySharingSettingsChangedCallback: (thirdPartySharingSettings: AdjustThirdPartySharingSettings) => void): void {
+  setThirdPartySharingSettingsChangedCallback(
+    thirdPartySharingSettingsChangedCallback: (thirdPartySharingSettings: AdjustThirdPartySharingSettings) => void
+  ): void {
     this.thirdPartySharingSettingsChangedCallback = thirdPartySharingSettingsChangedCallback;
   }
 
@@ -206,7 +210,8 @@ export class AdjustConfig {
     return this.remoteTriggerCallback !== null;
   }
 
-  private getThirdPartySharingSettingsChangedCallback(): ((thirdPartySharingSettings: AdjustThirdPartySharingSettings) => void) | null {
+  private getThirdPartySharingSettingsChangedCallback():
+    ((thirdPartySharingSettings: AdjustThirdPartySharingSettings) => void) | null {
     return this.thirdPartySharingSettingsChangedCallback;
   }
 
