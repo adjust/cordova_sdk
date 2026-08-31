@@ -24,6 +24,8 @@
 - (void)setSessionTrackingFailedCallback:(CDVInvokedUrlCommand *)command;
 - (void)setDeferredDeeplinkCallback:(CDVInvokedUrlCommand *)command;
 - (void)setRemoteTriggerCallback:(CDVInvokedUrlCommand *)command;
+- (void)setThirdPartySharingSettingsChangedCallback:(CDVInvokedUrlCommand *)command;
+- (void)getThirdPartySharingSettingsWithTimeout:(CDVInvokedUrlCommand *)command;
 - (void)setPushToken:(CDVInvokedUrlCommand *)command;
 - (void)getAttribution:(CDVInvokedUrlCommand *)command;
 - (void)getAttributionWithTimeout:(CDVInvokedUrlCommand *)command;

@@ -26,7 +26,8 @@ public class AdjustCordova extends CordovaPlugin implements
         OnSessionTrackingSucceededListener,
         OnSessionTrackingFailedListener,
         OnDeferredDeeplinkResponseListener,
-        OnRemoteTriggerListener {
+        OnRemoteTriggerListener,
+        OnThirdPartySharingSettingsChangedListener {
     private boolean isDeferredDeeplinkOpeningEnabled = true;
     private CallbackContext attributionCallbackContext;
     private CallbackContext eventTrackingSucceededCallbackContext;
@@ -35,6 +36,7 @@ public class AdjustCordova extends CordovaPlugin implements
     private CallbackContext sessionTrackingFailedCallbackContext;
     private CallbackContext deferredDeeplinkCallbackContext;
     private CallbackContext remoteTriggerCallbackContext;
+    private CallbackContext thirdPartySharingSettingsChangedCallbackContext;
 
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -54,6 +56,10 @@ public class AdjustCordova extends CordovaPlugin implements
             deferredDeeplinkCallbackContext = callbackContext;
         } else if (action.equals(COMMAND_SET_REMOTE_TRIGGER_CALLBACK)) {
             remoteTriggerCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_SET_THIRD_PARTY_SHARING_SETTINGS_CHANGED_CALLBACK)) {
+            thirdPartySharingSettingsChangedCallbackContext = callbackContext;
+        } else if (action.equals(COMMAND_GET_THIRD_PARTY_SHARING_SETTINGS_WITH_TIMEOUT)) {
+            executeGetThirdPartySharingSettingsWithTimeout(args, callbackContext);
         } else if (action.equals(COMMAND_SET_PUSH_TOKEN)) {
             final String token = args.getString(0);
             Adjust.setPushToken(token, this.cordova.getActivity().getApplicationContext());
@@ -163,6 +169,7 @@ public class AdjustCordova extends CordovaPlugin implements
             sessionTrackingFailedCallbackContext = null;
             deferredDeeplinkCallbackContext = null;
             remoteTriggerCallbackContext = null;
+            thirdPartySharingSettingsChangedCallbackContext = null;
             isDeferredDeeplinkOpeningEnabled = true;
         } else if (action.equals(COMMAND_SET_SKAN_UPDATED_CALLBACK)) {
             // ignore on android
@@ -460,6 +467,72 @@ public class AdjustCordova extends CordovaPlugin implements
             }
         }
 
+        // device IDs reading
+        if (parameters.containsKey(KEY_IS_DEVICE_IDS_READING_ENABLED)) {
+            Object isDeviceIdsReadingEnabledObj = parameters.get(KEY_IS_DEVICE_IDS_READING_ENABLED);
+            if (isDeviceIdsReadingEnabledObj != null && !JSONObject.NULL.equals(isDeviceIdsReadingEnabledObj)) {
+                String strIsDeviceIdsReadingEnabled = isDeviceIdsReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsDeviceIdsReadingEnabled)) {
+                    adjustConfig.disableDeviceIdsReading();
+                }
+            }
+        }
+
+        // FB ID reading
+        if (parameters.containsKey(KEY_IS_FB_ID_READING_ENABLED)) {
+            Object isFbIdReadingEnabledObj = parameters.get(KEY_IS_FB_ID_READING_ENABLED);
+            if (isFbIdReadingEnabledObj != null && !JSONObject.NULL.equals(isFbIdReadingEnabledObj)) {
+                String strIsFbIdReadingEnabled = isFbIdReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsFbIdReadingEnabled)) {
+                    adjustConfig.disableFbIdReading();
+                }
+            }
+        }
+
+        // Google Ad ID reading
+        if (parameters.containsKey(KEY_IS_GOOGLE_AD_ID_READING_ENABLED)) {
+            Object isGoogleAdIdReadingEnabledObj = parameters.get(KEY_IS_GOOGLE_AD_ID_READING_ENABLED);
+            if (isGoogleAdIdReadingEnabledObj != null && !JSONObject.NULL.equals(isGoogleAdIdReadingEnabledObj)) {
+                String strIsGoogleAdIdReadingEnabled = isGoogleAdIdReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsGoogleAdIdReadingEnabled)) {
+                    adjustConfig.disableGoogleAdIdReading();
+                }
+            }
+        }
+
+        // Android ID reading
+        if (parameters.containsKey(KEY_IS_ANDROID_ID_READING_ENABLED)) {
+            Object isAndroidIdReadingEnabledObj = parameters.get(KEY_IS_ANDROID_ID_READING_ENABLED);
+            if (isAndroidIdReadingEnabledObj != null && !JSONObject.NULL.equals(isAndroidIdReadingEnabledObj)) {
+                String strIsAndroidIdReadingEnabled = isAndroidIdReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsAndroidIdReadingEnabled)) {
+                    adjustConfig.disableAndroidIdReading();
+                }
+            }
+        }
+
+        // Fire Ad ID reading
+        if (parameters.containsKey(KEY_IS_FIRE_AD_ID_READING_ENABLED)) {
+            Object isFireAdIdReadingEnabledObj = parameters.get(KEY_IS_FIRE_AD_ID_READING_ENABLED);
+            if (isFireAdIdReadingEnabledObj != null && !JSONObject.NULL.equals(isFireAdIdReadingEnabledObj)) {
+                String strIsFireAdIdReadingEnabled = isFireAdIdReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsFireAdIdReadingEnabled)) {
+                    adjustConfig.disableFireAdIdReading();
+                }
+            }
+        }
+
+        // device IDs from plugins reading
+        if (parameters.containsKey(KEY_IS_DEVICE_IDS_FROM_PLUGINS_READING_ENABLED)) {
+            Object isDeviceIdsFromPluginsReadingEnabledObj = parameters.get(KEY_IS_DEVICE_IDS_FROM_PLUGINS_READING_ENABLED);
+            if (isDeviceIdsFromPluginsReadingEnabledObj != null && !JSONObject.NULL.equals(isDeviceIdsFromPluginsReadingEnabledObj)) {
+                String strIsDeviceIdsFromPluginsReadingEnabled = isDeviceIdsFromPluginsReadingEnabledObj.toString();
+                if ("false".equalsIgnoreCase(strIsDeviceIdsFromPluginsReadingEnabled)) {
+                    adjustConfig.disableDeviceIdsFromPluginsReading();
+                }
+            }
+        }
+
         // store info
         if (parameters.containsKey(KEY_STORE_INFO)) {
             String strStoreInfo = parameters.get(KEY_STORE_INFO).toString();
@@ -519,6 +592,11 @@ public class AdjustCordova extends CordovaPlugin implements
         // remote trigger callback
         if (remoteTriggerCallbackContext != null) {
             adjustConfig.setOnRemoteTriggerListener(this);
+        }
+
+        // third party sharing settings changed callback
+        if (thirdPartySharingSettingsChangedCallbackContext != null) {
+            adjustConfig.setOnThirdPartySharingSettingsChangedListener(this);
         }
 
         // initialize SDK
@@ -598,6 +676,48 @@ public class AdjustCordova extends CordovaPlugin implements
                 public void onAdidRead(String adid) {
                     if (callbackContext != null) {
                         PluginResult pluginResult = new PluginResult(Status.OK, adid != null ? adid : null);
+                        pluginResult.setKeepCallback(true);
+                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                }
+            });
+    }
+
+    private void executeGetThirdPartySharingSettingsWithTimeout(final JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        String params = args.getString(0);
+        JSONArray jsonArrayParams = new JSONArray(params);
+        JSONObject jsonParameters = jsonArrayParams.optJSONObject(0);
+
+        if (jsonParameters == null || !jsonParameters.has("timeoutInMilliseconds")) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return;
+        }
+
+        long timeoutInMilliseconds;
+        try {
+            timeoutInMilliseconds = jsonParameters.getLong("timeoutInMilliseconds");
+        } catch (JSONException e) {
+            if (callbackContext != null) {
+                PluginResult pluginResult = new PluginResult(Status.OK, (String) null);
+                pluginResult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginResult);
+            }
+            return;
+        }
+
+        Adjust.getThirdPartySharingSettingsWithTimeout(
+            this.cordova.getActivity().getApplicationContext(),
+            timeoutInMilliseconds,
+            new OnThirdPartySharingSettingsReadListener() {
+                @Override
+                public void onThirdPartySharingSettingsRead(AdjustThirdPartySharingResult adjustThirdPartySharingResult) {
+                    if (callbackContext != null) {
+                        String thirdPartySharingSettingsJson = adjustThirdPartySharingResult != null ? adjustThirdPartySharingResult.getThirdPartySharingSettingsJson() : null;
+                        PluginResult pluginResult = new PluginResult(Status.OK, thirdPartySharingSettingsJson);
                         pluginResult.setKeepCallback(true);
                         callbackContext.sendPluginResult(pluginResult);
                     }
@@ -1343,6 +1463,21 @@ public class AdjustCordova extends CordovaPlugin implements
             PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
             pluginResult.setKeepCallback(true);
             remoteTriggerCallbackContext.sendPluginResult(pluginResult);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    @Override
+    public void onThirdPartySharingSettingsChanged(AdjustThirdPartySharingResult adjustThirdPartySharingResult) {
+        if (thirdPartySharingSettingsChangedCallbackContext == null) {
+            return;
+        }
+
+        try {
+            JSONObject jsonData = getThirdPartySharingSettingsJson(adjustThirdPartySharingResult);
+            PluginResult pluginResult = new PluginResult(Status.OK, jsonData);
+            pluginResult.setKeepCallback(true);
+            thirdPartySharingSettingsChangedCallbackContext.sendPluginResult(pluginResult);
         } catch (JSONException ignored) {
         }
     }

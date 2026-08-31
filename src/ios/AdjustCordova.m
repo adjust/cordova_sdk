@@ -34,6 +34,8 @@
 #define KEY_IS_AD_SERVICES_ENABLED @"isAdServicesEnabled"
 #define KEY_IS_IDFA_READING_ENABLED @"isIdfaReadingEnabled"
 #define KEY_IS_IDFV_READING_ENABLED @"isIdfvReadingEnabled"
+#define KEY_IS_DEVICE_IDS_READING_ENABLED @"isDeviceIdsReadingEnabled"
+#define KEY_IS_FB_ID_READING_ENABLED @"isFbIdReadingEnabled"
 #define KEY_IS_SKAN_ATTRIBUTION_ENABLED @"isSkanAttributionEnabled"
 #define KEY_IS_LINK_ME_ENABLED @"isLinkMeEnabled"
 #define KEY_IS_COPPA_COMPLIANCE_ENABLED @"isCoppaComplianceEnabled"
@@ -82,6 +84,7 @@
     NSString *deferredDeeplinkCallbackId;
     NSString *remoteTriggerCallbackId;
     NSString *skanUpdatedCallbackId;
+    NSString *thirdPartySharingSettingsChangedCallbackId;
 }
 
 - (void)pluginInitialize {
@@ -93,6 +96,7 @@
     deferredDeeplinkCallbackId = nil;
     remoteTriggerCallbackId = nil;
     skanUpdatedCallbackId = nil;
+    thirdPartySharingSettingsChangedCallbackId = nil;
 }
 
 #pragma mark - Common
@@ -111,6 +115,8 @@
     NSNumber *isAdServicesEnabled = [[jsonObject valueForKey:KEY_IS_AD_SERVICES_ENABLED] objectAtIndex:0];
     NSNumber *isIdfaReadingEnabled = [[jsonObject valueForKey:KEY_IS_IDFA_READING_ENABLED] objectAtIndex:0];
     NSNumber *isIdfvReadingEnabled = [[jsonObject valueForKey:KEY_IS_IDFV_READING_ENABLED] objectAtIndex:0];
+    NSNumber *isDeviceIdsReadingEnabled = [[jsonObject valueForKey:KEY_IS_DEVICE_IDS_READING_ENABLED] objectAtIndex:0];
+    NSNumber *isFbIdReadingEnabled = [[jsonObject valueForKey:KEY_IS_FB_ID_READING_ENABLED] objectAtIndex:0];
     NSNumber *isSkanAttributionEnabled = [[jsonObject valueForKey:KEY_IS_SKAN_ATTRIBUTION_ENABLED] objectAtIndex:0];
     NSNumber *isLinkMeEnabled = [[jsonObject valueForKey:KEY_IS_LINK_ME_ENABLED] objectAtIndex:0];
     NSNumber *isCoppaComplianceEnabled = [[jsonObject valueForKey:KEY_IS_COPPA_COMPLIANCE_ENABLED] objectAtIndex:0];
@@ -210,6 +216,18 @@
         [adjustConfig disableIdfvReading];
     }
 
+    // device IDs reading
+    if ([self isFieldValid:isDeviceIdsReadingEnabled] &&
+        ![isDeviceIdsReadingEnabled boolValue]) {
+        [adjustConfig disableDeviceIdsReading];
+    }
+
+    // FB ID reading
+    if ([self isFieldValid:isFbIdReadingEnabled] &&
+        ![isFbIdReadingEnabled boolValue]) {
+        [adjustConfig disableFbIdReading];
+    }
+
     // SKAdNetwork handling
     if ([self isFieldValid:isSkanAttributionEnabled] &&
         ![isSkanAttributionEnabled boolValue]) {
@@ -279,7 +297,8 @@
         || sessionTrackingFailedCallbackId != nil
         || deferredDeeplinkCallbackId != nil
         || remoteTriggerCallbackId != nil
-        || skanUpdatedCallbackId != nil) {
+        || skanUpdatedCallbackId != nil
+        || thirdPartySharingSettingsChangedCallbackId != nil) {
         [adjustConfig setDelegate:
          [AdjustCordovaDelegate getInstanceWithSwizzledAttributionCallbackId:attributionCallbackId
                                             eventTrackingSucceededCallbackId:eventTrackingSucceededCallbackId
@@ -289,6 +308,7 @@
                                                   deferredDeeplinkCallbackId:deferredDeeplinkCallbackId
                                                    remoteTriggerCallbackId:remoteTriggerCallbackId
                                                        skanUpdatedCallbackId:skanUpdatedCallbackId
+                                  thirdPartySharingSettingsChangedCallbackId:thirdPartySharingSettingsChangedCallbackId
                                                 shouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink
                                                          withCommandDelegate:self.commandDelegate]];
     }
@@ -323,6 +343,10 @@
 
 - (void)setRemoteTriggerCallback:(CDVInvokedUrlCommand *)command {
     remoteTriggerCallbackId = command.callbackId;
+}
+
+- (void)setThirdPartySharingSettingsChangedCallback:(CDVInvokedUrlCommand *)command {
+    thirdPartySharingSettingsChangedCallbackId = command.callbackId;
 }
 
 - (void)setPushToken:(CDVInvokedUrlCommand *)command {
@@ -454,6 +478,35 @@
             CDVPluginResult *pluginResult;
             if (adid != nil) {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:adid];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
+- (void)getThirdPartySharingSettingsWithTimeout:(CDVInvokedUrlCommand *)command {
+    NSString *arguments = [command.arguments objectAtIndex:0];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[arguments dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0
+                                                            error:NULL];
+    NSDictionary *timeoutMap = [jsonArray objectAtIndex:0];
+    NSNumber *timeoutInMilliseconds = timeoutMap[@"timeoutInMilliseconds"];
+    if (![self isFieldValid:timeoutInMilliseconds]) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+        return;
+    }
+
+    NSInteger timeoutMs = [timeoutInMilliseconds integerValue];
+    [Adjust thirdPartySharingSettingsWithTimeout:timeoutMs completionHandler:^(ADJThirdPartySharingResult * _Nullable thirdPartySharingResult) {
+        if (command.callbackId != nil) {
+            CDVPluginResult *pluginResult;
+            if (thirdPartySharingResult != nil && thirdPartySharingResult.thirdPartySharingSettingsJson != nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:thirdPartySharingResult.thirdPartySharingSettingsJson];
             } else {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[[NSNull null]]];
             }
@@ -1137,6 +1190,7 @@
     deferredDeeplinkCallbackId = nil;
     remoteTriggerCallbackId = nil;
     skanUpdatedCallbackId = nil;
+    thirdPartySharingSettingsChangedCallbackId = nil;
     [AdjustCordovaDelegate teardown];
 }
 

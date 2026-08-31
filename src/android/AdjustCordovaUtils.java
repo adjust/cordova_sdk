@@ -78,6 +78,13 @@ public class AdjustCordovaUtils {
     public static final String KEY_LABEL = "label";
     public static final String KEY_PAYLOAD_JSON = "payloadJson";
     public static final String KEY_IS_APP_SET_ID_READING_ENABLED = "isAppSetIdReadingEnabled";
+    public static final String KEY_IS_DEVICE_IDS_READING_ENABLED = "isDeviceIdsReadingEnabled";
+    public static final String KEY_IS_FB_ID_READING_ENABLED = "isFbIdReadingEnabled";
+    public static final String KEY_IS_GOOGLE_AD_ID_READING_ENABLED = "isGoogleAdIdReadingEnabled";
+    public static final String KEY_IS_ANDROID_ID_READING_ENABLED = "isAndroidIdReadingEnabled";
+    public static final String KEY_IS_FIRE_AD_ID_READING_ENABLED = "isFireAdIdReadingEnabled";
+    public static final String KEY_IS_DEVICE_IDS_FROM_PLUGINS_READING_ENABLED = "isDeviceIdsFromPluginsReadingEnabled";
+    public static final String KEY_THIRD_PARTY_SHARING_SETTINGS_JSON = "thirdPartySharingSettingsJson";
     public static final String KEY_TEST_URL_OVERWRITE = "testUrlOverwrite";
     public static final String KEY_EXTRA_PATH = "extraPath";
     public static final String KEY_TIMER_INTERVAL = "timerIntervalInMilliseconds";
@@ -98,6 +105,8 @@ public class AdjustCordovaUtils {
     public static final String COMMAND_SET_SESSION_TRACKING_FAILED_CALLBACK = "setSessionTrackingFailedCallback";
     public static final String COMMAND_SET_DEFERRED_DEEPLINK_CALLBACK = "setDeferredDeeplinkCallback";
     public static final String COMMAND_SET_REMOTE_TRIGGER_CALLBACK = "setRemoteTriggerCallback";
+    public static final String COMMAND_SET_THIRD_PARTY_SHARING_SETTINGS_CHANGED_CALLBACK = "setThirdPartySharingSettingsChangedCallback";
+    public static final String COMMAND_GET_THIRD_PARTY_SHARING_SETTINGS_WITH_TIMEOUT = "getThirdPartySharingSettingsWithTimeout";
     public static final String COMMAND_SET_PUSH_TOKEN = "setPushToken";
     public static final String COMMAND_GET_ATTRIBUTION = "getAttribution";
     public static final String COMMAND_GET_ATTRIBUTION_WITH_TIMEOUT = "getAttributionWithTimeout";
@@ -268,5 +277,17 @@ public class AdjustCordovaUtils {
         jsonRemoteTrigger.put(KEY_LABEL, remoteTrigger.getLabel() != null ? remoteTrigger.getLabel() : "");
         jsonRemoteTrigger.put(KEY_PAYLOAD_JSON, remoteTrigger.getPayload() != null ? remoteTrigger.getPayload().toString() : "{}");
         return jsonRemoteTrigger;
+    }
+
+    public static JSONObject getThirdPartySharingSettingsJson(AdjustThirdPartySharingResult thirdPartySharingResult) throws JSONException {
+        JSONObject jsonThirdPartySharingSettings = new JSONObject();
+        if (thirdPartySharingResult == null) {
+            jsonThirdPartySharingSettings.put(KEY_THIRD_PARTY_SHARING_SETTINGS_JSON, "");
+            return jsonThirdPartySharingSettings;
+        }
+
+        jsonThirdPartySharingSettings.put(KEY_THIRD_PARTY_SHARING_SETTINGS_JSON,
+            thirdPartySharingResult.getThirdPartySharingSettingsJson() != null ? thirdPartySharingResult.getThirdPartySharingSettingsJson() : "");
+        return jsonThirdPartySharingSettings;
     }
 }

@@ -95,6 +95,9 @@ var Adjust = {
         if (adjustConfig.hasSkanUpdatedCallback()) {
             callCordovaCallback('setSkanUpdatedCallback', adjustConfig.getSkanUpdatedCallback());
         }
+        if (adjustConfig.hasThirdPartySharingSettingsChangedCallback()) {
+            callCordovaCallback('setThirdPartySharingSettingsChangedCallback', adjustConfig.getThirdPartySharingSettingsChangedCallback());
+        }
 
         callCordovaStringify('initSdk', adjustConfig);
     },
@@ -295,6 +298,21 @@ var Adjust = {
         callCordovaCallback('getLastDeeplink', callback);
     },
 
+    getThirdPartySharingSettingsWithTimeout: function(timeoutInMilliseconds, callback) {
+        if (!Number.isInteger(timeoutInMilliseconds)) {
+            console.log("[Adjust] Timeout in milliseconds is not of type integer");
+            if (callback) {
+                callback(null);
+            }
+            return;
+        }
+        callCordovaStringifyCallback('getThirdPartySharingSettingsWithTimeout', {timeoutInMilliseconds: timeoutInMilliseconds}, function(thirdPartySharingSettingsJson) {
+            if (callback) {
+                callback(thirdPartySharingSettingsJson === null || thirdPartySharingSettingsJson === undefined || thirdPartySharingSettingsJson === '' ? null : thirdPartySharingSettingsJson);
+            }
+        });
+    },
+
     getSdkVersion: function(callback) {
         var sdkPrefix = this.getSdkPrefix();
         callCordovaCallback('getSdkVersion', function(sdkVersion) {
@@ -303,7 +321,7 @@ var Adjust = {
     },
 
     getSdkPrefix: function () {
-        return 'cordova5.6.0';
+        return 'cordova5.8.0';
     },
 
     // ios only

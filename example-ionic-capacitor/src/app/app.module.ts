@@ -7,7 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { Adjust, AdjustConfig, AdjustEnvironment, AdjustLogLevel } from '@awesome-cordova-plugins/adjust/ngx';
+import { Adjust } from '@awesome-cordova-plugins/adjust/ngx';
 
 @NgModule({
   declarations: [AppComponent],

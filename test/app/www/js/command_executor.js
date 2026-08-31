@@ -121,6 +121,7 @@ AdjustCommandExecutor.prototype.executeCommand = function(command, idx) {
         case 'openDeeplink' : this.openDeeplink(command.params); break;
         case 'processDeeplink' : this.processDeeplink(command.params); break;
         case 'getLastDeeplink' : this.getLastDeeplink(command.params); break;
+        case 'tpsSettingsGetter': this.tpsSettingsGetter(command.params); break;
         case 'endFirstSessionDelay' : this.endFirstSessionDelay(command.params); break;
         case 'coppaComplianceInDelay' : this.coppaComplianceInDelay(command.params); break;
         case 'playStoreKidsComplianceInDelay' : this.playStoreKidsComplianceInDelay(command.params); break;
@@ -301,6 +302,20 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
 
+    if ('deviceIdsReadingEnabled' in params) {
+        var deviceIdsReadingEnabledS = getFirstParameterValue(params, 'deviceIdsReadingEnabled');
+        if (deviceIdsReadingEnabledS != 'true') {
+            adjustConfig.disableDeviceIdsReading();
+        }
+    }
+
+    if ('fbIdReadingEnabled' in params) {
+        var fbIdReadingEnabledS = getFirstParameterValue(params, 'fbIdReadingEnabled');
+        if (fbIdReadingEnabledS != 'true') {
+            adjustConfig.disableFbIdReading();
+        }
+    }
+
     if ('allowAdServicesInfoReading' in params) {
         var allowAdServicesInfoReadingS = getFirstParameterValue(params, 'allowAdServicesInfoReading');
         if (allowAdServicesInfoReadingS != 'true') {
@@ -433,6 +448,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         });
     }
 
+    if ('thirdPartySharingSettingsChangedCallbackSendAll' in params) {
+        var _this = this;
+        adjustConfig.setThirdPartySharingSettingsChangedCallback(function(thirdPartySharingSettings) {
+            AdjustTest.addInfoToSend('third_party_sharing_settings', thirdPartySharingSettings.thirdPartySharingSettingsJson);
+            AdjustTest.sendInfoToServer(_this.extraPath);
+        });
+    }
+
     if ('skanCallback' in params) {
         var _this = this;
         adjustConfig.setSkanUpdatedCallback(function(data) {
@@ -482,6 +505,34 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var appSetIdReadingEnabledS = getFirstParameterValue(params, 'appSetIdReadingEnabled');
         if (appSetIdReadingEnabledS != 'true') {
             adjustConfig.disableAppSetIdReading();
+        }
+    }
+
+    if ('googleAdIdReadingEnabled' in params) {
+        var googleAdIdReadingEnabledS = getFirstParameterValue(params, 'googleAdIdReadingEnabled');
+        if (googleAdIdReadingEnabledS != 'true') {
+            adjustConfig.disableGoogleAdIdReading();
+        }
+    }
+
+    if ('androidIdReadingEnabled' in params) {
+        var androidIdReadingEnabledS = getFirstParameterValue(params, 'androidIdReadingEnabled');
+        if (androidIdReadingEnabledS != 'true') {
+            adjustConfig.disableAndroidIdReading();
+        }
+    }
+
+    if ('fireAdIdReadingEnabled' in params) {
+        var fireAdIdReadingEnabledS = getFirstParameterValue(params, 'fireAdIdReadingEnabled');
+        if (fireAdIdReadingEnabledS != 'true') {
+            adjustConfig.disableFireAdIdReading();
+        }
+    }
+
+    if ('deviceIdsFromPluginsReadingEnabled' in params) {
+        var deviceIdsFromPluginsReadingEnabledS = getFirstParameterValue(params, 'deviceIdsFromPluginsReadingEnabled');
+        if (deviceIdsFromPluginsReadingEnabledS != 'true') {
+            adjustConfig.disableDeviceIdsFromPluginsReading();
         }
     }
 
@@ -1086,6 +1137,26 @@ AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
                 AdjustTest.addInfoToSend('adid', 'nil');
             } else if (device.platform === 'Android') {
                 AdjustTest.addInfoToSend('adid', 'null');
+            }
+        }
+        AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
+        AdjustTest.sendInfoToServer(_this.extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.tpsSettingsGetter = function(params) {
+    var timeoutStr = getFirstParameterValue(params, 'timeout');
+    var timeout = parseInt(timeoutStr);
+    var testCallbackId = getFirstParameterValue(params, 'testCallbackId');
+    var _this = this;
+    Adjust.getThirdPartySharingSettingsWithTimeout(timeout, function(thirdPartySharingSettingsJson) {
+        if (thirdPartySharingSettingsJson != null) {
+            AdjustTest.addInfoToSend('third_party_sharing', thirdPartySharingSettingsJson);
+        } else {
+            if (device.platform === 'iOS') {
+                AdjustTest.addInfoToSend('third_party_sharing', 'nil');
+            } else if (device.platform === 'Android') {
+                AdjustTest.addInfoToSend('third_party_sharing', 'null');
             }
         }
         AdjustTest.addInfoToSend('test_callback_id', testCallbackId);
