@@ -16,7 +16,6 @@
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"
       },
-      "cordova-universal-links-plugin": {},
       "cordova-plugin-whitelist": {},
       "com.adjust.sdk": {},
       "com.adjust.test": {}
@@ -26,7 +25,6 @@
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-customurlscheme": "^4.3.0",
     "cordova-plugin-device": "^2.0.2",
-    "cordova-universal-links-plugin": "^1.2.1",
     "ios-sim": "^9.0.0",
     "xmldom": "github:xmldom/xmldom#0.7.0"
   },

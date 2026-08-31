@@ -15,13 +15,8 @@ var app = {
         this.receivedEvent('deviceready');
 
         Adjust.getSdkVersion(function(sdkVersion) {
-            // Register for universal links.
-            if (device.platform == 'iOS') {
-                universalLinks.subscribe('adjustDeepLinking', app.didLaunchAppFromLink);
-            }
-
             var urlOverwrite = "";
-            var ipAddress = "192.168.21.18";
+            var ipAddress = "192.168.21.54";
             if (device.platform === "Android") {
                 urlOverwrite = "https://" + ipAddress + ":8443";
             } else if (device.platform === "iOS") {
