@@ -21,6 +21,7 @@ end
 target 'App' do
   capacitor_pods
   # Add your Pods here
+  pod 'Adjust', :path => '../../../ext/ios/sdk'
 end
 
 post_install do |installer|

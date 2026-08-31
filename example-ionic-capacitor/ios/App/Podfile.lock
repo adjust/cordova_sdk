@@ -1,9 +1,9 @@
 PODS:
-  - Adjust (5.6.2):
-    - Adjust/Adjust (= 5.6.2)
-  - Adjust/Adjust (5.6.2):
-    - AdjustSignature (= 3.67.0)
-  - AdjustSignature (3.67.0)
+  - Adjust (5.8.0):
+    - Adjust/Adjust (= 5.8.0)
+  - Adjust/Adjust (5.8.0):
+    - AdjustSignature (= 5.0.0)
+  - AdjustSignature (5.0.0)
   - Capacitor (5.6.0):
     - CapacitorCordova
   - CapacitorApp (5.0.6):
@@ -16,10 +16,11 @@ PODS:
   - CapacitorStatusBar (5.0.6):
     - Capacitor
   - CordovaPlugins (5.6.0):
-    - Adjust (= 5.6.2)
+    - Adjust (= 5.8.0)
     - CapacitorCordova
 
 DEPENDENCIES:
+  - Adjust (from `../../../ext/ios/sdk`)
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
@@ -30,10 +31,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Adjust
     - AdjustSignature
 
 EXTERNAL SOURCES:
+  Adjust:
+    :path: "../../../ext/ios/sdk"
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
@@ -50,16 +52,16 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Adjust: 62ea53a252534df416676e7ac2f1558d60e6e39e
-  AdjustSignature: 9498705a4ac67b719e31828be4d74fbb8656950c
+  Adjust: 36080ea0b8fcc57752cae87525bb140f269adcbb
+  AdjustSignature: 2185aff42830b87214d84bee45da09c65129c12c
   Capacitor: 543dcc8159d8e4bdbd0e6923df919f056990836e
   CapacitorApp: 3bef09d0bbb9698fd1766398499f306647156bbf
   CapacitorCordova: 931b48fcdbc9bc985fc2f16cec9f77c794a27729
   CapacitorHaptics: c56885bd07919be808b38db507507919ce4d1b09
   CapacitorKeyboard: 7998987a2d8719967f0fec2508ea13244b7630b7
   CapacitorStatusBar: f7e05ad7e5fb1a1cdacd2f0b55d488550ca07c41
-  CordovaPlugins: d39746af7a4adad96910e49bcf6ffc04c0295507
+  CordovaPlugins: 76d08dd24c2c63bdbe8f17d37fd8d80c7e001694
 
-PODFILE CHECKSUM: 0381d09167db361ed446a10f049fd27bab1b40b1
+PODFILE CHECKSUM: bf4e885329901df5fcfc5f153f9d561a06aa3bf6
 
 COCOAPODS: 1.16.2
