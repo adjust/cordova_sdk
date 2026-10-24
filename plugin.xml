@@ -97,12 +97,20 @@
         <header-file src="src/ios/AdjustCordovaDelegate.h" />
         <source-file src="src/ios/AdjustCordovaDelegate.m" />
 
+        <!-- Google On-device Conversion Measurement (ODM), applied by scripts/post_install.js: -->
+        <!-- IOS_GOOGLE_ODM=true replaces the Adjust pod with the Adjust/AdjustGoogleOdm subspec -->
+        <preference name="IOS_GOOGLE_ODM" default="false" />
+        <!-- IOS_GOOGLE_ADS_ON_DEVICE_CONVERSION=true also installs the Google ODM framework, for apps that don't get it
+             through Google Analytics for Firebase 11.14.0 or later -->
+        <preference name="IOS_GOOGLE_ADS_ON_DEVICE_CONVERSION" default="false" />
+
         <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
                 <pod name="Adjust" spec="5.8.0" />
+                <!--<pod name="GoogleAdsOnDeviceConversion" spec="3.0.0" />-->
             </pods>
         </podspec>
 
