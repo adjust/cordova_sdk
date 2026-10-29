@@ -13,6 +13,8 @@
     <engines>
         <engine name="cordova-android" version=">=4.0.0" />
         <engine name="cordova-ios" version=">=3.0.0" />
+        <!-- SPM resolution (plugin.xml package="swift") requires cordova-ios >=8.0.0; older
+             versions ignore the package attribute and fall back to the CocoaPods podspec below. -->
     </engines>
 
     <js-module src="www/adjust.js" name="Adjust">
@@ -83,7 +85,7 @@
     </platform>
 
     <!-- iOS -->
-    <platform name="ios">
+    <platform name="ios" package="swift">
 
         <config-file target="config.xml" parent="/*">
             <feature name="Adjust">
