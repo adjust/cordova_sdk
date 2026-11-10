@@ -23,10 +23,8 @@
         <allow-intent href="itms-apps:*" />
         <preference name="deployment-target" value="15.0" />
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="1" />
-    <plugin name="cordova-plugin-console" spec="^1.1.0" />
-    <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
+    <plugin name="cordova-plugin-device" spec="^3.0.0" />
+    <plugin name="cordova-plugin-customurlscheme" spec="^5.0.2">
         <variable name="URL_SCHEME" value="adjust-test" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
