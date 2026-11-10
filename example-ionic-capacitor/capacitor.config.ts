@@ -1,12 +1,13 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'example-ionic-capacitor',
+  appId: 'com.adjust.examples',
+  appName: 'AdjustExample',
   webDir: 'www',
-  server: {
-    androidScheme: 'https'
-  }
+  plugins: {
+    // the app has a light background, so the system bars need dark text and icons
+    SystemBars: { style: 'LIGHT' },
+  },
 };
 
 export default config;
