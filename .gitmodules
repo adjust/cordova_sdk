@@ -7,3 +7,7 @@
 [submodule "ext/scripts"]
 	path = ext/scripts
 	url = https://github.com/adjust/sdk_scripts.git
+[submodule "ext/awesome-cordova-plugins"]
+	path = ext/awesome-cordova-plugins
+	url = https://github.com/danielsogl/awesome-cordova-plugins.git
+	shallow = true
