@@ -120,6 +120,10 @@ export class AdjustConfig {
     this.storeInfo = storeInfo;
   }
 
+  setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize: number): void {
+    this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
+  }
+
   setAttributionCallback(attributionCallback: (attribution: AdjustAttribution) => void): void {
     this.attributionCallback = attributionCallback;
   }
@@ -320,11 +324,17 @@ export class AdjustEvent {
   }
 
   addCallbackParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
   }
 
   addPartnerParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
   }
@@ -374,28 +384,34 @@ export class AdjustAppStoreSubscription {
   }
 
   addCallbackParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
   }
 
   addPartnerParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
   }
 }
 
 export class AdjustPlayStoreSubscription {
-  private price: string;
+  private price: number;
   private currency: string;
   private sku: string;
   private orderId: string;
   private signature: string;
   private purchaseToken: string;
-  private purchaseTime: string;
+  private purchaseTime: number;
   private callbackParameters: string[] = [];
   private partnerParameters: string[] = [];
 
-  constructor(price: string, currency: string, sku: string, orderId: string, signature: string, purchaseToken: string) {
+  constructor(price: number, currency: string, sku: string, orderId: string, signature: string, purchaseToken: string) {
     this.price = price;
     this.currency = currency;
     this.sku = sku;
@@ -404,16 +420,22 @@ export class AdjustPlayStoreSubscription {
     this.purchaseToken = purchaseToken;
   }
 
-  setPurchaseTime(purchaseTime: string): void {
+  setPurchaseTime(purchaseTime: number): void {
     this.purchaseTime = purchaseTime;
   }
 
   addCallbackParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
   }
 
   addPartnerParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
   }
@@ -425,16 +447,23 @@ export class AdjustThirdPartySharing {
   private partnerSharingSettings: any[] = [];
 
   constructor(isEnabled: boolean | null) {
-    this.isEnabled = isEnabled;
+    // leave the field out when there is no value, a null would reach Android as "disable sharing"
+    this.isEnabled = isEnabled ?? undefined;
   }
 
   addGranularOption(partnerName: string, key: string, value: string): void {
+    if (typeof partnerName !== 'string' || typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.granularOptions.push(partnerName);
     this.granularOptions.push(key);
     this.granularOptions.push(value);
   }
 
   addPartnerSharingSetting(partnerName: string, key: string, value: boolean): void {
+    if (typeof partnerName !== 'string' || typeof key !== 'string' || typeof value !== 'boolean') {
+      return;
+    }
     this.partnerSharingSettings.push(partnerName);
     this.partnerSharingSettings.push(key);
     this.partnerSharingSettings.push(value);
@@ -462,11 +491,17 @@ export class AdjustAdRevenue {
   }
 
   addCallbackParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
   }
 
   addPartnerParameter(key: string, value: string): void {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+      return;
+    }
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
   }
@@ -1016,6 +1051,17 @@ export class Adjust extends AwesomeCordovaNativePlugin {
   }
 
   /**
+   * This method is used to verify the App Store purchase and track the event if the verification was successful
+   *
+   * @param {AdjustEvent} adjustEvent Adjust event object to be verified and tracked
+   * @returns {Promise<AdjustPurchaseVerificationResult>} Returns a promise with purchase verification outcome
+   */
+  @Cordova()
+  verifyAndTrackAppStorePurchase(adjustEvent: AdjustEvent): Promise<AdjustPurchaseVerificationResult> {
+    return;
+  }
+
+  /**
    * This method is used to verify the Play Store purchase
    *
    * @param {AdjustPlayStorePurchase} adjustPlayStorePurchase Adjust Play Store purchase object to be verified
@@ -1023,6 +1069,17 @@ export class Adjust extends AwesomeCordovaNativePlugin {
    */
   @Cordova()
   verifyPlayStorePurchase(adjustPlayStorePurchase: AdjustPlayStorePurchase): Promise<AdjustPurchaseVerificationResult> {
+    return;
+  }
+
+  /**
+   * This method is used to verify the Play Store purchase and track the event if the verification was successful
+   *
+   * @param {AdjustEvent} adjustEvent Adjust event object to be verified and tracked
+   * @returns {Promise<AdjustPurchaseVerificationResult>} Returns a promise with purchase verification outcome
+   */
+  @Cordova()
+  verifyAndTrackPlayStorePurchase(adjustEvent: AdjustEvent): Promise<AdjustPurchaseVerificationResult> {
     return;
   }
 
