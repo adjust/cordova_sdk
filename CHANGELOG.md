@@ -1,6 +1,13 @@
 ### Version 5.8.1 (5th November 2026)
 #### Fixed
 - Fixed a crash that could occur on iOS after downgrading the SDK when global callback or partner parameters were persisted.
+- Fixed `index.ts` to be aligned with the underlying JS API:
+    - Callback and partner parameters whose key or value is not a string are now ignored in `AdjustEvent`, `AdjustAppStoreSubscription`, `AdjustPlayStoreSubscription` and
+  `AdjustAdRevenue`.
+    - Granular options and partner sharing settings with a value of the wrong type are now ignored in `AdjustThirdPartySharing`.
+    - `AdjustThirdPartySharing` created with `null` no longer disables third party sharing on Android.
+    - Added missing `setEventDeduplicationIdsMaxSize` method to `AdjustConfig` and `verifyAndTrackAppStorePurchase` and `verifyAndTrackPlayStorePurchase` methods to `Adjust`.
+    - `AdjustPlayStoreSubscription` now takes the price and the purchase time as `number` instead of `string`.
 
 #### Changed
 - Updated the Adjust Signature library version to 5.8.0.
