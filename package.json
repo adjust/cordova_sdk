@@ -4,6 +4,13 @@
     "cordova_name": "Adjust SDK Cordova Plugin",
     "description": "Cordova plugin for the Adjust SDK",
     "license": "MIT License",
+    "files": [
+        "plugin.xml",
+        "www/",
+        "src/",
+        "CHANGELOG.md",
+        "VERSION"
+    ],
     "platforms": [
         "ios",
         "android"
