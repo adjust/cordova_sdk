@@ -1,3 +1,24 @@
+### Version 5.8.1 (11th November 2026)
+#### Fixed
+- Fixed a crash that could occur on iOS after downgrading the SDK when global callback or partner parameters were persisted.
+- Fixed `index.ts` to be aligned with the underlying JS API:
+    - Callback and partner parameters whose key or value is not a string are now ignored in `AdjustEvent`, `AdjustAppStoreSubscription`, `AdjustPlayStoreSubscription` and
+  `AdjustAdRevenue`.
+    - Granular options and partner sharing settings with a value of the wrong type are now ignored in `AdjustThirdPartySharing`.
+    - `AdjustThirdPartySharing` created with `null` no longer disables third party sharing on Android.
+    - Added missing `setEventDeduplicationIdsMaxSize` method to `AdjustConfig` and `verifyAndTrackAppStorePurchase` and `verifyAndTrackPlayStorePurchase` methods to `Adjust`.
+    - `AdjustPlayStoreSubscription` now takes the price and the purchase time as `number` instead of `string`.
+
+#### Changed
+- Updated the Adjust Signature library version to 5.8.0.
+- Improved HTTP response stream handling and resource cleanup on Android.
+
+#### Native SDKs
+- [iOS@v5.8.1][ios_sdk_v5.8.1]
+- [Android@v5.8.1][android_sdk_v5.8.1]
+
+---
+
 ### Version 5.8.0 (31st August 2026)
 #### Added
 - Added `getThirdPartySharingSettingsWithTimeout` method to the `Adjust` API and `setThirdPartySharingSettingsChangedCallback` method to `AdjustConfig` for reading the current third-party-sharing settings from the Adjust backend and receiving updates when they change.
@@ -864,6 +885,7 @@ In case you were using beta version of the SDK v5, please switch to the official
 [ios_sdk_v5.5.0]: https://github.com/adjust/ios_sdk/tree/v5.5.0
 [ios_sdk_v5.6.2]: https://github.com/adjust/ios_sdk/tree/v5.6.2
 [ios_sdk_v5.8.0]: https://github.com/adjust/ios_sdk/tree/v5.8.0
+[ios_sdk_v5.8.1]: https://github.com/adjust/ios_sdk/tree/v5.8.1
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
@@ -909,3 +931,4 @@ In case you were using beta version of the SDK v5, please switch to the official
 [android_sdk_v5.5.0]: https://github.com/adjust/android_sdk/tree/v5.5.0
 [android_sdk_v5.6.1]: https://github.com/adjust/android_sdk/tree/v5.6.1
 [android_sdk_v5.8.0]: https://github.com/adjust/android_sdk/tree/v5.8.0
+[android_sdk_v5.8.1]: https://github.com/adjust/android_sdk/tree/v5.8.1

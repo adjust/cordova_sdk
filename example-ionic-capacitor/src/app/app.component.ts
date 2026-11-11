@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
+import { IonApp, IonContent, IonHeader, IonItem, IonList, IonTitle, IonToolbar } from '@ionic/angular';
 import { Adjust, AdjustConfig, AdjustEnvironment, AdjustLogLevel, AdjustEvent } from '@awesome-cordova-plugins/adjust/ngx';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  imports: [IonApp, IonContent, IonHeader, IonItem, IonList, IonTitle, IonToolbar],
 })
 export class AppComponent {
   constructor(private adjust: Adjust) {
+    // the Adjust plugin can be called once Cordova reports that the device is ready
+    document.addEventListener('deviceready', () => this.initSdk(), false);
+  }
+
+  private initSdk(): void {
     const config = new AdjustConfig('2fm9gkqubvpc', AdjustEnvironment.Sandbox);
     config.setLogLevel(AdjustLogLevel.Verbose);
 

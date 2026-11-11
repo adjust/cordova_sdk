@@ -35,22 +35,26 @@
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="css/index.css">
-    <title>Hello World</title>
+    <title>Adjust Example</title>
 </head>
-<body>
-    <div class="app">
-        <button id="btnTrackSimpleEvent" style="color: black; height: 30px; margin: 5px">Track Simple Event</button>
-        <button id="btnTrackRevenueEvent" style="color: black; height: 30px; margin: 5px">Track Revenue Event</button>
-        <button id="btnTrackCallbackEvent" style="color: black; height: 30px; margin: 5px">Track Callback Event</button>
-        <button id="btnTrackPartnerEvent" style="color: black; height: 30px; margin: 5px">Track Partner Event</button>
-        <button id="btnEnableOfflineMode" style="color: black; height: 30px; margin: 5px">Enable offline mode</button>
-        <button id="btnDisableOfflineMode" style="color: black; height: 30px; margin: 5px ">Disable offline mode</button>
-        <button id="btnEnableSdk" style="color: black; height: 30px; margin: 5px">Enable SDK</button>
-        <button id="btnDisableSdk" style="color: black; height: 30px; margin: 5px">Disable SDK</button>
-        <button id="btnIsSdkEnabled" style="color: black; height: 30px; margin: 5px">Is SDK enabled?</button>
-        <button id="btnGetIds" style="color: black; height: 30px; margin: 5px">Get IDs</button>
-        <button id="btnGetSdkVersion" style="color: black; height: 30px; margin: 5px">Get SDK Version</button>
-    </div>
+<!-- the empty touch handler makes iOS apply the :active style while a row is pressed -->
+<body ontouchstart="">
+    <header class="toolbar">
+        <h1 class="title">Cordova Example</h1>
+    </header>
+    <main class="content">
+        <button id="btnTrackSimpleEvent" class="item">Track Simple Event</button>
+        <button id="btnTrackRevenueEvent" class="item">Track Revenue Event</button>
+        <button id="btnTrackCallbackEvent" class="item">Track Callback Event</button>
+        <button id="btnTrackPartnerEvent" class="item">Track Partner Event</button>
+        <button id="btnEnableOfflineMode" class="item">Enable offline mode</button>
+        <button id="btnDisableOfflineMode" class="item">Disable offline mode</button>
+        <button id="btnEnableSdk" class="item">Enable SDK</button>
+        <button id="btnDisableSdk" class="item">Disable SDK</button>
+        <button id="btnIsSdkEnabled" class="item">Is SDK enabled?</button>
+        <button id="btnGetIds" class="item">Get IDs</button>
+        <button id="btnGetSdkVersion" class="item">Get SDK Version</button>
+    </main>
     <script src="cordova.js"></script>
     <script src="js/index.js"></script>
 </body>

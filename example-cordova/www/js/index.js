@@ -6,6 +6,8 @@ var app = {
 
     // Bind Event Listeners
     bindEvents: function() {
+        // lets the stylesheet tell the platforms apart, see the safe area notes in index.css
+        document.documentElement.classList.add(cordova.platformId);
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
 

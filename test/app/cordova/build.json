@@ -1,0 +1,10 @@
+{
+  "ios": {
+    "debug": {
+      "developmentTeam": "QGUGW9AUMK",
+      "codeSignIdentity": "Apple Development",
+      "packageType": "development",
+      "buildFlag": ["IPHONEOS_DEPLOYMENT_TARGET=15.0"]
+    }
+  }
+}
