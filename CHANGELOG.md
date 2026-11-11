@@ -1,4 +1,4 @@
-### Version 5.8.1 (5th November 2026)
+### Version 5.8.1 (11th November 2026)
 #### Fixed
 - Fixed a crash that could occur on iOS after downgrading the SDK when global callback or partner parameters were persisted.
 - Fixed `index.ts` to be aligned with the underlying JS API:
