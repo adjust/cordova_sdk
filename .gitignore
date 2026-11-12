@@ -16,6 +16,11 @@ __pycache__/
 node_modules/
 package-lock.json
 
+#SPM
+.swiftpm/
+Package.resolved
+.build/
+
 # Cordova apps: platforms and plugins are added again on every run
 /example-cordova/platforms/
 /example-cordova/plugins/
