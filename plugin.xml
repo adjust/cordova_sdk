@@ -104,7 +104,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust" spec="5.8.1" />
+                <pod name="Adjust" spec="5.8.1" nospm="true" />
             </pods>
         </podspec>
 

@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apache/cordova-ios.git", from: "8.0.0"),
-        .package(url: "https://github.com/adjust/ios_sdk.git", exact: "5.8.0"),
+        .package(url: "https://github.com/adjust/ios_sdk.git", exact: "5.8.1"),
     ],
     targets: [
         .target(

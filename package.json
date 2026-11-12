@@ -8,6 +8,7 @@
         "plugin.xml",
         "www/",
         "src/",
+        "Package.swift",
         "CHANGELOG.md",
         "VERSION"
     ],
