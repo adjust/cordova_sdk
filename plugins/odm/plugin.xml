@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="com.adjust.sdk.odm"
-    version="5.8.1">
+    version="5.8.2">
 
     <name>AdjustGoogleOdm</name>
     <description>Google On-Device Measurement (ODM) support for the Adjust Cordova plugin</description>
@@ -15,7 +15,7 @@
              versions ignore the package attribute and fall back to the CocoaPods podspec below. -->
     </engines>
 
-    <dependency id="com.adjust.sdk" version="5.8.1" />
+    <dependency id="com.adjust.sdk" version="5.8.2" />
 
     <!-- iOS -->
     <platform name="ios" package="swift">
@@ -25,7 +25,10 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust/AdjustGoogleOdm" spec="5.8.1" nospm="true" />
+                <pod name="Adjust/AdjustGoogleOdm" spec="5.8.2" nospm="true" />
+                <!-- the Adjust/AdjustGoogleOdm subspec doesn't pull in Google's SDK; keep within the
+                     range Adjust supports (2.0.0 up to, not including, 4.0.0) -->
+                <pod name="GoogleAdsOnDeviceConversion" spec="~> 3.0" nospm="true" />
             </pods>
         </podspec>
     </platform>

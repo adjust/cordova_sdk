@@ -14,7 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/adjust/ios_sdk.git", exact: "5.8.1"),
+        .package(url: "https://github.com/adjust/ios_sdk.git", exact: "5.8.2"),
     ],
     targets: [
         .target(

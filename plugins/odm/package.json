@@ -1,5 +1,5 @@
 {
-    "version": "5.8.1",
+    "version": "5.8.2",
     "name": "com.adjust.sdk.odm",
     "cordova_name": "Adjust SDK Google ODM Cordova Plugin",
     "description": "Google On-Device Measurement (ODM) support for the Adjust Cordova plugin (iOS only)",
