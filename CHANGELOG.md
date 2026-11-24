@@ -1,3 +1,14 @@
+### Version 5.8.2 (27th November 2026)
+#### Added
+- Added Swift Package Manager support on iOS. With cordova-ios 8.0.0 or later and Capacitor 8.3.2 or later, the native iOS SDK is installed with Swift Package Manager, older versions keep using CocoaPods.
+- Added the `com.adjust.sdk.odm` plugin, which adds Google On-Device Measurement (ODM) support on iOS, including Google's `GoogleAdsOnDeviceConversion` SDK.
+
+#### Native SDKs
+- [iOS@v5.8.2][ios_sdk_v5.8.2]
+- [Android@v5.8.1][android_sdk_v5.8.1]
+
+---
+
 ### Version 5.8.1 (11th November 2026)
 #### Fixed
 - Fixed a crash that could occur on iOS after downgrading the SDK when global callback or partner parameters were persisted.
@@ -886,6 +897,7 @@ In case you were using beta version of the SDK v5, please switch to the official
 [ios_sdk_v5.6.2]: https://github.com/adjust/ios_sdk/tree/v5.6.2
 [ios_sdk_v5.8.0]: https://github.com/adjust/ios_sdk/tree/v5.8.0
 [ios_sdk_v5.8.1]: https://github.com/adjust/ios_sdk/tree/v5.8.1
+[ios_sdk_v5.8.2]: https://github.com/adjust/ios_sdk/tree/v5.8.2
 
 [android_sdk_v3.5.0]: https://github.com/adjust/android_sdk/tree/v3.5.0
 [android_sdk_v4.1.0]: https://github.com/adjust/android_sdk/tree/v4.1.0
