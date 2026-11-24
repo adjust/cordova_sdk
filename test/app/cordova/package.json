@@ -16,7 +16,8 @@
         "ANDROID_PATHPREFIX": "/"
       },
       "com.adjust.sdk": {},
-      "com.adjust.test": {}
+      "com.adjust.test": {},
+      "com.adjust.sdk.odm": {}
     }
   },
   "dependencies": {
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "com.adjust.sdk": "file:../../..",
+    "com.adjust.sdk.odm": "file:../../../plugins/odm",
     "com.adjust.test": "file:../../plugin",
     "cordova-android": "^15.1.0",
     "cordova-ios": "^8.2.0"

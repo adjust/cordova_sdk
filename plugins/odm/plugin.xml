@@ -15,8 +15,6 @@
              versions ignore the package attribute and fall back to the CocoaPods podspec below. -->
     </engines>
 
-    <dependency id="com.adjust.sdk" version="5.8.2" />
-
     <!-- iOS -->
     <platform name="ios" package="swift">
         <source-file src="src/ios/AdjustCordovaOdm.m" />

@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "com.adjust.sdk": "file:..",
+    "com.adjust.sdk.odm": "file:../plugins/odm",
     "cordova-android": "^15.1.0",
     "cordova-ios": "^8.2.0",
     "cordova-plugin-customurlscheme": "^5.0.2",
@@ -25,7 +26,8 @@
         "URL_SCHEME": "adjust-example"
       },
       "cordova-plugin-dialogs": {},
-      "com.adjust.sdk": {}
+      "com.adjust.sdk": {},
+      "com.adjust.sdk.odm": {}
     },
     "platforms": [
       "android",
