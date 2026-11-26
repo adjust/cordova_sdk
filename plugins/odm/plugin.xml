@@ -22,7 +22,7 @@
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
-            <pods>
+            <pods use-frameworks="true">
                 <pod name="Adjust/AdjustGoogleOdm" spec="5.8.2" nospm="true" />
                 <!-- the Adjust/AdjustGoogleOdm subspec doesn't pull in Google's SDK; keep within the
                      range Adjust supports (2.0.0 up to, not including, 4.0.0) -->
