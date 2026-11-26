@@ -1,7 +1,11 @@
 ### Version 5.8.2 (26th November 2026)
 #### Added
 - Added Swift Package Manager support on iOS. With cordova-ios 8.0.0 or later and Capacitor 8.3.2 or later, the native iOS SDK is installed with Swift Package Manager, older versions keep using CocoaPods.
-- Added the `com.adjust.sdk.odm` plugin, which adds Google On-Device Measurement (ODM) support on iOS, including Google's `GoogleAdsOnDeviceConversion` SDK.
+- Added the `com.adjust.sdk.odm` plugin, which adds Google On-Device Measurement (ODM) support on iOS, including Google's `GoogleAdsOnDeviceConversion` SDK. To use it, add it to your app next to the `com.adjust.sdk` plugin:
+  ```
+  cordova plugin add com.adjust.sdk.odm
+  ```
+  Both plugins must always be on the same version.
 
 #### Native SDKs
 - [iOS@v5.8.2][ios_sdk_v5.8.2]
