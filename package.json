@@ -1,5 +1,5 @@
 {
-    "version": "5.8.1",
+    "version": "5.8.2",
     "name": "com.adjust.sdk",
     "cordova_name": "Adjust SDK Cordova Plugin",
     "description": "Cordova plugin for the Adjust SDK",
@@ -8,6 +8,7 @@
         "plugin.xml",
         "www/",
         "src/",
+        "Package.swift",
         "CHANGELOG.md",
         "VERSION"
     ],

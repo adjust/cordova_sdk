@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.adjust.sdk"
-    version="5.8.1">
+    version="5.8.2">
 
     <name>Adjust</name>
     <description>Adjust plugin for Cordova</description>
@@ -13,6 +13,8 @@
     <engines>
         <engine name="cordova-android" version=">=4.0.0" />
         <engine name="cordova-ios" version=">=3.0.0" />
+        <!-- SPM resolution (plugin.xml package="swift") requires cordova-ios >=8.0.0; older
+             versions ignore the package attribute and fall back to the CocoaPods podspec below. -->
     </engines>
 
     <js-module src="www/adjust.js" name="Adjust">
@@ -83,7 +85,7 @@
     </platform>
 
     <!-- iOS -->
-    <platform name="ios">
+    <platform name="ios" package="swift">
 
         <config-file target="config.xml" parent="/*">
             <feature name="Adjust">
@@ -102,7 +104,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Adjust" spec="5.8.1" />
+                <pod name="Adjust" spec="5.8.2" nospm="true" />
             </pods>
         </podspec>
 
