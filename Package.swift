@@ -25,7 +25,15 @@ let package = Package(
                 .product(name: "AdjustSdk", package: "ios_sdk"),
             ],
             path: "src/ios",
-            publicHeadersPath: "."
+            publicHeadersPath: ".",
+            linkerSettings: [
+                .unsafeFlags([
+                    "-weak_framework", "AdSupport",
+                    "-weak_framework", "StoreKit",
+                    "-weak_framework", "AdServices",
+                    "-weak_framework", "AppTrackingTransparency",
+                ]),
+            ]
         ),
     ]
 )
