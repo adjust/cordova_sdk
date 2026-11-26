@@ -7,7 +7,7 @@ import { CommandExecutor, CommandParams } from './command-executor';
 import { adjustTest } from './test-plugin';
 
 // address of the machine that runs the test server
-const TEST_SERVER_IP = '192.168.21.141';
+const TEST_SERVER_IP = '192.168.21.203';
 
 interface TestCommand {
   className: string;
