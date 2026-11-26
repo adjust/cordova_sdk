@@ -52,6 +52,6 @@
         <source-file src="src/ios/ADJCordovaTest.m"/>
         <header-file src="src/ios/ADJCommandListener.h"/>
         <source-file src="src/ios/ADJCommandListener.m"/>
-        <framework src="src/ios/AdjustTestLibrary.framework" custom="true"/>
+        <framework src="src/ios/AdjustTestLibrary.xcframework" custom="true"/>
     </platform>
 </plugin>
